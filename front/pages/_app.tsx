@@ -1,0 +1,15 @@
+import Head from 'next/head';
+import '../styles/global.css';
+
+const App = ({ Component }) => {
+  return (
+    <>
+      <Head>
+        <title>Groom</title>
+      </Head>
+      <Component />
+    </>
+  );
+};
+
+export default App;
