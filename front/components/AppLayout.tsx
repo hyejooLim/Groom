@@ -1,14 +1,27 @@
 import React, { useState } from 'react';
+import Link from 'next/link';
+import Image from 'next/image';
 import styled from 'styled-components';
 import { Layout, Button } from 'antd';
 
 import LoginForm from './LoginForm';
 import UserProfile from './UserProfile';
 import Category from './Category';
+import logo from '../public/Groom_Logo_No_Background.png';
 
 const { Header, Sider, Content, Footer } = Layout;
 
 const LogoWrapper = styled.div``;
+
+const HomeButton = styled(Button)`
+  outline: none;
+  float: right;
+  border: 0;
+  padding: 0;
+  margin: 15px 30px 0 0;
+  background-color: transparent;
+  cursor: pointer;
+`;
 
 const AppLayout = ({ children }) => {
   const [user, setUser] = useState(null);
@@ -23,9 +36,13 @@ const AppLayout = ({ children }) => {
         <Layout style={{ backgroundColor: '#f1f1f1', width: '100vw' }}>
           <Header style={{ height: '80px' }}>
             <LogoWrapper>
-              <Button>
-                <img src='../public/Groom_Logo_White.png' alt='groom_logo' />
-              </Button>
+              <Link href='/'>
+                <a>
+                  <HomeButton>
+                    <Image src={logo} alt='groom_logo' width={140} height={60} />
+                  </HomeButton>
+                </a>
+              </Link>
             </LogoWrapper>
           </Header>
           <Content style={{ margin: '0px 30px' }}>{children}</Content>
