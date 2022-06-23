@@ -1,30 +1,11 @@
 import React, { useState, useCallback } from 'react';
+import Link from 'next/link';
 import styled from 'styled-components';
-import { Pagination } from 'antd';
 
 import AppLayout from '../components/AppLayout';
-
-const pageSize = 8; // 페이지 당 포스터 개수
-
-// const TitleWrapper = styled.div`
-//   /* width: 100%; */
-//   /* position: relative; */
-//   text-align: center;
-// `;
-
-// 컴포넌트화 필요
-const Title = styled.h2`
-  display: inline-block;
-  margin: 0 0 40px;
-  padding: 0 5px 3px;
-  font-size: 20px;
-  font-weight: 400;
-  color: #444;
-  line-height: 200%;
-  border-bottom: 1px dashed #ddd;
-  text-shadow: 1px 1px #dedede;
-  word-break: break-word;
-`;
+import Title from '../components/Title';
+import PaginationContainer from '../components/PaginationContainer';
+import { PostType } from '../types';
 
 const ListWrapper = styled.div`
   padding: 20px 15px 18px;
@@ -46,29 +27,110 @@ const ListWrapper = styled.div`
   }
 `;
 
-const PosterInfo = styled.div`
+const PostInfo = styled.div`
   float: right;
 `;
 
 const Home = () => {
-  const [posters, setPosters] = useState([
-    { category: 'algorithm', title: '입국심사', author: 'sandy', date: '2022.06.12' },
-    { category: 'algorithm', title: '거리두기 확인하기', author: 'sandy', date: '2022.06.11' },
-    { category: 'algorithm', title: '점프와 순간 이동', author: 'tomas', date: '2022.05.28' },
-    { category: 'algorithm', title: '끝말잇기', author: 'jenny', date: '2022.05.16' },
-    { category: 'javascript', title: '자바스크립트 알아보기', author: 'tomas', date: '2022.04.30' },
-    { category: 'typescript', title: '타입스크립트 시작하기', author: 'elli', date: '2022.04.29' },
-    { category: 'react', title: '리액트란?', author: 'sandy', date: '2022.04.24' },
-    { category: 'react', title: '리액트 프레임워크', author: 'mint', date: '2022.04.20' },
-    { category: 'algorithm', title: '전화번호 목록', author: 'sandy', date: '2022.04.27' },
-    { category: 'algorithm', title: '프린터', author: 'happy', date: '2022.04.03' },
+  const [posts, setPosts] = useState<PostType[]>([
+    {
+      id: '1',
+      title: '입국심사',
+      content: '...',
+      author: 'sandy',
+      category: 'algorithm',
+      authorId: '77',
+      createdAt: '2022.06.12',
+    },
+    {
+      id: '2',
+      title: '거리두기 확인하기',
+      content: '...',
+      category: 'algorithm',
+      author: 'sandy',
+      authorId: '77',
+      createdAt: '2022.06.11',
+    },
+    {
+      id: '3',
+      title: '점프와 순간 이동',
+      content: '...',
+      category: 'algorithm',
+      author: 'tomas',
+      authorId: '25',
+      createdAt: '2022.05.28',
+    },
+    {
+      id: '4',
+      title: '끝말잇기',
+      content: '...',
+      category: 'algorithm',
+      author: 'jenny',
+      authorId: '12',
+      createdAt: '2022.05.16',
+    },
+    {
+      id: '5',
+      title: '자바스크립트 알아보기',
+      content: '...',
+      category: 'javascript',
+      author: 'tomas',
+      authorId: '25',
+      createdAt: '2022.04.30',
+    },
+    {
+      id: '6',
+      title: '타입스크립트 시작하기',
+      content: '...',
+      category: 'typescript',
+      author: 'elli',
+      authorId: '11',
+      createdAt: '2022.04.29',
+    },
+    {
+      id: '7',
+      title: '리액트란?',
+      content: '...',
+      category: 'react',
+      author: 'sandy',
+      authorId: '77',
+      createdAt: '2022.04.24',
+    },
+    {
+      id: '8',
+      title: '리액트 프레임워크',
+      content: '...',
+      category: 'react',
+      author: 'mint',
+      authorId: '80',
+      createdAt: '2022.04.20',
+    },
+    {
+      id: '9',
+      title: '전화번호 목록',
+      content: '...',
+      category: 'algorithm',
+      author: 'sandy',
+      authorId: '77',
+      createdAt: '2022.04.27',
+    },
+    {
+      id: '10',
+      title: '프린터',
+      content: '...',
+      category: 'algorithm',
+      author: 'happy',
+      authorId: '7',
+      createdAt: '2022.04.03',
+    },
   ]);
+  const pageSize = 8;
   const [current, setCurrent] = useState(1);
   const [firstIndex, setFirstIndex] = useState(0);
   const [lastIndex, setLastIndex] = useState(pageSize);
 
   const onChangePage = useCallback(
-    (page) => {
+    (page: number) => {
       setCurrent(page);
       setFirstIndex((page - 1) * pageSize);
       setLastIndex(page * pageSize);
@@ -79,40 +141,32 @@ const Home = () => {
   return (
     <AppLayout>
       <div style={{ textAlign: 'center' }}>
-        <Title>전체 글</Title>
+        <Title title='전체 글' />
       </div>
       <ListWrapper>
         <ul>
-          {posters?.slice(firstIndex, lastIndex).map((poster, idx) => (
-            <li key={idx}>
-              <a style={{ fontSize: '15px' }}>
-                [{poster.category}] {poster.title}
-              </a>
-              <PosterInfo>
-                <span style={{ color: '#666', marginRight: 8 }}>{poster.author}</span>
-                <span style={{ color: '#666' }}>{poster.date}</span>
-              </PosterInfo>
+          {posts?.slice(firstIndex, lastIndex).map((post, idx) => (
+            <li key={post.id}>
+              <Link href={`/post/${post.id}`}>
+                <a style={{ fontSize: '15px' }}>
+                  [{post.category}] {post.title}
+                </a>
+              </Link>
+              <PostInfo>
+                <span style={{ color: '#666', marginRight: 8 }}>{post.author}</span>
+                <span style={{ color: '#666' }}>{post.createdAt}</span>
+              </PostInfo>
             </li>
           ))}
         </ul>
       </ListWrapper>
-      <div style={{ display: 'flex', justifyContent: 'center' }}>
-        <Pagination
-          pageSize={pageSize}
-          current={current}
-          total={posters.length}
-          onChange={onChangePage}
-          style={{
-            listStyle: 'none',
-            padding: 0,
-            width: '30%',
-            marginTop: '40px',
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'space-around',
-          }}
-        />
-      </div>
+      <PaginationContainer
+        posts={posts}
+        pageSize={pageSize}
+        current={current}
+        total={posts.length}
+        onChange={onChangePage}
+      />
     </AppLayout>
   );
 };
