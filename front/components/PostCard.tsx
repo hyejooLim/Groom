@@ -1,16 +1,14 @@
 import React, { FC, useCallback, useState } from 'react';
 import { useRouter } from 'next/router';
 import styled from 'styled-components';
-import { Button, Comment } from 'antd';
+import { Button } from 'antd';
 import { HeartOutlined, HeartTwoTone } from '@ant-design/icons';
-import dayjs from 'dayjs';
 
-import { CommentItem, PostType } from '../types';
+import { PostType } from '../types';
 import Title from './Title';
 import PaginationContainer from './PaginationContainer';
-import CommentEditor from './CommentEditor';
+import CommentForm from './CommentForm';
 import CommentList from './CommentList';
-import useInput from '../hooks/input';
 
 const HeadWrapper = styled.div`
   width: 100%;
@@ -107,6 +105,30 @@ const PostCard: FC<PostCardProps> = ({ post }) => {
       id: '1',
       title: '입국심사',
       content: '...',
+      Comments: [
+        {
+          content: '좋은 글 보고 가요~',
+          datetime: '2022.06.23',
+          User: {
+            id: '25',
+            name: '토마스',
+            email: 'tomas@naver.com',
+            posts: 2,
+            subscribers: 5,
+          },
+        },
+        {
+          content: '샌디님 오늘은 뭐하셨나요??',
+          datetime: '2022.06.25',
+          User: {
+            id: '80',
+            name: '민트',
+            email: 'mint@naver.com',
+            posts: 10,
+            subscribers: 40,
+          },
+        },
+      ],
       author: 'sandy',
       category: 'algorithm',
       authorId: '77',
@@ -116,6 +138,7 @@ const PostCard: FC<PostCardProps> = ({ post }) => {
       id: '2',
       title: '거리두기 확인하기',
       content: '...',
+      Comments: [],
       category: 'algorithm',
       author: 'sandy',
       authorId: '77',
@@ -125,6 +148,7 @@ const PostCard: FC<PostCardProps> = ({ post }) => {
       id: '3',
       title: '점프와 순간 이동',
       content: '...',
+      Comments: [],
       category: 'algorithm',
       author: 'tomas',
       authorId: '25',
@@ -134,6 +158,7 @@ const PostCard: FC<PostCardProps> = ({ post }) => {
       id: '4',
       title: '끝말잇기',
       content: '...',
+      Comments: [],
       category: 'algorithm',
       author: 'jenny',
       authorId: '12',
@@ -143,6 +168,7 @@ const PostCard: FC<PostCardProps> = ({ post }) => {
       id: '5',
       title: '자바스크립트 알아보기',
       content: '...',
+      Comments: [],
       category: 'javascript',
       author: 'tomas',
       authorId: '25',
@@ -152,6 +178,7 @@ const PostCard: FC<PostCardProps> = ({ post }) => {
       id: '6',
       title: '타입스크립트 시작하기',
       content: '...',
+      Comments: [],
       category: 'typescript',
       author: 'elli',
       authorId: '11',
@@ -161,6 +188,7 @@ const PostCard: FC<PostCardProps> = ({ post }) => {
       id: '7',
       title: '리액트란?',
       content: '...',
+      Comments: [],
       category: 'react',
       author: 'sandy',
       authorId: '77',
@@ -170,6 +198,7 @@ const PostCard: FC<PostCardProps> = ({ post }) => {
       id: '8',
       title: '리액트 프레임워크',
       content: '...',
+      Comments: [],
       category: 'react',
       author: 'mint',
       authorId: '80',
@@ -179,6 +208,7 @@ const PostCard: FC<PostCardProps> = ({ post }) => {
       id: '9',
       title: '전화번호 목록',
       content: '...',
+      Comments: [],
       category: 'algorithm',
       author: 'sandy',
       authorId: '77',
@@ -188,6 +218,7 @@ const PostCard: FC<PostCardProps> = ({ post }) => {
       id: '10',
       title: '프린터',
       content: '...',
+      Comments: [],
       category: 'algorithm',
       author: 'happy',
       authorId: '7',
@@ -196,9 +227,8 @@ const PostCard: FC<PostCardProps> = ({ post }) => {
   ]);
   const [liked, setLiked] = useState(null);
 
-  const [value, onChangeValue, setValue] = useInput('');
-  const [comments, setComments] = useState<CommentItem[]>([]);
-  const [loading, setLoading] = useState(false);
+  // const [value, onChangeValue, setValue] = useInput('');
+  // const [comments, setComments] = useState<CommentItem[]>([]);
 
   const router = useRouter();
   const postId = Number(router.query);
@@ -245,33 +275,6 @@ const PostCard: FC<PostCardProps> = ({ post }) => {
       return;
     }
   }, []);
-
-  const onSubmitComment = useCallback(() => {
-    if (!user) {
-      alert('로그인이 필요합니다.');
-      return;
-    }
-
-    if (!value && !value.trim()) {
-      alert('댓글을 입력해 주세요.');
-      return;
-    }
-
-    setLoading(true);
-
-    setTimeout(() => {
-      setLoading(false);
-      setValue('');
-      setComments([
-        ...comments,
-        {
-          author: user.name,
-          content: <p>{value}</p>,
-          datetime: dayjs().format('YYYY.MM.DD'),
-        },
-      ]);
-    }, 1000);
-  }, [user, value]);
 
   return (
     <>
@@ -322,14 +325,9 @@ const PostCard: FC<PostCardProps> = ({ post }) => {
         total={posts.length}
         onChange={(page: number) => setCurrentPage(page)}
       />
-      <div className='comment_area'>
-        <Comment
-          content={
-            <CommentEditor loading={loading} value={value} onChange={onChangeValue} onSubmit={onSubmitComment} />
-          }
-          style={{ marginTop: 50 }}
-        />
-        {comments.length > 0 && <CommentList comments={comments} />}
+      <div>
+        <CommentForm post={post} />
+        <CommentList comments={posts[0].Comments} />
       </div>
     </>
   );
