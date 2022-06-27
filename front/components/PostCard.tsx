@@ -1,5 +1,4 @@
 import React, { FC, useCallback, useState } from 'react';
-import { useRouter } from 'next/router';
 import styled from 'styled-components';
 import { Button } from 'antd';
 import { HeartOutlined, HeartTwoTone } from '@ant-design/icons';
@@ -9,6 +8,7 @@ import Title from './Title';
 import PaginationContainer from './PaginationContainer';
 import CommentForm from './CommentForm';
 import CommentList from './CommentList';
+import { posts } from '../pages'; // dummyData
 
 const HeadWrapper = styled.div`
   width: 100%;
@@ -100,139 +100,8 @@ const PostCard: FC<PostCardProps> = ({ post }) => {
     posts: 10,
     subscribers: ['22', '33', '44'], // 나를 구독하고 있는 유저 수
   });
-  const [posts, setPosts] = useState<PostType[]>([
-    {
-      id: '1',
-      title: '입국심사',
-      content: '...',
-      Comments: [
-        {
-          content: '좋은 글 보고 가요~',
-          datetime: '2022.06.23',
-          User: {
-            id: '25',
-            name: '토마스',
-            email: 'tomas@naver.com',
-            posts: 2,
-            subscribers: 5,
-          },
-        },
-        {
-          content: '샌디님 오늘은 뭐하셨나요??',
-          datetime: '2022.06.25',
-          User: {
-            id: '80',
-            name: '민트',
-            email: 'mint@naver.com',
-            posts: 10,
-            subscribers: 40,
-          },
-        },
-      ],
-      author: 'sandy',
-      category: 'algorithm',
-      authorId: '77',
-      createdAt: '2022.06.12',
-    },
-    {
-      id: '2',
-      title: '거리두기 확인하기',
-      content: '...',
-      Comments: [],
-      category: 'algorithm',
-      author: 'sandy',
-      authorId: '77',
-      createdAt: '2022.06.11',
-    },
-    {
-      id: '3',
-      title: '점프와 순간 이동',
-      content: '...',
-      Comments: [],
-      category: 'algorithm',
-      author: 'tomas',
-      authorId: '25',
-      createdAt: '2022.05.28',
-    },
-    {
-      id: '4',
-      title: '끝말잇기',
-      content: '...',
-      Comments: [],
-      category: 'algorithm',
-      author: 'jenny',
-      authorId: '12',
-      createdAt: '2022.05.16',
-    },
-    {
-      id: '5',
-      title: '자바스크립트 알아보기',
-      content: '...',
-      Comments: [],
-      category: 'javascript',
-      author: 'tomas',
-      authorId: '25',
-      createdAt: '2022.04.30',
-    },
-    {
-      id: '6',
-      title: '타입스크립트 시작하기',
-      content: '...',
-      Comments: [],
-      category: 'typescript',
-      author: 'elli',
-      authorId: '11',
-      createdAt: '2022.04.29',
-    },
-    {
-      id: '7',
-      title: '리액트란?',
-      content: '...',
-      Comments: [],
-      category: 'react',
-      author: 'sandy',
-      authorId: '77',
-      createdAt: '2022.04.24',
-    },
-    {
-      id: '8',
-      title: '리액트 프레임워크',
-      content: '...',
-      Comments: [],
-      category: 'react',
-      author: 'mint',
-      authorId: '80',
-      createdAt: '2022.04.20',
-    },
-    {
-      id: '9',
-      title: '전화번호 목록',
-      content: '...',
-      Comments: [],
-      category: 'algorithm',
-      author: 'sandy',
-      authorId: '77',
-      createdAt: '2022.04.27',
-    },
-    {
-      id: '10',
-      title: '프린터',
-      content: '...',
-      Comments: [],
-      category: 'algorithm',
-      author: 'happy',
-      authorId: '7',
-      createdAt: '2022.04.03',
-    },
-  ]);
   const [liked, setLiked] = useState(null);
-
-  // const [value, onChangeValue, setValue] = useInput('');
-  // const [comments, setComments] = useState<CommentItem[]>([]);
-
-  const router = useRouter();
-  const postId = Number(router.query);
-  const [currentPage, setCurrentPage] = useState(postId);
+  const [currentPage, setCurrentPage] = useState(posts.length + 1 - Number(post.id));
 
   const onLike = useCallback(() => {
     if (!user) {
