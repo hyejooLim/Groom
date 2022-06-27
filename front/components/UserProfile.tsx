@@ -36,7 +36,7 @@ const NewBox = styled.div`
 
 const LogoutButton = styled(Button)`
   background-color: #13a085;
-  padding: 12px 20px;
+  padding: 10px 16px;
   color: white;
   border-radius: 8px;
   border: 0;
@@ -46,10 +46,53 @@ const LogoutButton = styled(Button)`
 
 const UserProfile = () => {
   const [user, setUser] = useState({
+    id: '1',
     name: '홍길동',
     email: 'hong@naver.com',
-    posters: 10,
-    followers: 3,
+    posts: [
+      {
+        id: '4',
+        title: '입국심사',
+        content: '...',
+        Comments: [],
+        likeCount: 5,
+        author: 'sandy',
+        category: 'algorithm',
+        authorId: '77',
+        createdAt: '2022.06.12',
+      },
+      {
+        id: '3',
+        title: '거리두기 확인하기',
+        content: '...',
+        Comments: [],
+        category: 'algorithm',
+        author: 'sandy',
+        authorId: '77',
+        createdAt: '2022.06.11',
+      },
+      {
+        id: '2',
+        title: '점프와 순간 이동',
+        content: '...',
+        Comments: [],
+        category: 'algorithm',
+        author: 'tomas',
+        authorId: '25',
+        createdAt: '2022.05.28',
+      },
+      {
+        id: '1',
+        title: '끝말잇기',
+        content: '...',
+        Comments: [],
+        category: 'algorithm',
+        author: 'jenny',
+        authorId: '12',
+        createdAt: '2022.05.16',
+      },
+    ],
+    subscribers: ['2', '3', '4'], // 나를 구독하고 있는 유저 수
   });
 
   return (
@@ -58,7 +101,7 @@ const UserProfile = () => {
         <Avatar size={80} icon={<UserOutlined />} />
         <UserInfo>
           <InfoBox>
-            <Link href='/profile'>
+            <Link href={`/manage`}>
               <a>
                 <span>{user.name}님</span>
               </a>
@@ -66,8 +109,8 @@ const UserProfile = () => {
             <div style={{ marginTop: 5, color: '#888' }}>{user.email}</div>
           </InfoBox>
           <NewBox>
-            <span style={{ marginRight: 10 }}>게시글 | {user.posters}</span>
-            <span>팔로워 | {user.followers}</span>
+            <span style={{ marginRight: 10 }}>게시글|{user.posts.length}</span>
+            <span>구독자|{user.subscribers.length}</span>
           </NewBox>
         </UserInfo>
       </InfoArea>
