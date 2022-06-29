@@ -67,9 +67,17 @@ const PostButton = styled(Button)`
   border-radius: 16px;
   line-height: 30px;
   color: inherit;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   box-sizing: border-box;
   cursor: pointer;
   outline: none;
+
+  :hover {
+    border-color: rgba(185, 185, 185, 0.5);
+    color: inherit;
+  }
 `;
 
 const EditWrapper = styled.div`
@@ -81,10 +89,12 @@ const EditWrapper = styled.div`
   & .btn {
     border: 0;
     outline: none;
-    cursor: pointer;
     background-color: transparent;
     font-size: 16px;
-    font-family: 'Courier New', Courier, monospace;
+
+    :hover {
+      color: #000;
+    }
   }
 `;
 
@@ -157,23 +167,19 @@ const PostCard: FC<PostCardProps> = ({ post }) => {
         <div className='tag_label'></div>
         <div className='article'>{post.content}</div>
         <div style={{ display: 'flex' }}>
-          <div className='like_btn'>
-            <PostButton>
-              <span>
-                {liked ? (
-                  <HeartTwoTone key='heart' twoToneColor='red' onClick={onUnLike} />
-                ) : (
-                  <HeartOutlined key='heart' onClick={onLike} />
-                )}
-              </span>
-              <span style={{ marginLeft: 7 }}>공감</span>
-            </PostButton>
-          </div>
-          <div className='subscribe_btn'>
-            <PostButton style={{ marginLeft: 10 }} onClick={onSubscribe}>
-              구독하기
-            </PostButton>
-          </div>
+          <PostButton>
+            <span>
+              {liked ? (
+                <HeartTwoTone key='heart' twoToneColor='red' onClick={onUnLike} />
+              ) : (
+                <HeartOutlined key='heart' onClick={onLike} />
+              )}
+            </span>
+            <span style={{ marginLeft: 7 }}>공감</span>
+          </PostButton>
+          <PostButton style={{ marginLeft: 10 }} onClick={onSubscribe}>
+            구독하기
+          </PostButton>
         </div>
         {user.id === post.authorId && (
           <EditWrapper>

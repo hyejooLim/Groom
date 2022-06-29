@@ -11,6 +11,7 @@ const AddCommentButton = styled(Button)`
   font-size: 18px;
   font-family: 'Courier New', Courier, monospace;
   margin-top: 10px;
+  color: inherit;
   background-color: transparent;
   cursor: pointer;
 `;

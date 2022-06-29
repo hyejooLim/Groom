@@ -15,10 +15,13 @@ const UserProfileWrapper = styled.div`
 const InfoArea = styled.div`
   display: flex;
   flex-direction: row;
-  margin-bottom: 28px;
+  align-items: center;
+  margin: 10px 0 24px 0;
 `;
 
-const UserInfo = styled.div``;
+const UserInfo = styled.div`
+  margin-left: 30px;
+`;
 
 const InfoBox = styled.div`
   margin-bottom: 20px;
@@ -36,12 +39,18 @@ const NewBox = styled.div`
 
 const LogoutButton = styled(Button)`
   background-color: #13a085;
-  padding: 10px 16px;
-  color: white;
+  color: #fff;
+  height: 38px;
   border-radius: 8px;
   border: 0;
   outline: 0;
-  cursor: pointer;
+
+  :hover {
+    cursor: pointer;
+    transform: scale(1.03);
+    background-color: #13a085;
+    color: #fff;
+  }
 `;
 
 const UserProfile = () => {
@@ -98,11 +107,11 @@ const UserProfile = () => {
   return (
     <UserProfileWrapper>
       <InfoArea>
-        <Avatar size={80} icon={<UserOutlined />} />
+        <Avatar size={60} icon={<UserOutlined />} />
         <UserInfo>
           <InfoBox>
             <Link href={`/manage`}>
-              <a>
+              <a className='go_to_profile'>
                 <span>{user.name}님</span>
               </a>
             </Link>

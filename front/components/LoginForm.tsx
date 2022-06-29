@@ -1,3 +1,4 @@
+import React, { useCallback, useState } from 'react';
 import Link from 'next/link';
 import styled from 'styled-components';
 import { Button } from 'antd';
@@ -12,16 +13,28 @@ const LoginFormWrapper = styled.div`
 `;
 
 const LoginButton = styled(Button)`
-  background-color: #13a085;
-  padding: 14px 70px;
-  color: white;
-  border-radius: 8px;
+  height: 52px;
+  width: 258px;
   border: 0;
   outline: 0;
-  cursor: pointer;
+  border-radius: 8px;
+  background-color: #13a085;
+  color: #fff;
+
+  &:hover {
+    background-color: #13a085;
+    color: #fff;
+  }
 `;
 
 const LoginForm = () => {
+  const [disabled, setDisabled] = useState(false);
+
+  const onClickLoginButton = useCallback((e) => {
+    e.preventDefault();
+    setDisabled(true);
+  }, []);
+
   return (
     <LoginFormWrapper>
       <p style={{ marginBottom: 30, fontSize: '15px' }}>지금 바로 Groom을 이용해 보세요.</p>

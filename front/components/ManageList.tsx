@@ -15,14 +15,14 @@ const ListWrapper = styled.ul`
   flex-direction: column;
 
   & li {
-    margin-bottom: 10px;
+    margin-top: 10px;
 
-    & a:hover {
-      color: #07a;
-    }
+    & a {
+      color: #000;
 
-    & span {
-      font-size: 14px;
+      :hover {
+        color: #07a;
+      }
     }
   }
 `;

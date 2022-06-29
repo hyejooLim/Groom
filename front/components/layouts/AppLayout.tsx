@@ -18,7 +18,10 @@ const HomeButton = styled(Button)`
   padding: 0;
   margin: 15px 30px 0 0;
   background-color: transparent;
-  cursor: pointer;
+
+  :first-child {
+    background-color: inherit;
+  }
 `;
 
 const AppLayout = ({ children }) => {
@@ -32,7 +35,7 @@ const AppLayout = ({ children }) => {
           <Category />
         </Sider>
         <Layout style={{ marginLeft: '300px', width: '100%', height: '100%' }}>
-          <Header style={{ height: '80px' }}>
+          <Header style={{ height: '80px', backgroundColor: 'transparent' }}>
             <Link href='/'>
               <a>
                 <HomeButton>

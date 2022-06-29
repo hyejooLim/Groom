@@ -8,6 +8,7 @@ const CountVisitorWrapper = styled.div`
   background-color: #fff;
   height: 105px;
   display: flex;
+  margin-top: 40px;
 `;
 
 const CountVisitor = styled.div`
@@ -42,12 +43,13 @@ const LastPost = styled.div`
     background: #fff;
 
     & a {
+      color: #333;
       display: block;
       margin: 26px 24px 0;
-      text-decoration: none;
-      color: #333;
-      text-decoration: none;
-      cursor: pointer;
+
+      &:hover :first-child {
+        text-decoration: underline;
+      }
     }
   }
 `;
