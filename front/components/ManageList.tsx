@@ -1,12 +1,44 @@
 import React from 'react';
 import Link from 'next/link';
 import styled from 'styled-components';
-import { SettingOutlined } from '@ant-design/icons';
+import { HomeOutlined, SettingOutlined } from '@ant-design/icons';
 
 const Container = styled.div`
-  margin-top: 20px;
+  margin-top: 10px;
   background-color: #fff;
-  height: 260px;
+  height: 258px;
+  font-family: Noto Sans Regular, AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, '돋움', sans-serif;
+`;
+
+const LinkWrapper = styled.div`
+  border-bottom: 1px solid #f1f3f6;
+  padding: 14px 10px;
+
+  :hover {
+    cursor: pointer;
+    background-color: #fafbfd;
+  }
+
+  .link_menu {
+    color: #ff5544;
+    font-size: 17px;
+
+    & span {
+      margin-left: 10px;
+    }
+  }
+`;
+
+const WrapMenu = styled.div`
+  & div {
+    font-size: 17px;
+    font-weight: 600;
+    padding: 14px 10px 5px;
+
+    & span {
+      margin-left: 10px;
+    }
+  }
 `;
 
 const ListWrapper = styled.ul`
@@ -15,13 +47,14 @@ const ListWrapper = styled.ul`
   flex-direction: column;
 
   & li {
-    margin-top: 10px;
+    margin: 8px 0 0 8px;
 
     & a {
       color: #000;
+      margin-left: 14px;
 
       :hover {
-        color: #07a;
+        color: #ff5544;
       }
     }
   }
@@ -31,28 +64,33 @@ const ManageList = () => {
   return (
     <>
       <Container>
-        <div style={{ borderBottom: '1px solid #f1f3f6' }}>
-          <div style={{ fontSize: '18px', fontWeight: '800', padding: '20px 0 20px 25px' }}>
+        <LinkWrapper>
+          <Link href='/manage'>
+            <a className='link_menu'>
+              <HomeOutlined />
+              <span>블로그 관리 홈</span>
+            </a>
+          </Link>
+        </LinkWrapper>
+
+        <WrapMenu>
+          <div>
             <SettingOutlined />
-            <span style={{ marginLeft: '10px' }}>관리</span>
+            <span>관리</span>
           </div>
-        </div>
-        <ListWrapper>
-          <li>
-            <Link href='/manage-post'>
-              <a>
-                <span>글 관리</span>
-              </a>
-            </Link>
-          </li>
-          <li>
-            <Link href='/manage-category'>
-              <a>
-                <span>카테고리 관리</span>
-              </a>
-            </Link>
-          </li>
-        </ListWrapper>
+          <ListWrapper>
+            <li>
+              <Link href='/post-manage'>
+                <a>글 관리</a>
+              </Link>
+            </li>
+            <li>
+              <Link href='/category-manage'>
+                <a>카테고리 관리</a>
+              </Link>
+            </li>
+          </ListWrapper>
+        </WrapMenu>
       </Container>
     </>
   );

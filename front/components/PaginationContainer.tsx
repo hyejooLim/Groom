@@ -1,36 +1,75 @@
-import React, { FC } from 'react';
+import React, { FC, useCallback } from 'react';
 import styled from 'styled-components';
 import { Pagination } from 'antd';
+import type { PaginationProps } from 'antd';
 
-import { PostType } from '../types';
+import { PostItem } from '../types';
 
-interface PaginationProps {
-  posts: PostType[];
+const PaginationWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+
+  /* 숫자 */
+  .ant-pagination-item {
+    border: none;
+    background-color: transparent;
+  }
+
+  & a {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 15px;
+  }
+
+  & .ant-pagination-item-active a {
+    color: #07a;
+  }
+
+  & .ant-pagination-item a:hover {
+    color: #07a;
+  }
+`;
+
+interface PaginationContainerProps {
+  posts: PostItem[];
   pageSize?: number;
   current: number;
   total: number;
   onChange: (page: number) => void;
 }
 
-const PaginationContainer: FC<PaginationProps> = ({ posts, pageSize, current, total, onChange }) => {
+const PaginationContainer: FC<PaginationContainerProps> = ({ posts, pageSize, current, total, onChange }) => {
+  const itemRender: PaginationProps['itemRender'] = (_, type, originalElement) => {
+    if (type === 'prev') {
+      return <a>PREV</a>;
+    }
+
+    if (type === 'next') {
+      return <a>NEXT</a>;
+    }
+
+    if (type === 'jump-prev' || type === 'jump-next') {
+      return '...';
+    }
+
+    return originalElement;
+  };
+
   return (
-    <div style={{ display: 'flex', justifyContent: 'center' }}>
+    <PaginationWrapper>
       <Pagination
         pageSize={pageSize}
         current={current}
-        total={posts.length}
+        total={total}
         onChange={onChange}
+        itemRender={itemRender}
         style={{
-          listStyle: 'none',
-          padding: 0,
-          width: 'auto',
-          marginTop: '40px',
+          width: '300px',
+          marginTop: '30px',
           display: 'flex',
-          flexDirection: 'row',
           justifyContent: 'space-around',
         }}
       />
-    </div>
+    </PaginationWrapper>
   );
 };
 

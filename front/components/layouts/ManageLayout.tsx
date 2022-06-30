@@ -27,7 +27,7 @@ const AddPostButton = styled(Button)`
   outline: none;
   height: 38px;
   background-color: #13a085;
-  margin-top: 40px;
+  margin-top: 30px;
   font-size: 15px;
   color: #fff;
   border-radius: 8px;

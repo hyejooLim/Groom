@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import { Button, Form, Input } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 
-import AppLayout from '../components/AppLayout';
+import AppLayout from '../components/layouts/AppLayout';
 import useInput from '../hooks/input';
 
 const FormWrapper = styled(Form)`
@@ -25,19 +25,23 @@ const FormWrapper = styled(Form)`
   }
 `;
 
-const InputWrapper = styled(Input)`
+const StyledInput = styled(Input)`
   height: 40px;
   width: 260px;
   font-size: 16px;
   font-family: 'Courier New', Courier, monospace;
   border: 0;
+
+  :focus {
+    box-shadow: none;
+  }
 `;
 
 const LoginButton = styled(Button)`
   background-color: #13a085;
-  padding: 10px 16px;
+  height: 35px;
   margin: 40px 0 50px 0;
-  color: white;
+  color: #fff;
   border-radius: 8px;
   font-size: 15px;
   border: 0;
@@ -45,24 +49,24 @@ const LoginButton = styled(Button)`
   transition: all 0.2s ease-in;
 
   :hover {
-    cursor: pointer;
     background-color: #0fc19e;
+    color: #fff;
     transform: scale(1.03);
   }
 `;
 
 const SignupButton = styled(Button)`
   background-color: #c4c4c4;
-  padding: 10px 14px;
-  color: white;
+  height: 36px;
+  color: #fff;
   border-radius: 8px;
   border: 0;
   outline: 0;
   transition: all 0.2s ease-in;
 
   :hover {
-    cursor: pointer;
-    background-color: #e0e0e0;
+    background-color: #ddd;
+    color: #fff;
     transform: scale(1.03);
   }
 `;
@@ -80,20 +84,20 @@ const Login = () => {
 
   return (
     <>
-      <Head>
-        <title>groom | 로그인</title>
-      </Head>
       <AppLayout>
+        <Head>
+          <title>groom | 로그인</title>
+        </Head>
         <div style={{ height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
           <FormWrapper onFinish={onSubmitForm}>
             <div className='input_form'>
               <UserOutlined style={{ marginRight: 10, fontSize: '20px' }} />
-              <InputWrapper type='email' value={email} onChange={onChangeEmail} placeholder='email' required />
+              <StyledInput type='email' value={email} onChange={onChangeEmail} placeholder='email' required />
             </div>
             <br />
             <div className='input_form'>
               <LockOutlined style={{ marginRight: 10, fontSize: '20px' }} />
-              <InputWrapper
+              <StyledInput
                 type='password'
                 value={password}
                 onChange={onChangePassword}

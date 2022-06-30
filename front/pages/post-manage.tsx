@@ -34,14 +34,14 @@ const ListWrapper = styled.div`
   margin-top: 8px;
   line-height: 180%;
   word-break: break-all; // ?
-  height: 411px;
+  height: 386px;
 
   & ul {
     border: 1px solid #e0e5ee;
   }
 
   & li {
-    padding: 15px 16px 15px;
+    padding: 13px 16px 12px;
     font-size: 14px;
     border-bottom: 1px solid #f1f3f6;
 
@@ -160,61 +160,63 @@ const PostManage = () => {
 
   return (
     <ManageLayout>
-      <div style={{ display: 'flex', alignItems: 'center' }}>
-        {category === DEFAULT_VALUE ? (
-          <span style={{ fontSize: '18px' }}>{category}</span>
-        ) : (
-          <>
-            <CloseButton onClick={onLoadMainPosts}>
-              <CloseCircleOutlined />
-            </CloseButton>
+      <div style={{ marginTop: -20 }}>
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          {category === DEFAULT_VALUE ? (
             <span style={{ fontSize: '18px' }}>{category}</span>
-          </>
-        )}
-        <span style={{ fontSize: '14px', color: '#888', marginLeft: '5px' }}>{postsCount}</span>
-      </div>
-      <SearchInput />
-      <ListWrapper>
-        <ul>
-          {posts?.slice(firstIndex, lastIndex).map((post, idx) => (
-            <li>
-              <PostInfo>
-                <div>
-                  <div className='post_title'>
-                    <Link href={`/post/${post.id}`}>
-                      <a>
-                        <span>
-                          [{post.Category.name}] {post.title}
+          ) : (
+            <>
+              <CloseButton onClick={onLoadMainPosts}>
+                <CloseCircleOutlined />
+              </CloseButton>
+              <span style={{ fontSize: '18px' }}>{category}</span>
+            </>
+          )}
+          <span style={{ fontSize: '14px', color: '#888', marginLeft: '5px' }}>{postsCount}</span>
+        </div>
+        <SearchInput />
+        <ListWrapper>
+          <ul>
+            {posts?.slice(firstIndex, lastIndex).map((post, idx) => (
+              <li>
+                <PostInfo>
+                  <div>
+                    <div className='post_title'>
+                      <Link href={`/post/${post.id}`}>
+                        <a>
+                          <span>
+                            [{post.Category.name}] {post.title}
+                          </span>
+                        </a>
+                      </Link>
+                      <PaperClipOutlined />
+                    </div>
+                    <div className='post_extra_info'>
+                      <a onClick={onChangePostList}>
+                        <span data-name={post.Category.name} data-id={post.Category.id}>
+                          {post.Category.name}
                         </span>
                       </a>
+                      <span>{post.author}</span>
+                      <span>{post.createdAt}</span>
+                    </div>
+                  </div>
+                  <PostButton>
+                    <Link href='/'>
+                      <a>
+                        <Button className='modify btn'>수정</Button>
+                      </a>
                     </Link>
-                    <PaperClipOutlined />
-                  </div>
-                  <div className='post_extra_info'>
-                    <a onClick={onChangePostList}>
-                      <span data-name={post.Category.name} data-id={post.Category.id}>
-                        {post.Category.name}
-                      </span>
-                    </a>
-                    <span>{post.author}</span>
-                    <span>{post.createdAt}</span>
-                  </div>
-                </div>
-                <PostButton>
-                  <Link href='/'>
-                    <a>
-                      <Button className='modify btn'>수정</Button>
-                    </a>
-                  </Link>
-                  <Button className='delete btn' onClick={onDeletePost}>
-                    삭제
-                  </Button>
-                </PostButton>
-              </PostInfo>
-            </li>
-          ))}
-        </ul>
-      </ListWrapper>
+                    <Button className='delete btn' onClick={onDeletePost}>
+                      삭제
+                    </Button>
+                  </PostButton>
+                </PostInfo>
+              </li>
+            ))}
+          </ul>
+        </ListWrapper>
+      </div>
       <PaginationContainer
         posts={posts}
         pageSize={pageSize}

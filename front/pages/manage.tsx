@@ -8,7 +8,7 @@ const CountVisitorWrapper = styled.div`
   background-color: #fff;
   height: 105px;
   display: flex;
-  margin-top: 40px;
+  margin-top: 20px;
 `;
 
 const CountVisitor = styled.div`
@@ -32,23 +32,29 @@ const CountVisitor = styled.div`
 `;
 
 const LastPost = styled.div`
-  margin-top: 70px;
+  margin-top: 54px;
 
-  & ul li {
-    float: left;
-    position: relative;
-    width: 222px;
-    height: 242px;
-    border: 1px solid #e0e5ee;
-    background: #fff;
+  & ul {
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-between;
 
-    & a {
-      color: #333;
-      display: block;
-      margin: 26px 24px 0;
+    & li {
+      float: left;
+      position: relative;
+      width: 224px;
+      height: 246px;
+      border: 1px solid #e0e5ee;
+      background: #fff;
 
-      &:hover :first-child {
-        text-decoration: underline;
+      & a {
+        color: #333;
+        display: block;
+        margin: 26px 24px 0;
+
+        &:hover :first-child {
+          text-decoration: underline;
+        }
       }
     }
   }
@@ -176,7 +182,7 @@ const Manage = () => {
       </CountVisitorWrapper>
       <LastPost>
         <span style={{ fontWeight: 700, fontSize: '18px' }}>최근 작성 글</span>
-        <ul style={{ marginTop: '20px', display: 'flex', justifyContent: 'space-between' }}>
+        <ul>
           {user.posts?.slice(0, 4).map((post) => (
             <li key={post.id}>
               <Link href={`/post/${post.id}`}>

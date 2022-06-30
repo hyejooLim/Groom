@@ -4,7 +4,7 @@ import Router from 'next/router';
 import styled from 'styled-components';
 import { Button, Form, Input } from 'antd';
 
-import AppLayout from '../components/AppLayout';
+import AppLayout from '../components/layouts/AppLayout';
 import useInput from '../hooks/input';
 
 const FormWrapper = styled(Form)`
@@ -35,7 +35,7 @@ const SubmitButton = styled(Button)`
   margin-top: 20px;
   border: 0;
   outline: none;
-  padding: 12px 16px;
+  height: 38px;
   font-size: 15px;
   border-radius: 10px;
   color: #fff;
@@ -43,8 +43,8 @@ const SubmitButton = styled(Button)`
   transition: all 0.2s ease-in;
 
   :hover {
-    cursor: pointer;
     background-color: #0fc19e;
+    color: #fff;
     transform: scale(1.03);
   }
 `;
@@ -60,10 +60,13 @@ const Signup = () => {
   const [passwordCheck, setPasswordCheck] = useState('');
   const [passwordError, setPasswordError] = useState(false);
 
-  const onChangeEmail = useCallback((e: ChangeEvent<HTMLInputElement>) => {
-    setEmail(e.target.value);
-    setEmailError(!regex.test(e.target.value));
-  }, [regex]);
+  const onChangeEmail = useCallback(
+    (e: ChangeEvent<HTMLInputElement>) => {
+      setEmail(e.target.value);
+      setEmailError(!regex.test(e.target.value));
+    },
+    [regex]
+  );
 
   const onChangePasswordCheck = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
@@ -90,10 +93,10 @@ const Signup = () => {
 
   return (
     <>
-      <Head>
-        <title>groom | 회원가입</title>
-      </Head>
       <AppLayout>
+        <Head>
+          <title>groom | 회원가입</title>
+        </Head>
         <FormWrapper>
           <Form
             onFinish={onSubmitForm}
