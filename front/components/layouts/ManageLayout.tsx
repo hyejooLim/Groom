@@ -3,6 +3,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import styled from 'styled-components';
 import { Layout, Button } from 'antd';
+import { EditOutlined } from '@ant-design/icons';
 
 import ManageProfile from '../../components/ManageProfile';
 import ManageList from '../../components/ManageList';
@@ -61,7 +62,10 @@ const ManageLayout = ({ children }) => {
                 </ImageWrapper>
               </a>
             </Link>
-            <AddPostButton onClick={onWritePost}>글 쓰기</AddPostButton>
+            <AddPostButton onClick={onWritePost}>
+              <span>글쓰기</span>
+              <EditOutlined />
+            </AddPostButton>
           </Header>
           <Content>{children}</Content>
         </Layout>
