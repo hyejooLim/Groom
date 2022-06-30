@@ -3,12 +3,12 @@ import styled from 'styled-components';
 import { Button } from 'antd';
 import { HeartOutlined, HeartTwoTone } from '@ant-design/icons';
 
-import { PostType } from '../types';
+import { PostItem } from '../types';
 import Title from './Title';
 import PaginationContainer from './PaginationContainer';
 import CommentForm from './CommentForm';
 import CommentList from './CommentList';
-import { posts } from '../pages'; // dummyData
+import { mainPosts } from '../pages'; // dummyData
 
 const HeadWrapper = styled.div`
   width: 100%;
@@ -99,7 +99,7 @@ const EditWrapper = styled.div`
 `;
 
 interface PostCardProps {
-  post: PostType;
+  post: PostItem;
 }
 
 const PostCard: FC<PostCardProps> = ({ post }) => {
@@ -111,7 +111,7 @@ const PostCard: FC<PostCardProps> = ({ post }) => {
     subscribers: ['22', '33', '44'], // 나를 구독하고 있는 유저 수
   });
   const [liked, setLiked] = useState(null);
-  const [currentPage, setCurrentPage] = useState(posts.length + 1 - Number(post.id));
+  const [currentPage, setCurrentPage] = useState(mainPosts.length + 1 - Number(post.id));
 
   const onLike = useCallback(() => {
     if (!user) {
@@ -158,7 +158,7 @@ const PostCard: FC<PostCardProps> = ({ post }) => {
   return (
     <>
       <HeadWrapper>
-        <Title title={`[${post.category}] ${post.title}`} />
+        <Title title={`[${post.Category.name}] ${post.title}`} />
         <Date>{post.createdAt}</Date>
       </HeadWrapper>
 
@@ -194,15 +194,15 @@ const PostCard: FC<PostCardProps> = ({ post }) => {
         )}
       </ContentWrapper>
       <PaginationContainer
-        posts={posts}
+        posts={mainPosts}
         pageSize={1}
         current={currentPage}
-        total={posts.length}
+        total={mainPosts.length}
         onChange={(page: number) => setCurrentPage(page)}
       />
       <div>
         <CommentForm post={post} />
-        <CommentList comments={posts[0].Comments} />
+        <CommentList comments={mainPosts[0].Comments} />
       </div>
     </>
   );

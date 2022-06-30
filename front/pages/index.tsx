@@ -2,10 +2,10 @@ import React, { useState, useCallback } from 'react';
 import Link from 'next/link';
 import styled from 'styled-components';
 
-import AppLayout from '../components/AppLayout';
+import AppLayout from '../components/layouts/AppLayout';
 import Title from '../components/Title';
 import PaginationContainer from '../components/PaginationContainer';
-import { PostType } from '../types';
+import { PostItem } from '../types';
 
 const ListWrapper = styled.div`
   padding: 20px 15px 18px;
@@ -13,125 +13,162 @@ const ListWrapper = styled.div`
   border: 1px solid #ddd;
   line-height: 180%;
   word-break: break-all; // ?
-  height: 448px;
+  height: 430px;
 
   & ul {
-    margin: 0;
     border-top: 1px dotted #ddd;
 
     & li {
       padding: 12px 10px 9px;
       font-size: 14px;
       border-bottom: 1px dotted #ddd;
+
+      & a:hover {
+        color: #07a;
+      }
     }
   }
 `;
 
 const PostInfo = styled.div`
   float: right;
+
+  & span {
+    color: #666;
+  }
 `;
 
+export const mainPosts: PostItem[] = [
+  {
+    id: '10',
+    title: '입국심사',
+    content: '...',
+    Comments: [
+      {
+        content: '좋은 글 보고 가요~',
+        datetime: '2022.06.23',
+        User: {
+          id: '25',
+          name: '토마스',
+          email: 'tomas@naver.com',
+        },
+      },
+      {
+        content: '샌디님 오늘은 뭐하셨나요??',
+        datetime: '2022.06.25',
+        User: {
+          id: '80',
+          name: '민트',
+          email: 'mint@naver.com',
+        },
+      },
+    ],
+    author: 'sandy',
+    Category: { id: '1', name: 'algorithm' },
+    authorId: '77',
+    createdAt: '2022.06.12',
+  },
+  {
+    id: '9',
+    title: '거리두기 확인하기',
+    content: '...',
+    Comments: [],
+    Category: { id: '1', name: 'algorithm' },
+    author: 'sandy',
+    authorId: '77',
+    createdAt: '2022.06.11',
+  },
+  {
+    id: '8',
+    title: '점프와 순간 이동',
+    content: '...',
+    Comments: [],
+    Category: { id: '1', name: 'algorithm' },
+    author: 'tomas',
+    authorId: '25',
+    createdAt: '2022.05.28',
+  },
+  {
+    id: '7',
+    title: '끝말잇기',
+    content: '...',
+    Comments: [],
+    Category: { id: '1', name: 'algorithm' },
+    author: 'jenny',
+    authorId: '12',
+    createdAt: '2022.05.16',
+  },
+  {
+    id: '6',
+    title: '자바스크립트 알아보기',
+    content: '...',
+    Comments: [],
+    Category: { id: '2', name: 'javascript' },
+    author: 'tomas',
+    authorId: '25',
+    createdAt: '2022.04.30',
+  },
+  {
+    id: '5',
+    title: '타입스크립트 시작하기',
+    content: '...',
+    Comments: [],
+    Category: { id: '3', name: 'typescript' },
+    author: 'elli',
+    authorId: '11',
+    createdAt: '2022.04.29',
+  },
+  {
+    id: '4',
+    title: '리액트란?',
+    content: '...',
+    Comments: [],
+    Category: { id: '4', name: 'react' },
+    author: 'sandy',
+    authorId: '77',
+    createdAt: '2022.04.24',
+  },
+  {
+    id: '3',
+    title: '리액트 프레임워크',
+    content: '...',
+    Comments: [],
+    Category: { id: '4', name: 'react' },
+    author: 'mint',
+    authorId: '80',
+    createdAt: '2022.04.20',
+  },
+  {
+    id: '2',
+    title: '전화번호 목록',
+    content: '...',
+    Comments: [],
+    Category: { id: '1', name: 'algorithm' },
+    author: 'sandy',
+    authorId: '77',
+    createdAt: '2022.04.27',
+  },
+  {
+    id: '1',
+    title: '프린터',
+    content: '...',
+    Comments: [],
+    Category: { id: '1', name: 'algorithm' },
+    author: 'happy',
+    authorId: '7',
+    createdAt: '2022.04.03',
+  },
+];
+
 const Home = () => {
-  const [posts, setPosts] = useState<PostType[]>([
-    {
-      id: '1',
-      title: '입국심사',
-      content: '...',
-      author: 'sandy',
-      category: 'algorithm',
-      authorId: '77',
-      createdAt: '2022.06.12',
-    },
-    {
-      id: '2',
-      title: '거리두기 확인하기',
-      content: '...',
-      category: 'algorithm',
-      author: 'sandy',
-      authorId: '77',
-      createdAt: '2022.06.11',
-    },
-    {
-      id: '3',
-      title: '점프와 순간 이동',
-      content: '...',
-      category: 'algorithm',
-      author: 'tomas',
-      authorId: '25',
-      createdAt: '2022.05.28',
-    },
-    {
-      id: '4',
-      title: '끝말잇기',
-      content: '...',
-      category: 'algorithm',
-      author: 'jenny',
-      authorId: '12',
-      createdAt: '2022.05.16',
-    },
-    {
-      id: '5',
-      title: '자바스크립트 알아보기',
-      content: '...',
-      category: 'javascript',
-      author: 'tomas',
-      authorId: '25',
-      createdAt: '2022.04.30',
-    },
-    {
-      id: '6',
-      title: '타입스크립트 시작하기',
-      content: '...',
-      category: 'typescript',
-      author: 'elli',
-      authorId: '11',
-      createdAt: '2022.04.29',
-    },
-    {
-      id: '7',
-      title: '리액트란?',
-      content: '...',
-      category: 'react',
-      author: 'sandy',
-      authorId: '77',
-      createdAt: '2022.04.24',
-    },
-    {
-      id: '8',
-      title: '리액트 프레임워크',
-      content: '...',
-      category: 'react',
-      author: 'mint',
-      authorId: '80',
-      createdAt: '2022.04.20',
-    },
-    {
-      id: '9',
-      title: '전화번호 목록',
-      content: '...',
-      category: 'algorithm',
-      author: 'sandy',
-      authorId: '77',
-      createdAt: '2022.04.27',
-    },
-    {
-      id: '10',
-      title: '프린터',
-      content: '...',
-      category: 'algorithm',
-      author: 'happy',
-      authorId: '7',
-      createdAt: '2022.04.03',
-    },
-  ]);
   const pageSize = 8;
-  const [current, setCurrent] = useState(1);
+  const [currentPage, setCurrentPage] = useState(1);
   const [firstIndex, setFirstIndex] = useState(0);
   const [lastIndex, setLastIndex] = useState(pageSize);
 
   const onChangePage = useCallback(
     (page: number) => {
-      setCurrent(page);
+      setCurrentPage(page);
       setFirstIndex((page - 1) * pageSize);
       setLastIndex(page * pageSize);
     },
@@ -145,26 +182,26 @@ const Home = () => {
       </div>
       <ListWrapper>
         <ul>
-          {posts?.slice(firstIndex, lastIndex).map((post, idx) => (
+          {mainPosts?.slice(firstIndex, lastIndex).map((post, idx) => (
             <li key={post.id}>
               <Link href={`/post/${post.id}`}>
                 <a style={{ fontSize: '15px' }}>
-                  [{post.category}] {post.title}
+                  [{post.Category.name}] {post.title}
                 </a>
               </Link>
               <PostInfo>
-                <span style={{ color: '#666', marginRight: 8 }}>{post.author}</span>
-                <span style={{ color: '#666' }}>{post.createdAt}</span>
+                <span style={{ marginRight: 8 }}>{post.author}</span>
+                <span>{post.createdAt}</span>
               </PostInfo>
             </li>
           ))}
         </ul>
       </ListWrapper>
       <PaginationContainer
-        posts={posts}
+        posts={mainPosts}
         pageSize={pageSize}
-        current={current}
-        total={posts.length}
+        current={currentPage}
+        total={mainPosts.length}
         onChange={onChangePage}
       />
     </AppLayout>
