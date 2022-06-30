@@ -59,32 +59,52 @@ const OverrideMenu = styled(Menu)`
   }
 `;
 
+const searchTypeItem = [
+  {
+    key: '0',
+    label: '제목',
+  },
+  {
+    key: '1',
+    label: '내용',
+  },
+  {
+    key: '2',
+    label: '태그',
+  },
+];
+
 const SearchInput = () => {
+  const [keyword, onChangeKeyword, setKeyword] = useInput('');
+  const [searchType, setSearchType] = useState(searchTypeItem[0].label);
+  const [openMenu, setOpenMenu] = useState(false);
+
+  const onClickLabel = useCallback((e: any) => {
+    setSearchType(e.target.dataset.label);
+  }, []);
+
   const menu = (
     <OverrideMenu
       selectable
       defaultSelectedKeys={['0']}
-      items={[
-        {
-          key: '0',
-          label: <span>제목</span>,
-        },
-        {
-          key: '1',
-          label: <span>내용</span>,
-        },
-        {
-          key: '2',
-          label: <span>태그</span>,
-        },
-      ]}
+      items={searchTypeItem.map((item) => {
+        return {
+          key: item.key,
+          label: (
+            <button data-label={item.label} onClick={onClickLabel}>
+              {item.label}
+            </button>
+          ),
+        };
+      })}
     />
   );
-  const [value, onChangeValue] = useInput('');
-  const [searchType, setSearchType] = useState();
-  const [openMenu, setOpenMenu] = useState(false);
 
-  const onSubmitInput = useCallback(() => {}, []);
+  const onSubmitInput = useCallback(() => {
+    // const response = await axios.get(`/posts?keyword=${keyword}`);
+    // mainPosts를 response로 바꿔주기
+    setKeyword('');
+  }, []);
 
   return (
     <FormWrapper>
@@ -98,7 +118,7 @@ const SearchInput = () => {
                   setOpenMenu((prev) => !prev);
                 }}
               >
-                <span style={{ fontSize: '13px', margin: '0 24px 0 -10px' }}>제목</span>
+                <span style={{ fontSize: '13px', margin: '0 24px 0 -10px' }}>{searchType}</span>
                 {openMenu ? <UpOutlined style={{ fontSize: '12px' }} /> : <DownOutlined style={{ fontSize: '12px' }} />}
               </a>
             </Dropdown>
@@ -106,11 +126,11 @@ const SearchInput = () => {
           <Input
             style={{ width: '654px', border: 0, outline: 'none', fontSize: '15px', background: 'none' }}
             type='text'
-            value={value}
-            onChange={onChangeValue}
+            value={keyword}
+            onChange={onChangeKeyword}
             placeholder='글 관리에서 검색합니다.'
           />
-          <SearchButton htmlType='submit' disabled={!value || !value.trim()}>
+          <SearchButton htmlType='submit' disabled={!keyword || !keyword.trim()}>
             <SearchOutlined />
           </SearchButton>
         </InnerWrapper>
