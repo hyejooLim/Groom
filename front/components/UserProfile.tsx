@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import styled from 'styled-components';
-import { Button, Avatar } from 'antd';
+import { Button, Avatar, Divider } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
 
 const UserProfileWrapper = styled.div`
@@ -118,8 +118,8 @@ const UserProfile = () => {
             <div style={{ marginTop: 5, color: '#888' }}>{user.email}</div>
           </InfoBox>
           <NewBox>
-            <span style={{ marginRight: 10 }}>게시글|{user.posts.length}</span>
-            <span>구독자|{user.subscribers.length}</span>
+            <span style={{ marginRight: 10 }}>게시글<Divider type='vertical' />{user.posts.length}</span>
+            <span>구독자<Divider type='vertical' />{user.subscribers.length}</span>
           </NewBox>
         </UserInfo>
       </InfoArea>
