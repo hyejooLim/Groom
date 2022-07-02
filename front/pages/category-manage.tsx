@@ -1,4 +1,4 @@
-import React, { FormEvent, useCallback, useState } from 'react';
+import React, { FormEvent, useCallback, useState, useRef, DragEvent } from 'react';
 import styled from 'styled-components';
 import { Button, Form, Input } from 'antd';
 import { MenuOutlined, PlusOutlined } from '@ant-design/icons';
@@ -47,6 +47,10 @@ const DragIconWrapper = styled.div`
   margin: 6px 8px 0 -10px;
   padding: 10px;
   color: #bbb;
+
+  :hover {
+    cursor: move;
+  }
 `;
 
 const TextArea = styled.div`
@@ -111,6 +115,15 @@ const ItemWrapper = styled.div`
     ${DragIconWrapper} {
       color: #808080;
     }
+  }
+  /* 
+  &.drag_element {
+    background-color: #e7edf3;
+    border: 1px solid #89a7c4;
+  } */
+
+  &.drop_zone {
+    border-bottom: 3px solid #ff0000;
   }
 `;
 
@@ -331,6 +344,10 @@ const ManageCategory = () => {
   const [category, onChangeCategory, setCategory] = useInput('');
   const [showInput, setShowInput] = useState(false);
 
+  const [draggedItemIdx, setDraggedItemIdx] = useState(0);
+  const [targetItemIdx, setTargetItemIdx] = useState(0);
+  const [newCategories, setNewCategories] = useState<CategoryItem[]>(categories);
+
   const onCancelAddCategory = useCallback(() => {
     setShowInput(false);
     setCategory('');
@@ -347,6 +364,35 @@ const ManageCategory = () => {
     setShowInput(true);
   }, []);
 
+  // Drag & Drop
+  const onDragStart = (e: DragEvent<HTMLDivElement>) => {
+    setDraggedItemIdx(Number(e.currentTarget.dataset.index));
+    e.currentTarget.classList.add('drag_element');
+  };
+
+  const onDragEnd = (e: DragEvent<HTMLDivElement>) => {
+    e.currentTarget.classList.remove('drag_element');
+  };
+
+  const onDragEnter = (e: DragEvent<HTMLDivElement>) => {
+    setTargetItemIdx(Number(e.currentTarget.dataset.index));
+    e.currentTarget.classList.add('drop_zone');
+  };
+
+  const onDragLeave = (e: DragEvent<HTMLDivElement>) => {
+    e.currentTarget.classList.remove('drop_zone');
+  };
+
+  const onDrop = (e: DragEvent<HTMLDivElement>) => {
+    e.currentTarget.classList.remove('drop_zone');
+
+    let _categories = [...newCategories];
+    const draggedItemContent = _categories.splice(draggedItemIdx, 1)[0];
+    _categories.splice(targetItemIdx, 0, draggedItemContent);
+
+    setNewCategories(_categories);
+  };
+
   return (
     <ManageLayout>
       <span style={{ fontSize: '18px' }}>카테고리 관리</span>
@@ -357,16 +403,26 @@ const ManageCategory = () => {
             <p className='info'>드래그 앤 드롭으로 카테고리 순서를 변경할 수 있습니다.</p>
           </div>
           <CountTotal>
-            <span style={{ color: '#333' }}>{categories.length}</span> / 12
+            <span style={{ color: '#333' }}>{newCategories.length}</span> / 12
           </CountTotal>
         </Description>
 
         <div className='set_order'>
           <div className='wrap_order'>
             <div className='list_order'>
-              {categories.map((item) => (
-                <ItemWrapper>
-                  <DragIconWrapper draggable={true}>
+              {newCategories.map((item, idx) => (
+                <ItemWrapper
+                  key={item.id}
+                  data-index={idx}
+                  draggable
+                  onDragStart={onDragStart}
+                  onDragEnd={onDragEnd}
+                  onDragEnter={onDragEnter}
+                  onDragLeave={onDragLeave}
+                  onDragOver={(e) => e.preventDefault()}
+                  onDrop={onDrop}
+                >
+                  <DragIconWrapper>
                     <MenuOutlined />
                   </DragIconWrapper>
                   <TextArea>
@@ -406,7 +462,7 @@ const ManageCategory = () => {
               <PlusOutlined />
               <span className='add_category_text'>카테고리 추가</span>
               <CountTotal>
-                <span style={{ color: '#333' }}>{categories.length}</span> / 12
+                <span style={{ color: '#333' }}>{newCategories.length}</span> / 12
               </CountTotal>
             </AddCategoryWrapper>
           </div>
