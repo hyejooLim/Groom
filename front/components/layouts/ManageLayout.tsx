@@ -11,14 +11,13 @@ import logo from '../../public/Groom_Logo_No_Background.png';
 
 const { Header, Sider, Content, Footer } = Layout;
 
-const ImageWrapper = styled.div`
+const HomeButton = styled.div`
   outline: none;
   border: 0;
   padding: 0;
   margin-top: 30px;
   background-color: transparent;
   text-align: center;
-  cursor: pointer;
 `;
 
 const AddPostButton = styled(Button)`
@@ -55,13 +54,13 @@ const ManageLayout = ({ children }) => {
         </Sider>
         <Layout style={{ width: '100%', marginRight: '130px' }}>
           <Header style={{ height: '180px', backgroundColor: 'transparent', padding: 0 }}>
-            <Link href='/'>
-              <a>
-                <ImageWrapper>
+            <HomeButton>
+              <Link href='/'>
+                <a>
                   <Image src={logo} alt='groom_logo' width={140} height={60} />
-                </ImageWrapper>
-              </a>
-            </Link>
+                </a>
+              </Link>
+            </HomeButton>
             <AddPostButton onClick={onWritePost}>
               <span>글쓰기</span>
               <EditOutlined />

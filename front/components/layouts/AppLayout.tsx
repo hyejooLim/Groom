@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import styled from 'styled-components';
-import { Layout, Button } from 'antd';
+import { Layout } from 'antd';
 
 import LoginForm from '../../components/LoginForm';
 import UserProfile from '../../components/UserProfile';
@@ -11,17 +11,13 @@ import logo from '../../public/Groom_Logo_No_Background.png';
 
 const { Header, Sider, Content, Footer } = Layout;
 
-const HomeButton = styled(Button)`
+const ImageWrapper = styled.div`
   outline: none;
   float: right;
   border: 0;
   padding: 0;
-  margin: 15px 30px 0 0;
+  margin: 15px 0 0 0;
   background-color: transparent;
-
-  :first-child {
-    background-color: inherit;
-  }
 `;
 
 const AppLayout = ({ children }) => {
@@ -35,16 +31,16 @@ const AppLayout = ({ children }) => {
           <Category />
         </Sider>
         <Layout style={{ marginLeft: '300px', width: '100%', height: '100%' }}>
-          <Header style={{ height: '80px', backgroundColor: 'transparent' }}>
-            <Link href='/'>
-              <a>
-                <HomeButton>
+          <Header style={{ height: '80px', backgroundColor: 'transparent', padding: '0 24px' }}>
+            <ImageWrapper>
+              <Link href='/'>
+                <a>
                   <Image src={logo} alt='groom_logo' width={140} height={60} />
-                </HomeButton>
-              </a>
-            </Link>
+                </a>
+              </Link>
+            </ImageWrapper>
           </Header>
-          <Content style={{ margin: '0px 30px', height: '80%' }}>
+          <Content style={{ margin: '0 30px', height: '80%' }}>
             {children}
             <Footer
               style={{
