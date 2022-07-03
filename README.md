@@ -8,7 +8,6 @@
 > ### FrontEnd
 * Next.js
 * React
-* Redux
-* Redux saga
+* Recoil
 * Ant Design
 * Styled Components
