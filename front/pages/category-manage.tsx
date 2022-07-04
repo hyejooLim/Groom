@@ -1,4 +1,4 @@
-import React, { FormEvent, useCallback, useState, useRef, DragEvent } from 'react';
+import React, { FormEvent, useCallback, useState, useRef, DragEvent, useEffect, ChangeEvent } from 'react';
 import styled from 'styled-components';
 import { Button, Form, Input } from 'antd';
 import { MenuOutlined, PlusOutlined } from '@ant-design/icons';
@@ -24,6 +24,15 @@ const ManageCategoryWrapper = styled.div`
     .wrap_order {
       position: relative;
     }
+  }
+
+  .set_btn {
+    margin: 0 -29px;
+    padding: 14px 29px;
+    border-top: 1px px solid #f1f3f6;
+    background: #fafbfc;
+    display: flex;
+    justify-content: flex-end;
   }
 `;
 
@@ -79,6 +88,9 @@ const EditButton = styled.div`
     font-size: 12px;
     width: 40px;
     height: 26px;
+  }
+
+  .btn:enabled {
     color: #333;
 
     :hover {
@@ -116,11 +128,6 @@ const ItemWrapper = styled.div`
       color: #808080;
     }
   }
-  /* 
-  &.drag_element {
-    background-color: #e7edf3;
-    border: 1px solid #89a7c4;
-  } */
 
   &.drop_zone {
     border-bottom: 3px solid #ff0000;
@@ -184,6 +191,26 @@ const AddCategoryWrapper = styled.div`
 
   .add_category_text {
     margin-left: 14px;
+  }
+`;
+
+const SaveDiffButton = styled(Button)`
+  width: 140px;
+  height: 38px;
+  padding: 0;
+
+  &:enabled {
+    color: #fff;
+    background: #333;
+    border: 1px solid #333;
+    border-radius: 1px;
+    box-shadow: 0 1px 1px rgb(0 0 0 / 8%);
+
+    :hover {
+      border-color: #505050;
+      background: #505050;
+      box-shadow: 0 2px 5px rgb(0 0 0 / 23%);
+    }
   }
 `;
 
@@ -344,25 +371,94 @@ const ManageCategory = () => {
   const [category, onChangeCategory, setCategory] = useInput('');
   const [showInput, setShowInput] = useState(false);
 
+  const [editMode, setEditMode] = useState<CategoryItem>({
+    id: '',
+    name: '',
+  });
+
   const [draggedItemIdx, setDraggedItemIdx] = useState(0);
   const [targetItemIdx, setTargetItemIdx] = useState(0);
   const [newCategories, setNewCategories] = useState<CategoryItem[]>(categories);
+
+  const [isDisabled, setIsDisabled] = useState(true);
+
+  useEffect(() => {
+    setIsDisabled(JSON.stringify(categories) === JSON.stringify(newCategories));
+  }, [categories, newCategories]);
+
+  const onClickUpdateBtn = useCallback((categoryId: string, categoryName: string) => {
+    setEditMode({ id: categoryId, name: categoryName });
+  }, []);
+
+  const onChangeCategoryName = useCallback(
+    (e: ChangeEvent<HTMLInputElement>) => {
+      setEditMode({ ...editMode, name: e.target.value });
+    },
+    [editMode]
+  );
+
+  const newList = newCategories.reduce((acc: CategoryItem[], cur: CategoryItem) => {
+    let newObj = cur;
+
+    if (cur.id === editMode.id) {
+      newObj = { ...newObj, name: editMode.name };
+    }
+
+    acc.push(newObj);
+    return acc;
+  }, []);
+
+  const onUpdateCategoryName = useCallback(() => {
+    setNewCategories(newList);
+    setEditMode({ id: '', name: '' });
+  }, [newList]);
+
+  const onCancelUpdateCategoryName = useCallback(() => {
+    setEditMode({ id: '', name: '' });
+  }, []);
+
+  const onClickDeleteBtn = useCallback((categoryId: string) => {
+    const _categories = [...newCategories];
+    setNewCategories(_categories.filter((item) => item.id !== categoryId));
+  }, [newCategories]);
+
+  const onClickAddCategoryField = useCallback(() => {
+    setShowInput(true);
+  }, []);
 
   const onCancelAddCategory = useCallback(() => {
     setShowInput(false);
     setCategory('');
   }, []);
 
-  const onAddCategory = useCallback((e: FormEvent<HTMLButtonElement>) => {
-    // categories에 새로운 카테고리 추가
+  const onAddCategory = useCallback(
+    (e: FormEvent<HTMLButtonElement>) => {
+      setNewCategories([
+        ...newCategories,
+        {
+          id: String(Number(newCategories[newCategories.length - 1].id) + 1),
+          name: category,
+          posts: [],
+        },
+      ]);
 
-    setShowInput(false);
-    setCategory('');
-  }, []);
+      setShowInput(false);
+      setCategory('');
+    },
+    [category]
+  );
 
-  const onClickAddCategoryField = useCallback(() => {
-    setShowInput(true);
-  }, []);
+  const onUpdateCategories = useCallback(() => {
+    if (categories === newCategories) {
+      alert('변경사항이 없습니다.');
+      return;
+    }
+
+    // 카테고리 수정 api 요청
+    // const response = await axios.patch('/category/update', newCategories);
+    // setCategorise(response);
+    setIsDisabled(true);
+  }, [categories, newCategories]);
 
   // Drag & Drop
   const onDragStart = (e: DragEvent<HTMLDivElement>) => {
@@ -410,35 +506,67 @@ const ManageCategory = () => {
         <div className='set_order'>
           <div className='wrap_order'>
             <div className='list_order'>
-              {newCategories.map((item, idx) => (
-                <ItemWrapper
-                  key={item.id}
-                  data-index={idx}
-                  draggable
-                  onDragStart={onDragStart}
-                  onDragEnd={onDragEnd}
-                  onDragEnter={onDragEnter}
-                  onDragLeave={onDragLeave}
-                  onDragOver={(e) => e.preventDefault()}
-                  onDrop={onDrop}
-                >
-                  <DragIconWrapper>
-                    <MenuOutlined />
-                  </DragIconWrapper>
-                  <TextArea>
-                    <div className='category_name'>
-                      <span>{item.name}</span>
-                      <span style={{ fontSize: '13px', marginLeft: '4px', color: '#808080' }}>
-                        ({item.posts.length})
-                      </span>
-                    </div>
-                    <EditButton>
-                      <Button className='modify btn'>수정</Button>
-                      <Button className='delete btn'>삭제</Button>
-                    </EditButton>
-                  </TextArea>
-                </ItemWrapper>
-              ))}
+              {newCategories.map((item, idx) =>
+                item.id === editMode.id ? (
+                  <ItemWrapper style={{ background: '#fbfbfb' }}>
+                    <Form
+                      onFinish={onUpdateCategoryName}
+                      style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
+                    >
+                      <StyledInput type='text' value={editMode.name} onChange={onChangeCategoryName} autoFocus />
+                      <FormButton>
+                        <Button className='cancel btn' onClick={onCancelUpdateCategoryName}>
+                          취소
+                        </Button>
+                        <Button
+                          className='submit btn'
+                          htmlType='submit'
+                          disabled={!editMode.name || !editMode.name.trim() || item.name === editMode.name.trim()}
+                        >
+                          확인
+                        </Button>
+                      </FormButton>
+                    </Form>
+                  </ItemWrapper>
+                ) : (
+                  <ItemWrapper
+                    key={item.id}
+                    data-index={idx}
+                    draggable
+                    onDragStart={onDragStart}
+                    onDragEnd={onDragEnd}
+                    onDragEnter={onDragEnter}
+                    onDragLeave={onDragLeave}
+                    onDragOver={(e) => e.preventDefault()}
+                    onDrop={onDrop}
+                  >
+                    <DragIconWrapper>
+                      <MenuOutlined />
+                    </DragIconWrapper>
+                    <TextArea>
+                      <div className='category_name'>
+                        <span>{item.name}</span>
+                        <span style={{ fontSize: '13px', marginLeft: '4px', color: '#808080' }}>
+                          ({item.posts.length})
+                        </span>
+                      </div>
+                      <EditButton>
+                        <Button className='modify btn' onClick={() => onClickUpdateBtn(item.id, item.name)}>
+                          수정
+                        </Button>
+                        <Button
+                          className='delete btn'
+                          onClick={() => onClickDeleteBtn(item.id)}
+                          disabled={item.posts.length > 0}
+                        >
+                          삭제
+                        </Button>
+                      </EditButton>
+                    </TextArea>
+                  </ItemWrapper>
+                )
+              )}
+
               {showInput && (
                 <ItemWrapper style={{ background: '#fbfbfb' }}>
                   <Form
@@ -466,6 +594,11 @@ const ManageCategory = () => {
               </CountTotal>
             </AddCategoryWrapper>
           </div>
+        </div>
+        <div className='set_btn'>
+          <SaveDiffButton onClick={onUpdateCategories} disabled={isDisabled}>
+            변경사항 저장
+          </SaveDiffButton>
         </div>
       </ManageCategoryWrapper>
     </ManageLayout>
