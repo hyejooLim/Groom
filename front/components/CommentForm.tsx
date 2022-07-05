@@ -2,7 +2,7 @@ import React, { FC, useCallback, useState } from 'react';
 import styled from 'styled-components';
 import { Button, Form, Input } from 'antd';
 
-import { PostType } from '../types';
+import { PostItem } from '../types';
 import useInput from '../hooks/input';
 
 const AddCommentButton = styled(Button)`
@@ -17,7 +17,7 @@ const AddCommentButton = styled(Button)`
 `;
 
 interface CommentFormProps {
-  post: PostType;
+  post: PostItem;
 }
 
 const CommentForm: FC<CommentFormProps> = ({ post }) => {
@@ -30,7 +30,6 @@ const CommentForm: FC<CommentFormProps> = ({ post }) => {
       return;
     }
 
-    console.log(commentText);
     setLoading(true);
     setCommentText('');
 

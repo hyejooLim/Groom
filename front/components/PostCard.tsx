@@ -161,8 +161,6 @@ const PostCard: FC<PostCardProps> = ({ post }) => {
         <Title title={`[${post.Category.name}] ${post.title}`} />
         <Date>{post.createdAt}</Date>
       </HeadWrapper>
-
-      {/* content */}
       <ContentWrapper>
         <div className='tag_label'></div>
         <div className='article'>{post.content}</div>
@@ -202,7 +200,7 @@ const PostCard: FC<PostCardProps> = ({ post }) => {
       />
       <div>
         <CommentForm post={post} />
-        <CommentList comments={mainPosts[0].Comments} />
+        {post.Comments && <CommentList comments={post.Comments} />}
       </div>
     </>
   );
