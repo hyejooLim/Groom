@@ -66,7 +66,7 @@ const PaginationContainer: FC<PaginationContainerProps> = ({ posts, pageSize, cu
           width: '300px',
           marginTop: '30px',
           display: 'flex',
-          justifyContent: 'space-around',
+          justifyContent: 'center',
         }}
       />
     </PaginationWrapper>
