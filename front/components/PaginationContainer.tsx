@@ -30,14 +30,13 @@ const PaginationWrapper = styled.div`
 `;
 
 interface PaginationContainerProps {
-  posts: PostItem[];
   pageSize?: number;
   current: number;
   total: number;
   onChange: (page: number) => void;
 }
 
-const PaginationContainer: FC<PaginationContainerProps> = ({ posts, pageSize, current, total, onChange }) => {
+const PaginationContainer: FC<PaginationContainerProps> = ({ pageSize, current, total, onChange }) => {
   const itemRender: PaginationProps['itemRender'] = (_, type, originalElement) => {
     if (type === 'prev') {
       return <a>PREV</a>;

@@ -75,7 +75,6 @@ const PostList: FC<PostListProps> = ({ posts }) => {
         </ul>
       </ListWrapper>
       <PaginationContainer
-        posts={posts}
         pageSize={pageSize}
         current={currentPage}
         total={posts.length}

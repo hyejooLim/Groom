@@ -111,6 +111,7 @@ const PostCard: FC<PostCardProps> = ({ post }) => {
     subscribers: ['22', '33', '44'], // 나를 구독하고 있는 유저 수
   });
   const [liked, setLiked] = useState(null);
+  const [currentPost, setCurrentPost] = useState(post);
   const [currentPage, setCurrentPage] = useState(mainPosts.length + 1 - Number(post.id));
 
   const onLike = useCallback(() => {
@@ -134,12 +135,12 @@ const PostCard: FC<PostCardProps> = ({ post }) => {
       alert('로그인이 필요합니다.');
     }
 
-    if (user.subscribers.find((id) => id === post.authorId)) {
+    if (user.subscribers.find((id) => id === currentPost.authorId)) {
       alert('이미 구독한 유저입니다.');
     }
 
     // 로그인한 유저의 구독 목록에 해당 게시글의 author의 id를 추가
-  }, [user, post]);
+  }, [user, currentPost]);
 
   const onModifyPost = useCallback(() => {
     // 게시글 수정 모드로 변환
@@ -155,15 +156,23 @@ const PostCard: FC<PostCardProps> = ({ post }) => {
     }
   }, []);
 
+  const onChangePage = useCallback(
+    (page: number) => {
+      setCurrentPage(page);
+      setCurrentPost(mainPosts.find((item) => item.id === String(mainPosts.length + 1 - page)));
+    },
+    [mainPosts]
+  );
+
   return (
     <>
       <HeadWrapper>
-        <Title title={`[${post.Category.name}] ${post.title}`} />
-        <Date>{post.createdAt}</Date>
+        <Title title={`[${currentPost.Category.name}] ${currentPost.title}`} />
+        <Date>{currentPost.createdAt}</Date>
       </HeadWrapper>
       <ContentWrapper>
         <div className='tag_label'></div>
-        <div className='article'>{post.content}</div>
+        <div className='article'>{currentPost.content}</div>
         <div style={{ display: 'flex' }}>
           <PostButton>
             <span>
@@ -179,7 +188,7 @@ const PostCard: FC<PostCardProps> = ({ post }) => {
             구독하기
           </PostButton>
         </div>
-        {user.id === post.authorId && (
+        {user.id === currentPost.authorId && (
           <EditWrapper>
             <Button className='modify btn' onClick={onModifyPost}>
               Modify
@@ -191,16 +200,10 @@ const PostCard: FC<PostCardProps> = ({ post }) => {
           </EditWrapper>
         )}
       </ContentWrapper>
-      <PaginationContainer
-        posts={mainPosts}
-        pageSize={1}
-        current={currentPage}
-        total={mainPosts.length}
-        onChange={(page: number) => setCurrentPage(page)}
-      />
+      <PaginationContainer pageSize={1} current={currentPage} total={mainPosts.length} onChange={onChangePage} />
       <div>
-        <CommentForm post={post} />
-        {post.Comments && <CommentList comments={post.Comments} />}
+        <CommentForm post={currentPost} />
+        {currentPost.Comments && <CommentList comments={currentPost.Comments} />}
       </div>
     </>
   );
