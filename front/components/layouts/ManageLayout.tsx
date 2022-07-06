@@ -41,10 +41,6 @@ const AddPostButton = styled(Button)`
 `;
 
 const ManageLayout = ({ children }) => {
-  const onWritePost = useCallback(() => {
-    // Editor page로 이동
-  }, []);
-
   return (
     <>
       <Layout style={{ display: 'flex', flexDirection: 'row', height: '100%' }}>
@@ -61,10 +57,14 @@ const ManageLayout = ({ children }) => {
                 </a>
               </Link>
             </HomeButton>
-            <AddPostButton onClick={onWritePost}>
-              <span>글쓰기</span>
-              <EditOutlined />
-            </AddPostButton>
+            <Link href='/editor'>
+              <a>
+                <AddPostButton>
+                  <span>글쓰기</span>
+                  <EditOutlined />
+                </AddPostButton>
+              </a>
+            </Link>
           </Header>
           <Content>{children}</Content>
         </Layout>
