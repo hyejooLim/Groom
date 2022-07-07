@@ -11,3 +11,4 @@
 * Recoil
 * Ant Design
 * Styled Components
+* TinyMCE (Editor)
