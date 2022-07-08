@@ -39,10 +39,6 @@ const ContentAside = styled.div`
       display: flex;
       justify-content: center;
       align-items: center;
-
-      .text {
-        padding: 0 7px 0 14px;
-      }
     }
   }
 
@@ -52,7 +48,7 @@ const ContentAside = styled.div`
     height: 12px;
     background-color: rgba(0, 0, 0, 0.09);
     display: inline-block;
-    margin: 0 9px -1px 0;
+    margin: 0 9px -1px 9px;
   }
 `;
 
