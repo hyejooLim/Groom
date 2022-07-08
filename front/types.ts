@@ -29,3 +29,6 @@ export type UserType = {
   posts?: PostItem[]; // 작성한 게시글
   subscribers?: number; // 구독자 수
 };
+
+export type ContentModeType = 'NEW' | 'EDIT';
+export type WriteModeType = 'DEFAULT' | 'MARKDOWN';

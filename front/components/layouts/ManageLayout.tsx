@@ -57,7 +57,7 @@ const ManageLayout = ({ children }) => {
                 </a>
               </Link>
             </HomeButton>
-            <Link href='/editor'>
+            <Link href='/write' as='/write/new_post'>
               <a>
                 <AddPostButton>
                   <span>글쓰기</span>

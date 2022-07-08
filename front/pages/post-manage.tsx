@@ -202,7 +202,7 @@ const PostManage = () => {
                     </div>
                   </div>
                   <PostButton>
-                    <Link href='/'>
+                    <Link href={{ pathname: '/write', query: { post: JSON.stringify(post) } }} as={`/write/${post.id}`}>
                       <a>
                         <Button className='modify btn'>수정</Button>
                       </a>
@@ -217,13 +217,7 @@ const PostManage = () => {
           </ul>
         </ListWrapper>
       </div>
-      <PaginationContainer
-        posts={posts}
-        pageSize={pageSize}
-        current={currentPage}
-        total={posts.length}
-        onChange={onChangePage}
-      />
+      <PaginationContainer pageSize={pageSize} current={currentPage} total={posts.length} onChange={onChangePage} />
     </ManageLayout>
   );
 };
