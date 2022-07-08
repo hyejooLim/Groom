@@ -197,13 +197,7 @@ const Home = () => {
           ))}
         </ul>
       </ListWrapper>
-      <PaginationContainer
-        posts={mainPosts}
-        pageSize={pageSize}
-        current={currentPage}
-        total={mainPosts.length}
-        onChange={onChangePage}
-      />
+      <PaginationContainer pageSize={pageSize} current={currentPage} total={mainPosts.length} onChange={onChangePage} />
     </AppLayout>
   );
 };
