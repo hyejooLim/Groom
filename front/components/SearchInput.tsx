@@ -16,11 +16,6 @@ const FormWrapper = styled.div`
 
 const InnerWrapper = styled.div`
   display: flex;
-
-  .ant-input:focus {
-    border-color: none;
-    box-shadow: none;
-  }
 `;
 
 const DropdownWrapper = styled.div`
