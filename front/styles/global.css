@@ -58,6 +58,10 @@ button {
   background-color: transparent;
 }
 
+.ant-layout {
+  background: var(--bg-color);
+}
+
 .ant-btn:hover {
   background-color: inherit;
   color: inherit;
