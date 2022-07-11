@@ -80,7 +80,7 @@ const PostButton = styled(Button)`
   }
 `;
 
-const EditWrapper = styled.div`
+const EditButton = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -189,7 +189,7 @@ const PostCard: FC<PostCardProps> = ({ post }) => {
           </PostButton>
         </div>
         {user.id === currentPost.authorId && (
-          <EditWrapper>
+          <EditButton>
             <Button className='modify btn' onClick={onModifyPost}>
               Modify
             </Button>
@@ -197,7 +197,7 @@ const PostCard: FC<PostCardProps> = ({ post }) => {
             <Button className='delete btn' onClick={onDeletePost}>
               Delete
             </Button>
-          </EditWrapper>
+          </EditButton>
         )}
       </ContentWrapper>
       <PaginationContainer pageSize={1} current={currentPage} total={mainPosts.length} onChange={onChangePage} />
