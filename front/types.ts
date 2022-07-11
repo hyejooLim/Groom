@@ -27,7 +27,7 @@ export type UserType = {
   name: string;
   email: string;
   posts?: PostItem[]; // 작성한 게시글
-  subscribers?: number; // 구독자 수
+  subscribers?: UserType[];
 };
 
 export type ContentModeType = 'NEW' | 'EDIT';

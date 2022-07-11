@@ -89,6 +89,11 @@ const ManageList = () => {
                 <a>카테고리 관리</a>
               </Link>
             </li>
+            <li>
+              <Link href='/subscriber-manage'>
+                <a>구독자 관리</a>
+              </Link>
+            </li>
           </ListWrapper>
         </WrapMenu>
       </Container>
