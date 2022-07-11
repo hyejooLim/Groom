@@ -54,14 +54,17 @@ const PostList: FC<PostListProps> = ({ posts }) => {
     },
     [pageSize]
   );
-  
+
   return (
     <>
       <ListWrapper>
         <ul>
           {posts?.slice(firstIndex, lastIndex).map((post) => (
             <li key={post.id}>
-              <Link href={`/post/${post.id}`}>
+              <Link
+                href={{ pathname: `/post/${post.id}`, query: { post: JSON.stringify(post) } }}
+                as={`/post/${post.id}`}
+              >
                 <a style={{ fontSize: '15px' }}>
                   [{post.Category.name}] {post.title}
                 </a>
@@ -74,12 +77,7 @@ const PostList: FC<PostListProps> = ({ posts }) => {
           ))}
         </ul>
       </ListWrapper>
-      <PaginationContainer
-        pageSize={pageSize}
-        current={currentPage}
-        total={posts.length}
-        onChange={onChangePage}
-      />
+      <PaginationContainer pageSize={pageSize} current={currentPage} total={posts.length} onChange={onChangePage} />
     </>
   );
 };

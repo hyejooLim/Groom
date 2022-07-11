@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 
 import ManageLayout from '../components/layouts/ManageLayout';
+import { user } from '.';
 
 const CountVisitorWrapper = styled.div`
   background-color: #fff;
@@ -115,58 +116,6 @@ const InfoWrapper = styled.div`
 const Manage = () => {
   const [todayVisitorNumber, setTodayVisitorNumber] = useState(23);
   const [totalVisitorNumber, setTotalVisitorNumber] = useState(1500);
-  const [user, setUser] = useState({
-    id: '1',
-    name: '홍길동',
-    email: 'hong@naver.com',
-    posts: [
-      {
-        id: '4',
-        title: '입국심사',
-        content: '...',
-        Comments: [],
-        likeCount: 5,
-        author: 'sandy',
-        category: 'algorithm',
-        authorId: '77',
-        createdAt: '2022.06.12',
-      },
-      {
-        id: '3',
-        title: '거리두기 확인하기',
-        content: '...',
-        Comments: [],
-        likeCount: 10,
-        category: 'algorithm',
-        author: 'sandy',
-        authorId: '77',
-        createdAt: '2022.06.11',
-      },
-      {
-        id: '2',
-        title: '점프와 순간 이동',
-        content: '...',
-        Comments: [],
-        likeCount: 3,
-        category: 'algorithm',
-        author: 'tomas',
-        authorId: '25',
-        createdAt: '2022.05.28',
-      },
-      {
-        id: '1',
-        title: '끝말잇기',
-        content: '...',
-        Comments: [],
-        likeCount: 0,
-        category: 'algorithm',
-        author: 'jenny',
-        authorId: '12',
-        createdAt: '2022.05.16',
-      },
-    ],
-    subscribers: ['2', '3', '4'], // 나를 구독하고 있는 유저 수
-  });
 
   return (
     <ManageLayout>
@@ -185,9 +134,12 @@ const Manage = () => {
         <ul>
           {user.posts?.slice(0, 4).map((post) => (
             <li key={post.id}>
-              <Link href={`/post/${post.id}`}>
+              <Link
+                href={{ pathname: `/post/${post.id}`, query: { post: JSON.stringify(post) } }}
+                as={`/post/${post.id}`}
+              >
                 <a>
-                  <PostTitle>{`[${post.category}] ${post.title}`}</PostTitle>
+                  <PostTitle>{`[${post.Category.name}] ${post.title}`}</PostTitle>
                   <PostContent>{post.content}</PostContent>
                 </a>
               </Link>

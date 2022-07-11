@@ -104,7 +104,7 @@ const CloseButton = styled(Button)`
 `;
 
 const pageSize = 5;
-const DEFAULT_VALUE = '글 관리';
+const DEFAULT_TITLE = '글 관리';
 
 const PostManage = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -112,7 +112,7 @@ const PostManage = () => {
   const [lastIndex, setLastIndex] = useState(pageSize);
 
   const [posts, setPosts] = useState(mainPosts);
-  const [category, setCategory] = useState(DEFAULT_VALUE);
+  const [title, setTitle] = useState(DEFAULT_TITLE);
   const [postsCount, setPostsCount] = useState(mainPosts.length);
 
   const onChangePage = useCallback(
@@ -130,7 +130,7 @@ const PostManage = () => {
       // const response = await axios.get(`/category?id=${e.target.dataset.id}`);
       // setPosts(response);
       // setPostsCount(response.length);
-      setCategory(`${e.target.dataset.name} 글`);
+      setTitle(`${e.target.dataset.name} 글`);
       setCurrentPage(1);
       setFirstIndex(0);
       setLastIndex(pageSize);
@@ -139,14 +139,14 @@ const PostManage = () => {
   );
 
   const onLoadMainPosts = useCallback(() => {
-    setCategory(DEFAULT_VALUE);
+    setTitle(DEFAULT_TITLE);
     setPosts(mainPosts);
     setPostsCount(mainPosts.length);
 
     setCurrentPage(1);
     setFirstIndex(0);
     setLastIndex(pageSize);
-  }, [DEFAULT_VALUE, mainPosts, pageSize]);
+  }, [DEFAULT_TITLE, mainPosts, pageSize]);
 
   const onDeletePost = useCallback(() => {
     const confirm = window.confirm('정말로 삭제하시겠습니까?');
@@ -162,14 +162,14 @@ const PostManage = () => {
     <ManageLayout>
       <div style={{ marginTop: -20 }}>
         <div style={{ display: 'flex', alignItems: 'center' }}>
-          {category === DEFAULT_VALUE ? (
-            <span style={{ fontSize: '18px' }}>{category}</span>
+          {title === DEFAULT_TITLE ? (
+            <span style={{ fontSize: '18px' }}>{title}</span>
           ) : (
             <>
               <CloseButton onClick={onLoadMainPosts}>
                 <CloseCircleOutlined />
               </CloseButton>
-              <span style={{ fontSize: '18px' }}>{category}</span>
+              <span style={{ fontSize: '18px' }}>{title}</span>
             </>
           )}
           <span style={{ fontSize: '14px', color: '#888', marginLeft: '5px' }}>{postsCount}</span>
@@ -177,12 +177,15 @@ const PostManage = () => {
         <SearchInput />
         <ListWrapper>
           <ul>
-            {posts?.slice(firstIndex, lastIndex).map((post, idx) => (
+            {posts?.slice(firstIndex, lastIndex).map((post) => (
               <li>
                 <PostInfo>
                   <div>
                     <div className='post_title'>
-                      <Link href={`/post/${post.id}`}>
+                      <Link
+                        href={{ pathname: `/post/${post.id}`, query: { post: JSON.stringify(post) } }}
+                        as={`/post/${post.id}`}
+                      >
                         <a>
                           <span>
                             [{post.Category.name}] {post.title}
