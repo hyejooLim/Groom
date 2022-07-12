@@ -102,7 +102,6 @@ const CloseButton = styled(Button)`
 `;
 
 const pageSize = 5;
-// const DEFAULT_TITLE = '글 관리';
 
 const PostManage = () => {
   const [currentPage, setCurrentPage] = useState(1);
