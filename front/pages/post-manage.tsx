@@ -7,7 +7,8 @@ import { PaperClipOutlined, CloseCircleOutlined } from '@ant-design/icons';
 import ManageLayout from '../components/layouts/ManageLayout';
 import SearchInput from '../components/SearchInput';
 import PaginationContainer from '../components/PaginationContainer';
-import { mainPosts } from '.';
+import { user } from '.';
+import { PostItem } from '../types';
 
 const PostButton = styled.div`
   float: right;
@@ -35,10 +36,7 @@ const ListWrapper = styled.div`
   line-height: 180%;
   word-break: break-all; // ?
   height: 386px;
-
-  & ul {
-    border: 1px solid #e0e5ee;
-  }
+  border: 1px solid #e0e5ee;
 
   & li {
     padding: 13px 16px 12px;
@@ -104,16 +102,16 @@ const CloseButton = styled(Button)`
 `;
 
 const pageSize = 5;
-const DEFAULT_TITLE = '글 관리';
+// const DEFAULT_TITLE = '글 관리';
 
 const PostManage = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [firstIndex, setFirstIndex] = useState(0);
   const [lastIndex, setLastIndex] = useState(pageSize);
 
-  const [posts, setPosts] = useState(mainPosts);
-  const [title, setTitle] = useState(DEFAULT_TITLE);
-  const [postsCount, setPostsCount] = useState(mainPosts.length);
+  const [posts, setPosts] = useState<PostItem[]>(user.posts);
+  const [title, setTitle] = useState('');
+  const [postsCount, setPostsCount] = useState(user.posts.length);
 
   const onChangePage = useCallback(
     (page: number) => {
@@ -130,23 +128,27 @@ const PostManage = () => {
       // const response = await axios.get(`/category?id=${e.target.dataset.id}`);
       // setPosts(response);
       // setPostsCount(response.length);
-      setTitle(`${e.target.dataset.name} 글`);
+      setTitle(e.target.dataset.name);
       setCurrentPage(1);
       setFirstIndex(0);
       setLastIndex(pageSize);
+
+      let newPosts = [...posts];
+      newPosts = newPosts.filter((post) => post.Category.name === e.target.dataset.name);
+      setPosts(newPosts);
     },
-    [pageSize]
+    [pageSize, posts, title]
   );
 
   const onLoadMainPosts = useCallback(() => {
-    setTitle(DEFAULT_TITLE);
-    setPosts(mainPosts);
-    setPostsCount(mainPosts.length);
+    setTitle('');
+    setPosts(user.posts);
+    setPostsCount(user.posts.length);
 
     setCurrentPage(1);
     setFirstIndex(0);
     setLastIndex(pageSize);
-  }, [DEFAULT_TITLE, mainPosts, pageSize]);
+  }, [user, pageSize]);
 
   const onDeletePost = useCallback(() => {
     const confirm = window.confirm('정말로 삭제하시겠습니까?');
@@ -162,61 +164,67 @@ const PostManage = () => {
     <ManageLayout>
       <div style={{ marginTop: -20 }}>
         <div style={{ display: 'flex', alignItems: 'center' }}>
-          {title === DEFAULT_TITLE ? (
-            <span style={{ fontSize: '18px' }}>{title}</span>
-          ) : (
+          {title ? (
             <>
               <CloseButton onClick={onLoadMainPosts}>
                 <CloseCircleOutlined />
               </CloseButton>
-              <span style={{ fontSize: '18px' }}>{title}</span>
+              <span style={{ fontSize: '18px' }}>{title} 글</span>
             </>
+          ) : (
+            <span style={{ fontSize: '18px' }}>글 관리</span>
           )}
-          <span style={{ fontSize: '14px', color: '#888', marginLeft: '5px' }}>{postsCount}</span>
+          <span style={{ fontSize: '14px', color: '#888', marginLeft: '8px' }}>{postsCount}</span>
         </div>
         <SearchInput />
         <ListWrapper>
           <ul>
-            {posts?.slice(firstIndex, lastIndex).map((post) => (
-              <li>
-                <PostInfo>
-                  <div>
-                    <div className='post_title'>
-                      <Link
-                        href={{ pathname: `/post/${post.id}`, query: { post: JSON.stringify(post) } }}
-                        as={`/post/${post.id}`}
-                      >
-                        <a>
-                          <span>
-                            [{post.Category.name}] {post.title}
-                          </span>
-                        </a>
-                      </Link>
-                      <PaperClipOutlined />
-                    </div>
-                    <div className='post_extra_info'>
-                      <a onClick={onChangePostList}>
-                        <span data-name={post.Category.name} data-id={post.Category.id}>
-                          {post.Category.name}
-                        </span>
-                      </a>
-                      <span>{post.author}</span>
-                      <span>{post.createdAt}</span>
-                    </div>
-                  </div>
-                  <PostButton>
-                    <Link href={{ pathname: '/write', query: { post: JSON.stringify(post) } }} as={`/write/${post.id}`}>
-                      <a>
-                        <Button className='modify btn'>수정</Button>
-                      </a>
-                    </Link>
-                    <Button className='delete btn' onClick={onDeletePost}>
-                      삭제
-                    </Button>
-                  </PostButton>
-                </PostInfo>
-              </li>
-            ))}
+            {posts?.slice(firstIndex, lastIndex).map(
+              (post) =>
+                user.id === post.authorId && (
+                  <li>
+                    <PostInfo>
+                      <div>
+                        <div className='post_title'>
+                          <Link
+                            href={{ pathname: `/post/${post.id}`, query: { post: JSON.stringify(post) } }}
+                            as={`/post/${post.id}`}
+                          >
+                            <a>
+                              <span>
+                                [{post.Category.name}] {post.title}
+                              </span>
+                            </a>
+                          </Link>
+                          <PaperClipOutlined />
+                        </div>
+                        <div className='post_extra_info'>
+                          <a onClick={onChangePostList}>
+                            <span data-name={post.Category.name} data-id={post.Category.id}>
+                              {post.Category.name}
+                            </span>
+                          </a>
+                          <span>{post.author}</span>
+                          <span>{post.createdAt}</span>
+                        </div>
+                      </div>
+                      <PostButton>
+                        <Link
+                          href={{ pathname: '/write', query: { post: JSON.stringify(post) } }}
+                          as={`/write/${post.id}`}
+                        >
+                          <a>
+                            <Button className='modify btn'>수정</Button>
+                          </a>
+                        </Link>
+                        <Button className='delete btn' onClick={onDeletePost}>
+                          삭제
+                        </Button>
+                      </PostButton>
+                    </PostInfo>
+                  </li>
+                )
+            )}
           </ul>
         </ListWrapper>
       </div>
