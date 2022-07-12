@@ -80,17 +80,17 @@ const ManageList = () => {
           </div>
           <ListWrapper>
             <li>
-              <Link href='/post-manage'>
+              <Link href='/post-manage' as='/manage/post'>
                 <a>글 관리</a>
               </Link>
             </li>
             <li>
-              <Link href='/category-manage'>
+              <Link href='/category-manage' as='/manage/category'>
                 <a>카테고리 관리</a>
               </Link>
             </li>
             <li>
-              <Link href='/subscriber-manage'>
+              <Link href='/subscriber-manage' as='/manage/subscriber'>
                 <a>구독자 관리</a>
               </Link>
             </li>
