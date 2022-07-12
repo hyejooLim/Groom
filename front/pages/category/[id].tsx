@@ -3,26 +3,26 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 
 import AppLayout from '../../components/layouts/AppLayout';
-import { categories } from '../../components/Category';
 import Title from '../../components/Title';
 import PostList from '../../components/PostList';
+import { categories } from '../../components/Category';
 
 const Category = () => {
   const router = useRouter();
   const { id } = router.query;
 
   // dummy data
-  const category = categories.filter((category) => category.id === id);
+  const category = categories?.find((category) => category.id === id);
 
   return (
     <AppLayout>
       <Head>
-        <title>Groom | '{category[0]?.name}' 카테고리의 글 목록</title>
+        <title>Groom | '{category.name}' 카테고리의 글 목록</title>
       </Head>
       <div style={{ textAlign: 'center' }}>
-        <Title title={category[0]?.name} />
+        <Title title={category.name} />
       </div>
-      <PostList posts={category[0].posts} />
+      <PostList posts={category.posts} />
     </AppLayout>
   );
 };
