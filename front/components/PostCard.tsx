@@ -3,12 +3,13 @@ import styled from 'styled-components';
 import { Button } from 'antd';
 import { HeartOutlined, HeartTwoTone } from '@ant-design/icons';
 
-import { PostItem } from '../types';
 import Title from './Title';
+import { PostItem } from '../types';
 import PaginationContainer from './PaginationContainer';
 import CommentForm from './CommentForm';
 import CommentList from './CommentList';
-import { mainPosts } from '../pages'; // dummyData
+
+import { user, mainPosts } from '../pages'; // dummyData
 
 const HeadWrapper = styled.div`
   width: 100%;
@@ -103,13 +104,7 @@ interface PostCardProps {
 }
 
 const PostCard: FC<PostCardProps> = ({ post }) => {
-  const [user, setUser] = useState({
-    id: '77',
-    name: '홍길동',
-    email: 'hong@naver.com',
-    posts: 10,
-    subscribers: ['22', '33', '44'], // 나를 구독하고 있는 유저 수
-  });
+  const [posts, setPosts] = useState(mainPosts);
   const [liked, setLiked] = useState(null);
   const [currentPost, setCurrentPost] = useState(post);
   const [currentPage, setCurrentPage] = useState(mainPosts.length + 1 - Number(post.id));
@@ -135,7 +130,7 @@ const PostCard: FC<PostCardProps> = ({ post }) => {
       alert('로그인이 필요합니다.');
     }
 
-    if (user.subscribers.find((id) => id === currentPost.authorId)) {
+    if (user.subscribers.find((subscriber) => subscriber.id === currentPost.authorId)) {
       alert('이미 구독한 유저입니다.');
     }
 
@@ -200,7 +195,7 @@ const PostCard: FC<PostCardProps> = ({ post }) => {
           </EditButton>
         )}
       </ContentWrapper>
-      <PaginationContainer pageSize={1} current={currentPage} total={mainPosts.length} onChange={onChangePage} />
+      <PaginationContainer pageSize={1} current={currentPage} total={posts.length} onChange={onChangePage} />
       <div>
         <CommentForm post={currentPost} />
         {currentPost.Comments && <CommentList comments={currentPost.Comments} />}
