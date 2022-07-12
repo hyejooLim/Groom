@@ -1,42 +1,9 @@
 import React, { useState, useCallback } from 'react';
-import Link from 'next/link';
-import styled from 'styled-components';
 
 import AppLayout from '../components/layouts/AppLayout';
 import Title from '../components/Title';
-import PaginationContainer from '../components/PaginationContainer';
+import PostList from '../components/PostList';
 import { PostItem, UserType } from '../types';
-
-const ListWrapper = styled.div`
-  padding: 20px 15px 18px;
-  background-color: #fff;
-  border: 1px solid #ddd;
-  line-height: 180%;
-  word-break: break-all; // ?
-  height: 430px;
-
-  & ul {
-    border-top: 1px dotted #ddd;
-
-    & li {
-      padding: 12px 10px 9px;
-      font-size: 14px;
-      border-bottom: 1px dotted #ddd;
-
-      & a:hover {
-        color: #07a;
-      }
-    }
-  }
-`;
-
-const PostInfo = styled.div`
-  float: right;
-
-  & span {
-    color: #666;
-  }
-`;
 
 export const user: UserType = {
   id: '77',
@@ -132,6 +99,50 @@ export const user: UserType = {
           createdAt: '2022.04.30',
         },
       ],
+      categories: [
+        {
+          id: '1',
+          name: 'algorithm',
+          posts: [
+            {
+              id: '8',
+              title: '점프와 순간 이동',
+              content: '...',
+              Comments: [],
+              Category: { id: '1', name: 'algorithm' },
+              author: '토마스',
+              authorId: '25',
+              createdAt: '2022.05.28',
+            },
+          ],
+        },
+        {
+          id: '2',
+          name: 'javascript',
+          posts: [
+            {
+              id: '6',
+              title: '자바스크립트 알아보기',
+              content: '...',
+              Comments: [],
+              Category: { id: '2', name: 'javascript' },
+              author: '토마스',
+              authorId: '25',
+              createdAt: '2022.04.30',
+            },
+          ],
+        },
+        {
+          id: '3',
+          name: 'typescript',
+          posts: [],
+        },
+        {
+          id: '4',
+          name: 'react',
+          posts: [],
+        },
+      ],
     },
     {
       id: '7',
@@ -148,6 +159,39 @@ export const user: UserType = {
           author: '해피',
           authorId: '7',
           createdAt: '2022.04.03',
+        },
+      ],
+      categories: [
+        {
+          id: '1',
+          name: 'algorithm',
+          posts: [
+            {
+              id: '1',
+              title: '프린터',
+              content: '...',
+              Comments: [],
+              Category: { id: '1', name: 'algorithm' },
+              author: '해피',
+              authorId: '7',
+              createdAt: '2022.04.03',
+            },
+          ],
+        },
+        {
+          id: '2',
+          name: 'javascript',
+          posts: [],
+        },
+        {
+          id: '3',
+          name: 'typescript',
+          posts: [],
+        },
+        {
+          id: '4',
+          name: 'react',
+          posts: [],
         },
       ],
     },
@@ -168,6 +212,39 @@ export const user: UserType = {
           createdAt: '2022.05.16',
         },
       ],
+      categories: [
+        {
+          id: '1',
+          name: 'algorithm',
+          posts: [
+            {
+              id: '7',
+              title: '끝말잇기',
+              content: '...',
+              Comments: [],
+              Category: { id: '1', name: 'algorithm' },
+              author: '제니',
+              authorId: '12',
+              createdAt: '2022.05.16',
+            },
+          ],
+        },
+        {
+          id: '2',
+          name: 'javascript',
+          posts: [],
+        },
+        {
+          id: '3',
+          name: 'typescript',
+          posts: [],
+        },
+        {
+          id: '4',
+          name: 'react',
+          posts: [],
+        },
+      ],
     },
     {
       id: '80',
@@ -184,6 +261,39 @@ export const user: UserType = {
           author: '민트',
           authorId: '80',
           createdAt: '2022.04.20',
+        },
+      ],
+      categories: [
+        {
+          id: '1',
+          name: 'algorithm',
+          posts: [],
+        },
+        {
+          id: '2',
+          name: 'javascript',
+          posts: [],
+        },
+        {
+          id: '3',
+          name: 'typescript',
+          posts: [],
+        },
+        {
+          id: '4',
+          name: 'react',
+          posts: [
+            {
+              id: '3',
+              title: '리액트 프레임워크',
+              content: '...',
+              Comments: [],
+              Category: { id: '4', name: 'react' },
+              author: '민트',
+              authorId: '80',
+              createdAt: '2022.04.20',
+            },
+          ],
         },
       ],
     },
@@ -313,46 +423,12 @@ export const mainPosts: PostItem[] = [
 ];
 
 const Home = () => {
-  const pageSize = 8;
-  const [currentPage, setCurrentPage] = useState(1);
-  const [firstIndex, setFirstIndex] = useState(0);
-  const [lastIndex, setLastIndex] = useState(pageSize);
-
-  const onChangePage = useCallback(
-    (page: number) => {
-      setCurrentPage(page);
-      setFirstIndex((page - 1) * pageSize);
-      setLastIndex(page * pageSize);
-    },
-    [pageSize]
-  );
-
   return (
     <AppLayout>
       <div style={{ textAlign: 'center' }}>
         <Title title='전체 글' />
       </div>
-      <ListWrapper>
-        <ul>
-          {mainPosts?.slice(firstIndex, lastIndex).map((post) => (
-            <li key={post.id}>
-              <Link
-                href={{ pathname: `/post/${post.id}`, query: { post: JSON.stringify(post) } }}
-                as={`/post/${post.id}`}
-              >
-                <a style={{ fontSize: '15px' }}>
-                  [{post.Category.name}] {post.title}
-                </a>
-              </Link>
-              <PostInfo>
-                <span style={{ marginRight: 8 }}>{post.author}</span>
-                <span>{post.createdAt}</span>
-              </PostInfo>
-            </li>
-          ))}
-        </ul>
-      </ListWrapper>
-      <PaginationContainer pageSize={pageSize} current={currentPage} total={mainPosts.length} onChange={onChangePage} />
+      <PostList posts={mainPosts} />
     </AppLayout>
   );
 };

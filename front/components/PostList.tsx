@@ -37,7 +37,7 @@ const PostInfo = styled.div`
 `;
 
 interface PostListProps {
-  posts: PostItem[];
+  posts: PostItem[] | [];
 }
 
 const PostList: FC<PostListProps> = ({ posts }) => {
