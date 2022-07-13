@@ -22,8 +22,7 @@ const HomeButton = styled.div`
 
 const AddPostButton = styled(Button)`
   float: right;
-  border: 0;
-  outline: none;
+  width: 88px;
   height: 38px;
   background-color: #13a085;
   margin-top: 30px;
@@ -33,7 +32,6 @@ const AddPostButton = styled(Button)`
   transition: all 0.2s ease-in;
 
   :hover {
-    cursor: pointer;
     transform: scale(1.03);
     background-color: #13a085;
     color: #fff;
