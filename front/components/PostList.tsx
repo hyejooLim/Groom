@@ -18,10 +18,9 @@ const ListWrapper = styled.div`
 
     & li {
       padding: 12px 10px 9px;
-      font-size: 14px;
       border-bottom: 1px dotted #ddd;
 
-      & a:hover {
+      a:hover {
         color: #07a;
       }
     }
@@ -30,6 +29,7 @@ const ListWrapper = styled.div`
 
 const PostInfo = styled.div`
   float: right;
+  font-size: 13px;
 
   & span {
     color: #666;
@@ -65,7 +65,7 @@ const PostList: FC<PostListProps> = ({ posts }) => {
                 href={{ pathname: `/post/${post.id}`, query: { post: JSON.stringify(post) } }}
                 as={`/post/${post.id}`}
               >
-                <a style={{ fontSize: '15px' }}>
+                <a>
                   [{post.Category.name}] {post.title}
                 </a>
               </Link>

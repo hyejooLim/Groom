@@ -1,11 +1,23 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { Button, Card } from 'antd';
+
+import { user } from '../pages';
 
 const StyledCard = styled(Card)`
   .card_meta {
     display: flex;
     justify-content: space-between;
+
+    .ant-card-meta {
+      .ant-card-meta-title {
+        font-size: 14px;
+      }
+
+      .ant-card-meta-description {
+        font-size: 12px;
+      }
+    }
 
     .logout_btn {
       padding: 0;
@@ -32,12 +44,6 @@ const StyledCard = styled(Card)`
 `;
 
 const ManageProfile = () => {
-  const [user, setUser] = useState({
-    id: '1',
-    name: '홍길동',
-    email: 'hong@naver.com',
-  });
-
   const handleLogout = () => {
     // logout
   };

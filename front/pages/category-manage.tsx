@@ -89,6 +89,7 @@ const EditButton = styled.div`
     width: 40px;
     height: 26px;
     border: 1px solid #c5cdd7;
+    background-color: #fff;
   }
 
   .btn:enabled {
@@ -102,6 +103,19 @@ const EditButton = styled.div`
 
   .modify {
     margin-right: 5px;
+  }
+
+  .delete:not(:enabled) {
+    border-color: #e0e5ee;
+    color: #959595;
+    box-shadow: none;
+
+    :hover {
+      background-color: inherit;
+      border-color: #e0e5ee;
+      color: #959595;
+      box-shadow: none;
+    }
   }
 `;
 
@@ -150,29 +164,40 @@ const FormButton = styled.div`
   align-items: center;
 
   .btn {
-    padding: 0;
     width: 80px;
     height: 32px;
+    font-size: 13px;
+    border: 1px solid #c5cdd7;
   }
 
   .cancel {
     margin-right: 5px;
     color: #333;
     background: #fff;
-    border: 1px solid #c5cdd7;
     box-shadow: 0 1px 1px rgb(0 0 0 / 8%);
 
     :hover {
-      border-color: #808080;
-      box-shadow: 0 2px 2px 0 rgb(0 0 0 / 8%);
+      border-color: #a5adba;
+      box-shadow: 0 2px 3px rgb(0 0 0 / 12%);
     }
+  }
+
+  .submit:not(:enabled) {
+    background: #fff;
+    border-color: #e0e5ee;
+    color: #959595;
+    box-shadow: none;
   }
 
   .submit:enabled {
     color: #fff;
     background: #333;
-    border: 1px solid #c5cdd7;
     box-shadow: 0 1px 1px rgb(0 0 0 / 8%);
+
+    :hover {
+      background: #505050;
+      box-shadow: 0 2px 5px rgb(0 0 0 / 12%);
+    }
   }
 `;
 

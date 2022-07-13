@@ -116,7 +116,7 @@ const InfoWrapper = styled.div`
 const Manage = () => {
   const [todayVisitorNumber, setTodayVisitorNumber] = useState(23);
   const [totalVisitorNumber, setTotalVisitorNumber] = useState(1500);
-
+  
   return (
     <ManageLayout>
       <CountVisitorWrapper>

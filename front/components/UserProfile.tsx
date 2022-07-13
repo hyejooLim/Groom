@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Link from 'next/link';
 import styled from 'styled-components';
-import { Button, Avatar, Divider } from 'antd';
+import { Button, Avatar } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
+
+import { user } from '../pages';
 
 const UserProfileWrapper = styled.div`
   height: 220px;
@@ -34,16 +36,30 @@ const InfoBox = styled.div`
 `;
 
 const NewBox = styled.div`
+  display: flex;
   font-size: 14px;
+
+  .posts {
+    margin-right: 12px;
+  }
+
+  .count:before {
+    content: '';
+    width: 1px;
+    height: 12px;
+    background-color: rgba(0, 0, 0, 0.16);
+    display: inline-block;
+    margin: 0 5px -1px 5px;
+  }
 `;
 
 const LogoutButton = styled(Button)`
   background-color: #13a085;
   color: #fff;
-  height: 38px;
+  width: 80px;
+  height: 36px;
   border-radius: 8px;
-  border: 0;
-  outline: 0;
+  padding: 0;
 
   :hover {
     cursor: pointer;
@@ -54,55 +70,7 @@ const LogoutButton = styled(Button)`
 `;
 
 const UserProfile = () => {
-  const [user, setUser] = useState({
-    id: '1',
-    name: '홍길동',
-    email: 'hong@naver.com',
-    posts: [
-      {
-        id: '4',
-        title: '입국심사',
-        content: '...',
-        Comments: [],
-        likeCount: 5,
-        author: 'sandy',
-        category: 'algorithm',
-        authorId: '77',
-        createdAt: '2022.06.12',
-      },
-      {
-        id: '3',
-        title: '거리두기 확인하기',
-        content: '...',
-        Comments: [],
-        category: 'algorithm',
-        author: 'sandy',
-        authorId: '77',
-        createdAt: '2022.06.11',
-      },
-      {
-        id: '2',
-        title: '점프와 순간 이동',
-        content: '...',
-        Comments: [],
-        category: 'algorithm',
-        author: 'tomas',
-        authorId: '25',
-        createdAt: '2022.05.28',
-      },
-      {
-        id: '1',
-        title: '끝말잇기',
-        content: '...',
-        Comments: [],
-        category: 'algorithm',
-        author: 'jenny',
-        authorId: '12',
-        createdAt: '2022.05.16',
-      },
-    ],
-    subscribers: ['2', '3', '4'], // 나를 구독하고 있는 유저 수
-  });
+  const handleLogout = () => {};
 
   return (
     <UserProfileWrapper>
@@ -118,12 +86,18 @@ const UserProfile = () => {
             <div style={{ marginTop: 5, color: '#888' }}>{user.email}</div>
           </InfoBox>
           <NewBox>
-            <span style={{ marginRight: 10 }}>게시글<Divider type='vertical' />{user.posts.length}</span>
-            <span>구독자<Divider type='vertical' />{user.subscribers.length}</span>
+            <div className='posts'>
+              <span>게시글</span>
+              <span className='count'>{user.posts.length}</span>
+            </div>
+            <div className='subscriber'>
+              <span>구독자</span>
+              <span className='count'>{user.subscribers.length}</span>
+            </div>
           </NewBox>
         </UserInfo>
       </InfoArea>
-      <LogoutButton>로그아웃</LogoutButton>
+      <LogoutButton onClick={handleLogout}>로그아웃</LogoutButton>
     </UserProfileWrapper>
   );
 };

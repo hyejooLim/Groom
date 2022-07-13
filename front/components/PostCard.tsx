@@ -87,15 +87,22 @@ const EditButton = styled.div`
   align-items: center;
   margin-top: 80px;
 
-  & .btn {
-    border: 0;
-    outline: none;
+  .btn {
+    width: 70px;
+    color: #777;
     background-color: transparent;
-    font-size: 16px;
+    font-size: 14px;
+    font-family: 'Courier New';
 
     :hover {
-      color: #000;
+      color: #e55;
     }
+  }
+
+  .line {
+    padding: 0 5px;
+    font-size: 9px;
+    color: #ddd;
   }
 `;
 
@@ -188,7 +195,7 @@ const PostCard: FC<PostCardProps> = ({ post }) => {
             <Button className='modify btn' onClick={onModifyPost}>
               Modify
             </Button>
-            |
+            <span className='line'>|</span>
             <Button className='delete btn' onClick={onDeletePost}>
               Delete
             </Button>

@@ -6,6 +6,9 @@
 
   --text-color: #000;
   --a-hover-color: #07a;
+
+  --grey-color: #a5a5a5;
+  --dark-grey-color: #808080;
 }
 
 #__next {
@@ -21,8 +24,7 @@ body {
   padding: 0;
   margin: 0;
   /* font-family: 'Courier New', Courier, monospace; */
-  font-family: -apple-system, BlinkMacSystemFont, AppleSDGothicNeo-Regular, Malgun Gothic, 맑은 고딕, dotum, 돋움,
-    sans-serif;
+  font-family: 'Nanum Gothic', 'Noto Sans Korean', 'Ubuntu Condensed';
 }
 
 * {
@@ -62,8 +64,21 @@ button {
   background: var(--bg-color);
 }
 
+.ant-btn {
+  padding: 0;
+  border: 0;
+  outline: none;
+  box-shadow: none;
+}
+
 .ant-btn:hover {
   background-color: inherit;
+  color: inherit;
+}
+
+.ant-btn:active {
+  background-color: inherit;
+  border-color: inherit;
   color: inherit;
 }
 
