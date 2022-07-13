@@ -1,6 +1,7 @@
-import React, { useCallback, useState } from 'react';
+import React from 'react';
 import Link from 'next/link';
 import styled from 'styled-components';
+
 import { CategoryItem } from '../types';
 
 const CategoryWrapper = styled.div`
@@ -11,8 +12,8 @@ const CategoryWrapper = styled.div`
 
   & li {
     color: #3b3e3f;
-    font-size: 17px;
-    margin-bottom: 13px;
+    font-size: 15px;
+    margin-bottom: 10px;
 
     .category_item:hover {
       color: #07a;
@@ -170,7 +171,7 @@ export const categories: CategoryItem[] = [
 const Category = () => {
   return (
     <CategoryWrapper>
-      <span style={{ fontSize: '21px', fontWeight: 800, margin: '20px 0' }}>Category</span>
+      <span style={{ fontSize: '18px', fontWeight: 600, margin: '20px 0 30px 0' }}>카테고리</span>
       <ul>
         {categories?.map((category) => (
           <li key={category.id}>
