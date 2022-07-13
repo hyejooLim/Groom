@@ -4,7 +4,7 @@ import { Button } from 'antd';
 
 import EditorToolbar from './EditorToobar';
 import EditorContent from './EditorContent';
-import { ContentModeType, PostItem } from '../../types';
+import { ContentModeType, PostItem, CategoryItem } from '../../types';
 
 // constant
 const ContentMode = {
@@ -81,11 +81,11 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
         id: post.id,
         title: post.title,
         content: post.content,
+        tags: post.tags,
         Category: post.Category,
         author: post.author,
         authorId: post.authorId,
         createdAt: post.createdAt,
-        // tags: post.tags,
       };
     } else {
       return {
@@ -93,6 +93,7 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
         title: '',
         content: '',
         Category: {},
+        tags: [],
         author: '',
         authorId: '',
         createdAt: '',
@@ -117,6 +118,28 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
     });
   };
 
+  const handleAddTag = (value: string) => {
+    setPostData({
+      ...postData,
+      tags: [...postData.tags, value],
+    });
+  };
+
+  const handleRemoveTag = (index: number) => {
+    let newTags = [...postData.tags];
+    newTags = newTags.filter((tag) => newTags.indexOf(tag) !== index);
+
+    setPostData({
+      ...postData,
+      tags: newTags,
+    });
+  };
+
+  const handleChangeCategory = (value: string, option: CategoryItem) => {
+    console.log(value);
+    console.log(option.id);
+  };
+
   return (
     <>
       <EditorToolbar />
@@ -125,6 +148,11 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
         onChangeTitle={handleChangeTitle}
         content={postData.content}
         onChangeContent={handleChangeContent}
+        tags={postData.tags}
+        onAddTag={handleAddTag}
+        onRemoveTag={handleRemoveTag}
+        category={postData.Category}
+        onChangeCategory={handleChangeCategory}
       />
       <ContentAside>
         <div className='btn_wrapper'>

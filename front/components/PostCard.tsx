@@ -1,4 +1,5 @@
 import React, { FC, useCallback, useState } from 'react';
+import Link from 'next/link';
 import styled from 'styled-components';
 import { Button } from 'antd';
 import { HeartOutlined, HeartTwoTone } from '@ant-design/icons';
@@ -57,6 +58,20 @@ const ContentWrapper = styled.div`
   line-height: 180%;
   word-break: break-all;
   height: auto;
+
+  .tag_label {
+    float: right;
+
+    a {
+      margin-right: 8px;
+      font-size: 13px;
+      color: #777;
+
+      &:hover {
+        color: #000;
+      }
+    }
+  }
 `;
 
 const PostButton = styled(Button)`
@@ -173,7 +188,13 @@ const PostCard: FC<PostCardProps> = ({ post }) => {
         <Date>{currentPost.createdAt}</Date>
       </HeadWrapper>
       <ContentWrapper>
-        <div className='tag_label'></div>
+        <div className='tag_label'>
+          {currentPost.tags.map((tag, idx) => (
+            <Link href={`/tag/${tag}`} key={idx}>
+              <a>#{tag}</a>
+            </Link>
+          ))}
+        </div>
         <div className='article'>{currentPost.content}</div>
         <div style={{ display: 'flex' }}>
           <PostButton>

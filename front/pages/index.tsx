@@ -306,6 +306,7 @@ export const mainPosts: PostItem[] = [
     id: '10',
     title: '입국심사',
     content: '...',
+    tags: ['입국심사', '이분탐색', '프로그래머스'],
     Comments: [
       {
         content: '좋은 글 보고 가요~',
@@ -335,6 +336,7 @@ export const mainPosts: PostItem[] = [
     id: '9',
     title: '거리두기 확인하기',
     content: '...',
+    tags: ['프로그래머스'],
     Comments: [],
     Category: { id: '1', name: 'algorithm' },
     author: '샌디',

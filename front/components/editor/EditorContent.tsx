@@ -1,14 +1,17 @@
-import React, { ChangeEvent, FC } from 'react';
+import React, { FC, ChangeEvent, KeyboardEvent } from 'react';
 import styled from 'styled-components';
-import { Button, Input, Select } from 'antd';
+import { Input, Select } from 'antd';
+import { CloseOutlined } from '@ant-design/icons';
 
 import TinymceEditor from './tinymce/TinymceEditor';
 import { categories } from '../Category';
 import { CategoryItem } from '../../types';
+import useInput from '../../hooks/input';
 
 const Container = styled.div`
   background-color: #fff;
   width: 100%;
+  overflow: auto;
 
   .post_header {
     padding: 0 40px;
@@ -39,13 +42,29 @@ const PostTitle = styled.div`
 
 const TagArea = styled.div`
   width: 860px;
-  min-height: 115px;
+  height: 180px;
   margin: 0 auto;
   padding: 0 0 80px;
+  margin-bottom: 30px;
   box-sizing: border-box;
   font-size: 0;
 
-  .tag_input_wrapper {
+  .tag {
+    display: inline-block;
+    position: relative;
+    margin: 16px 10px 0 0;
+    font-size: 13px;
+    vertical-align: top;
+    white-space: nowrap;
+  }
+
+  .close_icon {
+    color: #999;
+    font-size: 11px;
+    margin-left: 3px;
+  }
+
+  .tag_input {
     display: inline-block;
     margin: 16px 26px 0 0;
     font-size: 13px;
@@ -59,12 +78,35 @@ interface EditorContentProps {
   onChangeTitle: (e: ChangeEvent<HTMLInputElement>) => void;
   content: string;
   onChangeContent: (value: string) => void;
+  tags: string[];
+  onAddTag: (value: string) => void;
+  onRemoveTag: (index: number) => any;
+  category: CategoryItem | {};
+  onChangeCategory: (value: string, option: CategoryItem) => void;
 }
 
-const EditorContent: FC<EditorContentProps> = ({ title, onChangeTitle, content, onChangeContent }) => {
-  const onChangeCategory = (value: string, option: CategoryItem) => {
-    console.log(value);
-    console.log(option.id);
+const EditorContent: FC<EditorContentProps> = ({
+  title,
+  onChangeTitle,
+  content,
+  onChangeContent,
+  tags,
+  onAddTag,
+  onRemoveTag,
+  category,
+  onChangeCategory,
+}) => {
+  const [tag, onChangeTag, setTag] = useInput('');
+
+  const handleKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (!tag || !tag.trim()) {
+      return;
+    }
+
+    if (e.key === 'Enter') {
+      onAddTag(tag);
+      setTag('');
+    }
   };
 
   return (
@@ -91,13 +133,23 @@ const EditorContent: FC<EditorContentProps> = ({ title, onChangeTitle, content, 
       </div>
       <TinymceEditor content={content} onChangeContent={onChangeContent} />
       <TagArea>
-        <span className='tag_input_wrapper'>
+        {tags.map((tag, idx) => (
+          <div key={idx} style={{ display: 'inline-block' }}>
+            <span className='tag'>
+              #{tag}
+              <CloseOutlined className='close_icon' onClick={() => onRemoveTag(idx)} />
+            </span>
+          </div>
+        ))}
+        <span className='tag_input'>
           <span>#</span>
           <div style={{ display: 'inline-block' }}>
             <Input
-              className='tag_input'
-              style={{ padding: 0, boxSizing: 'content-box', border: 0 }}
+              style={{ padding: 0, border: 0, boxSizing: 'content-box' }}
               placeholder='태그입력'
+              value={tag}
+              onChange={onChangeTag}
+              onKeyPress={handleKeyPress}
             />
           </div>
         </span>
