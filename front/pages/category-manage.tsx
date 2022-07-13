@@ -183,6 +183,9 @@ const AddCategoryWrapper = styled.div`
   line-height: 48px;
   font-size: 16px;
   border: 1px dotted #acb3bf;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 
   &:hover {
     border: 1px dotted #888;
@@ -217,8 +220,7 @@ const SaveDiffButton = styled(Button)`
 const CountTotal = styled.div`
   float: right;
   color: #959595;
-  font-size: 13px;
-  font-family: 'Avenir Next Regular', AppleSDGothicNeo, '돋움', dotum, sans-serif;
+  font-size: 12px;
 `;
 
 const ManageCategory = () => {
@@ -444,8 +446,10 @@ const ManageCategory = () => {
               )}
             </div>
             <AddCategoryWrapper onClick={onClickAddCategoryField}>
-              <PlusOutlined />
-              <span className='add_category_text'>카테고리 추가</span>
+              <div>
+                <PlusOutlined />
+                <span className='add_category_text'>카테고리 추가</span>
+              </div>
               <CountTotal>
                 <span style={{ color: '#333' }}>{newCategories.length}</span> / 12
               </CountTotal>
