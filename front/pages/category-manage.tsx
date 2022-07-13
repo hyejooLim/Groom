@@ -85,18 +85,18 @@ const EditButton = styled.div`
 
   .btn {
     display: none;
-    padding: 0;
     font-size: 12px;
     width: 40px;
     height: 26px;
+    border: 1px solid #c5cdd7;
   }
 
   .btn:enabled {
     color: #333;
 
     :hover {
-      border-color: #808080;
-      box-shadow: 0 2px 2px 0 rgb(0 0 0 / 8%);
+      border-color: #a4adba;
+      box-shadow: 0px 2px 3px 0px rgb(0 0 0 / 12%);
     }
   }
 
@@ -200,12 +200,25 @@ const AddCategoryWrapper = styled.div`
 const SaveDiffButton = styled(Button)`
   width: 140px;
   height: 38px;
-  padding: 0;
+  border: 1px solid #333;
+
+  &:not(:enabled) {
+    background-color: #fff;
+    border-color: #e0e5ee;
+    color: #959595;
+    box-shadow: none;
+
+    :hover {
+      background-color: #fff;
+      border-color: #e0e5ee;
+      color: #959595;
+      box-shadow: none;
+    }
+  }
 
   &:enabled {
     color: #fff;
     background: #333;
-    border: 1px solid #333;
     border-radius: 1px;
     box-shadow: 0 1px 1px rgb(0 0 0 / 8%);
 

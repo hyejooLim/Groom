@@ -16,8 +16,10 @@ const PostButton = styled.div`
 
   .btn {
     display: none;
+    width: 40px;
+    height: 24px;
     margin-right: 4px;
-    font-size: 13px;
+    font-size: 12px;
     color: #333;
     border: 1px solid #c5cdd7;
     box-shadow: 0 1px 1px 0 rgb(0 0 0 / 8%);
