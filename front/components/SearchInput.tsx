@@ -31,9 +31,8 @@ const DropdownWrapper = styled.div`
 `;
 
 const SearchButton = styled(Button)`
-  border: 0;
-  outline: none;
   font-size: 18px;
+  width: 52px;
   margin: 0 10px 0 60px;
   background-color: transparent;
 
