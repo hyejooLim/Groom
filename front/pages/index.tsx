@@ -1,4 +1,5 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
 
 import AppLayout from '../components/layouts/AppLayout';
 import Title from '../components/Title';
@@ -422,13 +423,32 @@ export const mainPosts: PostItem[] = [
   },
 ];
 
+const DEFAULT_TITLE = '전체 글';
+
 const Home = () => {
+  const router = useRouter();
+  const { keyword, targetPosts } = router.query;
+  const parsedPosts = targetPosts && (JSON.parse(targetPosts as string) as PostItem[]);
+
+  const [title, setTitle] = useState(DEFAULT_TITLE);
+  const [posts, setPosts] = useState(mainPosts);
+
+  useEffect(() => {
+    if (parsedPosts) {
+      setTitle(keyword as string);
+      setPosts(parsedPosts);
+    } else {
+      setTitle(DEFAULT_TITLE);
+      setPosts(mainPosts);
+    }
+  }, [keyword]);
+
   return (
     <AppLayout>
       <div style={{ textAlign: 'center' }}>
-        <Title title='전체 글' />
+        <Title title={title} />
       </div>
-      <PostList posts={mainPosts} />
+      <PostList posts={posts} />
     </AppLayout>
   );
 };
