@@ -10,8 +10,12 @@ import useInput from '../../hooks/input';
 
 const Container = styled.div`
   background-color: #fff;
-  width: 100%;
-  overflow: auto;
+  position: absolute;
+  top: 72px;
+  bottom: 66px;
+  left: 0;
+  right: 0;
+  overflow-y: scroll;
 
   .post_header {
     padding: 0 40px;
@@ -20,9 +24,7 @@ const Container = styled.div`
 
 const SelectCategory = styled.div`
   width: 860px;
-  margin: 14px auto 0;
-
-  padding-top: 80px;
+  margin: 46px auto 0;
 `;
 
 const PostTitle = styled.div`
@@ -42,10 +44,8 @@ const PostTitle = styled.div`
 
 const TagArea = styled.div`
   width: 860px;
-  height: 180px;
   margin: 0 auto;
   padding: 0 0 80px;
-  margin-bottom: 30px;
   box-sizing: border-box;
   font-size: 0;
 
@@ -126,7 +126,7 @@ const EditorContent: FC<EditorContentProps> = ({
             className='title_input'
             value={title}
             onChange={onChangeTitle}
-            placeholder='제목을 입력하세요.'
+            placeholder='제목을 입력하세요'
             autoFocus
           />
         </PostTitle>
