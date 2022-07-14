@@ -1,5 +1,6 @@
 import React, { FC, useCallback, useState } from 'react';
 import Link from 'next/link';
+import Router from 'next/router';
 import styled from 'styled-components';
 import { Button } from 'antd';
 import { HeartOutlined, HeartTwoTone } from '@ant-design/icons';
@@ -147,7 +148,7 @@ const PostCard: FC<PostCardProps> = ({ post }) => {
     }
   }, [user]);
 
-  const onSubscribe = useCallback(() => {
+  const onSubscribeAuthor = useCallback(() => {
     if (!user) {
       alert('로그인이 필요합니다.');
     }
@@ -159,14 +160,20 @@ const PostCard: FC<PostCardProps> = ({ post }) => {
     // 로그인한 유저의 구독 목록에 해당 게시글의 author의 id를 추가
   }, [user, currentPost]);
 
-  const onModifyPost = useCallback(() => {
-    // 게시글 수정 모드로 변환
+  const onClickModifyBtn = useCallback(() => {
+    Router.push({
+      pathname: '/write',
+      query: {
+        post: JSON.stringify(post),
+      },
+    });
   }, []);
 
   const onDeletePost = useCallback(() => {
     const confirm = window.confirm('정말 게시글을 삭제하시겠습니까?');
     if (confirm) {
       // 게시글 삭제
+
       alert('게시글이 삭제되었습니다.');
     } else {
       return;
@@ -189,7 +196,7 @@ const PostCard: FC<PostCardProps> = ({ post }) => {
       </HeadWrapper>
       <ContentWrapper>
         <div className='tag_label'>
-          {currentPost.tags.map((tag, idx) => (
+          {currentPost.tags?.map((tag, idx) => (
             <Link href={`/tag/${tag}`} key={idx}>
               <a>#{tag}</a>
             </Link>
@@ -207,15 +214,17 @@ const PostCard: FC<PostCardProps> = ({ post }) => {
             </span>
             <span style={{ marginLeft: 7 }}>공감</span>
           </PostButton>
-          <PostButton style={{ marginLeft: 10 }} onClick={onSubscribe}>
+          <PostButton style={{ marginLeft: 10 }} onClick={onSubscribeAuthor}>
             구독하기
           </PostButton>
         </div>
         {user.id === currentPost.authorId && (
           <EditButton>
-            <Button className='modify btn' onClick={onModifyPost}>
-              Modify
-            </Button>
+            <Link href={{ pathname: '/write', query: { post: JSON.stringify(post) } }} as={`/write/${post.id}`}>
+              <a>
+                <Button className='modify btn'>Modify</Button>
+              </a>
+            </Link>
             <span className='line'>|</span>
             <Button className='delete btn' onClick={onDeletePost}>
               Delete

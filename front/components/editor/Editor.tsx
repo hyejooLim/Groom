@@ -92,7 +92,7 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
         id: '',
         title: '',
         content: '',
-        Category: {},
+        Category: { id: '', name: '' },
         tags: [],
         author: '',
         authorId: '',
@@ -136,8 +136,10 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
   };
 
   const handleChangeCategory = (value: string, option: CategoryItem) => {
-    console.log(value);
-    console.log(option.id);
+    setPostData({
+      ...postData,
+      Category: { id: option.id, name: value },
+    });
   };
 
   return (

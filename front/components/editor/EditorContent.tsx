@@ -81,7 +81,7 @@ interface EditorContentProps {
   tags: string[];
   onAddTag: (value: string) => void;
   onRemoveTag: (index: number) => any;
-  category: CategoryItem | {};
+  category: CategoryItem;
   onChangeCategory: (value: string, option: CategoryItem) => void;
 }
 
@@ -113,7 +113,7 @@ const EditorContent: FC<EditorContentProps> = ({
     <Container>
       <div className='post_header'>
         <SelectCategory>
-          <Select defaultValue='카테고리' style={{ width: '170px' }} onChange={onChangeCategory}>
+          <Select defaultValue={category.name || '카테고리'} style={{ width: '170px' }} onChange={onChangeCategory}>
             {categories?.map((category) => (
               <Select.Option className='select_option' id={category.id} value={category.name}>
                 {category.name}
@@ -133,7 +133,7 @@ const EditorContent: FC<EditorContentProps> = ({
       </div>
       <TinymceEditor content={content} onChangeContent={onChangeContent} />
       <TagArea>
-        {tags.map((tag, idx) => (
+        {tags?.map((tag, idx) => (
           <div key={idx} style={{ display: 'inline-block' }}>
             <span className='tag'>
               #{tag}
