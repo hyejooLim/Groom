@@ -23,17 +23,46 @@ export const ImageWrapper = styled.div`
   background-color: transparent;
 `;
 
+const StyledSider = styled(Sider)`
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 300px;
+  height: 100%;
+  background-color: #fff;
+  border-right: 1px solid #ddd;
+
+  @media (max-width: 959px) {
+    z-index: 100;
+    transform: translate3d(-300px, 0, 0);
+    transition: all 0.2s;
+  }
+`;
+
+const StyledLayout = styled(Layout)`
+  margin-left: 330px;
+  padding-right: 30px;
+  width: 100%;
+  height: 80%; // login, signup page를 위한 스타일 (추후 제거)
+
+  @media (max-width: 959px) {
+    margin: 0 auto;
+    padding: 0 10px;
+  }
+`;
+
 const AppLayout = ({ children }) => {
   return (
     <>
       <Layout style={{ display: 'flex', flexDirection: 'row', height: '100%' }}>
-        <Sider width={300} style={{ position: 'fixed', top: 0, left: 0, bottom: 0, backgroundColor: '#fff' }}>
+        <StyledSider width={300}>
           {user ? <UserProfile /> : <LoginForm />}
           <Category />
           <Counter />
           <Search />
-        </Sider>
-        <Layout style={{ marginLeft: '300px', width: '100%', height: '100%' }}>
+        </StyledSider>
+        <StyledLayout>
           <Header style={{ height: '80px', backgroundColor: 'transparent', padding: '0 24px' }}>
             <ImageWrapper>
               <Link href='/'>
@@ -43,7 +72,7 @@ const AppLayout = ({ children }) => {
               </Link>
             </ImageWrapper>
           </Header>
-          <Content style={{ margin: '0 30px', height: '80%' }}>
+          <Content>
             {children}
             <Footer
               style={{
@@ -58,7 +87,7 @@ const AppLayout = ({ children }) => {
               Powered by Groom, Designed by sandy
             </Footer>
           </Content>
-        </Layout>
+        </StyledLayout>
       </Layout>
     </>
   );

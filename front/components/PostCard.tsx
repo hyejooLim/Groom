@@ -50,6 +50,14 @@ const Date = styled.div`
     border-bottom: 20px solid #555;
     border-left: 6px solid transparent;
   }
+
+  @media (max-width: 959px) {
+    bottom: -10px;
+    right: 0;
+    left: inherit;
+    padding: 8px 5px 6px;
+    font-size: 11px;
+  }
 `;
 
 const ContentWrapper = styled.div`
