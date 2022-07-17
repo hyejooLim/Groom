@@ -16,13 +16,13 @@ const FormWrapper = styled.div`
 
 const InnerWrapper = styled.div`
   display: flex;
+  align-items: center;
 `;
 
 const DropdownWrapper = styled.div`
-  float: left;
   width: 81px;
   height: 23px;
-  margin: 3px 18px 0 0;
+  margin: 3px 18px 0 46px;
   border-right: 1px solid #e0e5ee;
 
   & a {
@@ -31,9 +31,9 @@ const DropdownWrapper = styled.div`
 `;
 
 const SearchButton = styled(Button)`
-  font-size: 18px;
   width: 52px;
-  margin: 0 10px 0 60px;
+  font-size: 18px;
+  margin-right: -18px;
   background-color: transparent;
 
   :hover {
@@ -102,7 +102,7 @@ const SearchInput = () => {
 
   return (
     <FormWrapper>
-      <Form style={{ width: '834px', float: 'right', margin: '10px 29px 0 0' }} onFinish={onSubmitInput}>
+      <Form style={{ width: '834px', margin: '10px 29px 0 0' }} onFinish={onSubmitInput}>
         <InnerWrapper>
           <DropdownWrapper>
             <Dropdown overlay={menu} trigger={['click']} overlayStyle={{ width: '100px' }}>
