@@ -26,11 +26,6 @@ const StyledCard = styled(Card)`
       font-size: 12px;
       background-color: #fff;
       color: #13a085;
-
-      :hover {
-        box-shadow: none;
-        border-color: #a5a5a5;
-      }
     }
   }
 

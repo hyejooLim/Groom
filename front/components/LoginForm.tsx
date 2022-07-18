@@ -13,35 +13,33 @@ const LoginFormWrapper = styled.div`
 `;
 
 const LoginButton = styled(Button)`
+  color: #fff;
+  background-color: #13a085;
   height: 52px;
   width: 258px;
-  border: 0;
-  outline: 0;
   border-radius: 8px;
-  background-color: #13a085;
-  color: #fff;
 
   &:hover {
-    background-color: #13a085;
     color: #fff;
+    background-color: #13a085;
+  }
+
+  .text {
+    font-size: 20px;
+    font-weight: 800;
+    margin-right: 20px;
   }
 `;
 
 const LoginForm = () => {
-  const [disabled, setDisabled] = useState(false);
-
-  const onClickLoginButton = useCallback((e) => {
-    e.preventDefault();
-    setDisabled(true);
-  }, []);
-
   return (
     <LoginFormWrapper>
       <p style={{ marginBottom: 30, fontSize: '15px' }}>지금 바로 Groom을 이용해 보세요.</p>
       <Link href='/login'>
         <a>
           <LoginButton>
-            <span style={{ fontSize: '20px', fontWeight: 800, marginRight: 20 }}>Groom</span>로그인
+            <span className='text'>Groom</span>
+            로그인
           </LoginButton>
         </a>
       </Link>
