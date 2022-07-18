@@ -1,18 +1,28 @@
 import React, { ChangeEvent, FormEvent, useCallback, useState } from 'react';
 import Head from 'next/head';
+import Image from 'next/image';
+import Link from 'next/link';
 import Router from 'next/router';
 import styled from 'styled-components';
 import { Button, Form, Input } from 'antd';
 
-import AppLayout from '../components/layouts/AppLayout';
 import useInput from '../hooks/input';
+import logo from '../public/Groom_Logo_No_Background.png';
 
-const FormWrapper = styled(Form)`
+const SignupWrapper = styled.div`
   height: 100%;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
+  overflow-y: hidden;
 
+  .logo {
+    margin-bottom: 40px;
+  }
+`;
+
+const StyledForm = styled(Form)`
   .input_form {
     margin-bottom: 20px;
   }
@@ -33,8 +43,7 @@ const ErrorMessage = styled.div`
 
 const SubmitButton = styled(Button)`
   margin-top: 20px;
-  border: 0;
-  outline: none;
+  width: 80px;
   height: 38px;
   font-size: 15px;
   border-radius: 10px;
@@ -43,9 +52,9 @@ const SubmitButton = styled(Button)`
   transition: all 0.2s ease-in;
 
   :hover {
-    background-color: #0fc19e;
     color: #fff;
-    transform: scale(1.03);
+    background-color: #0fc19e;
+    transform: scale(1.02);
   }
 `;
 
@@ -63,7 +72,12 @@ const Signup = () => {
   const onChangeEmail = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
       setEmail(e.target.value);
-      setEmailError(!regex.test(e.target.value));
+
+      if (!e.target.value || !e.target.value.trim()) {
+        setEmailError(false);
+      } else {
+        setEmailError(!regex.test(e.target.value));
+      }
     },
     [regex]
   );
@@ -93,11 +107,18 @@ const Signup = () => {
 
   return (
     <>
-      <AppLayout>
-        <Head>
-          <title>groom | 회원가입</title>
-        </Head>
-        <FormWrapper>
+      <Head>
+        <title>Groom | 회원가입</title>
+      </Head>
+      <SignupWrapper>
+        <div className='logo'>
+          <Link href='/'>
+            <a>
+              <Image src={logo} alt='groom_logo' width={140} height={60} />
+            </a>
+          </Link>
+        </div>
+        <StyledForm>
           <Form
             onFinish={onSubmitForm}
             style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}
@@ -113,7 +134,7 @@ const Signup = () => {
                 required
                 onChange={onChangeEmail}
               />
-              {emailError && <ErrorMessage>이메일 형식이 유효하지 않습니다.</ErrorMessage>}
+              {emailError && <ErrorMessage>이메일 형식이 올바르지 않습니다.</ErrorMessage>}
             </div>
             <div className='input_form'>
               <label htmlFor='user-password'>Password</label>
@@ -153,8 +174,8 @@ const Signup = () => {
             </div>
             <SubmitButton htmlType='submit'>가입하기</SubmitButton>
           </Form>
-        </FormWrapper>
-      </AppLayout>
+        </StyledForm>
+      </SignupWrapper>
     </>
   );
 };
