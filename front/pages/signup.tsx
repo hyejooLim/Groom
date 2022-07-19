@@ -1,10 +1,11 @@
-import React, { ChangeEvent, FormEvent, useCallback, useState } from 'react';
+import React, { ChangeEvent, useCallback, useState } from 'react';
 import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
 import Router from 'next/router';
 import styled from 'styled-components';
 import { Button, Form, Input } from 'antd';
+import { toast } from 'react-toastify';
 
 import useInput from '../hooks/input';
 import logo from '../public/Groom_Logo_No_Background.png';
@@ -61,10 +62,10 @@ const SubmitButton = styled(Button)`
 const regex = /[a-zA-Z0-9._+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9.]+/g;
 
 const Signup = () => {
+  const [email, setEmail] = useState('');
   const [password, onChangePassword] = useInput('');
   const [name, onChangeName] = useInput('');
 
-  const [email, setEmail] = useState('');
   const [emailError, setEmailError] = useState(false);
   const [passwordCheck, setPasswordCheck] = useState('');
   const [passwordError, setPasswordError] = useState(false);
@@ -90,20 +91,23 @@ const Signup = () => {
     [password]
   );
 
-  // Error Check
-  const onSubmitForm = useCallback(
-    (e: FormEvent<HTMLButtonElement>) => {
-      e.preventDefault();
+  const onSubmitForm = useCallback(async () => {
+    if (password !== passwordCheck) {
+      setPasswordError(true);
+      alert('비밀번호가 일치하지 않습니다.');
+      return;
+    }
 
-      if (password !== passwordCheck) {
-        return setPasswordError(true);
-      }
+    await fetch('/api/signup', {
+      method: 'POST',
+      body: JSON.stringify({ email, password, name }),
+      headers: { 'Content-Type': 'application/json' },
+    }).then((res) => res.json());
 
-      // signup...
-      Router.replace('/');
-    },
-    [password, passwordCheck]
-  );
+    // 동작 안 함
+    toast('회원가입이 완료되었습니다.');
+    Router.push('/');
+  }, [email, password, passwordCheck, name]);
 
   return (
     <>
@@ -118,62 +122,60 @@ const Signup = () => {
             </a>
           </Link>
         </div>
-        <StyledForm>
-          <Form
-            onFinish={onSubmitForm}
-            style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}
-          >
-            <div className='input_form'>
-              <label htmlFor='user-email'>Email</label>
-              <br />
-              <InputWrapper
-                name='user-email'
-                value={email}
-                type='email'
-                placeholder='이메일을 입력하세요.'
-                required
-                onChange={onChangeEmail}
-              />
-              {emailError && <ErrorMessage>이메일 형식이 올바르지 않습니다.</ErrorMessage>}
-            </div>
-            <div className='input_form'>
-              <label htmlFor='user-password'>Password</label>
-              <br />
-              <InputWrapper
-                name='user-password'
-                value={password}
-                type='password'
-                placeholder='비밀번호를 입력하세요.'
-                required
-                onChange={onChangePassword}
-              />
-            </div>
-            <div className='input_form'>
-              <label htmlFor='user-password-check'>Password Check</label>
-              <br />
-              <InputWrapper
-                name='user-password-check'
-                value={passwordCheck}
-                type='password'
-                placeholder='비밀번호를 입력하세요.'
-                required
-                onChange={onChangePasswordCheck}
-              />
-              {passwordError && <ErrorMessage>비밀번호가 일치하지 않습니다.</ErrorMessage>}
-            </div>
-            <div className='input_form'>
-              <label htmlFor='user-name'>Name</label>
-              <br />
-              <InputWrapper
-                name='user-name'
-                value={name}
-                placeholder='이름을 입력하세요.'
-                required
-                onChange={onChangeName}
-              />
-            </div>
-            <SubmitButton htmlType='submit'>가입하기</SubmitButton>
-          </Form>
+        <StyledForm
+          onFinish={onSubmitForm}
+          style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}
+        >
+          <div className='input_form'>
+            <label htmlFor='user-email'>Email</label>
+            <br />
+            <InputWrapper
+              name='user-email'
+              value={email}
+              type='email'
+              placeholder='이메일을 입력하세요.'
+              required
+              onChange={onChangeEmail}
+            />
+            {emailError && <ErrorMessage>이메일 형식이 올바르지 않습니다.</ErrorMessage>}
+          </div>
+          <div className='input_form'>
+            <label htmlFor='user-password'>Password</label>
+            <br />
+            <InputWrapper
+              name='user-password'
+              value={password}
+              type='password'
+              placeholder='비밀번호를 입력하세요.'
+              required
+              onChange={onChangePassword}
+            />
+          </div>
+          <div className='input_form'>
+            <label htmlFor='user-password-check'>Password Check</label>
+            <br />
+            <InputWrapper
+              name='user-password-check'
+              value={passwordCheck}
+              type='password'
+              placeholder='비밀번호를 입력하세요.'
+              required
+              onChange={onChangePasswordCheck}
+            />
+            {passwordError && <ErrorMessage>비밀번호가 일치하지 않습니다.</ErrorMessage>}
+          </div>
+          <div className='input_form'>
+            <label htmlFor='user-name'>Name</label>
+            <br />
+            <InputWrapper
+              name='user-name'
+              value={name}
+              placeholder='이름을 입력하세요.'
+              required
+              onChange={onChangeName}
+            />
+          </div>
+          <SubmitButton htmlType='submit'>가입하기</SubmitButton>
         </StyledForm>
       </SignupWrapper>
     </>
