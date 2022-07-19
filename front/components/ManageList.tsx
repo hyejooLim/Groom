@@ -85,13 +85,13 @@ const ManageList = () => {
               </Link>
             </li>
             <li>
-              <Link href='/category-manage' as='/manage/category'>
-                <a>카테고리 관리</a>
+              <Link href='/subscribedPost-manage' as='/manage/subscribedpost'>
+                <a>구독 글 관리</a>
               </Link>
             </li>
             <li>
-              <Link href='/subscriber-manage' as='/manage/subscriber'>
-                <a>구독자 관리</a>
+              <Link href='/category-manage' as='/manage/category'>
+                <a>카테고리 관리</a>
               </Link>
             </li>
           </ListWrapper>

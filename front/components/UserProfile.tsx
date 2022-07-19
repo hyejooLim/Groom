@@ -91,8 +91,8 @@ const UserProfile = () => {
               <span className='count'>{user.posts.length}</span>
             </div>
             <div className='subscriber'>
-              <span>구독자</span>
-              <span className='count'>{user.subscribers.length}</span>
+              <span>구독글</span>
+              <span className='count'>{user.subscribedPosts.length}</span>
             </div>
           </NewBox>
         </UserInfo>

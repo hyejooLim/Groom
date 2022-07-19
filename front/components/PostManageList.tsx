@@ -27,6 +27,12 @@ const PostButton = styled.div`
       box-shadow: 0 2px 2px 0 rgb(0 0 0 / 8%);
     }
   }
+
+  .subscribe_cancel {
+    width: 85px;
+    height: 30px;
+    font-size: 13px;
+  }
 `;
 
 const ListWrapper = styled.div`
@@ -110,39 +116,49 @@ const PostManageList: FC<PostManageListProps> = ({ posts, firstIndex, lastIndex,
     }
   }, []);
 
+  const onCancelSubscribe = () => {
+    const confirm = window.confirm('구독을 취소하시겠습니까?');
+    if (!confirm) {
+      return;
+    }
+
+    // 구독 취소 액션
+    // user.subscribedPost에서 제거
+  };
+
   return (
     <ListWrapper>
       <ul>
-        {posts?.slice(firstIndex, lastIndex).map(
-          (post) =>
-            user.id === post.authorId && (
-              <li>
-                <PostInfo>
-                  <div>
-                    <div className='post_title'>
-                      <Link
-                        href={{ pathname: `/post/${post.id}`, query: { post: JSON.stringify(post) } }}
-                        as={`/post/${post.id}`}
-                      >
-                        <a>
-                          <span>
-                            [{post.Category.name}] {post.title}
-                          </span>
-                        </a>
-                      </Link>
-                      <PaperClipOutlined />
-                    </div>
-                    <div className='post_extra_info'>
-                      <a onClick={onChangePostList}>
-                        <span data-name={post.Category.name} data-id={post.Category.id}>
-                          {post.Category.name}
-                        </span>
-                      </a>
-                      <span>{post.author}</span>
-                      <span>{post.createdAt}</span>
-                    </div>
-                  </div>
-                  <PostButton>
+        {posts?.slice(firstIndex, lastIndex).map((post) => (
+          <li>
+            <PostInfo>
+              <div>
+                <div className='post_title'>
+                  <Link
+                    href={{ pathname: `/post/${post.id}`, query: { post: JSON.stringify(post) } }}
+                    as={`/post/${post.id}`}
+                  >
+                    <a>
+                      <span>
+                        [{post.Category.name}] {post.title}
+                      </span>
+                    </a>
+                  </Link>
+                  <PaperClipOutlined />
+                </div>
+                <div className='post_extra_info'>
+                  <a onClick={onChangePostList}>
+                    <span data-name={post.Category.name} data-id={post.Category.id}>
+                      {post.Category.name}
+                    </span>
+                  </a>
+                  <span>{post.author}</span>
+                  <span>{post.createdAt}</span>
+                </div>
+              </div>
+              <PostButton>
+                {post.authorId === user.id ? (
+                  <>
                     <Link href={{ pathname: '/write', query: { post: JSON.stringify(post) } }} as={`/write/${post.id}`}>
                       <a>
                         <Button className='modify btn'>수정</Button>
@@ -151,11 +167,16 @@ const PostManageList: FC<PostManageListProps> = ({ posts, firstIndex, lastIndex,
                     <Button className='delete btn' onClick={onDeletePost}>
                       삭제
                     </Button>
-                  </PostButton>
-                </PostInfo>
-              </li>
-            )
-        )}
+                  </>
+                ) : (
+                  <Button className='subscribe_cancel btn' onClick={onCancelSubscribe}>
+                    구독 취소
+                  </Button>
+                )}
+              </PostButton>
+            </PostInfo>
+          </li>
+        ))}
       </ul>
     </ListWrapper>
   );

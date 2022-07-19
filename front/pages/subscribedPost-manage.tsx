@@ -1,33 +1,28 @@
-import React, { useCallback, useState } from 'react';
-import styled from 'styled-components';
-import { Button } from 'antd';
+import React, { useState, useCallback, useEffect } from 'react';
+import Head from 'next/head';
 import { CloseCircleOutlined } from '@ant-design/icons';
 
 import ManageLayout from '../components/layouts/ManageLayout';
-import SearchInput from '../components/SearchInput';
-import PaginationContainer from '../components/PaginationContainer';
 import PostManageList from '../components/PostManageList';
+import PaginationContainer from '../components/PaginationContainer';
 import { PostItem } from '../types';
+import { CloseButton } from './post-manage';
 import { user } from '.';
-
-export const CloseButton = styled(Button)`
-  font-size: 20px;
-  background-color: transparent;
-  border: 0;
-  outline: none;
-  box-shadow: none;
-`;
 
 const pageSize = 5;
 
-const PostManage = () => {
+const SubscriberManage = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [firstIndex, setFirstIndex] = useState(0);
   const [lastIndex, setLastIndex] = useState(pageSize);
 
-  const [posts, setPosts] = useState<PostItem[]>(user.posts);
+  const [posts, setPosts] = useState<PostItem[]>(user.subscribedPosts);
   const [title, setTitle] = useState('');
-  const [postsCount, setPostsCount] = useState(user.posts.length);
+  const [postsCount, setPostsCount] = useState(user.subscribedPosts.length);
+
+  useEffect(() => {
+    console.log(posts);
+  }, []);
 
   const onLoadMainPosts = useCallback(() => {
     setTitle('');
@@ -65,31 +60,26 @@ const PostManage = () => {
 
   return (
     <ManageLayout>
-      <div style={{ marginTop: -20 }}>
-        <div style={{ display: 'flex', alignItems: 'center' }}>
-          {title ? (
-            <div style={{ display: 'flex', alignItems: 'center' }}>
-              <CloseButton onClick={onLoadMainPosts}>
-                <CloseCircleOutlined />
-              </CloseButton>
-              <span style={{ fontSize: '18px', marginLeft: '8px' }}>{title} 글</span>
-            </div>
-          ) : (
-            <span style={{ fontSize: '18px' }}>글 관리</span>
-          )}
-          <span style={{ fontSize: '14px', color: '#888', marginLeft: '8px' }}>{postsCount}</span>
-        </div>
-        <SearchInput />
-        <PostManageList
-          posts={posts}
-          firstIndex={firstIndex}
-          lastIndex={lastIndex}
-          onChangePostList={onChangePostList}
-        />
+      <Head>
+        <title>Groom | 구독 글 관리</title>
+      </Head>
+      <div style={{ display: 'flex', alignItems: 'center' }}>
+        {title ? (
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <CloseButton onClick={onLoadMainPosts}>
+              <CloseCircleOutlined />
+            </CloseButton>
+            <span style={{ fontSize: '18px', marginLeft: '8px' }}>{title} 글</span>
+          </div>
+        ) : (
+          <span style={{ fontSize: '18px' }}>구독 글 관리</span>
+        )}
+        <span style={{ fontSize: '14px', color: '#888', marginLeft: '8px' }}>{postsCount}</span>
       </div>
+      <PostManageList posts={posts} firstIndex={firstIndex} lastIndex={lastIndex} onChangePostList={onChangePostList} />
       <PaginationContainer pageSize={pageSize} current={currentPage} total={posts.length} onChange={onChangePage} />
     </ManageLayout>
   );
 };
 
-export default PostManage;
+export default SubscriberManage;
