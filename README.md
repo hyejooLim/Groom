@@ -12,3 +12,9 @@
 * Ant Design
 * Styled Components
 * TinyMCE (Editor)
+
+<br />
+
+> ### API ENDPOINT 및 DB 생성
+* Prisma
+* PlanetScale
