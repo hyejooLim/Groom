@@ -26,8 +26,8 @@ const SubscriberManage = () => {
 
   const onLoadMainPosts = useCallback(() => {
     setTitle('');
-    setPosts(user.posts);
-    setPostsCount(user.posts.length);
+    setPosts(user.subscribedPosts)
+    setPostsCount(user.subscribedPosts.length);
 
     setCurrentPage(1);
     setFirstIndex(0);
