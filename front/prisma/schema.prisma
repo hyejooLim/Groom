@@ -17,9 +17,9 @@ model User {
   email String @unique
   password String
   name String
-  posts Post[]
   comments Comment[]
-  // subscribedPosts Post[]
+  posts Post[] @relation("OwnPosts")
+  subscribedPosts Post[] @relation("OwnSubscribedPosts")
 }
 
 model Post {
@@ -31,8 +31,10 @@ model Post {
   likeCount Int?
   category Category @relation(fields: [categoryId], references: [id])
   categoryId Int
-  author User @relation(fields: [authorId], references: [id])
+  author User @relation("OwnPosts", fields: [authorId], references: [id])
   authorId Int
+  subscriber User? @relation("OwnSubscribedPosts", fields: [subscriberId], references: [id])
+  subscriberId Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
