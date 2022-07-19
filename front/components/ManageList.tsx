@@ -85,7 +85,7 @@ const ManageList = () => {
               </Link>
             </li>
             <li>
-              <Link href='/subscribedPost-manage' as='/manage/subscribedpost'>
+              <Link href='/subscribedPost-manage' as='/manage/subscribedPost'>
                 <a>구독 글 관리</a>
               </Link>
             </li>
