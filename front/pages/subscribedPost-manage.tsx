@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback } from 'react';
 import Head from 'next/head';
 import { CloseCircleOutlined } from '@ant-design/icons';
 
@@ -20,13 +20,9 @@ const SubscriberManage = () => {
   const [title, setTitle] = useState('');
   const [postsCount, setPostsCount] = useState(user.subscribedPosts.length);
 
-  useEffect(() => {
-    console.log(posts);
-  }, []);
-
   const onLoadMainPosts = useCallback(() => {
     setTitle('');
-    setPosts(user.subscribedPosts)
+    setPosts(user.subscribedPosts);
     setPostsCount(user.subscribedPosts.length);
 
     setCurrentPage(1);
