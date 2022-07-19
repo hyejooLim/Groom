@@ -1,4 +1,5 @@
 import React, { useCallback, useState } from 'react';
+import Head from 'next/head';
 import styled from 'styled-components';
 import { Button } from 'antd';
 import { CloseCircleOutlined } from '@ant-design/icons';
@@ -65,6 +66,9 @@ const PostManage = () => {
 
   return (
     <ManageLayout>
+      <Head>
+        <title>Groom | 글 관리</title>
+      </Head>
       <div style={{ marginTop: -20 }}>
         <div style={{ display: 'flex', alignItems: 'center' }}>
           {title ? (

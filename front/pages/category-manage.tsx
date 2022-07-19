@@ -1,4 +1,5 @@
 import React, { useCallback, useState, useEffect } from 'react';
+import Head from 'next/head';
 import styled from 'styled-components';
 import { Button } from 'antd';
 
@@ -96,6 +97,9 @@ const CategoryManage = () => {
 
   return (
     <ManageLayout>
+      <Head>
+        <title>Groom | 카테고리 관리</title>
+      </Head>
       <span style={{ fontSize: '18px' }}>카테고리 관리</span>
       <ManageCategoryWrapper>
         <Description>
