@@ -101,10 +101,10 @@ const Signup = () => {
         return;
       }
 
-      const response = await signup({ data: { email, password, name } });
+      const result = await signup({ data: { email, password, name } });
 
-      if (!response.ok) {
-        const json = await response.json();
+      if (!result.ok) {
+        const json = await result.json();
         alert(json.message || '문제가 발생했습니다.');
         return;
       }
@@ -116,7 +116,7 @@ const Signup = () => {
       });
 
       setTimeout(() => {
-        Router.push('/');
+        Router.push('/login');
       }, 3000);
     } catch (error) {
       console.error(error);
