@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import Image from 'next/image';
 import styled from 'styled-components';
@@ -10,7 +11,6 @@ import Category from '../../components/Category';
 import logo from '../../public/Groom_Logo_No_Background.png';
 import Counter from '../Counter';
 import Search from '../Search';
-import { user } from '../../pages';
 
 const { Header, Sider, Content, Footer } = Layout;
 
@@ -44,7 +44,6 @@ const StyledLayout = styled(Layout)`
   margin-left: 330px;
   padding-right: 30px;
   width: 100%;
-  height: 80%; // login, signup page를 위한 스타일 (추후 제거)
 
   @media (max-width: 959px) {
     margin: 0 auto;
@@ -53,11 +52,17 @@ const StyledLayout = styled(Layout)`
 `;
 
 const AppLayout = ({ children }) => {
+  const { data: session, status } = useSession();
+
+  useEffect(() => {
+    console.log(session);
+  }, []);
+
   return (
     <>
       <Layout style={{ display: 'flex', flexDirection: 'row', height: '100%' }}>
         <StyledSider width={300}>
-          {user ? <UserProfile /> : <LoginForm />}
+          {status === 'authenticated' ? <UserProfile /> : <LoginForm />}
           <Category />
           <Counter />
           <Search />
