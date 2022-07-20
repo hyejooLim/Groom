@@ -20,6 +20,8 @@ model User {
   comments Comment[]
   posts Post[] @relation("OwnPosts")
   subscribedPosts Post[] @relation("OwnSubscribedPosts")
+  createdAt DateTime @default(now()) @map(name: "created_at")
+  updatedAt DateTime @updatedAt @map(name: "updated_at")
 }
 
 model Post {
