@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import styled from 'styled-components';
@@ -55,7 +55,7 @@ const ManageLayout = ({ children }) => {
                 </a>
               </Link>
             </HomeButton>
-            <Link href='/write' as='/write/new_post'>
+            <Link href='/write' as='/write/newPost'>
               <a>
                 <AddPostButton>
                   <span>글쓰기</span>
