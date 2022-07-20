@@ -100,8 +100,14 @@ const Signup = () => {
         alert('비밀번호가 일치하지 않습니다.');
         return;
       }
-      
-      await signup({ data: { email, password, name } });
+
+      const response = await signup({ data: { email, password, name } });
+
+      if (!response.ok) {
+        const json = await response.json();
+        alert(json.message || '문제가 발생했습니다.');
+        return;
+      }
 
       toast.success('회원가입이 완료되었습니다.', {
         autoClose: 2000,
