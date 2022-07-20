@@ -5,7 +5,8 @@ import Link from 'next/link';
 import Router from 'next/router';
 import styled from 'styled-components';
 import { Button, Form, Input } from 'antd';
-import { toast } from 'react-toastify';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import useInput from '../hooks/input';
 import logo from '../public/Groom_Logo_No_Background.png';
@@ -98,15 +99,28 @@ const Signup = () => {
       return;
     }
 
-    await fetch('/api/signup', {
+    const response = await fetch('/api/signup', {
       method: 'POST',
       body: JSON.stringify({ email, password, name }),
       headers: { 'Content-Type': 'application/json' },
-    }).then((res) => res.json());
+    });
 
-    // 동작 안 함
-    toast('회원가입이 완료되었습니다.');
-    Router.push('/');
+    if (response.status === 403) {
+      alert('이미 가입한 이메일입니다.');
+      return;
+    }
+
+    if (response.ok) {
+      toast.success('회원가입이 완료되었습니다.', {
+        autoClose: 2000,
+        position: toast.POSITION.BOTTOM_LEFT,
+        hideProgressBar: true,
+      });
+
+      setTimeout(() => {
+        Router.push('/');
+      }, 3000);
+    }
   }, [email, password, passwordCheck, name]);
 
   return (
@@ -178,6 +192,7 @@ const Signup = () => {
           <SubmitButton htmlType='submit'>가입하기</SubmitButton>
         </StyledForm>
       </SignupWrapper>
+      <ToastContainer />
     </>
   );
 };
