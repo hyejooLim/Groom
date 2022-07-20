@@ -10,6 +10,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 import useInput from '../hooks/input';
 import logo from '../public/Groom_Logo_No_Background.png';
+import signup from '../api/signup';
 
 const SignupWrapper = styled.div`
   height: 100%;
@@ -93,24 +94,15 @@ const Signup = () => {
   );
 
   const onSubmitForm = useCallback(async () => {
-    if (password !== passwordCheck) {
-      setPasswordError(true);
-      alert('비밀번호가 일치하지 않습니다.');
-      return;
-    }
+    try {
+      if (password !== passwordCheck) {
+        setPasswordError(true);
+        alert('비밀번호가 일치하지 않습니다.');
+        return;
+      }
+      
+      await signup({ data: { email, password, name } });
 
-    const response = await fetch('/api/signup', {
-      method: 'POST',
-      body: JSON.stringify({ email, password, name }),
-      headers: { 'Content-Type': 'application/json' },
-    });
-
-    if (response.status === 403) {
-      alert('이미 가입한 이메일입니다.');
-      return;
-    }
-
-    if (response.ok) {
       toast.success('회원가입이 완료되었습니다.', {
         autoClose: 2000,
         position: toast.POSITION.BOTTOM_LEFT,
@@ -120,6 +112,8 @@ const Signup = () => {
       setTimeout(() => {
         Router.push('/');
       }, 3000);
+    } catch (error) {
+      console.error(error);
     }
   }, [email, password, passwordCheck, name]);
 
