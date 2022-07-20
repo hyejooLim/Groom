@@ -1,6 +1,6 @@
 import next, { NextApiHandler, NextApiRequest, NextApiResponse } from 'next';
 import prisma from '../../lib/prisma';
-import bcrypt from 'bcrypt';
+import { hashPassword } from '../../lib/auth';
 
 const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
@@ -11,7 +11,7 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
     const { email, password, name } = req.body;
 
     // 이미 가입한 email인지 검사
-    const exUser = await prisma.user.findFirst({
+    const exUser = await prisma.user.findUnique({
       where: {
         email,
       },
@@ -20,7 +20,7 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
       return res.status(403).json({ message: '이미 가입한 이메일입니다.' });
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const hashedPassword = await hashPassword(password);
     await prisma.user.create({ data: { email, password: hashedPassword, name } });
 
     res.status(200).send('ok');
