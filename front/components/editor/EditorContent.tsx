@@ -11,7 +11,7 @@ import useInput from '../../hooks/input';
 const Container = styled.div`
   background-color: #fff;
   position: absolute;
-  top: 72px;
+  top: 70px;
   bottom: 66px;
   left: 0;
   right: 0;
