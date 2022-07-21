@@ -61,6 +61,9 @@ const TinymceEditor: FC<TinymceEditorProps> = ({ content, onChangeContent }) => 
           statusbar: false,
           block_formats: '제목1=h2;제목2=h3;제목3=h4;본문=p;',
           content_style: 'body { font-family: Nanum Godic; font-size: 16px }',
+          init_instance_callback: (editor) => {
+            editor.setContent(content);
+          },
         }}
       />
     </EditorWrapper>
