@@ -48,7 +48,7 @@ const NewBox = styled.div`
     height: 12px;
     background-color: rgba(0, 0, 0, 0.16);
     display: inline-block;
-    margin: 0 5px -1px 5px;
+    margin: 0 8px -1px 8px;
   }
 `;
 
