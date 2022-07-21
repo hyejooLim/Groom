@@ -1,14 +1,11 @@
-import React, { FC, ChangeEvent, useState, useEffect } from 'react';
-import { createBrowserHistory } from 'history';
+import React, { FC, ChangeEvent, useState } from 'react';
 import styled from 'styled-components';
 import { Button } from 'antd';
 
 import EditorToolbar from './EditorToobar';
 import EditorContent from './EditorContent';
-import * as ContentMode from '../constants/ContentMode';
 import { ContentModeType, PostItem, CategoryItem } from '../../../types';
-
-const history = createBrowserHistory();
+import * as ContentMode from '../constants/ContentMode';
 
 const ContentAside = styled.div`
   position: absolute;
@@ -70,10 +67,9 @@ const PublishButton = styled(Button)`
 interface EditorProps {
   post?: PostItem;
   mode: ContentModeType;
-  onFinish: () => void;
 }
 
-const Editor: FC<EditorProps> = ({ post, mode, onFinish }) => {
+const Editor: FC<EditorProps> = ({ post, mode }) => {
   const makePostState = () => {
     if (post && mode === ContentMode.EDIT) {
       return {
@@ -102,26 +98,6 @@ const Editor: FC<EditorProps> = ({ post, mode, onFinish }) => {
 
   const [postData, setPostData] = useState(makePostState());
   const [tempCount, setTempCount] = useState(0);
-
-  useEffect(() => {
-    const unlisten = history.listen(({ action }) => {
-      if (action === 'POP') {
-        const confirm = window.confirm('사이트에서 나가시겠습니까? 변경사항이 저장되지 않을 수 있습니다.');
-        if (confirm) {
-          console.log('확인');
-          onFinish();
-          return;
-        }
-
-        console.log('취소');
-        // 현재 화면 유지해야됨
-      }
-    });
-
-    return () => {
-      unlisten();
-    };
-  }, [history, onFinish]);
 
   const handleChangeTitle = (e: ChangeEvent<HTMLInputElement>) => {
     setPostData({
