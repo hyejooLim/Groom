@@ -4,7 +4,7 @@ import Image from 'next/image';
 import styled from 'styled-components';
 import { Avatar, Button, Popover } from 'antd';
 
-import logo from '../../public/Groom_Logo_No_Background.png';
+import logo from '../../../public/Groom_Logo_No_Background.png';
 import { UserOutlined } from '@ant-design/icons';
 
 const Toolbar = styled.div``;
