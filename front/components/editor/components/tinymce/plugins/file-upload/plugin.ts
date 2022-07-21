@@ -1,6 +1,6 @@
 export default function plugin(editor) {
   editor.options.register('open_file_handler', {
-    processer: 'function',
+    processor: 'function',
     default: () => {},
   });
 
@@ -11,7 +11,6 @@ export default function plugin(editor) {
   };
 
   editor.addCommand('file-upload', handleButtonClick);
-
   editor.ui.registry.addButton('file-upload', {
     icon: 'image',
     tooltip: '업로드',
