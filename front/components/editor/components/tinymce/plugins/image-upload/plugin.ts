@@ -10,12 +10,12 @@ export default function plugin(editor) {
     openFileHandler();
   };
 
-  editor.addCommand('file-upload', handleButtonClick);
-  editor.ui.registry.addButton('file-upload', {
+  editor.addCommand('image-upload', handleButtonClick);
+  editor.ui.registry.addButton('image-upload', {
     icon: 'image',
     tooltip: '업로드',
     onAction: () => {
-      editor.execCommand('file-upload');
+      editor.execCommand('image-upload');
     },
   });
 }

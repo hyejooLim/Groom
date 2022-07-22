@@ -1,7 +1,9 @@
-import React, { FC, useRef } from 'react';
+import React, { FC } from 'react';
 import styled from 'styled-components';
 import tinymce from 'tinymce';
 import { Editor } from '@tinymce/tinymce-react';
+
+import './plugins/image-upload';
 
 const EditorWrapper = styled.div`
   .tox-tinymce {
@@ -33,24 +35,22 @@ const EditorWrapper = styled.div`
 interface TinymceEditorProps {
   content: string;
   onChangeContent: (value: string) => void;
+  onOpenFile: () => void;
 }
 
-const TinymceEditor: FC<TinymceEditorProps> = ({ content, onChangeContent }) => {
-  const editorRef = useRef(null);
-
+const TinymceEditor: FC<TinymceEditorProps> = ({ content, onChangeContent, onOpenFile }) => {
   console.log(content);
 
-  const tinymcePlugins = ['link table lists codeblock opengraph file-upload autoresize searchreplace'];
+  const tinymcePlugins = ['link', 'lists', 'image-upload'];
   const tinymceToolbar =
-    'blocks fontfamily |' +
+    'image-upload blocks fontfamily |' +
     'bold italic underline strikethrough forecolor backcolor |' +
     'alignleft aligncenter alignright alignjustify |' +
-    'blockquote link bullist numlist';
+    'bullist numlist blockquote link';
 
   return (
     <EditorWrapper>
       <Editor
-        onInit={(e, editor) => (editorRef.current = editor)}
         onChange={(e) => onChangeContent(e.target.getContent())}
         init={{
           plugins: tinymcePlugins,
@@ -61,6 +61,9 @@ const TinymceEditor: FC<TinymceEditorProps> = ({ content, onChangeContent }) => 
           statusbar: false,
           block_formats: '제목1=h2;제목2=h3;제목3=h4;본문=p;',
           content_style: 'body { font-family: Nanum Godic; font-size: 16px }',
+          /** image **/
+          file_picker_types: 'image',
+          open_file_handler: onOpenFile,
           init_instance_callback: (editor) => {
             editor.setContent(content);
           },

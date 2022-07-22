@@ -27,7 +27,9 @@ class MyDocument extends Document {
   render() {
     return (
       <Html>
-        <Head />
+        <Head>
+          <script src='https://cdn.tiny.cloud/1/hu5eem0b07vxvzo5h452m3d4trqog4b5azwga5p9j7b49gb5/tinymce/6/tinymce.min.js'></script>
+        </Head>
         <body>
           <Main />
           <NextScript />
