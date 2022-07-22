@@ -1,3 +1,4 @@
+import { Children } from 'react';
 import Document, { Html, Head, Main, NextScript } from 'next/document';
 import { ServerStyleSheet } from 'styled-components';
 
@@ -16,12 +17,7 @@ class MyDocument extends Document {
 
       return {
         ...initialProps,
-        styles: (
-          <>
-            {initialProps.styles}
-            {sheet.getStyleElement()}
-          </>
-        ),
+        styles: [...Children.toArray(initialProps.styles), sheet.getStyleElement()],
       };
     } finally {
       sheet.seal();
