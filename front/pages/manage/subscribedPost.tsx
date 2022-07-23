@@ -2,16 +2,16 @@ import React, { useState, useCallback } from 'react';
 import Head from 'next/head';
 import { CloseCircleOutlined } from '@ant-design/icons';
 
-import ManageLayout from '../components/layouts/ManageLayout';
-import PostManageList from '../components/PostManageList';
-import PaginationContainer from '../components/PaginationContainer';
-import { PostItem } from '../types';
-import { CloseButton } from './post-manage';
-import { user } from '.';
+import ManageLayout from '../../components/layouts/ManageLayout';
+import PostManageList from '../../components/PostManageList';
+import PaginationContainer from '../../components/PaginationContainer';
+import { PostItem } from '../../types';
+import { CloseButton } from './post';
+import { user } from '..';
 
 const pageSize = 5;
 
-const SubscriberManage = () => {
+const ManageSubscribedPost = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [firstIndex, setFirstIndex] = useState(0);
   const [lastIndex, setLastIndex] = useState(pageSize);
@@ -78,4 +78,4 @@ const SubscriberManage = () => {
   );
 };
 
-export default SubscriberManage;
+export default ManageSubscribedPost;

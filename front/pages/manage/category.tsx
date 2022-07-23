@@ -3,10 +3,10 @@ import Head from 'next/head';
 import styled from 'styled-components';
 import { Button } from 'antd';
 
-import ManageLayout from '../components/layouts/ManageLayout';
-import CategoryManageList, { CountTotal } from '../components/CategoryManageList';
-import { categories } from '../components/Category';
-import { CategoryItem } from '../types';
+import ManageLayout from '../../components/layouts/ManageLayout';
+import CategoryManageList, { CountTotal } from '../../components/CategoryManageList';
+import { categories } from '../../components/Category';
+import { CategoryItem } from '../../types';
 
 const ManageCategoryWrapper = styled.div`
   font-size: 14px;
@@ -75,7 +75,7 @@ const SaveDiffButton = styled(Button)`
   }
 `;
 
-const CategoryManage = () => {
+const ManageCategory = () => {
   const [newCategories, setNewCategories] = useState<CategoryItem[]>(categories);
   const [isDisabled, setIsDisabled] = useState(true);
 
@@ -122,4 +122,4 @@ const CategoryManage = () => {
   );
 };
 
-export default CategoryManage;
+export default ManageCategory;

@@ -4,12 +4,12 @@ import styled from 'styled-components';
 import { Button } from 'antd';
 import { CloseCircleOutlined } from '@ant-design/icons';
 
-import ManageLayout from '../components/layouts/ManageLayout';
-import SearchInput from '../components/SearchInput';
-import PaginationContainer from '../components/PaginationContainer';
-import PostManageList from '../components/PostManageList';
-import { PostItem } from '../types';
-import { user } from '.';
+import ManageLayout from '../../components/layouts/ManageLayout';
+import SearchInput from '../../components/SearchInput';
+import PaginationContainer from '../../components/PaginationContainer';
+import PostManageList from '../../components/PostManageList';
+import { PostItem } from '../../types';
+import { user } from '..';
 
 export const CloseButton = styled(Button)`
   font-size: 20px;
@@ -21,7 +21,7 @@ export const CloseButton = styled(Button)`
 
 const pageSize = 5;
 
-const PostManage = () => {
+const ManagePost = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [firstIndex, setFirstIndex] = useState(0);
   const [lastIndex, setLastIndex] = useState(pageSize);
@@ -96,4 +96,4 @@ const PostManage = () => {
   );
 };
 
-export default PostManage;
+export default ManagePost;
