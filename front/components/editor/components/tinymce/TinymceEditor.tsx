@@ -10,16 +10,6 @@ const EditorWrapper = styled.div`
     border: 0;
     margin: 0;
 
-    .tox-editor-header {
-      position: fixed;
-      top: 0;
-      width: 100%;
-      height: 70px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-
     .tox-sidebar-wrap {
       width: 880px;
       margin: 0 auto;
@@ -27,6 +17,13 @@ const EditorWrapper = styled.div`
   }
 
   .tox:not(.tox-tinymce-inline) .tox-editor-header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: 70px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     box-shadow: none;
     border-bottom: 1px solid rgba(0, 0, 0, 0.05);
   }
@@ -69,17 +66,10 @@ const TinymceEditor: FC<TinymceEditorProps> = ({ content, onChangeContent, onOpe
     const editor = tinymce.activeEditor;
     const dom = editor.dom;
 
-    editor.execCommand(
-      'mceInsertContent',
-      false,
-      '<img id="new_image" src="' + imageUrl + '" width: "860px" height: "319px" />'
-    );
+    editor.execCommand('mceInsertContent', false, '<img id="new_image" src="' + imageUrl + '" />');
 
     let img = dom.select('#new_image');
     dom.setAttrib(img, 'id', 'new_image');
-    dom.setAttrib(img, 'width', '860px');
-    dom.setAttrib(img, 'height', '319px');
-
     dom.bind(img, 'load', (e) => {
       editor.nodeChanged();
       dom.unbind(img, 'load');
@@ -98,7 +88,7 @@ const TinymceEditor: FC<TinymceEditorProps> = ({ content, onChangeContent, onOpe
           branding: false,
           statusbar: false,
           block_formats: '제목1=h2;제목2=h3;제목3=h4;본문=p;',
-          content_style: 'body { font-family: Nanum Godic; font-size: 16px }',
+          content_style: 'body { font-family: Nanum Godic; font-size: 16px } img { width: 100%; height: auto }',
           /** image **/
           file_picker_types: 'image',
           open_file_handler: onOpenFile,
