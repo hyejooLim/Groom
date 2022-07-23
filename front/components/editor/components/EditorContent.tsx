@@ -1,12 +1,13 @@
-import React, { FC, ChangeEvent, KeyboardEvent } from 'react';
+import React, { FC, ChangeEvent, KeyboardEvent, useRef, useCallback } from 'react';
+import Dropzone from 'react-dropzone';
 import styled from 'styled-components';
 import { Input, Select } from 'antd';
 import { CloseOutlined } from '@ant-design/icons';
 
 import TinymceEditor from './tinymce/TinymceEditor';
-import { categories } from '../../Category';
-import { CategoryItem } from '../../../types';
 import useInput from '../../../hooks/input';
+import { CategoryItem } from '../../../types';
+import { categories } from '../../Category';
 
 const Container = styled.div`
   background-color: #fff;
@@ -83,6 +84,8 @@ interface EditorContentProps {
   onRemoveTag: (index: number) => any;
   category: CategoryItem;
   onChangeCategory: (value: string, option: CategoryItem) => void;
+  onGetImageUrl: (files: any) => void;
+  imageUrl: string | ArrayBuffer;
 }
 
 const EditorContent: FC<EditorContentProps> = ({
@@ -95,8 +98,11 @@ const EditorContent: FC<EditorContentProps> = ({
   onRemoveTag,
   category,
   onChangeCategory,
+  onGetImageUrl,
+  imageUrl,
 }) => {
   const [tag, onChangeTag, setTag] = useInput('');
+  const dropzoneRef = useRef(null);
 
   const handleKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
     if (!tag || !tag.trim()) {
@@ -109,13 +115,17 @@ const EditorContent: FC<EditorContentProps> = ({
     }
   };
 
+  const handleOpenFile = useCallback(() => {
+    dropzoneRef.current.open();
+  }, [dropzoneRef]);
+
   return (
     <Container>
       <div className='post_header'>
         <SelectCategory>
           <Select defaultValue={category.name || '카테고리'} style={{ width: '170px' }} onChange={onChangeCategory}>
             {categories?.map((category) => (
-              <Select.Option className='select_option' id={category.id} value={category.name}>
+              <Select.Option key={category.id} className='select_option' id={category.id} value={category.name}>
                 {category.name}
               </Select.Option>
             ))}
@@ -131,7 +141,25 @@ const EditorContent: FC<EditorContentProps> = ({
           />
         </PostTitle>
       </div>
-      <TinymceEditor content={content} onChangeContent={onChangeContent} />
+      <Dropzone ref={dropzoneRef} accept={{ 'image/*': ['.gif', '.jpg', 'jpeg', '.png'] }} onDrop={onGetImageUrl}>
+        {({ getRootProps, getInputProps, isDragActive }) => (
+          <div
+            className='editor_inner'
+            {...getRootProps({
+              onClick: (e) => e.stopPropagation(),
+            })}
+          >
+            <TinymceEditor
+              content={content}
+              onChangeContent={onChangeContent}
+              onOpenFile={handleOpenFile}
+              onGetImageUrl={onGetImageUrl}
+              imageUrl={imageUrl}
+            />
+            <input {...getInputProps()} />
+          </div>
+        )}
+      </Dropzone>
       <TagArea>
         {tags?.map((tag, idx) => (
           <div key={idx} style={{ display: 'inline-block' }}>

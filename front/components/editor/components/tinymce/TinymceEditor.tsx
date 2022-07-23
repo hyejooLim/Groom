@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import styled from 'styled-components';
 import tinymce from 'tinymce';
 import { Editor } from '@tinymce/tinymce-react';
@@ -36,10 +36,12 @@ interface TinymceEditorProps {
   content: string;
   onChangeContent: (value: string) => void;
   onOpenFile: () => void;
+  onGetImageUrl: (file: any) => void;
+  imageUrl: string | ArrayBuffer;
 }
 
-const TinymceEditor: FC<TinymceEditorProps> = ({ content, onChangeContent, onOpenFile }) => {
-  console.log(content);
+const TinymceEditor: FC<TinymceEditorProps> = ({ content, onChangeContent, onOpenFile, onGetImageUrl, imageUrl }) => {
+  // console.log(content);
 
   const tinymcePlugins = ['link', 'lists', 'image-upload'];
   const tinymceToolbar =
@@ -47,6 +49,42 @@ const TinymceEditor: FC<TinymceEditorProps> = ({ content, onChangeContent, onOpe
     'bold italic underline strikethrough forecolor backcolor |' +
     'alignleft aligncenter alignright alignjustify |' +
     'bullist numlist blockquote link';
+
+  useEffect(() => {
+    if (imageUrl !== null) {
+      handleUploadImage(imageUrl);
+    }
+  }, [imageUrl]);
+
+  const handleDrop = (e: any) => {
+    console.log('handle drop');
+    console.log(e.dataTransfer.files);
+
+    if (e.dataTransfer && e.dataTransfer.files) {
+      onGetImageUrl(Array.prototype.slice.call(e.dataTransfer.files));
+    }
+  };
+
+  const handleUploadImage = (imageUrl: string | ArrayBuffer) => {
+    const editor = tinymce.activeEditor;
+    const dom = editor.dom;
+
+    editor.execCommand(
+      'mceInsertContent',
+      false,
+      '<img id="new_image" src="' + imageUrl + '" width: "860px" height: "319px" />'
+    );
+
+    let img = dom.select('#new_image');
+    dom.setAttrib(img, 'id', 'new_image');
+    dom.setAttrib(img, 'width', '860px');
+    dom.setAttrib(img, 'height', '319px');
+
+    dom.bind(img, 'load', (e) => {
+      editor.nodeChanged();
+      dom.unbind(img, 'load');
+    });
+  };
 
   return (
     <EditorWrapper>
@@ -65,6 +103,7 @@ const TinymceEditor: FC<TinymceEditorProps> = ({ content, onChangeContent, onOpe
           file_picker_types: 'image',
           open_file_handler: onOpenFile,
           init_instance_callback: (editor) => {
+            editor.on('drop', handleDrop);
             editor.setContent(content);
           },
         }}

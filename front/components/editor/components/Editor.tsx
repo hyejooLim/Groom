@@ -98,6 +98,7 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
 
   const [postData, setPostData] = useState(makePostState());
   const [tempCount, setTempCount] = useState(0);
+  const [imageUrl, setImageUrl] = useState<string | ArrayBuffer>(null);
 
   const handleChangeTitle = (e: ChangeEvent<HTMLInputElement>) => {
     setPostData({
@@ -137,6 +138,17 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
     });
   };
 
+  const handleGetImageUrl = (files: Array<Blob>) => {
+    files.map((file: Blob) => {
+      const reader = new FileReader();
+      reader.addEventListener('load', (e) => {
+        setImageUrl(reader.result);
+      });
+
+      reader.readAsDataURL(file);
+    });
+  };
+
   return (
     <>
       <EditorToolbar />
@@ -150,6 +162,8 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
         onRemoveTag={handleRemoveTag}
         category={postData.Category}
         onChangeCategory={handleChangeCategory}
+        onGetImageUrl={handleGetImageUrl}
+        imageUrl={imageUrl}
       />
       <ContentAside>
         <div className='btn_wrapper'>
