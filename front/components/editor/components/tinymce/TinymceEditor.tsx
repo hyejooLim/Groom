@@ -1,4 +1,4 @@
-import React, { FC, useEffect } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import tinymce from 'tinymce';
 import { Editor } from '@tinymce/tinymce-react';
@@ -34,10 +34,16 @@ interface TinymceEditorProps {
   onChangeContent: (value: string) => void;
   onOpenFile: () => void;
   onGetImageUrl: (file: any) => void;
-  imageUrl: string | ArrayBuffer;
+  imageUrlList: (string | ArrayBuffer)[];
 }
 
-const TinymceEditor: FC<TinymceEditorProps> = ({ content, onChangeContent, onOpenFile, onGetImageUrl, imageUrl }) => {
+const TinymceEditor: FC<TinymceEditorProps> = ({
+  content,
+  onChangeContent,
+  onOpenFile,
+  onGetImageUrl,
+  imageUrlList,
+}) => {
   // console.log(content);
 
   const tinymcePlugins = ['link', 'lists', 'image-upload'];
@@ -48,31 +54,36 @@ const TinymceEditor: FC<TinymceEditorProps> = ({ content, onChangeContent, onOpe
     'bullist numlist blockquote link';
 
   useEffect(() => {
-    if (imageUrl !== null) {
-      handleUploadImage(imageUrl);
+    if (imageUrlList !== null) {
+      console.log('useEffect', imageUrlList);
+
+      handleUploadImage(imageUrlList);
     }
-  }, [imageUrl]);
+  }, [imageUrlList]);
 
   const handleDrop = (e: any) => {
     console.log('handle drop');
-    console.log(e.dataTransfer.files);
 
     if (e.dataTransfer && e.dataTransfer.files) {
+      console.log('on get image url');
+
       onGetImageUrl(Array.prototype.slice.call(e.dataTransfer.files));
     }
   };
 
-  const handleUploadImage = (imageUrl: string | ArrayBuffer) => {
+  const handleUploadImage = (imageUrlList: (string | ArrayBuffer)[]) => {
     const editor = tinymce.activeEditor;
     const dom = editor.dom;
 
-    editor.execCommand('mceInsertContent', false, '<img id="new_image" src="' + imageUrl + '" />');
+    imageUrlList.map((imageUrl) => {
+      editor.execCommand('mceInsertContent', false, '<img id="new_image" src="' + imageUrl + '" />');
 
-    let img = dom.select('#new_image');
-    dom.setAttrib(img, 'id', 'new_image');
-    dom.bind(img, 'load', (e) => {
-      editor.nodeChanged();
-      dom.unbind(img, 'load');
+      let img = dom.select('#new_image');
+      dom.setAttrib(img, 'id', 'new_image');
+      dom.bind(img, 'load', (e) => {
+        editor.nodeChanged();
+        dom.unbind(img, 'load');
+      });
     });
   };
 
@@ -88,7 +99,8 @@ const TinymceEditor: FC<TinymceEditorProps> = ({ content, onChangeContent, onOpe
           branding: false,
           statusbar: false,
           block_formats: '제목1=h2;제목2=h3;제목3=h4;본문=p;',
-          content_style: 'body { font-family: Nanum Godic; font-size: 16px } img { width: 100%; height: auto }',
+          content_style:
+            'body { font-family: Nanum Godic; font-size: 16px; overflow-y: hidden; padding-bottom: 20px; color: #333 } img[data-mce-selected] { outline-color: #000 !important } img { max-width: 100%; height: auto } div.mce-resizehandle { background: #fff !important; border-radius: 6px !important; border: 2px solid #000 !important; width: 12px !important; height: 12px !important; }',
           /** image **/
           file_picker_types: 'image',
           open_file_handler: onOpenFile,

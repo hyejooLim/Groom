@@ -85,7 +85,7 @@ interface EditorContentProps {
   category: CategoryItem;
   onChangeCategory: (value: string, option: CategoryItem) => void;
   onGetImageUrl: (files: any) => void;
-  imageUrl: string | ArrayBuffer;
+  imageUrlList: (string | ArrayBuffer)[];
 }
 
 const EditorContent: FC<EditorContentProps> = ({
@@ -99,7 +99,7 @@ const EditorContent: FC<EditorContentProps> = ({
   category,
   onChangeCategory,
   onGetImageUrl,
-  imageUrl,
+  imageUrlList,
 }) => {
   const [tag, onChangeTag, setTag] = useInput('');
   const dropzoneRef = useRef(null);
@@ -154,7 +154,7 @@ const EditorContent: FC<EditorContentProps> = ({
               onChangeContent={onChangeContent}
               onOpenFile={handleOpenFile}
               onGetImageUrl={onGetImageUrl}
-              imageUrl={imageUrl}
+              imageUrlList={imageUrlList}
             />
             <input {...getInputProps()} />
           </div>

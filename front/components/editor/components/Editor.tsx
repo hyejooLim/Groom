@@ -1,4 +1,4 @@
-import React, { FC, ChangeEvent, useState } from 'react';
+import React, { FC, ChangeEvent, useState, useCallback } from 'react';
 import styled from 'styled-components';
 import { Button } from 'antd';
 
@@ -98,7 +98,7 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
 
   const [postData, setPostData] = useState(makePostState());
   const [tempCount, setTempCount] = useState(0);
-  const [imageUrl, setImageUrl] = useState<string | ArrayBuffer>(null);
+  const [imageUrlList, setImageUrlList] = useState<(string | ArrayBuffer)[]>([]);
 
   const handleChangeTitle = (e: ChangeEvent<HTMLInputElement>) => {
     setPostData({
@@ -138,15 +138,22 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
     });
   };
 
-  const handleGetImageUrl = (files: Array<Blob>) => {
-    files.map((file: Blob) => {
-      const reader = new FileReader();
-      reader.addEventListener('load', (e) => {
-        setImageUrl(reader.result);
-      });
+  const handleGetImageUrl = (files) => {
+    console.log('files', files);
 
+    let _imageUrlList = [];
+
+    [].forEach.call(files, (file) => {
+      const reader = new FileReader();
+      // 읽기 동작이 성공적으로 완료되면 실행
+      reader.onload = (e) => {
+        console.log(e.target.result);
+      };
       reader.readAsDataURL(file);
+      _imageUrlList.push(reader.result);
     });
+
+    setImageUrlList(_imageUrlList);
   };
 
   return (
@@ -163,7 +170,7 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
         category={postData.Category}
         onChangeCategory={handleChangeCategory}
         onGetImageUrl={handleGetImageUrl}
-        imageUrl={imageUrl}
+        imageUrlList={imageUrlList}
       />
       <ContentAside>
         <div className='btn_wrapper'>
