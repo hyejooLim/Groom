@@ -25,10 +25,14 @@ const ImageWrapper = styled.div`
   padding: 0;
   margin: 8px 0 0 20px;
   background-color: transparent;
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
   z-index: 2;
+
+  @media (max-width: 1060px) {
+    display: none;
+  }
 `;
 
 const AuthorInfo = styled.div`
@@ -39,13 +43,16 @@ const AuthorInfo = styled.div`
   z-index: 2;
   display: flex;
   align-items: center;
+
+  @media (max-width: 1060px) {
+    display: none;
+  }
 `;
 
 const LogoutButton = styled(Button)`
   width: 100%;
   height: 40px;
   padding-left: 10px;
-  border: 0;
   font-size: 12px;
   line-height: 1.5;
   color: #909090;
