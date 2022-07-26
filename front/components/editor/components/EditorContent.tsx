@@ -25,6 +25,7 @@ const Container = styled.div`
 
 const SelectCategory = styled.div`
   width: 860px;
+  height: 30px;
   margin: 46px auto 0;
 `;
 
@@ -45,6 +46,7 @@ const PostTitle = styled.div`
 
 const TagArea = styled.div`
   width: 860px;
+  min-height: 115px;
   margin: 0 auto;
   padding: 0 0 80px;
   box-sizing: border-box;
@@ -85,7 +87,6 @@ interface EditorContentProps {
   category: CategoryItem;
   onChangeCategory: (value: string, option: CategoryItem) => void;
   onGetImageUrl: (files: any) => void;
-  imageUrlList: (string | ArrayBuffer)[];
 }
 
 const EditorContent: FC<EditorContentProps> = ({
@@ -99,7 +100,6 @@ const EditorContent: FC<EditorContentProps> = ({
   category,
   onChangeCategory,
   onGetImageUrl,
-  imageUrlList,
 }) => {
   const [tag, onChangeTag, setTag] = useInput('');
   const dropzoneRef = useRef(null);
@@ -120,7 +120,7 @@ const EditorContent: FC<EditorContentProps> = ({
   }, [dropzoneRef]);
 
   return (
-    <Container>
+    <Container className='container'>
       <div className='post_header'>
         <SelectCategory>
           <Select defaultValue={category.name || '카테고리'} style={{ width: '170px' }} onChange={onChangeCategory}>
@@ -154,7 +154,6 @@ const EditorContent: FC<EditorContentProps> = ({
               onChangeContent={onChangeContent}
               onOpenFile={handleOpenFile}
               onGetImageUrl={onGetImageUrl}
-              imageUrlList={imageUrlList}
             />
             <input {...getInputProps()} />
           </div>

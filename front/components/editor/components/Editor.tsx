@@ -1,6 +1,7 @@
-import React, { FC, ChangeEvent, useState, useCallback } from 'react';
+import React, { FC, ChangeEvent, useState } from 'react';
 import styled from 'styled-components';
 import { Button } from 'antd';
+import tinymce from 'tinymce';
 
 import EditorToolbar from './EditorToobar';
 import EditorContent from './EditorContent';
@@ -98,7 +99,6 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
 
   const [postData, setPostData] = useState(makePostState());
   const [tempCount, setTempCount] = useState(0);
-  const [imageUrlList, setImageUrlList] = useState<(string | ArrayBuffer)[]>([]);
 
   const handleChangeTitle = (e: ChangeEvent<HTMLInputElement>) => {
     setPostData({
@@ -138,22 +138,34 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
     });
   };
 
-  const handleGetImageUrl = (files) => {
+  const handleUploadImage = (imageUrl: string) => {
+    const editor = tinymce.activeEditor;
+    const dom = editor.dom;
+
+    editor.execCommand('mceInsertContent', false, '<img id="new_image" src="' + imageUrl + '" />');
+
+    let img = dom.select('#new_image');
+    dom.setAttrib(img, 'id', 'new_image');
+    dom.bind(img, 'load', (e) => {
+      editor.nodeChanged();
+      dom.unbind(img, 'load');
+    });
+  };
+
+  const handleGetImageUrl = (files: Array<File>) => {
     console.log('files', files);
 
-    let _imageUrlList = [];
-
-    [].forEach.call(files, (file) => {
+    [].forEach.call(files, (file: File) => {
       const reader = new FileReader();
+
       // 읽기 동작이 성공적으로 완료되면 실행
       reader.onload = (e) => {
         console.log(e.target.result);
+        handleUploadImage(e.target.result as string);
       };
-      reader.readAsDataURL(file);
-      _imageUrlList.push(reader.result);
-    });
 
-    setImageUrlList(_imageUrlList);
+      reader.readAsDataURL(file);
+    });
   };
 
   return (
@@ -170,7 +182,6 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
         category={postData.Category}
         onChangeCategory={handleChangeCategory}
         onGetImageUrl={handleGetImageUrl}
-        imageUrlList={imageUrlList}
       />
       <ContentAside>
         <div className='btn_wrapper'>
