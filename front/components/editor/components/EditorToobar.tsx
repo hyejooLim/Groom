@@ -3,11 +3,21 @@ import Link from 'next/link';
 import Image from 'next/image';
 import styled from 'styled-components';
 import { Avatar, Button, Popover } from 'antd';
-
-import logo from '../../../public/Groom_Logo_No_Background.png';
 import { UserOutlined } from '@ant-design/icons';
 
-const Toolbar = styled.div``;
+import logo from '../../../public/Groom_Logo_No_Background.png';
+
+const Toolbar = styled.div`
+  position: fixed;
+  top: 0;
+  min-width: 944px;
+  width: 100%;
+  height: 70px;
+  background-color: #fff;
+  z-index: 1;
+  transition: opacity 0.5s;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+`;
 
 const ImageWrapper = styled.div`
   outline: none;
@@ -64,7 +74,7 @@ const EditorToolbar = () => {
   const content = <LogoutButton onClick={handleLogout}>로그아웃</LogoutButton>;
 
   return (
-    <Toolbar>
+    <Toolbar className='tool_bar'>
       <ImageWrapper>
         <Link href='/'>
           <a>
