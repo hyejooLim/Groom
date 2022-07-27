@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { signOut, useSession } from 'next-auth/react';
+import Router from 'next/router';
 import Link from 'next/link';
 import Image from 'next/image';
 import styled from 'styled-components';
@@ -23,7 +25,7 @@ const ImageWrapper = styled.div`
   outline: none;
   border: 0;
   padding: 0;
-  margin: 8px 0 0 20px;
+  margin: 8px 0 0 34px;
   background-color: transparent;
   position: absolute;
   top: 0;
@@ -36,7 +38,7 @@ const ImageWrapper = styled.div`
 `;
 
 const AuthorInfo = styled.div`
-  margin: 18px 0 0 20px;
+  margin: 18px 20px 0 0;
   position: fixed;
   top: 0;
   right: 0;
@@ -62,19 +64,28 @@ const LogoutButton = styled(Button)`
 
 const EditorToolbar = () => {
   const [showInfo, setShowInfo] = useState(false);
+  const { data: session, status } = useSession();
+
+  useEffect(() => {
+    if (status === 'unauthenticated') {
+      alert('로그인 후 이용하실 수 있습니다.');
+      Router.replace('/');
+    }
+  }, [status]);
 
   const handleToggleShowInfo = () => {
     setShowInfo((prev) => !prev);
   };
 
+  // navigator is not defined
   const handleLogout = () => {
-    // logout
+    signOut();
   };
 
   const title = (
     <div style={{ margin: '10px 5px' }}>
-      <p style={{ margin: 0, fontSize: '16px' }}>userName</p>
-      <p style={{ color: '#777', fontWeight: '300', fontSize: '13px' }}>userEmail</p>
+      <p style={{ margin: 0, fontSize: '16px' }}>{session?.user.name}</p>
+      <p style={{ color: '#777', fontWeight: '300', fontSize: '13px' }}>{session?.user.email}</p>
     </div>
   );
 
@@ -90,7 +101,7 @@ const EditorToolbar = () => {
         </Link>
       </ImageWrapper>
       <AuthorInfo>
-        <span>userName</span>
+        <span>{session?.user.name}</span>
         <Popover
           placement='bottomRight'
           title={title}
