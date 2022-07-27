@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import styled from 'styled-components';
 import tinymce from 'tinymce';
 import { Editor } from '@tinymce/tinymce-react';
@@ -10,11 +10,6 @@ const EditorWrapper = styled.div`
     border: 0;
     margin: 0 auto;
     width: 880px;
-
-    .tox-sidebar-wrap {
-      width: 880px;
-      margin: 0 auto;
-    }
   }
 
   .tox:not(.tox-tinymce-inline) .tox-editor-header {
@@ -51,6 +46,27 @@ const TinymceEditor: FC<TinymceEditorProps> = ({ content, onChangeContent, onOpe
     'alignleft aligncenter alignright alignjustify |' +
     'bullist numlist blockquote link';
 
+  useEffect(() => {
+    const divElement = document.querySelector('.tox-tinymce') as HTMLDivElement;
+    const iframeElement = document.querySelector('.tox-edit-area__iframe') as HTMLIFrameElement;
+    console.log('divElement', divElement);
+    console.log('iframeElement', iframeElement);
+
+    if (divElement && iframeElement) {
+      let newHeight = iframeElement.contentWindow.document.body.scrollHeight + 50;
+      console.log(newHeight);
+
+      if (newHeight <= 500) {
+        divElement.style.height = '500px'; // 실제 변화가 있는 부분
+        iframeElement.style.height = '500px'; // 코드에 보여지는 부분
+        return;
+      }
+
+      divElement.style.height = newHeight + 'px';
+      iframeElement.style.height = newHeight + 'px';
+    }
+  }, [content]);
+
   const handleDrop = (e: any) => {
     if (e.dataTransfer && e.dataTransfer.files) {
       onGetImageUrl(Array.prototype.slice.call(e.dataTransfer.files));
@@ -69,8 +85,9 @@ const TinymceEditor: FC<TinymceEditorProps> = ({ content, onChangeContent, onOpe
           branding: false,
           statusbar: false,
           block_formats: '제목1=h2;제목2=h3;제목3=h4;본문=p;',
+          iframe_attrs: { style: 'width: 100%; height: 100%; display: block;' },
           content_style:
-            'body { font-family: Nanum Godic; font-size: 16px; padding: 0 10px 50px 10px; margin: 0; overflow-y: hidden; color: #333; word-wrap: break-word; -webkit-font-smoothing: antialiased } img[data-mce-selected] { outline-color: #000 !important } img { max-width: 100%; height: auto } div.mce-resizehandle { background: #fff !important; border-radius: 6px !important; border: 2px solid #000 !important; width: 12px !important; height: 12px !important; } p[data-ke-size="size16"] { line-height: 1.75 } body > * { margin: 20px 0 0 0 }',
+            'body { font-family: Nanum Godic; font-size: 16px; padding: 0 10px 50px 10px; margin: 0; color: #333; -webkit-font-smoothing: antialiased; overflow-y: hidden } img[data-mce-selected] { outline-color: #000 !important } img { max-width: 100%; height: auto; } div.mce-resizehandle { background: #fff !important; border-radius: 6px !important; border: 2px solid #000 !important; width: 12px !important; height: 12px !important; } p[data-ke-size="size16"] { line-height: 1.75 } body > * { margin: 20px 0 0 0 }',
           /** image **/
           file_picker_types: 'image',
           open_file_handler: onOpenFile,
