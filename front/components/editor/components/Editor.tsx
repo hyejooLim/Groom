@@ -1,4 +1,4 @@
-import React, { FC, ChangeEvent, useState } from 'react';
+import React, { FC, ChangeEvent, useState, useEffect, useCallback } from 'react';
 import styled from 'styled-components';
 import { Button } from 'antd';
 import tinymce from 'tinymce';
@@ -78,6 +78,8 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
         title: post.title,
         content: post.content,
         tags: post.tags,
+        Comments: post.Comments,
+        likeCount: post.likeCount,
         Category: post.Category,
         author: post.author,
         authorId: post.authorId,
@@ -97,8 +99,48 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
     }
   };
 
+  let editorUrl = '';
   const [postData, setPostData] = useState(makePostState());
   const [tempCount, setTempCount] = useState(0);
+
+  useEffect(() => {
+    window.addEventListener('beforeunload', preventUnload);
+
+    return () => {
+      window.removeEventListener('beforeunload', preventUnload);
+    };
+  }, []);
+
+  useEffect(() => {
+    editorUrl = location.href;
+    history.pushState(null, '', location.href);
+    window.addEventListener('popstate', preventGoBack); // 사용자의 세션 기록 탐색으로 인해 현재 활성화된 기록 항목이 바뀔 때 발생
+
+    return () => {
+      window.removeEventListener('popstate', preventGoBack);
+    };
+  }, []);
+
+  // 새로고침 및 창 닫기 방지
+  const preventUnload = (e: BeforeUnloadEvent) => {
+    e.preventDefault();
+    e.returnValue = ''; // chrome에서 동작하도록 추가
+  };
+
+  // 뒤로가기 방지
+  const preventGoBack = (e: PopStateEvent) => {
+    if (editorUrl !== location.href) {
+      return;
+    }
+
+    const confirm = window.confirm('사이트에서 나가시겠습니까? 변경사항이 저장되지 않을 수 있습니다.');
+    if (confirm) {
+      history.back(); // popstate 이벤트 발생
+      return;
+    }
+
+    history.pushState(null, '', location.href);
+  };
 
   const handleChangeTitle = (e: ChangeEvent<HTMLInputElement>) => {
     setPostData({
