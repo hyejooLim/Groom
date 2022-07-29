@@ -2,6 +2,7 @@ import React, { FC } from 'react';
 import styled from 'styled-components';
 import Modal from 'react-modal';
 import { AiFillQuestionCircle } from 'react-icons/ai';
+import { GrTrash } from 'react-icons/gr';
 
 import { PostItem } from '../types';
 
@@ -109,8 +110,43 @@ const HeadLayer = styled.div`
   }
 `;
 
+const ItemInfoWrapper = styled.div`
+  display: none;
+  position: fixed;
+  width: 600px;
+  padding: 9px 13px 12px 16px;
+  z-index: 1;
+  border-radius: 1px;
+  background-color: #fff;
+  box-sizing: border-box;
+  box-shadow: 0 0 1px 0 rgb(0 0 0 / 30%), 0 2px 5px 0 rgb(0 0 0 / 10%);
+
+  .item_info {
+    display: block;
+    display: -webkit-box;
+    overflow: hidden;
+    max-height: 60px;
+    text-overflow: ellipsis;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    word-break: break-word;
+    font-size: 13px;
+    line-height: 20px;
+    color: #777;
+  }
+`;
+
+const RemoveBtn = styled.button`
+  display: none;
+
+  .trash_icon {
+    width: 13px;
+    height: 13px;
+  }
+`;
+
 const BodyLayer = styled.div`
-  .list_wrapper {
+  .list_container {
     overflow: auto;
     height: 387px;
     border-bottom: 1px solid #f0f0f0;
@@ -121,6 +157,76 @@ const BodyLayer = styled.div`
       color: #909090;
       font-weight: 300;
       font-size: 14px;
+    }
+
+    .list_wrapper {
+      overflow: auto;
+
+      .list {
+        padding: 14px 0 24px;
+        box-sizing: border-box;
+
+        .list_item {
+          padding: 14px 0 0;
+
+          ::after {
+            display: block;
+            clear: both;
+            content: '';
+          }
+
+          & dt {
+            float: left;
+            width: 96px;
+            padding: 2px 0 0;
+            line-height: 18px;
+            font-family: Avenir Next, Noto Sans DemiLight, AppleSDGothicNeo-Regular, Malgun Gothic, dotum, sans-serif;
+            color: #000;
+          }
+
+          & dd {
+            display: block;
+            float: left;
+            position: relative;
+            width: 746px;
+            color: #333;
+            box-sizing: border-box;
+
+            &:hover {
+              ${RemoveBtn} {
+                display: inline-block;
+              }
+            }
+
+            ::after {
+              display: block;
+              clear: both;
+              content: '';
+            }
+
+            a:hover {
+              text-decoration: underline;
+
+              ${ItemInfoWrapper} {
+                display: block;
+              }
+            }
+
+            .list_item_link {
+              margin-right: 2px;
+              display: inline-block;
+              overflow: hidden;
+              max-width: 719px;
+              line-height: 19px;
+              vertical-align: top;
+              white-space: nowrap;
+              text-overflow: ellipsis;
+              cursor: pointer;
+              color: #333;
+            }
+          }
+        }
+      }
     }
   }
 `;
@@ -197,8 +303,29 @@ const TempSavePostsModal: FC<TempSavePostsModalProps> = ({ isOpen, setIsOpen, te
           </HeadLayer>
 
           <BodyLayer>
-            <div className='list_wrapper'>
-              {tempSavePosts.length === 0 ? <div className='empty'>임시저장된 글이 없습니다.</div> : <div></div>}
+            <div className='list_container'>
+              {tempSavePosts.length === 0 ? (
+                <div className='empty'>임시저장된 글이 없습니다.</div>
+              ) : (
+                <div className='list_wrapper'>
+                  <div className='list'>
+                    {tempSavePosts.map((post) => (
+                      <div className='list_item' key={post.id}>
+                        <dt>?분전</dt>
+                        <dd>
+                          <a className='list_item_link'>{post.title || '제목 없음'}</a>
+                          <RemoveBtn type='button' className='remove btn'>
+                            <GrTrash className='trash_icon' />
+                          </RemoveBtn>
+                          <ItemInfoWrapper className='item_info_wrapper' style={{ left: '182px', top: '129px' }}>
+                            <div className='item_info'>{post.content ? post.content.slice(0, 10) : '[내용없음]'}</div>
+                          </ItemInfoWrapper>
+                        </dd>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
           </BodyLayer>
 
