@@ -161,13 +161,13 @@ const FootLayer = styled.div`
   }
 `;
 
-interface ReactModalProps {
+interface TempSavePostsModalProps {
   isOpen: boolean;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
   tempSavePosts: PostItem[];
 }
 
-const ReactModal: FC<ReactModalProps> = ({ isOpen, setIsOpen, tempSavePosts }) => {
+const TempSavePostsModal: FC<TempSavePostsModalProps> = ({ isOpen, setIsOpen, tempSavePosts }) => {
   const onCloseModal = () => {
     setIsOpen(false);
   };
@@ -218,4 +218,4 @@ const ReactModal: FC<ReactModalProps> = ({ isOpen, setIsOpen, tempSavePosts }) =
   );
 };
 
-export default ReactModal;
+export default TempSavePostsModal;

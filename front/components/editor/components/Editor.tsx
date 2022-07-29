@@ -6,7 +6,7 @@ import classnames from 'classnames';
 
 import EditorToolbar from './EditorToobar';
 import EditorContent from './EditorContent';
-import ReactModal from '../../Modal';
+import TempSavePostsModal from '../../TempSavePostsModal';
 import { ContentModeType, PostItem, CategoryItem } from '../../../types';
 import * as ContentMode from '../constants/ContentMode';
 
@@ -344,7 +344,7 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
           </div>
         )}
       </ToastContainer>
-      <ReactModal isOpen={isOpen} setIsOpen={setIsOpen} tempSavePosts={tempSavePosts} />
+      <TempSavePostsModal isOpen={isOpen} setIsOpen={setIsOpen} tempSavePosts={tempSavePosts} />
     </>
   );
 };
