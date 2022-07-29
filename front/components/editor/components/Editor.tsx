@@ -1,10 +1,12 @@
-import React, { FC, ChangeEvent, useState, useEffect, useCallback } from 'react';
+import React, { FC, ChangeEvent, useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { Button } from 'antd';
 import tinymce from 'tinymce';
+import classnames from 'classnames';
 
 import EditorToolbar from './EditorToobar';
 import EditorContent from './EditorContent';
+import ReactModal from '../../Modal';
 import { ContentModeType, PostItem, CategoryItem } from '../../../types';
 import * as ContentMode from '../constants/ContentMode';
 
@@ -65,6 +67,39 @@ const PublishButton = styled(Button)`
   }
 `;
 
+const ToastContainer = styled.div`
+  position: fixed;
+  top: 70px;
+  width: 100%;
+  z-index: 1;
+
+  .toast_message {
+    width: 100%;
+    min-width: 640px;
+    /* transition: height 0.5s ease-in-out;
+    height: 0; */
+    line-height: 50px;
+    text-align: center;
+    box-shadow: 0 2px 6px 0 rgb(0 0 0 /4%), 0 1px 0 0 rgb(0 0 0 /4%);
+    letter-spacing: -0.2px;
+    overflow: hidden;
+    color: #f54;
+    background-color: #f8f8f8;
+    font-size: 15px;
+    font-weight: 300;
+  }
+
+  .topToBottom {
+    transition: max-height 0.5s ease-in-out;
+    max-height: 70px;
+  }
+
+  .bottomToTop {
+    transition: max-height 0.5s ease-in-out;
+    max-height: 0;
+  }
+`;
+
 interface EditorProps {
   post?: PostItem;
   mode: ContentModeType;
@@ -101,7 +136,13 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
 
   let editorUrl = '';
   const [postData, setPostData] = useState(makePostState());
+
+  const [tempSavePosts, setTempSavePosts] = useState<PostItem[]>([]);
   const [tempCount, setTempCount] = useState(0);
+
+  const [showToastMessage, setShowToastMessage] = useState(false);
+  const [position, setPosition] = useState('');
+  const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
     window.addEventListener('beforeunload', preventUnload);
@@ -210,6 +251,59 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
     });
   };
 
+  const onTempSavePost = () => {
+    if (!postData.title && !postData.content) {
+      alert('제목을 입력하세요.');
+      return;
+    }
+
+    const tempSavePost: PostItem = {
+      id: String(tempSavePosts.length + 1),
+      title: postData.title,
+      content: postData.content,
+      tags: postData.tags,
+      Category: postData.Category,
+      author: postData.author,
+      authorId: postData.authorId,
+      createdAt: postData.createdAt,
+    };
+
+    if (
+      !tempSavePosts.find(
+        (post: PostItem) => post.title === tempSavePost.title && post.content === tempSavePost.content
+      )
+    ) {
+      setTempSavePosts((prevState: PostItem[]) => {
+        return [
+          ...prevState,
+          {
+            id: String(prevState.length + 1),
+            title: postData.title,
+            content: postData.content,
+            tags: postData.tags,
+            Category: postData.Category,
+            author: postData.author,
+            authorId: postData.authorId,
+            createdAt: postData.createdAt,
+          },
+        ];
+      });
+
+      setTempCount((prev) => prev + 1);
+    }
+
+    setShowToastMessage(true);
+
+    setPosition('topToBottom');
+    setTimeout(() => {
+      setPosition('bottomToTop');
+    }, 1000);
+
+    setTimeout(() => {
+      setShowToastMessage(false);
+    }, 2000);
+  };
+
   return (
     <>
       <EditorToolbar />
@@ -228,14 +322,29 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
       <ContentAside>
         <div className='btn_wrapper'>
           <span className='temp_save btn'>
-            <a className='text'>임시저장</a>
-            <a aria-expanded='false' aria-label={`임시저장 개수 ${tempCount}개`} className='count'>
+            <a className='text' onClick={onTempSavePost}>
+              임시저장
+            </a>
+            <a
+              aria-expanded='false'
+              aria-label={`임시저장 개수 ${tempCount}개`}
+              className='count'
+              onClick={() => setIsOpen(true)}
+            >
               {tempCount}
             </a>
           </span>
           <PublishButton className='publish btn'>완료</PublishButton>
         </div>
       </ContentAside>
+      <ToastContainer>
+        {showToastMessage && (
+          <div className='toast_wrapper'>
+            <div className={classnames('toast_message', { position })}>작성 중인 글이 저장되었습니다.</div>
+          </div>
+        )}
+      </ToastContainer>
+      <ReactModal isOpen={isOpen} setIsOpen={setIsOpen} tempSavePosts={tempSavePosts} />
     </>
   );
 };
