@@ -76,8 +76,8 @@ const ToastContainer = styled.div`
   .toast_message {
     width: 100%;
     min-width: 640px;
-    /* transition: height 0.5s ease-in-out;
-    height: 0; */
+    transition: height 0.5s ease-in-out;
+    height: 0;
     line-height: 50px;
     text-align: center;
     box-shadow: 0 2px 6px 0 rgb(0 0 0 /4%), 0 1px 0 0 rgb(0 0 0 /4%);
@@ -89,14 +89,8 @@ const ToastContainer = styled.div`
     font-weight: 300;
   }
 
-  .topToBottom {
-    transition: max-height 0.5s ease-in-out;
-    max-height: 70px;
-  }
-
-  .bottomToTop {
-    transition: max-height 0.5s ease-in-out;
-    max-height: 0;
+  .toast_message.show {
+    height: 50px;
   }
 `;
 
@@ -141,7 +135,7 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
   const [tempCount, setTempCount] = useState(0);
 
   const [showToastMessage, setShowToastMessage] = useState(false);
-  const [position, setPosition] = useState('');
+  const [show, setShow] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
@@ -294,14 +288,17 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
 
     setShowToastMessage(true);
 
-    setPosition('topToBottom');
     setTimeout(() => {
-      setPosition('bottomToTop');
+      setShow(true);
     }, 1000);
 
     setTimeout(() => {
+      setShow(false);
+    }, 3000);
+
+    setTimeout(() => {
       setShowToastMessage(false);
-    }, 2000);
+    }, 4000);
   };
 
   return (
@@ -340,7 +337,7 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
       <ToastContainer>
         {showToastMessage && (
           <div className='toast_wrapper'>
-            <div className={classnames('toast_message', { position })}>작성 중인 글이 저장되었습니다.</div>
+            <div className={classnames('toast_message', { show })}>작성 중인 글이 저장되었습니다.</div>
           </div>
         )}
       </ToastContainer>
