@@ -8,29 +8,6 @@ import { PostItem } from '../types';
 
 Modal.setAppElement('#__next');
 
-const ModalWrapper = styled.div`
-  .ReactModal__Content.ReactModal__Content--after-open {
-    transform: translate(0);
-  }
-
-  .ReactModal__Content {
-    transition: transform 0.2s cubic-bezier(0, 1, 1, 1);
-    transform: translateY(300px);
-  }
-
-  // 스타일 적용 안 됨
-  .modal {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    z-index: 110;
-    width: 100%;
-    min-width: 944px;
-    background-color: #fff;
-    box-shadow: 0 -1px 5px 0 rgb(0 0 0 / 3%), 0 -5px 13px 0 rgb(0 0 0 / 4%);
-  }
-`;
-
 const InnerModal = styled.div`
   width: 860px;
   margin: 0 auto;
@@ -50,8 +27,6 @@ const InfoBoxWrapper = styled.div`
   box-sizing: border-box;
   box-shadow: 0 0 1px 0 rgb(0 0 0 / 30%), 0 2px 5px 0 rgb(0 0 0 / 10%);
   font-size: 12px;
-  display: flex;
-  align-items: center;
   top: 33px;
   left: -2px;
 
@@ -95,7 +70,7 @@ const HeadLayer = styled.div`
     position: relative;
 
     .info_icon {
-      margin: 5px 0 0 8px;
+      margin: 3px 0 0 8px;
       display: block;
       width: 17px;
       height: 17px;
@@ -285,13 +260,13 @@ const TempSavePostsModal: FC<TempSavePostsModalProps> = ({ isOpen, setIsOpen, te
   };
 
   return (
-    <ModalWrapper>
-      <Modal className='modal' isOpen={isOpen} onRequestClose={onCloseModal}>
-        <InnerModal>
-          <HeadLayer>
+    <>
+      <Modal className='modal_layer' isOpen={isOpen} onRequestClose={onCloseModal}>
+        <InnerModal className='inner_modal_layer'>
+          <HeadLayer className='head_layer'>
             <strong className='head_layer_title'>임시저장</strong>
             <div className='head_layer_info'>
-              <AiFillQuestionCircle className='info_icon' style={{ top: '33px', left: '-3px' }} />
+              <AiFillQuestionCircle className='info_icon' />
               <InfoBoxWrapper className='info_box_wrapper'>
                 <div className='info_box'>
                   최대 100개의 글을 임시저장할 수 있습니다.
@@ -302,7 +277,7 @@ const TempSavePostsModal: FC<TempSavePostsModalProps> = ({ isOpen, setIsOpen, te
             </div>
           </HeadLayer>
 
-          <BodyLayer>
+          <BodyLayer className='body_layer'>
             <div className='list_container'>
               {tempSavePosts.length === 0 ? (
                 <div className='empty'>임시저장된 글이 없습니다.</div>
@@ -329,7 +304,7 @@ const TempSavePostsModal: FC<TempSavePostsModalProps> = ({ isOpen, setIsOpen, te
             </div>
           </BodyLayer>
 
-          <FootLayer>
+          <FootLayer className='foot_layer'>
             <div className='btn_wrapper'>
               <button type='button' className='cancel btn'>
                 취소
@@ -341,7 +316,7 @@ const TempSavePostsModal: FC<TempSavePostsModalProps> = ({ isOpen, setIsOpen, te
           </FootLayer>
         </InnerModal>
       </Modal>
-    </ModalWrapper>
+    </>
   );
 };
 
