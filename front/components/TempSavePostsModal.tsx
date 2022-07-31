@@ -306,7 +306,7 @@ const TempSavePostsModal: FC<TempSavePostsModalProps> = ({ isOpen, setIsOpen, te
 
           <FootLayer className='foot_layer'>
             <div className='btn_wrapper'>
-              <button type='button' className='cancel btn'>
+              <button type='button' className='cancel btn' onClick={onCloseModal}>
                 취소
               </button>
               <button type='button' className='default btn'>
