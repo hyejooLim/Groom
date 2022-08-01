@@ -269,7 +269,6 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
     ) {
       setTempSavePosts((prevState: PostItem[]) => {
         return [
-          ...prevState,
           {
             id: String(prevState.length + 1),
             title: postData.title,
@@ -280,6 +279,7 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
             authorId: postData.authorId,
             createdAt: postData.createdAt,
           },
+          ...prevState,
         ];
       });
 
