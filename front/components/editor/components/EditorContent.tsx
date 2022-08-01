@@ -127,7 +127,12 @@ const EditorContent: FC<EditorContentProps> = ({
     <Container className='container'>
       <div className='post_header'>
         <SelectCategory>
-          <Select defaultValue='카테고리' value={category.name} style={{ width: '170px' }} onChange={onChangeCategory}>
+          <Select
+            defaultValue={'카테고리'}
+            value={category.name || '카테고리'}
+            style={{ width: '170px' }}
+            onChange={onChangeCategory}
+          >
             {categories?.map((category) => (
               <Select.Option key={category.id} className='select_option' id={category.id} value={category.name}>
                 {category.name}
