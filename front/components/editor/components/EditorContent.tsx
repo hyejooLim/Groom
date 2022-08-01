@@ -87,6 +87,8 @@ interface EditorContentProps {
   category: CategoryItem;
   onChangeCategory: (value: string, option: CategoryItem) => void;
   onGetImageUrl: (files: any) => void;
+  loadTempSavePost: boolean;
+  setLoadTempSavePost: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const EditorContent: FC<EditorContentProps> = ({
@@ -100,6 +102,8 @@ const EditorContent: FC<EditorContentProps> = ({
   category,
   onChangeCategory,
   onGetImageUrl,
+  loadTempSavePost,
+  setLoadTempSavePost,
 }) => {
   const [tag, onChangeTag, setTag] = useInput('');
   const dropzoneRef = useRef(null);
@@ -154,6 +158,8 @@ const EditorContent: FC<EditorContentProps> = ({
               onChangeContent={onChangeContent}
               onOpenFile={handleOpenFile}
               onGetImageUrl={onGetImageUrl}
+              loadTempSavePost={loadTempSavePost}
+              setLoadTempSavePost={setLoadTempSavePost}
             />
             <input {...getInputProps()} />
           </div>

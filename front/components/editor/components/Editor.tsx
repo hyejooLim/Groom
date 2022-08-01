@@ -132,6 +132,7 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
   const [postData, setPostData] = useState(makePostState());
 
   const [tempSavePosts, setTempSavePosts] = useState<PostItem[]>([]);
+  const [loadTempSavePost, setLoadTempSavePost] = useState(false);
   const [tempCount, setTempCount] = useState(0);
 
   const [showToastMessage, setShowToastMessage] = useState(false);
@@ -312,6 +313,8 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
       tags: post.tags,
       Category: post.Category,
     });
+
+    setLoadTempSavePost(true);
   };
 
   return (
@@ -328,6 +331,8 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
         category={postData.Category}
         onChangeCategory={handleChangeCategory}
         onGetImageUrl={handleGetImageUrl}
+        loadTempSavePost={loadTempSavePost}
+        setLoadTempSavePost={setLoadTempSavePost}
       />
       <ContentAside>
         <div className='btn_wrapper'>
