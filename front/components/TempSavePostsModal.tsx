@@ -69,27 +69,24 @@ const HeadLayer = styled.div`
     float: left;
     position: relative;
 
+    &:hover {
+      ${InfoBoxWrapper} {
+        display: block;
+      }
+    }
+
     .info_icon {
       margin: 3px 0 0 8px;
       display: block;
       width: 17px;
       height: 17px;
       background-position: -60px 0;
-
-      &:hover {
-        ${InfoBoxWrapper} {
-          display: block;
-        }
-      }
     }
   }
 `;
 
 const ItemInfoWrapper = styled.div`
-  display: none;
-  position: fixed;
-  width: 600px;
-  padding: 9px 13px 12px 16px;
+  position: absolute;
   z-index: 1;
   border-radius: 1px;
   background-color: #fff;
@@ -109,14 +106,30 @@ const ItemInfoWrapper = styled.div`
     line-height: 20px;
     color: #777;
   }
+
+  ::after {
+    content: '';
+    display: block;
+    position: absolute;
+    top: -7px;
+    left: 13px;
+    width: 12px;
+    height: 12px;
+    border-left: 1px solid #ddd;
+    border-top: 1px solid #ddd;
+    background-color: #fff;
+    -webkit-transform: rotate(45deg);
+    -moz-transform: rotate(45deg);
+    transform: rotate(45deg);
+  }
 `;
 
 const RemoveBtn = styled.button`
   display: none;
 
   .trash_icon {
-    width: 13px;
-    height: 13px;
+    width: 12px;
+    height: 12px;
   }
 `;
 
@@ -143,6 +156,7 @@ const BodyLayer = styled.div`
 
         .list_item {
           padding: 14px 0 0;
+          font-size: 13px;
 
           ::after {
             display: block;
@@ -166,12 +180,7 @@ const BodyLayer = styled.div`
             width: 746px;
             color: #333;
             box-sizing: border-box;
-
-            &:hover {
-              ${RemoveBtn} {
-                display: inline-block;
-              }
-            }
+            margin: 0;
 
             ::after {
               display: block;
@@ -179,11 +188,9 @@ const BodyLayer = styled.div`
               content: '';
             }
 
-            a:hover {
-              text-decoration: underline;
-
-              ${ItemInfoWrapper} {
-                display: block;
+            &:hover {
+              ${RemoveBtn} {
+                display: inline-block;
               }
             }
 
@@ -198,6 +205,23 @@ const BodyLayer = styled.div`
               text-overflow: ellipsis;
               cursor: pointer;
               color: #333;
+
+              &:hover {
+                text-decoration: underline;
+              }
+            }
+
+            .item_info_wrapper {
+              display: none;
+              position: fixed;
+              width: 600px;
+              padding: 9px 13px 12px 16px;
+            }
+          }
+
+          & dd.hover {
+            ${ItemInfoWrapper} {
+              display: block;
             }
           }
         }
@@ -260,6 +284,16 @@ const TempSavePostsModal: FC<TempSavePostsModalProps> = ({ isOpen, setIsOpen, te
     // 임시저장 글 삭제
   };
 
+  const onMouseOverTitle = (e) => {
+    const dd = e.target.closest('dd') as HTMLElement;
+    dd.classList.add('hover');
+  };
+
+  const onMouseLeaveTitle = (e) => {
+    const dd = e.target.closest('dd') as HTMLElement;
+    dd.classList.remove('hover');
+  };
+
   return (
     <>
       <Modal className='modal_layer' isOpen={isOpen} onRequestClose={onCloseModal}>
@@ -289,14 +323,19 @@ const TempSavePostsModal: FC<TempSavePostsModalProps> = ({ isOpen, setIsOpen, te
                       <div className='list_item' key={post.id}>
                         <dt>?분전</dt>
                         <dd>
-                          <a className='list_item_link' onClick={() => onLoadPost(post)}>
+                          <a
+                            className='list_item_link'
+                            onClick={() => onLoadPost(post)}
+                            onMouseOver={onMouseOverTitle}
+                            onMouseLeave={onMouseLeaveTitle}
+                          >
                             {post.title || '제목 없음'}
                           </a>
                           <RemoveBtn type='button' className='remove btn'>
                             <GrTrash className='trash_icon' />
                           </RemoveBtn>
-                          <ItemInfoWrapper className='item_info_wrapper' style={{ left: '182px', top: '129px' }}>
-                            <div className='item_info'>{post.content ? post.content.slice(0, 10) : '[내용없음]'}</div>
+                          <ItemInfoWrapper className='item_info_wrapper' style={{ left: '0', top: '0' }}>
+                            <div className='item_info'>{post.content ? post.content.slice(0, 30) : '[내용없음]'}</div>
                           </ItemInfoWrapper>
                         </dd>
                       </div>
