@@ -246,9 +246,10 @@ interface TempSavePostsModalProps {
   isOpen: boolean;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
   tempSavePosts: PostItem[];
+  onLoadPost: (post: PostItem) => void;
 }
 
-const TempSavePostsModal: FC<TempSavePostsModalProps> = ({ isOpen, setIsOpen, tempSavePosts }) => {
+const TempSavePostsModal: FC<TempSavePostsModalProps> = ({ isOpen, setIsOpen, tempSavePosts, onLoadPost }) => {
   const onCloseModal = () => {
     setIsOpen(false);
   };
@@ -288,7 +289,9 @@ const TempSavePostsModal: FC<TempSavePostsModalProps> = ({ isOpen, setIsOpen, te
                       <div className='list_item' key={post.id}>
                         <dt>?분전</dt>
                         <dd>
-                          <a className='list_item_link'>{post.title || '제목 없음'}</a>
+                          <a className='list_item_link' onClick={() => onLoadPost(post)}>
+                            {post.title || '제목 없음'}
+                          </a>
                           <RemoveBtn type='button' className='remove btn'>
                             <GrTrash className='trash_icon' />
                           </RemoveBtn>

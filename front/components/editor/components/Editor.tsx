@@ -301,6 +301,19 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
     }, 4000);
   };
 
+  const onLoadPost = (post: PostItem) => {
+    setIsOpen(false);
+    console.log(post);
+
+    setPostData({
+      ...postData,
+      title: post.title,
+      content: post.content,
+      tags: post.tags,
+      Category: post.Category,
+    });
+  };
+
   return (
     <>
       <EditorToolbar />
@@ -341,7 +354,7 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
           </div>
         )}
       </ToastContainer>
-      <TempSavePostsModal isOpen={isOpen} setIsOpen={setIsOpen} tempSavePosts={tempSavePosts} />
+      <TempSavePostsModal isOpen={isOpen} setIsOpen={setIsOpen} tempSavePosts={tempSavePosts} onLoadPost={onLoadPost} />
     </>
   );
 };
