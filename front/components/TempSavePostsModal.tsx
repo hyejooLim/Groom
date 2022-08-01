@@ -284,9 +284,29 @@ const TempSavePostsModal: FC<TempSavePostsModalProps> = ({ isOpen, setIsOpen, te
     // 임시저장 글 삭제
   };
 
-  const onMouseOverTitle = (e) => {
+  const onMouseOverTitle = (e, idx: number) => {
     const dd = e.target.closest('dd') as HTMLElement;
     dd.classList.add('hover');
+
+    const innerModalLayerElement = document.querySelector('.inner_modal_layer') as HTMLElement;
+    const headLayerElement = document.querySelector('.head_layer') as HTMLElement;
+    const listItemElement = e.target.closest('.list_item') as HTMLElement;
+    const itemInfoWrapper = dd.lastElementChild as HTMLElement;
+
+    const innerModalLayerElementMarginLeft = getComputedStyle(innerModalLayerElement).marginLeft;
+    const innerModalLayerElementPaddingTop = getComputedStyle(innerModalLayerElement).paddingTop;
+    const headLayerElementHeight = headLayerElement.offsetHeight;
+    const listItemElementHeight = listItemElement.offsetHeight;
+
+    const computedLeft = Number(innerModalLayerElementMarginLeft.slice(0, -2)) + 96;
+    const computedTop =
+      Number(innerModalLayerElementPaddingTop.slice(0, -2)) +
+      headLayerElementHeight +
+      listItemElementHeight * (idx + 1) +
+      20;
+
+    itemInfoWrapper.style.left = computedLeft + 'px';
+    itemInfoWrapper.style.top = computedTop + 'px';
   };
 
   const onMouseLeaveTitle = (e) => {
@@ -319,14 +339,14 @@ const TempSavePostsModal: FC<TempSavePostsModalProps> = ({ isOpen, setIsOpen, te
               ) : (
                 <div className='list_wrapper'>
                   <div className='list'>
-                    {tempSavePosts.map((post) => (
+                    {tempSavePosts.map((post, idx) => (
                       <div className='list_item' key={post.id}>
                         <dt>?분전</dt>
                         <dd>
                           <a
                             className='list_item_link'
                             onClick={() => onLoadPost(post)}
-                            onMouseOver={onMouseOverTitle}
+                            onMouseOver={(e) => onMouseOverTitle(e, idx)}
                             onMouseLeave={onMouseLeaveTitle}
                           >
                             {post.title || '제목 없음'}
