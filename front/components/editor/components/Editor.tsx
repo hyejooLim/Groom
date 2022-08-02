@@ -2,13 +2,13 @@ import React, { FC, ChangeEvent, useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { Button } from 'antd';
 import tinymce from 'tinymce';
-import classnames from 'classnames';
 
 import EditorToolbar from './EditorToobar';
 import EditorContent from './EditorContent';
 import TempSavePostsModal from '../../TempSavePostsModal';
 import { ContentModeType, PostItem, CategoryItem } from '../../../types';
 import * as ContentMode from '../constants/ContentMode';
+import ToastMessage from '../../ToastMessage';
 
 const ContentAside = styled.div`
   position: absolute;
@@ -67,33 +67,6 @@ const PublishButton = styled(Button)`
   }
 `;
 
-const ToastContainer = styled.div`
-  position: fixed;
-  top: 70px;
-  width: 100%;
-  z-index: 1;
-
-  .toast_message {
-    width: 100%;
-    min-width: 640px;
-    transition: height 0.5s ease-in-out;
-    height: 0;
-    line-height: 50px;
-    text-align: center;
-    box-shadow: 0 2px 6px 0 rgb(0 0 0 /4%), 0 1px 0 0 rgb(0 0 0 /4%);
-    letter-spacing: -0.2px;
-    overflow: hidden;
-    color: #f54;
-    background-color: #f8f8f8;
-    font-size: 15px;
-    font-weight: 300;
-  }
-
-  .toast_message.show {
-    height: 50px;
-  }
-`;
-
 interface EditorProps {
   post?: PostItem;
   mode: ContentModeType;
@@ -135,6 +108,7 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
   const [loadTempSavePost, setLoadTempSavePost] = useState(false);
   const [tempCount, setTempCount] = useState(0);
 
+  const [message, setMessage] = useState('');
   const [showToastMessage, setShowToastMessage] = useState(false);
   const [show, setShow] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -288,6 +262,7 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
     }
 
     setShowToastMessage(true);
+    setMessage('작성 중인 글이 저장되었습니다.');
 
     setTimeout(() => {
       setShow(true);
@@ -315,6 +290,21 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
     });
 
     setLoadTempSavePost(true);
+
+    setShowToastMessage(true);
+    setMessage('글을 불러왔습니다.');
+
+    setTimeout(() => {
+      setShow(true);
+    }, 1000);
+
+    setTimeout(() => {
+      setShow(false);
+    }, 3000);
+
+    setTimeout(() => {
+      setShowToastMessage(false);
+    }, 4000);
   };
 
   return (
@@ -354,13 +344,7 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
           <PublishButton className='publish btn'>완료</PublishButton>
         </div>
       </ContentAside>
-      <ToastContainer>
-        {showToastMessage && (
-          <div className='toast_wrapper'>
-            <div className={classnames('toast_message', { show })}>작성 중인 글이 저장되었습니다.</div>
-          </div>
-        )}
-      </ToastContainer>
+      <ToastMessage message={message} showToastMessage={showToastMessage} show={show} />
       <TempSavePostsModal isOpen={isOpen} setIsOpen={setIsOpen} tempSavePosts={tempSavePosts} onLoadPost={onLoadPost} />
     </>
   );
