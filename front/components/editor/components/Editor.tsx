@@ -206,11 +206,11 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
     });
   };
 
-  const handleUploadImage = (imageUrl: string) => {
+  const handleUploadImage = (imageUrl: string, filename: string) => {
     const editor = tinymce.activeEditor;
     const dom = editor.dom;
 
-    editor.execCommand('mceInsertContent', false, '<img src="' + imageUrl + '" />');
+    editor.execCommand('mceInsertContent', false, '<img src="' + imageUrl + '" data-filename="' + filename + '" />');
 
     let img = dom.select('img');
     dom.bind(img, 'load', (e) => {
@@ -227,7 +227,7 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
 
       // 읽기 동작이 성공적으로 완료되면 실행
       reader.onload = (e) => {
-        handleUploadImage(e.target.result as string);
+        handleUploadImage(e.target.result as string, file.name);
       };
 
       reader.readAsDataURL(file);
