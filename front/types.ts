@@ -31,5 +31,5 @@ export type UserType = {
   subscribedPosts?: PostItem[]; // 유저가 구독한 게시글
 };
 
-export type ContentModeType = 'NEW' | 'EDIT';
+export type ContentModeType = 'ADD' | 'EDIT' | 'VIEW';
 export type WriteModeType = 'DEFAULT' | 'MARKDOWN';
