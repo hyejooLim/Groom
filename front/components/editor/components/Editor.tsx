@@ -67,6 +67,22 @@ const PublishButton = styled(Button)`
   }
 `;
 
+const getThumbnailContent = (content: string) => {
+  if (!content) {
+    return '[내용 없음]';
+  }
+
+  const thumbnailContent = content.replaceAll(
+    /(<h2>)|(<\/h2>)|(<h2.+">)|(<h3>)|(<\/h3>)|(<h3.+">)|(<h4>)|(<\/h4>)|(<h4.+">)|(<p>)|(<\/p>)|(<p.+">)|(<span>)|(<\/span>)|(<span.+">)|(<a>)|(<\/a>)|(<a.+">)|(<strong>)|(<\/strong>)|(<strong.+">)|(<s>)|(<\/s>)|(<s.+">)|(<em>)|(<\/em>)|(<em.+">)|(<ul>)|(<\/ul>)|(<ul.+">)|(<ol>)|(<\/ol>)|(<ol.+">)|(<li>)|(<\/li>)|(<li.+">)|(<blockquote>)|(<\/blockquote>)|(<blockquote.+">)|(&nbsp;)|(<br>)|(<img.+">)/g,
+    ''
+  );
+  if (thumbnailContent === '') {
+    return '[내용 없음]';
+  }
+
+  return thumbnailContent;
+};
+
 interface EditorProps {
   post?: PostItem;
   mode: ContentModeType;
@@ -194,10 +210,9 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
     const editor = tinymce.activeEditor;
     const dom = editor.dom;
 
-    editor.execCommand('mceInsertContent', false, '<img id="new_image" src="' + imageUrl + '" />');
+    editor.execCommand('mceInsertContent', false, '<img src="' + imageUrl + '" />');
 
-    let img = dom.select('#new_image');
-    dom.setAttrib(img, 'id', 'new_image');
+    let img = dom.select('img');
     dom.bind(img, 'load', (e) => {
       editor.nodeChanged();
       dom.unbind(img, 'load');
@@ -212,7 +227,6 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
 
       // 읽기 동작이 성공적으로 완료되면 실행
       reader.onload = (e) => {
-        console.log(e.target.result);
         handleUploadImage(e.target.result as string);
       };
 
@@ -230,6 +244,7 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
       id: String(tempSavePosts.length + 1),
       title: postData.title,
       content: postData.content,
+      thumbnailContent: getThumbnailContent(postData.content),
       tags: postData.tags,
       Category: postData.Category,
       author: postData.author,
@@ -243,22 +258,10 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
       )
     ) {
       setTempSavePosts((prevState: PostItem[]) => {
-        return [
-          {
-            id: String(prevState.length + 1),
-            title: postData.title,
-            content: postData.content,
-            tags: postData.tags,
-            Category: postData.Category,
-            author: postData.author,
-            authorId: postData.authorId,
-            createdAt: postData.createdAt,
-          },
-          ...prevState,
-        ];
+        return [tempSavePost, ...prevState];
       });
 
-      setTempCount((prev) => prev + 1);
+      setTempCount((prev) => prev + 1); // 수정 필요
     }
 
     setShowToastMessage(true);

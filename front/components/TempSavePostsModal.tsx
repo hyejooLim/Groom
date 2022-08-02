@@ -359,7 +359,7 @@ const TempSavePostsModal: FC<TempSavePostsModalProps> = ({ isOpen, setIsOpen, te
                             <GrTrash className='trash_icon' />
                           </RemoveBtn>
                           <ItemInfoWrapper className='item_info_wrapper' style={{ left: '0', top: '0' }}>
-                            <div className='item_info'>{post.content || '[내용없음]'}</div>
+                            <div className='item_info'>{post.thumbnailContent}</div>
                           </ItemInfoWrapper>
                         </dd>
                       </div>
