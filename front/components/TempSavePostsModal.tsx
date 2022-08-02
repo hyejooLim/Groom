@@ -126,10 +126,14 @@ const ItemInfoWrapper = styled.div`
 
 const RemoveBtn = styled.button`
   display: none;
+  height: 13px;
+  padding: 0;
 
   .trash_icon {
-    width: 12px;
-    height: 12px;
+    width: 13px;
+    height: 13px;
+    vertical-align: top;
+    margin: 3px 0 0 5px;
   }
 `;
 
@@ -278,12 +282,6 @@ const TempSavePostsModal: FC<TempSavePostsModalProps> = ({ isOpen, setIsOpen, te
     setIsOpen(false);
   };
 
-  const onRemovePost = () => {
-    confirm('임시저장 글을 정말 삭제하시곘습니까?');
-
-    // 임시저장 글 삭제
-  };
-
   const onMouseOverTitle = (e, idx: number) => {
     const dd = e.target.closest('dd') as HTMLElement;
     dd.classList.add('hover');
@@ -303,7 +301,7 @@ const TempSavePostsModal: FC<TempSavePostsModalProps> = ({ isOpen, setIsOpen, te
       Number(innerModalLayerElementPaddingTop.slice(0, -2)) +
       headLayerElementHeight +
       listItemElementHeight * (idx + 1) +
-      20;
+      22;
 
     itemInfoWrapper.style.left = computedLeft + 'px';
     itemInfoWrapper.style.top = computedTop + 'px';
@@ -312,6 +310,12 @@ const TempSavePostsModal: FC<TempSavePostsModalProps> = ({ isOpen, setIsOpen, te
   const onMouseLeaveTitle = (e) => {
     const dd = e.target.closest('dd') as HTMLElement;
     dd.classList.remove('hover');
+  };
+
+  const onRemovePost = () => {
+    confirm('임시저장 글을 정말 삭제하시곘습니까?');
+
+    // 임시저장 글 삭제
   };
 
   return (
@@ -355,7 +359,7 @@ const TempSavePostsModal: FC<TempSavePostsModalProps> = ({ isOpen, setIsOpen, te
                             <GrTrash className='trash_icon' />
                           </RemoveBtn>
                           <ItemInfoWrapper className='item_info_wrapper' style={{ left: '0', top: '0' }}>
-                            <div className='item_info'>{post.content ? post.content.slice(0, 30) : '[내용없음]'}</div>
+                            <div className='item_info'>{post.content || '[내용없음]'}</div>
                           </ItemInfoWrapper>
                         </dd>
                       </div>
