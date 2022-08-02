@@ -336,19 +336,21 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
       />
       <ContentAside>
         <div className='btn_wrapper'>
-          <span className='temp_save btn'>
-            <a className='text' onClick={onTempSavePost}>
-              임시저장
-            </a>
-            <a
-              aria-expanded='false'
-              aria-label={`임시저장 개수 ${tempCount}개`}
-              className='count'
-              onClick={() => setIsOpen(true)}
-            >
-              {tempCount}
-            </a>
-          </span>
+          {mode === ContentMode.ADD && (
+            <span className='temp_save btn'>
+              <a className='text' onClick={onTempSavePost}>
+                임시저장
+              </a>
+              <a
+                aria-expanded='false'
+                aria-label={`임시저장 개수 ${tempCount}개`}
+                className='count'
+                onClick={() => setIsOpen(true)}
+              >
+                {tempCount}
+              </a>
+            </span>
+          )}
           <PublishButton className='publish btn'>완료</PublishButton>
         </div>
       </ContentAside>
