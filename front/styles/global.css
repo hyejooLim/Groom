@@ -88,3 +88,44 @@ button {
   border-color: none;
   box-shadow: none;
 }
+
+/* tinymce editor */
+.tox .tox-toolbar__group {
+  margin-left: 20px !important;
+  padding: 0 !important;
+  position: relative;
+  cursor: pointer;
+}
+
+.tox .tox-toolbar__group:not(:first-child)::before {
+  content: '';
+  display: block;
+  position: absolute;
+  top: 14px;
+  left: -10px;
+  height: 13px;
+  width: 1px;
+  background-color: #efefef;
+}
+
+.tox .tox-tbtn--bespoke {
+  background: none !important;
+}
+
+.tox .tox-tbtn--select {
+  width: 60px !important;
+}
+
+.tox .tox-tbtn:hover {
+  background: rgba(0, 0, 0, 0.0392156862745098) !important;
+}
+
+/* .tox .tox-tbtn--enabled {
+  background-color: #333 !important;
+  color: #fff !important;
+}
+
+.tox .tox-tbtn--enabled:hover {
+  background-color: #333 !important;
+  color: #fff !important;
+} */
