@@ -125,16 +125,11 @@ button {
   background: rgba(0, 0, 0, 0.0392156862745098) !important;
 }
 
-.tox .tox-tbtn[role='presentation']:hover {
+.tox .tox-tbtn--enabled {
+  background: rgba(0, 0, 0, 0.0392156862745098) !important;
+}
+
+.tox .tox-tbtn[role='presentation'],
+.tox .tox-tbtn--enabled[role='presentation'] :hover {
   background: transparent !important;
 }
-
-/* .tox .tox-tbtn--enabled {
-  background-color: #333 !important;
-  color: #fff !important;
-}
-
-.tox .tox-tbtn--enabled:hover {
-  background-color: #333 !important;
-  color: #fff !important;
-} */
