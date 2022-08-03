@@ -1,18 +1,9 @@
 import React, { FC, useEffect, useRef } from 'react';
-import dynamic, { DynamicOptions, Loader } from 'next/dynamic';
 import styled from 'styled-components';
 import tinymce from 'tinymce';
 import { Editor } from '@tinymce/tinymce-react';
 
 import './plugins/image-upload';
-
-// type DynamicImportType = () => Promise<{ default: React.ComponentType<any> }>;
-
-// const Obj: any = dynamic((): any => import('@tinymce/tinymce-react'), {
-//   ssr: false,
-// });
-
-// const Editor = Obj.Editor;
 
 const EditorWrapper = styled.div`
   .tox-tinymce {
@@ -57,7 +48,7 @@ const TinymceEditor: FC<TinymceEditorProps> = ({
 }) => {
   const editorRef = useRef(null);
 
-  console.log(content);
+  console.log('content', content);
 
   const tinymcePlugins = ['link', 'lists', 'image-upload'];
   const tinymceToolbar =
@@ -79,12 +70,9 @@ const TinymceEditor: FC<TinymceEditorProps> = ({
   useEffect(() => {
     const divElement = document.querySelector('.tox-tinymce') as HTMLDivElement;
     const iframeElement = document.querySelector('.tox-edit-area__iframe') as HTMLIFrameElement;
-    console.log('divElement', divElement);
-    console.log('iframeElement', iframeElement);
 
     if (divElement && iframeElement) {
       let newHeight = iframeElement.contentWindow.document.body.scrollHeight + 50;
-      console.log(newHeight);
 
       if (newHeight <= 500) {
         divElement.style.height = '500px'; // 실제 변화가 있는 부분

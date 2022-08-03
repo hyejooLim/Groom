@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import { Avatar, Button, Popover } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
 
-import logo from '../../../public/Groom_Logo_No_Background.png';
+import logo from '../../public/Groom_Logo_No_Background.png';
 
 const Toolbar = styled.div`
   position: fixed;

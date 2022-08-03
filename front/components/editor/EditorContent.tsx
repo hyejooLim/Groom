@@ -5,9 +5,9 @@ import { Input, Select } from 'antd';
 import { CloseOutlined } from '@ant-design/icons';
 
 import TinymceEditor from './tinymce/TinymceEditor';
-import useInput from '../../../hooks/input';
-import { CategoryItem } from '../../../types';
-import { categories } from '../../Category';
+import useInput from '../../hooks/input';
+import { CategoryItem } from '../../types';
+import { categories } from '../Category';
 
 const Container = styled.div`
   background-color: #fff;

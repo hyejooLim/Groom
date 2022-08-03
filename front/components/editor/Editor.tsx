@@ -5,10 +5,10 @@ import tinymce from 'tinymce';
 
 import EditorToolbar from './EditorToobar';
 import EditorContent from './EditorContent';
-import TempSavePostsModal from '../../TempSavePostsModal';
-import { ContentModeType, PostItem, CategoryItem } from '../../../types';
+import TempSavePostsModal from '../TempSavePostsModal';
+import { ContentModeType, PostItem, CategoryItem } from '../../types';
 import * as ContentMode from '../constants/ContentMode';
-import ToastMessage from '../../ToastMessage';
+import ToastMessage from '../ToastMessage';
 
 const EditorWrapper = styled.div`
   position: relative;
@@ -135,6 +135,14 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
   const [showToastMessage, setShowToastMessage] = useState(false);
   const [show, setShow] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+
+  // const [tinymceActiveEditor, setTinymceActiveEditor] = useState(null);
+  // useEffect(() => {
+  //   console.log('navigator is exist.');
+
+  //   const tinymceActiveEditors = tinymceEditor.activeEditor;
+  //   setTinymceActiveEditor(tinymceActiveEditors);
+  // }, []);
 
   useEffect(() => {
     window.addEventListener('beforeunload', preventUnload);

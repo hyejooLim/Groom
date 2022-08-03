@@ -1,8 +1,8 @@
 import React from 'react';
 import { useRouter } from 'next/router';
 
-import Editor from '../components/editor/components/Editor';
-import * as ContentMode from '../components/editor/constants/ContentMode';
+import Editor from '../components/editor/Editor';
+import * as ContentMode from '../components/constants/ContentMode';
 import { PostItem } from '../types';
 
 const Write = () => {
