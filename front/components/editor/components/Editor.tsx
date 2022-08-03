@@ -10,6 +10,13 @@ import { ContentModeType, PostItem, CategoryItem } from '../../../types';
 import * as ContentMode from '../constants/ContentMode';
 import ToastMessage from '../../ToastMessage';
 
+const EditorWrapper = styled.div`
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-width: 944px;
+`;
+
 const ContentAside = styled.div`
   position: absolute;
   bottom: 0;
@@ -311,7 +318,7 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
   };
 
   return (
-    <>
+    <EditorWrapper className='groom_wrapper'>
       <EditorToolbar />
       <EditorContent
         title={postData.title}
@@ -349,7 +356,7 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
       </ContentAside>
       <ToastMessage message={message} showToastMessage={showToastMessage} show={show} />
       <TempSavePostsModal isOpen={isOpen} setIsOpen={setIsOpen} tempSavePosts={tempSavePosts} onLoadPost={onLoadPost} />
-    </>
+    </EditorWrapper>
   );
 };
 
