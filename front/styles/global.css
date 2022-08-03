@@ -116,8 +116,17 @@ button {
   width: 60px !important;
 }
 
+.tox .tox-split-button:hover {
+  box-shadow: none !important;
+  background: rgba(0, 0, 0, 0.0392156862745098) !important;
+}
+
 .tox .tox-tbtn:hover {
   background: rgba(0, 0, 0, 0.0392156862745098) !important;
+}
+
+.tox .tox-tbtn[role='presentation']:hover {
+  background: transparent !important;
 }
 
 /* .tox .tox-tbtn--enabled {
