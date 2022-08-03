@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { signOut, useSession } from 'next-auth/react';
 import Router from 'next/router';
-import Link from 'next/link';
 import Image from 'next/image';
 import styled from 'styled-components';
 import { Avatar, Button, Popover } from 'antd';
@@ -77,6 +76,13 @@ const EditorToolbar = () => {
     setShowInfo((prev) => !prev);
   };
 
+  const handleRouteHome = () => {
+    const confirm = window.confirm('홈페이지로 돌아가시겠습니까? 변경사항이 저장되지 않을 수 있습니다.');
+    if (confirm) {
+      Router.push('/');
+    }
+  };
+
   // navigator is not defined
   const handleLogout = () => {
     signOut();
@@ -94,11 +100,14 @@ const EditorToolbar = () => {
   return (
     <Toolbar className='tool_bar'>
       <ImageWrapper>
-        <Link href='/'>
-          <a>
-            <Image src={logo} alt='groom_logo' width={140} height={60} />
-          </a>
-        </Link>
+        <Image
+          src={logo}
+          alt='groom_logo'
+          width={140}
+          height={60}
+          onClick={handleRouteHome}
+          style={{ cursor: 'pointer' }}
+        />
       </ImageWrapper>
       <AuthorInfo>
         <span>{session?.user.name}</span>
