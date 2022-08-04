@@ -74,22 +74,6 @@ const PublishButton = styled(Button)`
   }
 `;
 
-const getThumbnailContent = (content: string) => {
-  if (!content) {
-    return '[내용 없음]';
-  }
-
-  const thumbnailContent = content.replaceAll(
-    /(<h2>)|(<\/h2>)|(<h2.+">)|(<h3>)|(<\/h3>)|(<h3.+">)|(<h4>)|(<\/h4>)|(<h4.+">)|(<p>)|(<\/p>)|(<p.+">)|(<span>)|(<\/span>)|(<span.+">)|(<a>)|(<\/a>)|(<a.+">)|(<strong>)|(<\/strong>)|(<strong.+">)|(<s>)|(<\/s>)|(<s.+">)|(<em>)|(<\/em>)|(<em.+">)|(<ul>)|(<\/ul>)|(<ul.+">)|(<ol>)|(<\/ol>)|(<ol.+">)|(<li>)|(<\/li>)|(<li.+">)|(<blockquote>)|(<\/blockquote>)|(<blockquote.+">)|(&nbsp;)|(<br>)|(<img.+">)/g,
-    ''
-  );
-  if (thumbnailContent === '') {
-    return '[내용 없음]';
-  }
-
-  return thumbnailContent;
-};
-
 interface EditorProps {
   post?: PostItem;
   mode: ContentModeType;
@@ -135,14 +119,6 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
   const [showToastMessage, setShowToastMessage] = useState(false);
   const [show, setShow] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
-
-  // const [tinymceActiveEditor, setTinymceActiveEditor] = useState(null);
-  // useEffect(() => {
-  //   console.log('navigator is exist.');
-
-  //   const tinymceActiveEditors = tinymceEditor.activeEditor;
-  //   setTinymceActiveEditor(tinymceActiveEditors);
-  // }, []);
 
   useEffect(() => {
     window.addEventListener('beforeunload', preventUnload);
@@ -259,7 +235,6 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
       id: String(tempSavePosts.length + 1),
       title: postData.title,
       content: postData.content,
-      thumbnailContent: getThumbnailContent(postData.content),
       tags: postData.tags,
       Category: postData.Category,
       author: postData.author,

@@ -95,7 +95,7 @@ const TinymceEditor: FC<TinymceEditorProps> = ({
     <EditorWrapper>
       <Editor
         onInit={(e, editor) => (editorRef.current = editor)}
-        onChange={(e) => onChangeContent(e.target.getContent())}
+        onEditorChange={(value, editor) => onChangeContent(editor.getContent({ format: 'text' }))}
         init={{
           plugins: tinymcePlugins,
           toolbar: tinymceToolbar,
