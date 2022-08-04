@@ -1,7 +1,7 @@
 import React, { FC, ChangeEvent, useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { Button } from 'antd';
-import tinymce from 'tinymce';
+import tinymce from 'tinymce/tinymce';
 
 import EditorToolbar from './EditorToobar';
 import EditorContent from './EditorContent';
@@ -86,6 +86,7 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
         id: post.id,
         title: post.title,
         content: post.content,
+        thumbnailContent: post.thumbnailContent,
         tags: post.tags,
         Comments: post.Comments,
         likeCount: post.likeCount,
@@ -99,6 +100,7 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
         id: '',
         title: '',
         content: '',
+        thumbnailContent: '',
         Category: { id: '', name: '' },
         tags: [],
         author: '',
@@ -167,9 +169,20 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
   };
 
   const handleChangeContent = (value: string) => {
+    console.log('content', value);
+
     setPostData({
       ...postData,
       content: value,
+    });
+  };
+
+  const handleChangeThumbnailContent = (value: string) => {
+    console.log('thumbnail', value);
+
+    setPostData({
+      ...postData,
+      thumbnailContent: value,
     });
   };
 
@@ -200,9 +213,7 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
   const handleUploadImage = (imageUrl: string, filename: string) => {
     const editor = tinymce.activeEditor;
     const dom = editor.dom;
-
     editor.execCommand('mceInsertContent', false, '<img src="' + imageUrl + '" data-filename="' + filename + '" />');
-
     let img = dom.select('img');
     dom.bind(img, 'load', (e) => {
       editor.nodeChanged();
@@ -235,6 +246,7 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
       id: String(tempSavePosts.length + 1),
       title: postData.title,
       content: postData.content,
+      thumbnailContent: postData.thumbnailContent,
       tags: postData.tags,
       Category: postData.Category,
       author: postData.author,
@@ -308,6 +320,7 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
         onChangeTitle={handleChangeTitle}
         content={postData.content}
         onChangeContent={handleChangeContent}
+        onChangeThumbnailContent={handleChangeThumbnailContent}
         tags={postData.tags}
         onAddTag={handleAddTag}
         onRemoveTag={handleRemoveTag}

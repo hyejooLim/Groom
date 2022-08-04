@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useRef } from 'react';
 import styled from 'styled-components';
-import tinymce from 'tinymce';
+import tinymce from 'tinymce/tinymce';
 import { Editor } from '@tinymce/tinymce-react';
 
 import './plugins/image-upload';
@@ -32,6 +32,7 @@ const EditorWrapper = styled.div`
 interface TinymceEditorProps {
   content: string;
   onChangeContent: (value: string) => void;
+  onChangeThumbnailContent: (value: string) => void;
   onOpenFile: () => void;
   onGetImageUrl: (file: any) => void;
   loadTempSavePost: boolean;
@@ -41,6 +42,7 @@ interface TinymceEditorProps {
 const TinymceEditor: FC<TinymceEditorProps> = ({
   content,
   onChangeContent,
+  onChangeThumbnailContent,
   onOpenFile,
   onGetImageUrl,
   loadTempSavePost,
@@ -95,7 +97,8 @@ const TinymceEditor: FC<TinymceEditorProps> = ({
     <EditorWrapper>
       <Editor
         onInit={(e, editor) => (editorRef.current = editor)}
-        onEditorChange={(value, editor) => onChangeContent(editor.getContent({ format: 'text' }))}
+        onChange={(e) => onChangeContent(e.target.getContent())}
+        onEditorChange={(value, editor) => onChangeThumbnailContent(editor.getContent({ format: 'text' }))}
         init={{
           plugins: tinymcePlugins,
           toolbar: tinymceToolbar,

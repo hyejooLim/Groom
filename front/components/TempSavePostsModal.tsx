@@ -360,7 +360,9 @@ const TempSavePostsModal: FC<TempSavePostsModalProps> = ({ isOpen, setIsOpen, te
                           </RemoveBtn>
                           <ItemInfoWrapper className='item_info_wrapper' style={{ left: '0', top: '0' }}>
                             <div className='item_info'>
-                              {!post.content || !post.content.trim() ? '[내용 없음]' : post.content}
+                              {!post.thumbnailContent || !post.thumbnailContent.trim()
+                                ? '[내용 없음]'
+                                : post.thumbnailContent}
                             </div>
                           </ItemInfoWrapper>
                         </dd>
