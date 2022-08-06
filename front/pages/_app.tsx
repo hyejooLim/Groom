@@ -1,5 +1,7 @@
 import Head from 'next/head';
 import { SessionProvider } from 'next-auth/react';
+import { RecoilRoot } from 'recoil';
+
 import 'antd/dist/antd.css';
 import '../styles/global.css';
 import '../styles/modal.css';
@@ -8,10 +10,12 @@ const App = ({ Component }) => {
   return (
     <>
       <SessionProvider>
-        <Head>
-          <title>Groom</title>
-        </Head>
-        <Component />
+        <RecoilRoot>
+          <Head>
+            <title>Groom</title>
+          </Head>
+          <Component />
+        </RecoilRoot>
       </SessionProvider>
     </>
   );

@@ -1,8 +1,9 @@
 import React, { FC, useEffect, useRef } from 'react';
+import { useRecoilState } from 'recoil';
 import styled from 'styled-components';
 import { Editor } from '@tinymce/tinymce-react';
 
-import { loadTinyMce } from '.';
+import { tinymceEditorState } from '../../../recoil';
 
 const EditorWrapper = styled.div`
   .tox-tinymce {
@@ -47,6 +48,7 @@ const TinymceEditor: FC<TinymceEditorProps> = ({
   loadTempSavePost,
   setLoadTempSavePost,
 }) => {
+  const [tinymceEditor, setTinymceEditor] = useRecoilState(tinymceEditorState);
   const editorRef = useRef(null);
 
   console.log('content', content);
@@ -59,16 +61,11 @@ const TinymceEditor: FC<TinymceEditorProps> = ({
     'bullist numlist blockquote link';
 
   useEffect(() => {
-    handleLoadTempSavePost(content, loadTempSavePost);
-  }, [content, loadTempSavePost]);
-
-  const handleLoadTempSavePost = async (content: string, loadTempSavePost: boolean) => {
     if (loadTempSavePost) {
-      const tinymce = await loadTinyMce();
-      tinymce.activeEditor.setContent(content);
+      tinymceEditor.setContent(content);
       setLoadTempSavePost(false);
     }
-  };
+  }, [content, loadTempSavePost]);
 
   useEffect(() => {
     const divElement = document.querySelector('.tox-tinymce') as HTMLDivElement;
@@ -118,6 +115,8 @@ const TinymceEditor: FC<TinymceEditorProps> = ({
           paste_data_images: false, // 자동 drag&drop 제거
           file_picker_types: 'image',
           setup(editor) {
+            setTinymceEditor(editor);
+
             editor.ui.registry.addButton('image-upload', {
               icon: 'image',
               tooltip: '업로드',
