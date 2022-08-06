@@ -41,12 +41,12 @@ const AddPostButton = styled(Button)`
 const ManageLayout = ({ children }) => {
   return (
     <>
-      <Layout style={{ display: 'flex', flexDirection: 'row', height: '100%' }}>
-        <Sider width={214} style={{ margin: '100px 50px 50px 130px', backgroundColor: 'transparent' }}>
+      <Layout style={{ position: 'relative', width: '1150px', margin: '0 auto', padding: '50px 0 120px 0' }}>
+        <Sider width={214} style={{ margin: '100px 50px 50px 0', backgroundColor: 'transparent' }}>
           <ManageProfile />
           <ManageList />
         </Sider>
-        <Layout style={{ width: '100%', marginRight: '130px' }}>
+        <Layout style={{ width: '100%' }}>
           <Header style={{ height: '180px', backgroundColor: 'transparent', padding: 0 }}>
             <HomeButton>
               <Link href='/'>
@@ -55,7 +55,7 @@ const ManageLayout = ({ children }) => {
                 </a>
               </Link>
             </HomeButton>
-            <Link href='/write' as='/write/newPost'>
+            <Link href='/write'>
               <a>
                 <AddPostButton>
                   <span>글쓰기</span>
@@ -64,7 +64,7 @@ const ManageLayout = ({ children }) => {
               </a>
             </Link>
           </Header>
-          <Content>{children}</Content>
+          <Content style={{ width: '886px' }}>{children}</Content>
         </Layout>
       </Layout>
     </>

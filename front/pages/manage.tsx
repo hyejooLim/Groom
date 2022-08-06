@@ -6,16 +6,20 @@ import ManageLayout from '../components/layouts/ManageLayout';
 import { user } from '.';
 
 const CountVisitorWrapper = styled.div`
-  background-color: #fff;
-  height: 105px;
-  display: flex;
+  position: relative;
+  padding: 25px 30px;
   margin-top: 20px;
+  height: 105px;
+  border-radius: 1px;
+  border: 1px solid #e0e5ee;
+  background: #fff;
+  box-sizing: border-box;
 `;
 
 const CountVisitor = styled.div`
-  display: flex;
-  flex-direction: column;
-  margin: 25px 100px 0 30px;
+  float: left;
+  padding: 0 24px 0 0;
+  margin-top: -1px;
 
   & .title {
     font-size: 15px;
@@ -36,15 +40,16 @@ const LastPost = styled.div`
   margin-top: 54px;
 
   & ul {
-    margin-top: 10px;
-    display: flex;
-    justify-content: space-between;
+    overflow: hidden;
+    width: 900px;
+    margin-top: 3px;
 
     & li {
       float: left;
       position: relative;
-      width: 224px;
+      width: 217px;
       height: 246px;
+      margin: 6px 7px 0 0;
       border: 1px solid #e0e5ee;
       background: #fff;
 
@@ -116,17 +121,17 @@ const InfoWrapper = styled.div`
 const Manage = () => {
   const [todayVisitorNumber, setTodayVisitorNumber] = useState(23);
   const [totalVisitorNumber, setTotalVisitorNumber] = useState(1500);
-  
+
   return (
     <ManageLayout>
       <CountVisitorWrapper>
-        <CountVisitor>
-          <span className='title'>오늘 방문 수</span>
-          <span className='number'>{todayVisitorNumber}</span>
+        <CountVisitor style={{ marginRight: '50px' }}>
+          <div className='title'>오늘 방문 수</div>
+          <div className='number'>{todayVisitorNumber}</div>
         </CountVisitor>
         <CountVisitor>
-          <span className='title'>누적 방문 수</span>
-          <span className='number'>{totalVisitorNumber}</span>
+          <div className='title'>누적 방문 수</div>
+          <div className='number'>{totalVisitorNumber}</div>
         </CountVisitor>
       </CountVisitorWrapper>
       <LastPost>
