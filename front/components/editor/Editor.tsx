@@ -1,7 +1,6 @@
 import React, { FC, ChangeEvent, useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { Button } from 'antd';
-import tinymce from 'tinymce/tinymce';
 
 import EditorToolbar from './EditorToobar';
 import EditorContent from './EditorContent';
@@ -9,6 +8,7 @@ import TempSavePostsModal from '../TempSavePostsModal';
 import { ContentModeType, PostItem, CategoryItem } from '../../types';
 import * as ContentMode from '../constants/ContentMode';
 import ToastMessage from '../ToastMessage';
+import { loadTinyMce } from '../../components/editor/tinymce';
 
 const EditorWrapper = styled.div`
   position: relative;
@@ -210,14 +210,18 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
     });
   };
 
-  const handleUploadImage = (imageUrl: string, filename: string) => {
+  const handleUploadImage = async (imageUrl: string, filename: string) => {
+    const tinymce = await loadTinyMce();
+
     const editor = tinymce.activeEditor;
-    const dom = editor.dom;
-    editor.execCommand('mceInsertContent', false, '<img src="' + imageUrl + '" data-filename="' + filename + '" />');
-    let img = dom.select('img');
-    dom.bind(img, 'load', (e) => {
-      editor.nodeChanged();
-      dom.unbind(img, 'load');
+    const dom = editor?.dom;
+
+    tinymce?.execCommand('mceInsertContent', false, '<img src="' + imageUrl + '" data-filename="' + filename + '" />');
+
+    let img = dom?.select('img');
+    dom?.bind(img, 'load', (e) => {
+      editor?.nodeChanged();
+      dom?.unbind(img, 'load');
     });
   };
 

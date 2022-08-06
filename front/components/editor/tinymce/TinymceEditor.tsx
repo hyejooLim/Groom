@@ -1,9 +1,8 @@
 import React, { FC, useEffect, useRef } from 'react';
 import styled from 'styled-components';
-import tinymce from 'tinymce/tinymce';
 import { Editor } from '@tinymce/tinymce-react';
 
-import './plugins/image-upload';
+import { loadTinyMce } from '.';
 
 const EditorWrapper = styled.div`
   .tox-tinymce {
@@ -52,7 +51,7 @@ const TinymceEditor: FC<TinymceEditorProps> = ({
 
   console.log('content', content);
 
-  const tinymcePlugins = ['link', 'lists', 'image-upload'];
+  const tinymcePlugins = ['link', 'lists'];
   const tinymceToolbar =
     'image-upload blocks fontfamily |' +
     'bold italic underline strikethrough forecolor backcolor |' +
@@ -60,14 +59,16 @@ const TinymceEditor: FC<TinymceEditorProps> = ({
     'bullist numlist blockquote link';
 
   useEffect(() => {
-    console.log('useEffect 실행');
+    handleLoadTempSavePost(content, loadTempSavePost);
+  }, [content, loadTempSavePost]);
 
+  const handleLoadTempSavePost = async (content: string, loadTempSavePost: boolean) => {
     if (loadTempSavePost) {
-      console.log('임시 저장글 불러옴');
+      const tinymce = await loadTinyMce();
       tinymce.activeEditor.setContent(content);
       setLoadTempSavePost(false);
     }
-  }, [content, loadTempSavePost]);
+  };
 
   useEffect(() => {
     const divElement = document.querySelector('.tox-tinymce') as HTMLDivElement;
@@ -113,8 +114,20 @@ const TinymceEditor: FC<TinymceEditorProps> = ({
           content_style:
             'body { font-family: Nanum Godic; font-size: 16px; padding: 0 10px 50px 10px; margin: 0; color: #333; -webkit-font-smoothing: antialiased; overflow-y: hidden } img[data-mce-selected] { outline-color: #000 !important } img { max-width: 100%; height: auto; } div.mce-resizehandle { background: #fff !important; border-radius: 6px !important; border: 2px solid #000 !important; width: 12px !important; height: 12px !important; } p[data-ke-size="size16"] { line-height: 1.75 } body > * { margin: 20px 0 0 0 }',
           /** image **/
+          image_caption: true, // figure로 감싸짐 (작동 안함)
+          paste_data_images: false, // 자동 drag&drop 제거
           file_picker_types: 'image',
-          open_file_handler: onOpenFile,
+          setup(editor) {
+            editor.ui.registry.addButton('image-upload', {
+              icon: 'image',
+              tooltip: '업로드',
+              onAction: () => {
+                editor.execCommand('image-upload');
+              },
+            });
+
+            editor.addCommand('image-upload', onOpenFile);
+          },
           init_instance_callback: (editor) => {
             editor.on('drop', handleDrop);
             editor.setContent(content);
