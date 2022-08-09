@@ -108,7 +108,7 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
   const [loadTempPost, setLoadTempPost] = useState(false);
   const [tempCount, setTempCount] = useState(0);
 
-  const [message, setMessage] = useState('');
+  const [toastMessage, setToastMessage] = useState('');
   const [showToastMessage, setShowToastMessage] = useState(false);
   const [show, setShow] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -264,7 +264,7 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
         setTempCount(tempPosts.length);
 
         setShowToastMessage(true);
-        setMessage('작성 중인 글이 저장되었습니다.');
+        setToastMessage('작성 중인 글이 저장되었습니다.');
 
         setTimeout(() => {
           setShow(true);
@@ -298,7 +298,7 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
     setLoadTempPost(true);
 
     setShowToastMessage(true);
-    setMessage('글을 불러왔습니다.');
+    setToastMessage('글을 불러왔습니다.');
 
     setTimeout(() => {
       setShow(true);
@@ -351,7 +351,7 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
           <PublishButton className='publish btn'>완료</PublishButton>
         </div>
       </ContentAside>
-      <ToastMessage message={message} showToastMessage={showToastMessage} show={show} />
+      <ToastMessage toastMessage={toastMessage} showToastMessage={showToastMessage} show={show} />
       <TempSavePostsModal isOpen={isOpen} setIsOpen={setIsOpen} tempPosts={tempPosts} onLoadPost={onLoadPost} />
     </EditorWrapper>
   );

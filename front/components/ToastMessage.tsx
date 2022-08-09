@@ -30,17 +30,17 @@ const ToastMessageWrapper = styled.div`
 `;
 
 interface ToastMessageProps {
-  message: string;
+  toastMessage: string;
   showToastMessage: boolean;
   show: boolean;
 }
 
-const ToastMessage: FC<ToastMessageProps> = ({ message, showToastMessage, show }) => {
+const ToastMessage: FC<ToastMessageProps> = ({ toastMessage, showToastMessage, show }) => {
   return (
     <ToastMessageWrapper>
       {showToastMessage && (
         <div className='toast_wrapper'>
-          <div className={classnames('toast_message', { show })}>{message}</div>
+          <div className={classnames('toast_message', { show })}>{toastMessage}</div>
         </div>
       )}
     </ToastMessageWrapper>

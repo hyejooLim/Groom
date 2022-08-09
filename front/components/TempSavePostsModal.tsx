@@ -4,7 +4,7 @@ import Modal from 'react-modal';
 import { AiFillQuestionCircle } from 'react-icons/ai';
 import { GrTrash } from 'react-icons/gr';
 
-import { PostItem } from '../types';
+import { TempPostItem } from '../types';
 
 Modal.setAppElement('#__next');
 
@@ -270,14 +270,14 @@ const FootLayer = styled.div`
   }
 `;
 
-interface TempSavePostsModalProps {
+interface TempPostsModalProps {
   isOpen: boolean;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  tempSavePosts: PostItem[];
-  onLoadPost: (post: PostItem) => void;
+  tempPosts: TempPostItem[];
+  onLoadPost: (post: TempPostItem) => void;
 }
 
-const TempSavePostsModal: FC<TempSavePostsModalProps> = ({ isOpen, setIsOpen, tempSavePosts, onLoadPost }) => {
+const TempPostsModal: FC<TempPostsModalProps> = ({ isOpen, setIsOpen, tempPosts, onLoadPost }) => {
   const onCloseModal = () => {
     setIsOpen(false);
   };
@@ -338,12 +338,12 @@ const TempSavePostsModal: FC<TempSavePostsModalProps> = ({ isOpen, setIsOpen, te
 
           <BodyLayer className='body_layer'>
             <div className='list_container'>
-              {tempSavePosts.length === 0 ? (
+              {tempPosts.length === 0 ? (
                 <div className='empty'>임시저장된 글이 없습니다.</div>
               ) : (
                 <div className='list_wrapper'>
                   <div className='list'>
-                    {tempSavePosts.map((post, idx) => (
+                    {tempPosts.map((post, idx) => (
                       <div className='list_item' key={post.id}>
                         <dt>?분전</dt>
                         <dd>
@@ -390,4 +390,4 @@ const TempSavePostsModal: FC<TempSavePostsModalProps> = ({ isOpen, setIsOpen, te
   );
 };
 
-export default TempSavePostsModal;
+export default TempPostsModal;

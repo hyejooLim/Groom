@@ -35,8 +35,8 @@ interface TinymceEditorProps {
   onChangeThumbnailContent: (value: string) => void;
   onOpenFile: () => void;
   onGetImageUrl: (file: any) => void;
-  loadTempSavePost: boolean;
-  setLoadTempSavePost: React.Dispatch<React.SetStateAction<boolean>>;
+  loadTempPost: boolean;
+  setLoadTempPost: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const TinymceEditor: FC<TinymceEditorProps> = ({
@@ -45,8 +45,8 @@ const TinymceEditor: FC<TinymceEditorProps> = ({
   onChangeThumbnailContent,
   onOpenFile,
   onGetImageUrl,
-  loadTempSavePost,
-  setLoadTempSavePost,
+  loadTempPost,
+  setLoadTempPost,
 }) => {
   const [tinymceEditor, setTinymceEditor] = useRecoilState(tinymceEditorState);
   const editorRef = useRef(null);
@@ -61,11 +61,11 @@ const TinymceEditor: FC<TinymceEditorProps> = ({
     'bullist numlist blockquote link';
 
   useEffect(() => {
-    if (loadTempSavePost) {
+    if (loadTempPost) {
       tinymceEditor.setContent(content);
-      setLoadTempSavePost(false);
+      setLoadTempPost(false);
     }
-  }, [content, loadTempSavePost]);
+  }, [content, loadTempPost]);
 
   useEffect(() => {
     const divElement = document.querySelector('.tox-tinymce') as HTMLDivElement;

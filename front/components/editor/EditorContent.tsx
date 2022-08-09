@@ -6,7 +6,7 @@ import { CloseOutlined } from '@ant-design/icons';
 
 import TinymceEditor from './tinymce/TinymceEditor';
 import useInput from '../../hooks/input';
-import { CategoryItem } from '../../types';
+import { CategoryItem, TagItem } from '../../types';
 import { categories } from '../Category';
 
 const Container = styled.div`
@@ -82,14 +82,14 @@ interface EditorContentProps {
   content: string;
   onChangeContent: (value: string) => void;
   onChangeThumbnailContent: (value: string) => void;
-  tags: string[];
+  tags: TagItem[];
   onAddTag: (value: string) => void;
   onRemoveTag: (index: number) => any;
   category: CategoryItem;
   onChangeCategory: (value: string, option: CategoryItem) => void;
   onGetImageUrl: (files: any) => void;
-  loadTempSavePost: boolean;
-  setLoadTempSavePost: React.Dispatch<React.SetStateAction<boolean>>;
+  loadTempPost: boolean;
+  setLoadTempPost: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const EditorContent: FC<EditorContentProps> = ({
@@ -104,8 +104,8 @@ const EditorContent: FC<EditorContentProps> = ({
   category,
   onChangeCategory,
   onGetImageUrl,
-  loadTempSavePost,
-  setLoadTempSavePost,
+  loadTempPost,
+  setLoadTempPost,
 }) => {
   const [tag, onChangeTag, setTag] = useInput('');
   const dropzoneRef = useRef(null);
@@ -166,8 +166,8 @@ const EditorContent: FC<EditorContentProps> = ({
               onChangeThumbnailContent={onChangeThumbnailContent}
               onOpenFile={handleOpenFile}
               onGetImageUrl={onGetImageUrl}
-              loadTempSavePost={loadTempSavePost}
-              setLoadTempSavePost={setLoadTempSavePost}
+              loadTempPost={loadTempPost}
+              setLoadTempPost={setLoadTempPost}
             />
             <input {...getInputProps()} />
           </div>
@@ -177,7 +177,7 @@ const EditorContent: FC<EditorContentProps> = ({
         {tags?.map((tag, idx) => (
           <div key={idx} style={{ display: 'inline-block' }}>
             <span className='tag'>
-              #{tag}
+              #{tag.name}
               <CloseOutlined className='close_icon' onClick={() => onRemoveTag(idx)} />
             </span>
           </div>
