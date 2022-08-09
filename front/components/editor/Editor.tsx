@@ -6,10 +6,11 @@ import { Button } from 'antd';
 import EditorToolbar from './EditorToobar';
 import EditorContent from './EditorContent';
 import TempSavePostsModal from '../TempSavePostsModal';
-import { ContentModeType, PostItem, CategoryItem } from '../../types';
-import * as ContentMode from '../constants/ContentMode';
 import ToastMessage from '../ToastMessage';
 import { tinymceEditorState } from '../../recoil';
+import createTempPost from '../../api/createTempPost';
+import * as ContentMode from '../constants/ContentMode';
+import { ContentModeType, PostItem, CategoryItem, TempPostItem } from '../../types';
 
 const EditorWrapper = styled.div`
   position: relative;
@@ -84,38 +85,27 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
   const makePostState = () => {
     if (post && mode === ContentMode.EDIT) {
       return {
-        id: post.id,
         title: post.title,
         content: post.content,
-        thumbnailContent: post.thumbnailContent,
         tags: post.tags,
-        Comments: post.Comments,
-        likeCount: post.likeCount,
-        Category: post.Category,
-        author: post.author,
-        authorId: post.authorId,
-        createdAt: post.createdAt,
+        category: post.category,
       };
     } else {
       return {
-        id: '',
         title: '',
         content: '',
-        thumbnailContent: '',
-        Category: { id: '', name: '' },
         tags: [],
-        author: '',
-        authorId: '',
-        createdAt: '',
+        category: { id: null, name: '' },
       };
     }
   };
 
   let editorUrl = '';
-  const [postData, setPostData] = useState(makePostState());
+  const [postData, setPostData] = useState<PostItem>(makePostState());
 
-  const [tempSavePosts, setTempSavePosts] = useState<PostItem[]>([]);
-  const [loadTempSavePost, setLoadTempSavePost] = useState(false);
+  const [tempPost, setTempPost] = useState<TempPostItem>(null);
+  const [tempPosts, setTempPosts] = useState<TempPostItem[]>([]);
+  const [loadTempPost, setLoadTempPost] = useState(false);
   const [tempCount, setTempCount] = useState(0);
 
   const [message, setMessage] = useState('');
@@ -172,8 +162,6 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
   };
 
   const handleChangeContent = (value: string) => {
-    console.log('content', value);
-
     setPostData({
       ...postData,
       content: value,
@@ -181,10 +169,8 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
   };
 
   const handleChangeThumbnailContent = (value: string) => {
-    console.log('thumbnail', value);
-
-    setPostData({
-      ...postData,
+    setTempPost({
+      ...tempPost,
       thumbnailContent: value,
     });
   };
@@ -192,7 +178,7 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
   const handleAddTag = (value: string) => {
     setPostData({
       ...postData,
-      tags: [...postData.tags, value],
+      tags: [...postData.tags, { name: value }],
     });
   };
 
@@ -209,7 +195,7 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
   const handleChangeCategory = (value: string, option: CategoryItem) => {
     setPostData({
       ...postData,
-      Category: { id: option.id, name: value },
+      category: { id: Number(option.id), name: value },
     });
   };
 
@@ -244,53 +230,60 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
     });
   };
 
-  const onTempSavePost = () => {
-    if (!postData.title && !postData.content) {
-      alert('제목을 입력하세요.');
-      return;
-    }
+  const handleTempPost = async () => {
+    try {
+      if (!postData.title && !postData.content) {
+        alert('제목을 입력하세요.');
+        return;
+      }
 
-    const tempSavePost: PostItem = {
-      id: String(tempSavePosts.length + 1),
-      title: postData.title,
-      content: postData.content,
-      thumbnailContent: postData.thumbnailContent,
-      tags: postData.tags,
-      Category: postData.Category,
-      author: postData.author,
-      authorId: postData.authorId,
-      createdAt: postData.createdAt,
-    };
-
-    if (
-      !tempSavePosts.find(
-        (post: PostItem) => post.title === tempSavePost.title && post.content === tempSavePost.content
-      )
-    ) {
-      setTempSavePosts((prevState: PostItem[]) => {
-        return [tempSavePost, ...prevState];
+      setTempPost((prevState: TempPostItem) => {
+        return {
+          ...prevState,
+          title: postData.title,
+          content: postData.content,
+          tags: postData.tags,
+          category: postData.category,
+        };
       });
 
-      setTempCount((prev) => prev + 1); // 수정 필요
+      if (tempPosts.find((post: TempPostItem) => JSON.stringify(post) === JSON.stringify(tempPost))) {
+        alert('이미 저장된 글입니다.');
+        return;
+      }
+
+      const result = await createTempPost({
+        data: tempPost,
+      });
+
+      if (result) {
+        setTempPosts((prevState: TempPostItem[]) => {
+          return [tempPost, ...prevState];
+        });
+
+        setTempCount(tempPosts.length);
+
+        setShowToastMessage(true);
+        setMessage('작성 중인 글이 저장되었습니다.');
+
+        setTimeout(() => {
+          setShow(true);
+        }, 1000);
+
+        setTimeout(() => {
+          setShow(false);
+        }, 3000);
+
+        setTimeout(() => {
+          setShowToastMessage(false);
+        }, 4000);
+      }
+    } catch (err) {
+      console.error(err);
     }
-
-    setShowToastMessage(true);
-    setMessage('작성 중인 글이 저장되었습니다.');
-
-    setTimeout(() => {
-      setShow(true);
-    }, 1000);
-
-    setTimeout(() => {
-      setShow(false);
-    }, 3000);
-
-    setTimeout(() => {
-      setShowToastMessage(false);
-    }, 4000);
   };
 
-  const onLoadPost = (post: PostItem) => {
+  const onLoadPost = (post: TempPostItem) => {
     setIsOpen(false);
     console.log(post);
 
@@ -299,10 +292,10 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
       title: post.title,
       content: post.content,
       tags: post.tags,
-      Category: post.Category,
+      category: post.category,
     });
 
-    setLoadTempSavePost(true);
+    setLoadTempPost(true);
 
     setShowToastMessage(true);
     setMessage('글을 불러왔습니다.');
@@ -332,17 +325,17 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
         tags={postData.tags}
         onAddTag={handleAddTag}
         onRemoveTag={handleRemoveTag}
-        category={postData.Category}
+        category={postData.category}
         onChangeCategory={handleChangeCategory}
         onGetImageUrl={handleGetImageUrl}
-        loadTempSavePost={loadTempSavePost}
-        setLoadTempSavePost={setLoadTempSavePost}
+        loadTempPost={loadTempPost}
+        setLoadTempPost={setLoadTempPost}
       />
       <ContentAside>
         <div className='btn_wrapper'>
           {mode === ContentMode.ADD && (
             <span className='temp_save btn'>
-              <a className='text' onClick={onTempSavePost}>
+              <a className='text' onClick={handleTempPost}>
                 임시저장
               </a>
               <a
@@ -359,7 +352,7 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
         </div>
       </ContentAside>
       <ToastMessage message={message} showToastMessage={showToastMessage} show={show} />
-      <TempSavePostsModal isOpen={isOpen} setIsOpen={setIsOpen} tempSavePosts={tempSavePosts} onLoadPost={onLoadPost} />
+      <TempSavePostsModal isOpen={isOpen} setIsOpen={setIsOpen} tempPosts={tempPosts} onLoadPost={onLoadPost} />
     </EditorWrapper>
   );
 };
