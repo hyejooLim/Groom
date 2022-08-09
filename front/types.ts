@@ -1,35 +1,70 @@
-export type CommentItem = {
-  User: UserType;
-  content: React.ReactNode;
-  datetime: string;
-};
+export type ContentModeType = 'ADD' | 'EDIT' | 'VIEW';
+export type WriteModeType = 'DEFAULT' | 'MARKDOWN';
 
-export type CategoryItem = {
-  id: string;
+export type UserType = {
+  id?: number;
+  email: string;
+  password: string;
   name: string;
-  posts?: PostItem[];
+  comments: CommentItem[];
+  posts?: PostItem[]; // 작성한 게시글
+  tempPosts?: TempPostItem[];
+  subscribedPosts?: PostItem[]; // 유저가 구독한 게시글
+  createdAt?: string;
+  updatedAt?: string;
 };
 
 export type PostItem = {
-  id: string;
+  id?: number;
   title: string;
   content: string;
-  tags?: string[];
-  Comments?: CommentItem[];
+  tags?: TagItem[];
+  comments?: CommentItem[];
   likeCount?: number;
-  Category: CategoryItem;
-  author: string;
-  authorId: string;
-  createdAt: string;
+  category: CategoryItem;
+  categoryId?: number;
+  author?: UserType;
+  authorId?: number;
+  subscriber?: UserType;
+  subscriberId?: number;
+  createdAt?: string;
+  updatedAt?: string;
 };
 
-export type UserType = {
-  id: string;
+export type TempPostItem = {
+  id?: number;
+  title: string;
+  content: string;
+  thumbnailContent: string;
+  tags?: TagItem[];
+  category: CategoryItem;
+  categoryId?: number;
+  author?: UserType;
+  authorId?: number;
+  createdAt?: string;
+  updatedAt?: string;
+};
+
+export type TagItem = {
+  id?: number;
   name: string;
-  email: string;
-  posts?: PostItem[]; // 작성한 게시글
-  subscribedPosts?: PostItem[]; // 유저가 구독한 게시글
+  posts?: PostItem[];
+  tempPosts?: TempPostItem[];
 };
 
-export type ContentModeType = 'ADD' | 'EDIT' | 'VIEW';
-export type WriteModeType = 'DEFAULT' | 'MARKDOWN';
+export type CategoryItem = {
+  id?: number;
+  name: string;
+  posts?: PostItem[];
+  tempPosts?: TempPostItem[];
+};
+
+export type CommentItem = {
+  id?: number;
+  post: PostItem;
+  postId?: number;
+  author: UserType;
+  authorId?: number;
+  content: string;
+  datetime: string;
+};
