@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { signOut, useSession } from 'next-auth/react';
 import Router from 'next/router';
 import Image from 'next/image';
@@ -63,14 +63,7 @@ const LogoutButton = styled(Button)`
 
 const EditorToolbar = () => {
   const [showInfo, setShowInfo] = useState(false);
-  const { data: session, status } = useSession();
-
-  useEffect(() => {
-    if (status === 'unauthenticated') {
-      alert('로그인 후 이용하실 수 있습니다.');
-      Router.replace('/');
-    }
-  }, [status]);
+  const { data: session } = useSession();
 
   const handleToggleShowInfo = () => {
     setShowInfo((prev) => !prev);
@@ -83,7 +76,6 @@ const EditorToolbar = () => {
     }
   };
 
-  // navigator is not defined
   const handleLogout = () => {
     signOut();
   };
@@ -119,7 +111,7 @@ const EditorToolbar = () => {
           visible={showInfo}
           onVisibleChange={handleToggleShowInfo}
         >
-          <div style={{ margin: '0 34px 0 14px', display: 'inline-block' }}>
+          <div style={{ margin: '0 34px 0 14px', display: 'inline-block', cursor: 'pointer' }}>
             <Avatar icon={<UserOutlined />} />
           </div>
         </Popover>
