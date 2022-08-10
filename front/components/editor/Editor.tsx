@@ -1,5 +1,5 @@
 import React, { FC, ChangeEvent, useState, useEffect } from 'react';
-import { useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 import { Button } from 'antd';
 
@@ -11,6 +11,8 @@ import { tinymceEditorState } from '../../recoil';
 import createTempPost from '../../api/createTempPost';
 import * as ContentMode from '../constants/ContentMode';
 import { ContentModeType, PostItem, CategoryItem, TempPostItem } from '../../types';
+import { getTempPostsSelector, tempPostsState } from '../../recoil/tempPosts';
+import getTempPosts from '../../api/getTempPosts';
 
 const EditorWrapper = styled.div`
   position: relative;
@@ -104,7 +106,9 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
   const [postData, setPostData] = useState<PostItem>(makePostState());
 
   const [tempPost, setTempPost] = useState<TempPostItem>(null);
-  const [tempPosts, setTempPosts] = useState<TempPostItem[]>([]);
+  // const [tempPosts, setTempPosts] = useState<TempPostItem[]>([]);
+  const [tempPosts, setTempPosts] = useRecoilState(tempPostsState);
+
   const [loadTempPost, setLoadTempPost] = useState(false);
   const [tempCount, setTempCount] = useState(0);
 
@@ -114,6 +118,22 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const tinymceEditor = useRecoilValue(tinymceEditorState);
+
+  useEffect(() => {
+    handleGetTempPosts();
+  }, []);
+
+  const handleGetTempPosts = async () => {
+    try {
+      const result = await getTempPosts();
+      console.log(result);
+
+      setTempPosts(result);
+      setTempCount(result.length); // rename tempPostsCount
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   useEffect(() => {
     window.addEventListener('beforeunload', preventUnload);

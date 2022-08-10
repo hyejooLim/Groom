@@ -338,7 +338,7 @@ const TempPostsModal: FC<TempPostsModalProps> = ({ isOpen, setIsOpen, tempPosts,
 
           <BodyLayer className='body_layer'>
             <div className='list_container'>
-              {tempPosts.length === 0 ? (
+              {tempPosts?.length === 0 ? (
                 <div className='empty'>임시저장된 글이 없습니다.</div>
               ) : (
                 <div className='list_wrapper'>
