@@ -11,7 +11,7 @@ import { tinymceEditorState } from '../../recoil';
 import createTempPost from '../../api/createTempPost';
 import * as ContentMode from '../constants/ContentMode';
 import { ContentModeType, PostItem, CategoryItem, TempPostItem } from '../../types';
-import { getTempPostsSelector, tempPostsState } from '../../recoil/tempPosts';
+import { tempPostsState } from '../../recoil/tempPosts';
 import getTempPosts from '../../api/getTempPosts';
 
 const EditorWrapper = styled.div`
@@ -106,7 +106,6 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
   const [postData, setPostData] = useState<PostItem>(makePostState());
 
   const [tempPost, setTempPost] = useState<TempPostItem>(null);
-  // const [tempPosts, setTempPosts] = useState<TempPostItem[]>([]);
   const [tempPosts, setTempPosts] = useRecoilState(tempPostsState);
 
   const [loadTempPost, setLoadTempPost] = useState(false);
@@ -126,7 +125,6 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
   const handleGetTempPosts = async () => {
     try {
       const result = await getTempPosts();
-      console.log(result);
 
       setTempPosts(result);
       setTempCount(result.length); // rename tempPostsCount
@@ -276,12 +274,12 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
         data: tempPost,
       });
 
-      if (result) {
+      if (result.ok) {
         setTempPosts((prevState: TempPostItem[]) => {
           return [tempPost, ...prevState];
         });
 
-        setTempCount(tempPosts.length);
+        setTempCount((prev) => prev + 1);
 
         setShowToastMessage(true);
         setToastMessage('작성 중인 글이 저장되었습니다.');
