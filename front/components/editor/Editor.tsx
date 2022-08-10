@@ -5,7 +5,7 @@ import { Button } from 'antd';
 
 import EditorToolbar from './EditorToobar';
 import EditorContent from './EditorContent';
-import TempSavePostsModal from '../TempSavePostsModal';
+import TempPostsModal from '../TempPostsModal';
 import ToastMessage from '../ToastMessage';
 import { tinymceEditorState } from '../../recoil';
 import createTempPost from '../../api/createTempPost';
@@ -352,7 +352,7 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
         </div>
       </ContentAside>
       <ToastMessage toastMessage={toastMessage} showToastMessage={showToastMessage} show={show} />
-      <TempSavePostsModal isOpen={isOpen} setIsOpen={setIsOpen} tempPosts={tempPosts} onLoadPost={onLoadPost} />
+      <TempPostsModal isOpen={isOpen} setIsOpen={setIsOpen} tempPosts={tempPosts} onLoadPost={onLoadPost} />
     </EditorWrapper>
   );
 };
