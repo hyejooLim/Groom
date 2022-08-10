@@ -109,7 +109,7 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
   const [tempPosts, setTempPosts] = useRecoilState(tempPostsState);
 
   const [loadTempPost, setLoadTempPost] = useState(false);
-  const [tempCount, setTempCount] = useState(0);
+  const [tempPostsCount, setTempPostsCount] = useState(0);
 
   const [toastMessage, setToastMessage] = useState('');
   const [showToastMessage, setShowToastMessage] = useState(false);
@@ -127,7 +127,7 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
       const result = await getTempPosts();
 
       setTempPosts(result);
-      setTempCount(result.length); // rename tempPostsCount
+      setTempPostsCount(result.length);
     } catch (err) {
       console.error(err);
     }
@@ -279,7 +279,7 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
           return [tempPost, ...prevState];
         });
 
-        setTempCount((prev) => prev + 1);
+        setTempPostsCount((prev) => prev + 1);
 
         setShowToastMessage(true);
         setToastMessage('작성 중인 글이 저장되었습니다.');
@@ -358,11 +358,11 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
               </a>
               <a
                 aria-expanded='false'
-                aria-label={`임시저장 개수 ${tempCount}개`}
+                aria-label={`임시저장 개수 ${tempPostsCount}개`}
                 className='count'
                 onClick={() => setIsOpen(true)}
               >
-                {tempCount}
+                {tempPostsCount}
               </a>
             </span>
           )}
