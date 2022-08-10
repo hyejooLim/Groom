@@ -5,6 +5,9 @@ import { AiFillQuestionCircle } from 'react-icons/ai';
 import { GrTrash } from 'react-icons/gr';
 
 import { TempPostItem } from '../types';
+import deleteTempPost from '../api/deleteTempPost';
+import { useRecoilState, useResetRecoilState, useSetRecoilState } from 'recoil';
+import { tempPostsCountState, tempPostsState } from '../recoil/tempPosts';
 
 Modal.setAppElement('#__next');
 
@@ -273,11 +276,13 @@ const FootLayer = styled.div`
 interface TempPostsModalProps {
   isOpen: boolean;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  tempPosts: TempPostItem[];
   onLoadPost: (post: TempPostItem) => void;
 }
 
-const TempPostsModal: FC<TempPostsModalProps> = ({ isOpen, setIsOpen, tempPosts, onLoadPost }) => {
+const TempPostsModal: FC<TempPostsModalProps> = ({ isOpen, setIsOpen, onLoadPost }) => {
+  const [tempPosts, setTempPosts] = useRecoilState(tempPostsState);
+  const setTempPostsCount = useSetRecoilState(tempPostsCountState);
+
   const onCloseModal = () => {
     setIsOpen(false);
   };
@@ -312,10 +317,25 @@ const TempPostsModal: FC<TempPostsModalProps> = ({ isOpen, setIsOpen, tempPosts,
     dd.classList.remove('hover');
   };
 
-  const onRemovePost = () => {
-    confirm('임시저장 글을 정말 삭제하시곘습니까?');
+  const onDeleteTempPost = async (id: number) => {
+    try {
+      const confirm = window.confirm('임시저장글을 정말 삭제하시겠습니까?');
+      if (!confirm) {
+        return;
+      }
 
-    // 임시저장 글 삭제
+      const result = await deleteTempPost({ id });
+
+      if (result.ok) {
+        let newTempPosts = [...tempPosts];
+        newTempPosts = newTempPosts.filter((tempPost) => tempPost.id !== id);
+
+        setTempPosts(newTempPosts);
+        setTempPostsCount((prev) => prev - 1);
+      }
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   return (
@@ -355,7 +375,7 @@ const TempPostsModal: FC<TempPostsModalProps> = ({ isOpen, setIsOpen, tempPosts,
                           >
                             {post.title || '제목 없음'}
                           </a>
-                          <RemoveBtn type='button' className='remove btn'>
+                          <RemoveBtn type='button' className='remove btn' onClick={() => onDeleteTempPost(post.id)}>
                             <GrTrash className='trash_icon' />
                           </RemoveBtn>
                           <ItemInfoWrapper className='item_info_wrapper' style={{ left: '0', top: '0' }}>

@@ -1,10 +1,17 @@
 import { atom, selector } from 'recoil';
+
 import getTempPosts from '../api/getTempPosts';
 import { TempPostItem } from '../types';
 
 export const tempPostsState = atom<TempPostItem[]>({
   key: 'tempPostsState',
   default: [],
+  dangerouslyAllowMutability: true,
+});
+
+export const tempPostsCountState = atom<number>({
+  key: 'tempPostsCountState',
+  default: 0,
   dangerouslyAllowMutability: true,
 });
 

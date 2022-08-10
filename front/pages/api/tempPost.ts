@@ -9,8 +9,8 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
     if (req.method === 'POST') {
       const session = await getSession({ req });
 
-      const tags = await Promise.all(
-        req.body.tags.map((tag) =>
+      await Promise.all(
+        req.body.tags?.map((tag) =>
           prisma.tag.upsert({
             where: { name: tag.name },
             update: {},
@@ -43,6 +43,16 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
       });
 
       res.status(201).json(tempPost);
+    }
+
+    if (req.method === 'DELETE') {
+      await prisma.tempPost.delete({
+        where: {
+          id: req.body,
+        },
+      });
+
+      return res.status(200).send('ok');
     }
   } catch (err) {
     console.error(err);

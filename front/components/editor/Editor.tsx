@@ -11,7 +11,7 @@ import { tinymceEditorState } from '../../recoil';
 import createTempPost from '../../api/createTempPost';
 import * as ContentMode from '../constants/ContentMode';
 import { ContentModeType, PostItem, CategoryItem, TempPostItem } from '../../types';
-import { tempPostsState } from '../../recoil/tempPosts';
+import { tempPostsCountState, tempPostsState } from '../../recoil/tempPosts';
 import getTempPosts from '../../api/getTempPosts';
 
 const EditorWrapper = styled.div`
@@ -107,9 +107,8 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
 
   const [tempPost, setTempPost] = useState<TempPostItem>(null);
   const [tempPosts, setTempPosts] = useRecoilState(tempPostsState);
-
+  const [tempPostsCount, setTempPostsCount] = useRecoilState(tempPostsCountState);
   const [loadTempPost, setLoadTempPost] = useState(false);
-  const [tempPostsCount, setTempPostsCount] = useState(0);
 
   const [toastMessage, setToastMessage] = useState('');
   const [showToastMessage, setShowToastMessage] = useState(false);
@@ -370,7 +369,7 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
         </div>
       </ContentAside>
       <ToastMessage toastMessage={toastMessage} showToastMessage={showToastMessage} show={show} />
-      <TempPostsModal isOpen={isOpen} setIsOpen={setIsOpen} tempPosts={tempPosts} onLoadPost={onLoadPost} />
+      <TempPostsModal isOpen={isOpen} setIsOpen={setIsOpen} onLoadPost={onLoadPost} />
     </EditorWrapper>
   );
 };
