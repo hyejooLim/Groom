@@ -3,7 +3,7 @@ import { useRecoilState } from 'recoil';
 import styled from 'styled-components';
 import { Editor } from '@tinymce/tinymce-react';
 
-import { tinymceEditorState } from '../../../recoil';
+import { tinymceEditorState } from '../../../recoil/tinymce';
 
 const EditorWrapper = styled.div`
   .tox-tinymce {
