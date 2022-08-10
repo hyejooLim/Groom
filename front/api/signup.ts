@@ -1,10 +1,10 @@
-// interface SignupProps {
-//   email: string;
-//   password: string;
-//   name: string;
-// }
+interface SignupProps {
+  email: string;
+  password: string;
+  name: string;
+}
 
-const signup = async ({ data }) => {
+const signup = async ({ data }: { data: SignupProps }) => {
   const response = await fetch('/api/signup', {
     method: 'POST',
     body: JSON.stringify(data),
