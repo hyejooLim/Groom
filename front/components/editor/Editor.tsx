@@ -232,6 +232,22 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
     });
   };
 
+  const base64ToBlob = (base64Data: string, filename: string) => {
+    const parts = base64Data.split(';base64,'); // seperate data
+    const contentType = parts[0].split(':')[1]; // ex) image/png
+    const decodedData = window.atob(parts[1]); // decode base64 encoded data
+    const uint8Array = new Uint8Array(decodedData.length);
+
+    for (let i = 0; i < decodedData.length; i++) {
+      uint8Array[i] = decodedData.charCodeAt(i);
+    }
+
+    const blob = new Blob([uint8Array], { type: contentType });
+    const blobUrl = URL.createObjectURL(blob);
+
+    handleUploadImage(blobUrl, filename);
+  };
+
   const handleGetImageUrl = (files: Array<File>) => {
     console.log('files', files);
 
@@ -239,8 +255,8 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
       const reader = new FileReader();
 
       // 읽기 동작이 성공적으로 완료되면 실행
-      reader.onload = (e) => {
-        handleUploadImage(e.target.result as string, file.name);
+      reader.onload = () => {
+        base64ToBlob(reader.result as string, file.name);
       };
 
       reader.readAsDataURL(file);
