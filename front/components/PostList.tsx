@@ -66,11 +66,11 @@ const PostList: FC<PostListProps> = ({ posts }) => {
                 as={`/post/${post.id}`}
               >
                 <a>
-                  [{post.Category.name}] {post.title}
+                  [{post.category.name}] {post.title}
                 </a>
               </Link>
               <PostInfo>
-                <span style={{ marginRight: 8 }}>{post.author}</span>
+                <span style={{ marginRight: 8 }}>{post.author.name}</span>
                 <span>{post.createdAt}</span>
               </PostInfo>
             </li>

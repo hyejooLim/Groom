@@ -29,8 +29,8 @@ const CommentList: FC<CommentListProps> = ({ comments }) => {
         <CommentBox>
           <Comment
             author={
-              <Link href={`/user/${item.User.id}`}>
-                <a>{item.User.name}</a>
+              <Link href={`/user/${item.author.id}`}>
+                <a>{item.author.name}</a>
               </Link>
             }
             content={item.content}

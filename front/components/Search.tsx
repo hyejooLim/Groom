@@ -1,4 +1,4 @@
-import React, { KeyboardEvent, useState } from 'react';
+import React, { KeyboardEvent } from 'react';
 import Router from 'next/router';
 import styled from 'styled-components';
 import { Input } from 'antd';
@@ -30,14 +30,14 @@ const Search = () => {
 
     if (e.key === 'Enter') {
       const targetPosts = mainPosts.filter((post) => {
-        const { title, Category, content, author } = post;
+        const { title, category, content, author } = post;
         const insentiveKeyword = new RegExp(keyword, 'gi');
 
         return (
-          insentiveKeyword.test(Category.name) ||
+          insentiveKeyword.test(category.name) ||
           insentiveKeyword.test(title) ||
           insentiveKeyword.test(content) ||
-          insentiveKeyword.test(author)
+          insentiveKeyword.test(author.name)
         );
       });
 

@@ -140,7 +140,7 @@ const PostManageList: FC<PostManageListProps> = ({ posts, firstIndex, lastIndex,
                   >
                     <a>
                       <span>
-                        [{post.Category.name}] {post.title}
+                        [{post.category.name}] {post.title}
                       </span>
                     </a>
                   </Link>
@@ -148,11 +148,11 @@ const PostManageList: FC<PostManageListProps> = ({ posts, firstIndex, lastIndex,
                 </div>
                 <div className='post_extra_info'>
                   <a onClick={onChangePostList}>
-                    <span data-name={post.Category.name} data-id={post.Category.id}>
-                      {post.Category.name}
+                    <span data-name={post.category.name} data-id={post.category.id}>
+                      {post.category.name}
                     </span>
                   </a>
-                  <span>{post.author}</span>
+                  <span>{post.author.name}</span>
                   <span>{post.createdAt}</span>
                 </div>
               </div>

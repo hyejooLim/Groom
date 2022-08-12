@@ -144,12 +144,12 @@ const Manage = () => {
                 as={`/post/${post.id}`}
               >
                 <a>
-                  <PostTitle>{`[${post.Category.name}] ${post.title}`}</PostTitle>
+                  <PostTitle>{`[${post.category.name}] ${post.title}`}</PostTitle>
                   <PostContent>{post.content}</PostContent>
                 </a>
               </Link>
               <InfoWrapper>
-                <span>댓글 {post.Comments.length}</span>
+                <span>댓글 {post.comments.length}</span>
                 <span>공감 {post.likeCount}</span>
               </InfoWrapper>
             </li>

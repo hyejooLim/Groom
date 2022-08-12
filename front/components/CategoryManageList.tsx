@@ -203,14 +203,14 @@ const CategoryManageList: FC<CategoryManageListProps> = ({ categories, setCatego
   const [category, onChangeCategory, setCategory] = useInput('');
   const [showInput, setShowInput] = useState(false);
   const [editMode, setEditMode] = useState<CategoryItem>({
-    id: '',
+    id: null,
     name: '',
   });
 
   const [draggedItemIdx, setDraggedItemIdx] = useState(0);
   const [targetItemIdx, setTargetItemIdx] = useState(0);
 
-  const onClickUpdateBtn = useCallback((categoryId: string, categoryName: string) => {
+  const onClickUpdateBtn = useCallback((categoryId: number, categoryName: string) => {
     setEditMode({ id: categoryId, name: categoryName });
   }, []);
 
@@ -234,15 +234,15 @@ const CategoryManageList: FC<CategoryManageListProps> = ({ categories, setCatego
 
   const onUpdateCategoryName = useCallback(() => {
     setCategories(newList);
-    setEditMode({ id: '', name: '' });
+    setEditMode({ id: null, name: '' });
   }, [newList]);
 
   const onCancelUpdateCategoryName = useCallback(() => {
-    setEditMode({ id: '', name: '' });
+    setEditMode({ id: null, name: '' });
   }, []);
 
   const onClickDeleteBtn = useCallback(
-    (categoryId: string) => {
+    (categoryId: number) => {
       const _categories = [...categories];
       setCategories(_categories.filter((item) => item.id !== categoryId));
     },
@@ -263,7 +263,7 @@ const CategoryManageList: FC<CategoryManageListProps> = ({ categories, setCatego
       setCategories([
         ...categories,
         {
-          id: String(Number(categories[categories.length - 1].id) + 1),
+          id: Number(categories[categories.length - 1].id) + 1,
           name: category,
           posts: [],
         },

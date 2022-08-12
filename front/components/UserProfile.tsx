@@ -91,7 +91,7 @@ const UserProfile = () => {
           <NewBox>
             <div className='posts'>
               <span>게시글</span>
-              <span className='count'>{session.user.posts ? session.user.posts.length : 0}</span>
+              <span className='count'>0</span>
             </div>
           </NewBox>
         </UserInfo>

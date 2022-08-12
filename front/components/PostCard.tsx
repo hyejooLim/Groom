@@ -156,16 +156,16 @@ const PostCard: FC<PostCardProps> = ({ post }) => {
     }
   }, [user]);
 
-  const onSubscribeAuthor = useCallback(() => {
+  const onSubscribePost = useCallback(() => {
     if (!user) {
       alert('로그인이 필요합니다.');
     }
 
-    if (user.subscribers.find((subscriber) => subscriber.id === currentPost.authorId)) {
-      alert('이미 구독한 유저입니다.');
+    if (user.subscribedPosts.find((post) => post.id === currentPost.id)) {
+      alert('이미 구독한 글입니다.');
     }
 
-    // 로그인한 유저의 구독 목록에 해당 게시글의 author의 id를 추가
+    // 로그인한 유저의 구독 목록에 해당 게시글의 id를 추가
   }, [user, currentPost]);
 
   const onClickModifyBtn = useCallback(() => {
@@ -191,7 +191,7 @@ const PostCard: FC<PostCardProps> = ({ post }) => {
   const onChangePage = useCallback(
     (page: number) => {
       setCurrentPage(page);
-      setCurrentPost(mainPosts.find((item) => item.id === String(mainPosts.length + 1 - page)));
+      setCurrentPost(mainPosts.find((item) => item.id === mainPosts.length + 1 - page));
     },
     [mainPosts]
   );
@@ -199,14 +199,14 @@ const PostCard: FC<PostCardProps> = ({ post }) => {
   return (
     <>
       <HeadWrapper>
-        <Title title={`[${currentPost.Category.name}] ${currentPost.title}`} />
+        <Title title={`[${currentPost.category.name}] ${currentPost.title}`} />
         <Date>{currentPost.createdAt}</Date>
       </HeadWrapper>
       <ContentWrapper>
         <div className='tag_label'>
           {currentPost.tags?.map((tag, idx) => (
             <Link href={`/tag/${tag}`} key={idx}>
-              <a>#{tag}</a>
+              <a>#{tag.name}</a>
             </Link>
           ))}
         </div>
@@ -222,7 +222,7 @@ const PostCard: FC<PostCardProps> = ({ post }) => {
             </span>
             <span style={{ marginLeft: 7 }}>공감</span>
           </PostButton>
-          <PostButton style={{ marginLeft: 10 }} onClick={onSubscribeAuthor}>
+          <PostButton style={{ marginLeft: 10 }} onClick={onSubscribePost}>
             구독하기
           </PostButton>
         </div>
@@ -243,7 +243,7 @@ const PostCard: FC<PostCardProps> = ({ post }) => {
       <PaginationContainer pageSize={1} current={currentPage} total={posts.length} onChange={onChangePage} />
       <div>
         <CommentForm post={currentPost} />
-        {currentPost.Comments && <CommentList comments={currentPost.Comments} />}
+        {currentPost.comments && <CommentList comments={currentPost.comments} />}
       </div>
     </>
   );

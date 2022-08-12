@@ -48,7 +48,7 @@ const ManagePost = () => {
       setLastIndex(pageSize);
 
       let newPosts = [...posts];
-      newPosts = newPosts.filter((post) => post.Category.name === e.target.dataset.name);
+      newPosts = newPosts.filter((post) => post.category.name === e.target.dataset.name);
       setPosts(newPosts);
       setPostsCount(newPosts.length);
     },
