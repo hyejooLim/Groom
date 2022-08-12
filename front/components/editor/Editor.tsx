@@ -232,6 +232,7 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
     });
   };
 
+  // /api/tempPost, /api/post에서 구현
   const base64ToBlob = (base64Data: string, filename: string) => {
     const parts = base64Data.split(';base64,'); // seperate data
     const contentType = parts[0].split(':')[1]; // ex) image/png
@@ -244,8 +245,6 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
 
     const blob = new Blob([uint8Array], { type: contentType });
     const blobUrl = URL.createObjectURL(blob);
-
-    handleUploadImage(blobUrl, filename);
   };
 
   const handleGetImageUrl = (files: Array<File>) => {
@@ -256,7 +255,7 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
 
       // 읽기 동작이 성공적으로 완료되면 실행
       reader.onload = () => {
-        base64ToBlob(reader.result as string, file.name);
+        handleUploadImage(reader.result as string, file.name);
       };
 
       reader.readAsDataURL(file);
@@ -270,28 +269,28 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
         return;
       }
 
-      setTempPost((prevState: TempPostItem) => {
-        return {
-          ...prevState,
-          title: postData.title,
-          content: postData.content,
-          tags: postData.tags,
-          category: postData.category,
-        };
-      });
+      const newTempPost: TempPostItem = {
+        title: postData.title,
+        content: postData.content,
+        thumbnailContent: tempPost.thumbnailContent,
+        tags: postData.tags,
+        category: postData.category,
+      };
 
-      if (tempPosts.find((post: TempPostItem) => JSON.stringify(post) === JSON.stringify(tempPost))) {
+      setTempPost(newTempPost);
+
+      if (tempPosts.find((post: TempPostItem) => JSON.stringify(post) === JSON.stringify(newTempPost))) {
         alert('이미 저장된 글입니다.');
         return;
       }
 
       const result = await createTempPost({
-        data: tempPost,
+        data: newTempPost,
       });
 
       if (result.ok) {
         setTempPosts((prevState: TempPostItem[]) => {
-          return [tempPost, ...prevState];
+          return [newTempPost, ...prevState];
         });
 
         setTempPostsCount((prev) => prev + 1);
