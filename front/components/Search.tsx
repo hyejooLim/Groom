@@ -37,7 +37,7 @@ const Search = () => {
           insentiveKeyword.test(category.name) ||
           insentiveKeyword.test(title) ||
           insentiveKeyword.test(content) ||
-          insentiveKeyword.test(author.name)
+          insentiveKeyword.test(author?.name)
         );
       });
 

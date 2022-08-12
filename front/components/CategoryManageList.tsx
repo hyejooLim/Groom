@@ -350,7 +350,7 @@ const CategoryManageList: FC<CategoryManageListProps> = ({ categories, setCatego
                     <div className='category_name'>
                       <span>{item.name}</span>
                       <span style={{ fontSize: '13px', marginLeft: '4px', color: '#808080' }}>
-                        ({item.posts.length})
+                        ({item.posts?.length})
                       </span>
                     </div>
                     <EditButton>
@@ -360,7 +360,7 @@ const CategoryManageList: FC<CategoryManageListProps> = ({ categories, setCatego
                       <Button
                         className='delete btn'
                         onClick={() => onClickDeleteBtn(item.id)}
-                        disabled={item.posts.length > 0}
+                        disabled={item.posts?.length > 0}
                       >
                         삭제
                       </Button>

@@ -17,12 +17,12 @@ const Category = () => {
   return (
     <AppLayout>
       <Head>
-        <title>Groom | '{category.name}' 카테고리의 글 목록</title>
+        <title>Groom | '{category?.name}' 카테고리의 글 목록</title>
       </Head>
       <div style={{ textAlign: 'center' }}>
-        <Title title={category.name} />
+        <Title title={category?.name} />
       </div>
-      <PostList posts={category.posts} />
+      <PostList posts={category?.posts} />
     </AppLayout>
   );
 };

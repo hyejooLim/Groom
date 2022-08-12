@@ -152,7 +152,7 @@ const PostManageList: FC<PostManageListProps> = ({ posts, firstIndex, lastIndex,
                       {post.category.name}
                     </span>
                   </a>
-                  <span>{post.author.name}</span>
+                  <span>{post.author?.name}</span>
                   <span>{post.createdAt}</span>
                 </div>
               </div>

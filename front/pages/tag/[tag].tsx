@@ -11,7 +11,7 @@ const Tag = () => {
   const router = useRouter();
   const { tag } = router.query;
 
-  const posts = mainPosts.filter((post) => post.tags[0].name?.includes(tag as string));
+  const posts = mainPosts.filter((post) => post.tags && post.tags[0].name?.includes(tag as string));
 
   return (
     <AppLayout>

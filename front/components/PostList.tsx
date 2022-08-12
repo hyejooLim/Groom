@@ -77,7 +77,7 @@ const PostList: FC<PostListProps> = ({ posts }) => {
           ))}
         </ul>
       </ListWrapper>
-      <PaginationContainer pageSize={pageSize} current={currentPage} total={posts.length} onChange={onChangePage} />
+      <PaginationContainer pageSize={pageSize} current={currentPage} total={posts?.length} onChange={onChangePage} />
     </>
   );
 };

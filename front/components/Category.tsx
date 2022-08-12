@@ -24,15 +24,19 @@ const CategoryWrapper = styled.div`
 // dummy data
 export const categories: CategoryItem[] = [
   {
+    id: 1,
     name: 'algorithm',
   },
   {
+    id: 2,
     name: 'typescript',
   },
   {
+    id: 3,
     name: 'react',
   },
   {
+    id: 4,
     name: 'next',
   },
 ];
@@ -46,7 +50,7 @@ const Category = () => {
           <li key={category.id}>
             <Link href={`/category/${category.id}`}>
               <a className='category_item'>
-                {category.name} ({category.posts.length})
+                {category.name} ({category.posts?.length})
               </a>
             </Link>
           </li>
