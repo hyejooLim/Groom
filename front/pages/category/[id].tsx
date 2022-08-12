@@ -12,7 +12,7 @@ const Category = () => {
   const { id } = router.query;
 
   // dummy data
-  const category = categories?.find((category) => category.id === id);
+  const category = categories?.find((category) => category.id === Number(id));
 
   return (
     <AppLayout>
