@@ -2,6 +2,7 @@ import React, { FC, ChangeEvent, useState, useEffect } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 import { Button } from 'antd';
+import AWS from 'aws-sdk';
 
 import EditorToolbar from './EditorToobar';
 import EditorContent from './EditorContent';
@@ -13,6 +14,12 @@ import * as ContentMode from '../constants/ContentMode';
 import { ContentModeType, PostItem, CategoryItem, TempPostItem } from '../../types';
 import { tempPostsCountState, tempPostsState } from '../../recoil/tempPosts';
 import getTempPosts from '../../api/getTempPosts';
+
+AWS.config.update({
+  region: 'ap-northeast-2',
+  accessKeyId: process.env.NEXT_PUBLIC_BUCKET_ACCESS_KEY_ID,
+  secretAccessKey: process.env.NEXT_PUBLIC_BUCKET_SECRET_ACCESS_KEY,
+});
 
 const EditorWrapper = styled.div`
   position: relative;
@@ -232,33 +239,20 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
     });
   };
 
-  // /api/tempPost, /api/post에서 구현
-  const base64ToBlob = (base64Data: string, filename: string) => {
-    const parts = base64Data.split(';base64,'); // seperate data
-    const contentType = parts[0].split(':')[1]; // ex) image/png
-    const decodedData = window.atob(parts[1]); // decode base64 encoded data
-    const uint8Array = new Uint8Array(decodedData.length);
-
-    for (let i = 0; i < decodedData.length; i++) {
-      uint8Array[i] = decodedData.charCodeAt(i);
-    }
-
-    const blob = new Blob([uint8Array], { type: contentType });
-    const blobUrl = URL.createObjectURL(blob);
-  };
-
   const handleGetImageUrl = (files: Array<File>) => {
-    console.log('files', files);
+    [].forEach.call(files, async (file: File) => {
+      const upload = new AWS.S3.ManagedUpload({
+        params: {
+          Bucket: 'groom-project',
+          Key: file.name,
+          Body: file,
+        },
+      });
 
-    [].forEach.call(files, (file: File) => {
-      const reader = new FileReader();
+      const promise = upload.promise();
+      const imageUrl = await promise.then((response) => response.Location);
 
-      // 읽기 동작이 성공적으로 완료되면 실행
-      reader.onload = () => {
-        handleUploadImage(reader.result as string, file.name);
-      };
-
-      reader.readAsDataURL(file);
+      handleUploadImage(imageUrl, file.name);
     });
   };
 
@@ -317,7 +311,6 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
 
   const onLoadPost = (post: TempPostItem) => {
     setIsOpen(false);
-    console.log(post);
 
     setPostData({
       ...postData,
