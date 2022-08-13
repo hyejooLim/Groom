@@ -130,7 +130,7 @@ const PostManageList: FC<PostManageListProps> = ({ posts, firstIndex, lastIndex,
     <ListWrapper>
       <ul>
         {posts?.slice(firstIndex, lastIndex).map((post) => (
-          <li>
+          <li key={post.id}>
             <PostInfo>
               <div>
                 <div className='post_title'>
