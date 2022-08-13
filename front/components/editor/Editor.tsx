@@ -10,7 +10,7 @@ import TempPostsModal from '../TempPostsModal';
 import ToastMessage from '../ToastMessage';
 import { tinymceEditorState } from '../../recoil/tinymce';
 import createTempPost from '../../api/createTempPost';
-import * as ContentMode from '../constants/ContentMode';
+import * as ContentMode from '../../constants/ContentMode';
 import { ContentModeType, PostItem, CategoryItem, TempPostItem } from '../../types';
 import { tempPostsCountState, tempPostsState } from '../../recoil/tempPosts';
 import getTempPosts from '../../api/getTempPosts';
