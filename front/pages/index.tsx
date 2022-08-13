@@ -16,7 +16,9 @@ export const user: UserType = {
     {
       id: 10,
       title: '입국심사',
-      content: '...',
+      content:
+        '<p>안녕</p><p>&nbsp;</p><p><img src="https://groom-project.s3.ap-northeast-2.amazonaws.com/%E1%84%89%E1%85%B3%E1%84%8F%E1%85%B3%E1%84%85%E1%85%B5%E1%86%AB%E1%84%89%E1%85%A3%E1%86%BA%202022-08-09%20%E1%84%8B%E1%85%A9%E1%84%92%E1%85%AE%208.26.08.png" data-filename="스크린샷 2022-08-09 오후 8.26.08.png"></p>',
+      thumbnailContent: '안녕',
       tags: [],
       comments: [],
       likeCount: 0,
@@ -24,7 +26,18 @@ export const user: UserType = {
       author: null,
     },
   ],
-  subscribedPosts: [],
+  subscribedPosts: [
+    {
+      id: 13,
+      title: '구독 포스트',
+      content: '안녕',
+      tags: [],
+      comments: [],
+      likeCount: 0,
+      category: { id: 1, name: 'algorithm' },
+      author: null,
+    },
+  ],
 };
 
 export const mainPosts: PostItem[] = [

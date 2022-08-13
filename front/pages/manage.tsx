@@ -145,7 +145,7 @@ const Manage = () => {
               >
                 <a>
                   <PostTitle>{`[${post.category.name}] ${post.title}`}</PostTitle>
-                  <PostContent>{post.content}</PostContent>
+                  <PostContent>{post.thumbnailContent.slice(0, 60)}</PostContent>
                 </a>
               </Link>
               <InfoWrapper>

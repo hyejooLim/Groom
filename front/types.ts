@@ -18,6 +18,7 @@ export type PostItem = {
   id?: number;
   title: string;
   content: string;
+  thumbnailContent?: string;
   tags?: TagItem[];
   comments?: CommentItem[];
   likeCount?: number;
@@ -42,7 +43,6 @@ export type TempPostItem = {
   author?: UserType;
   authorId?: number;
   createdAt?: string;
-  updatedAt?: string;
 };
 
 export type TagItem = {
