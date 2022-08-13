@@ -80,8 +80,7 @@ interface EditorContentProps {
   title: string;
   onChangeTitle: (e: ChangeEvent<HTMLInputElement>) => void;
   content: string;
-  onChangeContent: (value: string) => void;
-  onChangeThumbnailContent: (value: string) => void;
+  onChangeContent: (HTMLvalue: string, textValue: string) => void;
   tags: TagItem[];
   onAddTag: (value: string) => void;
   onRemoveTag: (index: number) => any;
@@ -97,7 +96,6 @@ const EditorContent: FC<EditorContentProps> = ({
   onChangeTitle,
   content,
   onChangeContent,
-  onChangeThumbnailContent,
   tags,
   onAddTag,
   onRemoveTag,
@@ -163,7 +161,6 @@ const EditorContent: FC<EditorContentProps> = ({
             <TinymceEditor
               content={content}
               onChangeContent={onChangeContent}
-              onChangeThumbnailContent={onChangeThumbnailContent}
               onOpenFile={handleOpenFile}
               onGetImageUrl={onGetImageUrl}
               loadTempPost={loadTempPost}

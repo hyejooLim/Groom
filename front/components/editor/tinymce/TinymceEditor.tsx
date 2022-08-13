@@ -1,7 +1,6 @@
 import React, { FC, useEffect, useRef } from 'react';
 import { useRecoilState } from 'recoil';
 import styled from 'styled-components';
-import { Editor as EditorType } from 'tinymce';
 import { Editor } from '@tinymce/tinymce-react';
 
 import { tinymceEditorState } from '../../../recoil/tinymce';
@@ -32,8 +31,7 @@ const EditorWrapper = styled.div`
 
 interface TinymceEditorProps {
   content: string;
-  onChangeContent: (value: string) => void;
-  onChangeThumbnailContent: (value: string) => void;
+  onChangeContent: (HTMLvalue: string, textValue: string) => void;
   onOpenFile: () => void;
   onGetImageUrl: (file: any) => void;
   loadTempPost: boolean;
@@ -43,7 +41,6 @@ interface TinymceEditorProps {
 const TinymceEditor: FC<TinymceEditorProps> = ({
   content,
   onChangeContent,
-  onChangeThumbnailContent,
   onOpenFile,
   onGetImageUrl,
   loadTempPost,
@@ -68,11 +65,6 @@ const TinymceEditor: FC<TinymceEditorProps> = ({
     }
   }, [content, loadTempPost]);
 
-  const onEditorChange = (value: string, editor: EditorType) => {
-    onChangeContent(value);
-    onChangeThumbnailContent(editor.getContent({ format: 'text' }));
-  };
-
   const handleDrop = (e: any) => {
     if (e.dataTransfer && e.dataTransfer.files) {
       onGetImageUrl(Array.prototype.slice.call(e.dataTransfer.files));
@@ -83,7 +75,7 @@ const TinymceEditor: FC<TinymceEditorProps> = ({
     <EditorWrapper>
       <Editor
         onInit={(e, editor) => (editorRef.current = editor)}
-        onEditorChange={(value, editor) => onEditorChange(value, editor)}
+        onEditorChange={(value, editor) => onChangeContent(value, editor.getContent({ format: 'text' }))}
         init={{
           plugins: tinymcePlugins,
           toolbar: tinymceToolbar,
