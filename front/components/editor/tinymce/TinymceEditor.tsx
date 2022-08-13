@@ -53,7 +53,7 @@ const TinymceEditor: FC<TinymceEditorProps> = ({
 
   console.log('content', content);
 
-  const tinymcePlugins = ['link', 'lists'];
+  const tinymcePlugins = ['link', 'lists', 'autoresize'];
   const tinymceToolbar =
     'image-upload blocks fontfamily |' +
     'bold italic underline strikethrough forecolor backcolor |' +
@@ -66,24 +66,6 @@ const TinymceEditor: FC<TinymceEditorProps> = ({
       setLoadTempPost(false);
     }
   }, [content, loadTempPost]);
-
-  useEffect(() => {
-    const divElement = document.querySelector('.tox-tinymce') as HTMLDivElement;
-    const iframeElement = document.querySelector('.tox-edit-area__iframe') as HTMLIFrameElement;
-
-    if (divElement && iframeElement) {
-      let newHeight = iframeElement.contentWindow.document.body.scrollHeight + 50;
-
-      if (newHeight <= 500) {
-        divElement.style.height = '500px'; // 실제 변화가 있는 부분
-        iframeElement.style.height = '500px'; // 코드에 보여지는 부분
-        return;
-      }
-
-      divElement.style.height = newHeight + 'px';
-      iframeElement.style.height = newHeight + 'px';
-    }
-  }, [content]);
 
   const handleDrop = (e: any) => {
     if (e.dataTransfer && e.dataTransfer.files) {
@@ -130,6 +112,7 @@ const TinymceEditor: FC<TinymceEditorProps> = ({
           init_instance_callback: (editor) => {
             editor.on('drop', handleDrop);
             editor.setContent(content);
+            editor.execCommand('mceAutoResize');
           },
         }}
       />
