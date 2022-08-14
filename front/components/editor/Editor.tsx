@@ -259,6 +259,11 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
         return;
       }
 
+      if (tempPosts.length === 100) {
+        alert('최대 100개의 글을 임시 저장할 수 있습니다.');
+        return;
+      }
+      
       const newTempPost: TempPostItem = {
         title: postData.title,
         content: postData.content,
