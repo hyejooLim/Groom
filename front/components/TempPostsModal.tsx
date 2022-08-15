@@ -1,12 +1,13 @@
-import React, { FC } from 'react';
+import React, { FC, useCallback } from 'react';
 import styled from 'styled-components';
 import Modal from 'react-modal';
 import { AiFillQuestionCircle } from 'react-icons/ai';
 import { GrTrash } from 'react-icons/gr';
+import dayjs from 'dayjs';
 
 import { TempPostItem } from '../types';
 import deleteTempPost from '../api/deleteTempPost';
-import { useRecoilState, useResetRecoilState, useSetRecoilState } from 'recoil';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 import { tempPostsCountState, tempPostsState } from '../recoil/tempPosts';
 
 Modal.setAppElement('#__next');
@@ -178,6 +179,7 @@ const BodyLayer = styled.div`
             line-height: 18px;
             font-family: Avenir Next, Noto Sans DemiLight, AppleSDGothicNeo-Regular, Malgun Gothic, dotum, sans-serif;
             color: #000;
+            font-weight: 300;
           }
 
           & dd {
@@ -283,6 +285,30 @@ const TempPostsModal: FC<TempPostsModalProps> = ({ isOpen, setIsOpen, onLoadPost
   const [tempPosts, setTempPosts] = useRecoilState(tempPostsState);
   const setTempPostsCount = useSetRecoilState(tempPostsCountState);
 
+  const getDateDiff = useCallback((createdAt: string) => {
+    const createdDate = dayjs(createdAt);
+    const nowDate = dayjs();
+
+    const milliSeconds = nowDate.diff(createdDate);
+    const seconds = milliSeconds / 1000;
+
+    if (seconds < 60) {
+      return '방금';
+    }
+
+    const minutes = seconds / 60;
+    if (minutes < 60) {
+      return `${Math.floor(minutes)}분 전`;
+    }
+
+    const hours = minutes / 60;
+    if (hours < 24) {
+      return `${Math.floor(hours)}시간 전`;
+    }
+
+    return createdDate.format('YYYY.MM.DD');
+  }, []);
+
   const onCloseModal = () => {
     setIsOpen(false);
   };
@@ -365,7 +391,7 @@ const TempPostsModal: FC<TempPostsModalProps> = ({ isOpen, setIsOpen, onLoadPost
                   <div className='list'>
                     {tempPosts.map((post, idx) => (
                       <div className='list_item' key={post.id}>
-                        <dt>?분전</dt>
+                        <dt>{getDateDiff(post.createdAt)}</dt>
                         <dd>
                           <a
                             className='list_item_link'
