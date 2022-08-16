@@ -1,20 +1,9 @@
 import React, { FC, useCallback, useState } from 'react';
-import styled from 'styled-components';
-import { Button, Form, Input } from 'antd';
+import { Form } from 'antd';
 
 import { PostItem } from '../types';
 import useInput from '../hooks/input';
-
-const AddCommentButton = styled(Button)`
-  border: 0;
-  float: right;
-  font-size: 18px;
-  font-family: 'Courier New', Courier, monospace;
-  margin-top: 10px;
-  color: inherit;
-  background-color: transparent;
-  cursor: pointer;
-`;
+import { AddCommentButton, StyledTextArea } from '../styles/ts/components/CommentForm';
 
 interface CommentFormProps {
   post: PostItem;
@@ -43,9 +32,8 @@ const CommentForm: FC<CommentFormProps> = ({ post }) => {
   return (
     <Form onFinish={onSubmitForm} style={{ marginTop: 50 }}>
       <Form.Item>
-        <Input.TextArea
+        <StyledTextArea
           rows={4}
-          style={{ width: '100%', fontSize: '15px', border: '1px solid #DDDDDD', lineHeight: '160%' }}
           value={commentText}
           onChange={onChangeCommentText}
           placeholder='내용을 입력해 주세요.'

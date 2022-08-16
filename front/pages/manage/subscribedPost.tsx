@@ -6,7 +6,7 @@ import ManageLayout from '../../components/layouts/ManageLayout';
 import PostManageList from '../../components/PostManageList';
 import PaginationContainer from '../../components/PaginationContainer';
 import { PostItem } from '../../types';
-import { CloseButton } from './post';
+import { CloseButton } from '../../styles/ts/common';
 import { user } from '..';
 
 const pageSize = 5;

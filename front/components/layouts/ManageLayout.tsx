@@ -1,53 +1,24 @@
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import styled from 'styled-components';
-import { Layout, Button } from 'antd';
+import { Layout } from 'antd';
 import { EditOutlined } from '@ant-design/icons';
 
 import ManageProfile from '../../components/ManageProfile';
 import ManageList from '../../components/ManageList';
 import logo from '../../public/Groom_Logo_No_Background.png';
-
-const { Header, Sider, Content, Footer } = Layout;
-
-const HomeButton = styled.div`
-  outline: none;
-  border: 0;
-  padding: 0;
-  margin-top: 30px;
-  background-color: transparent;
-  text-align: center;
-`;
-
-const AddPostButton = styled(Button)`
-  float: right;
-  width: 88px;
-  height: 38px;
-  background-color: #13a085;
-  margin-top: 30px;
-  font-size: 15px;
-  color: #fff;
-  border-radius: 8px;
-  transition: all 0.2s ease-in;
-
-  :hover {
-    transform: scale(1.03);
-    background-color: #13a085;
-    color: #fff;
-  }
-`;
+import { Container, HomeButton, AddPostButton, StyledSider, StyledHeader } from '../../styles/ts/components/layouts/ManageLayout';
 
 const ManageLayout = ({ children }) => {
   return (
     <>
-      <Layout style={{ position: 'relative', width: '1150px', margin: '0 auto', padding: '50px 0 120px 0' }}>
-        <Sider width={214} style={{ margin: '100px 50px 50px 0', backgroundColor: 'transparent' }}>
+      <Container>
+        <StyledSider width={214}>
           <ManageProfile />
           <ManageList />
-        </Sider>
+        </StyledSider>
         <Layout style={{ width: '100%' }}>
-          <Header style={{ height: '180px', backgroundColor: 'transparent', padding: 0 }}>
+          <StyledHeader>
             <HomeButton>
               <Link href='/'>
                 <a>
@@ -63,10 +34,10 @@ const ManageLayout = ({ children }) => {
                 </AddPostButton>
               </a>
             </Link>
-          </Header>
-          <Content style={{ width: '886px' }}>{children}</Content>
+          </StyledHeader>
+          <Layout.Content style={{ width: '886px' }}>{children}</Layout.Content>
         </Layout>
-      </Layout>
+      </Container>
     </>
   );
 };

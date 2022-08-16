@@ -1,7 +1,5 @@
 import React, { useCallback, useState } from 'react';
 import Head from 'next/head';
-import styled from 'styled-components';
-import { Button } from 'antd';
 import { CloseCircleOutlined } from '@ant-design/icons';
 
 import ManageLayout from '../../components/layouts/ManageLayout';
@@ -9,15 +7,8 @@ import SearchInput from '../../components/SearchInput';
 import PaginationContainer from '../../components/PaginationContainer';
 import PostManageList from '../../components/PostManageList';
 import { PostItem } from '../../types';
+import { CloseButton } from '../../styles/ts/common';
 import { user } from '..';
-
-export const CloseButton = styled(Button)`
-  font-size: 20px;
-  background-color: transparent;
-  border: 0;
-  outline: none;
-  box-shadow: none;
-`;
 
 const pageSize = 5;
 

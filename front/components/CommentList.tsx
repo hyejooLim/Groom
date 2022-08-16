@@ -1,19 +1,10 @@
 import React, { FC } from 'react';
 import Link from 'next/link';
-import styled from 'styled-components';
-import { Comment, List } from 'antd';
 import dayjs from 'dayjs';
+import { Comment, List } from 'antd';
 
 import { CommentItem } from '../types';
-
-const CommentBox = styled.li`
-  padding: 5px 20px;
-  margin-bottom: 20px;
-  border: 1px solid #dddddd;
-  border-radius: 10px;
-  background-color: #fff;
-  box-shadow: 8px 7px 8px -1px #d3d3d3;
-`;
+import { CommentBox } from '../styles/ts/components/CommentList';
 
 interface CommentListProps {
   comments: CommentItem[];

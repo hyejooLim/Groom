@@ -3,8 +3,8 @@ import { SessionProvider } from 'next-auth/react';
 import { RecoilRoot } from 'recoil';
 
 import 'antd/dist/antd.css';
-import '../styles/global.css';
-import '../styles/modal.css';
+import '../styles/css/global.css';
+import '../styles/css/modal.css';
 
 const App = ({ Component }) => {
   return (

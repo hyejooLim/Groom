@@ -1,33 +1,9 @@
 import React, { FC, useEffect, useRef } from 'react';
 import { useRecoilState } from 'recoil';
-import styled from 'styled-components';
 import { Editor } from '@tinymce/tinymce-react';
 
 import { tinymceEditorState } from '../../../recoil/tinymce';
-
-const EditorWrapper = styled.div`
-  .tox-tinymce {
-    border: 0;
-    margin: 0 auto;
-    width: 880px;
-  }
-
-  .tox:not(.tox-tinymce-inline) .tox-editor-header {
-    position: fixed;
-    top: 0;
-    width: 880px;
-    height: 70px;
-    left: 50%;
-    transform: translate(-50%);
-    padding: 0;
-    margin: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    box-shadow: none;
-    background-color: transparent;
-  }
-`;
+import { EditorWrapper } from '../../../styles/ts/components/editor/tinymce/TinymceEditor';
 
 interface TinymceEditorProps {
   content: string;

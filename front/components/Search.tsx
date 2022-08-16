@@ -1,24 +1,10 @@
 import React, { KeyboardEvent } from 'react';
 import Router from 'next/router';
-import styled from 'styled-components';
 import { Input } from 'antd';
 
 import useInput from '../hooks/input';
+import { SearchWrapper } from '../styles/ts/components/Search';
 import { mainPosts } from '../pages';
-
-const SearchWrapper = styled.div`
-  margin-top: 40px;
-  padding: 0;
-  line-height: 200%;
-  text-align: center;
-
-  .input {
-    padding: 10px;
-    width: 60%;
-    border: none;
-    border-bottom: 1px dashed #ccc;
-  }
-`;
 
 const Search = () => {
   const [keyword, onChangeKeyword] = useInput('');

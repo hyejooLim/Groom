@@ -1,6 +1,5 @@
 import React, { FC, ChangeEvent, KeyboardEvent, useRef, useCallback } from 'react';
 import Dropzone from 'react-dropzone';
-import styled from 'styled-components';
 import { Input, Select } from 'antd';
 import { CloseOutlined } from '@ant-design/icons';
 
@@ -8,73 +7,7 @@ import TinymceEditor from './tinymce/TinymceEditor';
 import useInput from '../../hooks/input';
 import { CategoryItem, TagItem } from '../../types';
 import { categories } from '../Category';
-
-const Container = styled.div`
-  background-color: #fff;
-  position: absolute;
-  top: 70px;
-  bottom: 66px;
-  left: 0;
-  right: 0;
-  overflow-y: scroll;
-
-  .post_header {
-    padding: 0 40px;
-  }
-`;
-
-const SelectCategory = styled.div`
-  width: 860px;
-  height: 30px;
-  margin: 46px auto 0;
-`;
-
-const PostTitle = styled.div`
-  width: 860px;
-  margin: 18px auto 17px;
-
-  .title_input {
-    padding: 0;
-    border: 0;
-    outline: none;
-    background: none;
-    font-size: 30px;
-    padding-bottom: 20px;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-  }
-`;
-
-const TagArea = styled.div`
-  width: 860px;
-  min-height: 115px;
-  margin: 0 auto;
-  padding: 0 0 80px;
-  box-sizing: border-box;
-  font-size: 0;
-
-  .tag {
-    display: inline-block;
-    position: relative;
-    margin: 16px 10px 0 0;
-    font-size: 13px;
-    vertical-align: top;
-    white-space: nowrap;
-  }
-
-  .close_icon {
-    color: #999;
-    font-size: 11px;
-    margin-left: 3px;
-  }
-
-  .tag_input {
-    display: inline-block;
-    margin: 16px 26px 0 0;
-    font-size: 13px;
-    color: #909090;
-    vertical-align: top;
-  }
-`;
+import { Container, SelectCategory, PostTitle, TagArea } from '../../styles/ts/components/editor/EditorContent';
 
 interface EditorContentProps {
   title: string;
