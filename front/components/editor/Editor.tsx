@@ -9,11 +9,11 @@ import EditorContent from './EditorContent';
 import TempPostsModal from '../TempPostsModal';
 import ToastMessage from '../ToastMessage';
 import { tinymceEditorState } from '../../recoil/tinymce';
-import createTempPost from '../../api/createTempPost';
+import createTempPost from '../../apis/createTempPost';
 import * as ContentMode from '../../constants/ContentMode';
 import { ContentModeType, PostItem, CategoryItem, TempPostItem } from '../../types';
 import { tempPostsCountState, tempPostsState } from '../../recoil/tempPosts';
-import getTempPosts from '../../api/getTempPosts';
+import getTempPosts from '../../apis/getTempPosts';
 
 AWS.config.update({
   region: 'ap-northeast-2',

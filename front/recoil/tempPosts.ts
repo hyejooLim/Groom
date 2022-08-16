@@ -1,6 +1,6 @@
 import { atom, selector } from 'recoil';
 
-import getTempPosts from '../api/getTempPosts';
+import getTempPosts from '../apis/getTempPosts';
 import { TempPostItem } from '../types';
 
 export const tempPostsState = atom<TempPostItem[]>({

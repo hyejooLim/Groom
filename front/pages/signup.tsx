@@ -10,7 +10,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 import useInput from '../hooks/input';
 import logo from '../public/Groom_Logo_No_Background.png';
-import signup from '../api/signup';
+import signup from '../apis/signup';
 
 const SignupWrapper = styled.div`
   height: 100%;
