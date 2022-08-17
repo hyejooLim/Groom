@@ -9,6 +9,7 @@
 * Next.js
 * React
 * Recoil
+* React Query
 * Ant Design
 * Styled Components
 * TinyMCE (Editor)
