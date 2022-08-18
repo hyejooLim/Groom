@@ -5,20 +5,21 @@ import { CloseCircleOutlined } from '@ant-design/icons';
 import ManageLayout from '../../components/layouts/ManageLayout';
 import PostManageList from '../../components/PostManageList';
 import PaginationContainer from '../../components/PaginationContainer';
-import { PostItem } from '../../types';
 import { CloseButton } from '../../styles/ts/common';
-import { user } from '..';
+import useGetUser from '../../hooks/query/useGetUser';
+import { PostItem } from '../../types';
 
 const pageSize = 5;
 
 const ManageSubscribedPost = () => {
+  const { data: user } = useGetUser();
   const [currentPage, setCurrentPage] = useState(1);
   const [firstIndex, setFirstIndex] = useState(0);
   const [lastIndex, setLastIndex] = useState(pageSize);
 
-  const [posts, setPosts] = useState<PostItem[]>(user.subscribedPosts);
+  const [posts, setPosts] = useState<PostItem[]>(user?.subscribedPosts);
   const [title, setTitle] = useState('');
-  const [postsCount, setPostsCount] = useState(user.subscribedPosts.length);
+  const [postsCount, setPostsCount] = useState(user?.subscribedPosts?.length);
 
   const onLoadMainPosts = useCallback(() => {
     setTitle('');
@@ -73,7 +74,7 @@ const ManageSubscribedPost = () => {
         <span style={{ fontSize: '14px', color: '#888', marginLeft: '8px' }}>{postsCount}</span>
       </div>
       <PostManageList posts={posts} firstIndex={firstIndex} lastIndex={lastIndex} onChangePostList={onChangePostList} />
-      <PaginationContainer pageSize={pageSize} current={currentPage} total={posts.length} onChange={onChangePage} />
+      <PaginationContainer pageSize={pageSize} current={currentPage} total={posts?.length} onChange={onChangePage} />
     </ManageLayout>
   );
 };

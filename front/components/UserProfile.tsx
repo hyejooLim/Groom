@@ -1,9 +1,10 @@
 import React from 'react';
-import { signOut, useSession } from 'next-auth/react';
+import { signOut } from 'next-auth/react';
 import Link from 'next/link';
 import { Avatar } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
 
+import useGetUser from '../hooks/query/useGetUser';
 import {
   UserProfileWrapper,
   InfoArea,
@@ -14,7 +15,7 @@ import {
 } from '../styles/ts/components/UserProfile';
 
 const UserProfile = () => {
-  const { data: session } = useSession();
+  const { data: user } = useGetUser();
 
   const handleLogout = () => {
     signOut();
@@ -28,15 +29,15 @@ const UserProfile = () => {
           <InfoBox>
             <Link href={`/manage`}>
               <a className='go_to_profile'>
-                <span>{session.user.name}님</span>
+                <span>{user?.name}님</span>
               </a>
             </Link>
-            <div style={{ marginTop: 5, color: '#888' }}>{session.user.email}</div>
+            <div style={{ marginTop: 5, color: '#888' }}>{user?.email}</div>
           </InfoBox>
           <NewBox>
             <div className='posts'>
               <span>게시글</span>
-              <span className='count'>0</span>
+              <span className='count'>{user?.posts?.length}</span>
             </div>
           </NewBox>
         </UserInfo>

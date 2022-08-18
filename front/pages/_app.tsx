@@ -1,21 +1,27 @@
+import React, { useState } from 'react';
 import Head from 'next/head';
 import { SessionProvider } from 'next-auth/react';
 import { RecoilRoot } from 'recoil';
+import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
 
 import 'antd/dist/antd.css';
 import '../styles/css/global.css';
 import '../styles/css/modal.css';
 
 const App = ({ Component }) => {
+  const [queryClient] = useState(() => new QueryClient());
+
   return (
     <>
       <SessionProvider>
-        <RecoilRoot>
-          <Head>
-            <title>Groom</title>
-          </Head>
-          <Component />
-        </RecoilRoot>
+        <QueryClientProvider client={queryClient}>
+          <RecoilRoot>
+            <Head>
+              <title>Groom</title>
+            </Head>
+            <Component />
+          </RecoilRoot>
+        </QueryClientProvider>
       </SessionProvider>
     </>
   );

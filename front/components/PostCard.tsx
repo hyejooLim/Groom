@@ -3,21 +3,23 @@ import Link from 'next/link';
 import Router from 'next/router';
 import { Button } from 'antd';
 import { HeartOutlined, HeartTwoTone } from '@ant-design/icons';
+import dayjs from 'dayjs';
 
 import Title from './Title';
 import PaginationContainer from './PaginationContainer';
 import CommentForm from './CommentForm';
 import CommentList from './CommentList';
 import { PostItem } from '../types';
+import { mainPosts } from '../pages'; // dummyData
+import useGetUser from '../hooks/query/useGetUser';
 import { HeadWrapper, Date, ContentWrapper, PostButton, EditButton } from '../styles/ts/components/PostCard';
-
-import { user, mainPosts } from '../pages'; // dummyData
 
 interface PostCardProps {
   post: PostItem;
 }
 
 const PostCard: FC<PostCardProps> = ({ post }) => {
+  const { data: user } = useGetUser();
   const [posts, setPosts] = useState(mainPosts);
   const [liked, setLiked] = useState(null);
   const [currentPost, setCurrentPost] = useState(post);
@@ -82,8 +84,8 @@ const PostCard: FC<PostCardProps> = ({ post }) => {
   return (
     <>
       <HeadWrapper>
-        <Title title={`[${currentPost.category.name}] ${currentPost.title}`} />
-        <Date>{currentPost.createdAt}</Date>
+        <Title title={`[${currentPost.category?.name}] ${currentPost.title}`} />
+        <Date>{dayjs(currentPost.createdAt).format('YYYY.MM.DD hh:mm')}</Date>
       </HeadWrapper>
       <ContentWrapper>
         <div className='tag_label'>
@@ -93,7 +95,7 @@ const PostCard: FC<PostCardProps> = ({ post }) => {
             </Link>
           ))}
         </div>
-        <div className='article'>{currentPost.content}</div>
+        <div className='article'>{currentPost.thumbnailContent}</div>
         <div style={{ display: 'flex' }}>
           <PostButton>
             <span>
@@ -109,7 +111,7 @@ const PostCard: FC<PostCardProps> = ({ post }) => {
             구독하기
           </PostButton>
         </div>
-        {user.id === currentPost.authorId && (
+        {user?.id === currentPost.authorId && (
           <EditButton>
             <Link href={{ pathname: '/write', query: { post: JSON.stringify(post) } }} as={`/write/${post.id}`}>
               <a>
