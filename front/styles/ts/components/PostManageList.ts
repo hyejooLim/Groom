@@ -2,7 +2,6 @@ import styled from 'styled-components';
 
 export const PostButton = styled.div`
   float: right;
-  display: flex;
 
   .btn {
     display: none;
@@ -35,28 +34,25 @@ export const ListWrapper = styled.div`
   word-break: break-all; // ?
   height: 386px;
   border: 1px solid #e0e5ee;
-
-  & li {
-    padding: 13px 16px 12px;
-    font-size: 14px;
-    border-bottom: 1px solid #f1f3f6;
-
-    &:hover {
-      background-color: #fafbfd;
-
-      ${PostButton} {
-        .btn {
-          display: block;
-        }
-      }
-    }
-  }
 `;
 
 export const PostInfo = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  padding: 13px 16px 12px;
+  font-size: 14px;
+  border-bottom: 1px solid #f1f3f6;
+
+  &:hover {
+    background-color: #fafbfd;
+
+    ${PostButton} {
+      .btn {
+        display: inline-block;
+      }
+    }
+  }
 
   .post_title a {
     margin-right: 5px;
