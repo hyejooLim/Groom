@@ -2,7 +2,7 @@ import React, { FC, useCallback, useState } from 'react';
 import { Form } from 'antd';
 
 import { PostItem } from '../types';
-import useInput from '../hooks/input';
+import useInput from '../hooks/common/input';
 import { AddCommentButton, StyledTextArea } from '../styles/ts/components/CommentForm';
 
 interface CommentFormProps {

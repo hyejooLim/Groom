@@ -2,7 +2,7 @@ import React, { KeyboardEvent } from 'react';
 import Router from 'next/router';
 import { Input } from 'antd';
 
-import useInput from '../hooks/input';
+import useInput from '../hooks/common/input';
 import { SearchWrapper } from '../styles/ts/components/Search';
 import { mainPosts } from '../pages';
 

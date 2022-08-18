@@ -4,7 +4,7 @@ import { Input, Select } from 'antd';
 import { CloseOutlined } from '@ant-design/icons';
 
 import TinymceEditor from './tinymce/TinymceEditor';
-import useInput from '../../hooks/input';
+import useInput from '../../hooks/common/input';
 import { CategoryItem, TagItem } from '../../types';
 import { categories } from '../Category';
 import { Container, SelectCategory, PostTitle, TagArea } from '../../styles/ts/components/editor/EditorContent';

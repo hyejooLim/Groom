@@ -8,7 +8,7 @@ import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-import useInput from '../hooks/input';
+import useInput from '../hooks/common/input';
 import { LoginWrapper, StyledForm, StyledInput, LoginButton, SignupButton } from '../styles/ts/pages/login';
 import logo from '../public/Groom_Logo_No_Background.png';
 

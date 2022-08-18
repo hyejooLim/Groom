@@ -2,7 +2,7 @@ import React, { FC, useState, useCallback, ChangeEvent, FormEvent, DragEvent, Di
 import { Button, Form } from 'antd';
 import { MenuOutlined, PlusOutlined } from '@ant-design/icons';
 
-import useInput from '../hooks/input';
+import useInput from '../hooks/common/input';
 import { CategoryItem } from '../types';
 import {
   CategoryManageListWrapper,

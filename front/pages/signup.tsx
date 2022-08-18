@@ -6,7 +6,7 @@ import Router from 'next/router';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-import useInput from '../hooks/input';
+import useInput from '../hooks/common/input';
 import signup from '../apis/signup';
 import { SignupWrapper, StyledForm, InputWrapper, ErrorMessage, SubmitButton } from '../styles/ts/pages/signup';
 import logo from '../public/Groom_Logo_No_Background.png';

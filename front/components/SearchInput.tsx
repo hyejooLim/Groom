@@ -2,7 +2,7 @@ import React, { useState, useCallback } from 'react';
 import { Dropdown } from 'antd';
 import { UpOutlined, DownOutlined, SearchOutlined } from '@ant-design/icons';
 
-import useInput from '../hooks/input';
+import useInput from '../hooks/common/input';
 import {
   FormWrapper,
   StyledForm,
