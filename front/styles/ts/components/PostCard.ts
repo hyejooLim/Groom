@@ -49,15 +49,18 @@ export const Date = styled.div`
 `;
 
 export const ContentWrapper = styled.div`
-  padding: 20px 15px 18px;
+  padding: 50px 15px 18px;
   background-color: #fff;
   border: 1px solid #ddd;
   line-height: 180%;
   word-break: break-all;
-  height: auto;
 
   .tag_label {
-    float: right;
+    padding: 0 0 10px 70px;
+    min-height: 31px;
+    line-height: 100%;
+    text-align: right;
+    word-break: break-word;
 
     a {
       margin-right: 8px;
