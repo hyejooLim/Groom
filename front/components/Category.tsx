@@ -9,18 +9,22 @@ export const categories: CategoryItem[] = [
   {
     id: 1,
     name: 'algorithm',
+    posts: [],
   },
   {
     id: 2,
     name: 'typescript',
+    posts: [],
   },
   {
     id: 3,
     name: 'react',
+    posts: [],
   },
   {
     id: 4,
     name: 'next',
+    posts: [],
   },
 ];
 
