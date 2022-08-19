@@ -85,7 +85,7 @@ const ManagePost = () => {
         </div>
         <SearchInput />
         <PostManageList
-          posts={posts ?? user?.tempPosts}
+          posts={posts ?? user?.posts}
           firstIndex={firstIndex}
           lastIndex={lastIndex}
           onChangePostList={onChangePostList}

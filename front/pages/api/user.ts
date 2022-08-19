@@ -15,7 +15,12 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
           email: session.user.email,
         },
         include: {
-          posts: true,
+          posts: {
+            include: {
+              category: true,
+              author: true,
+            },
+          },
           subscribedPosts: true,
           tempPosts: true,
         },

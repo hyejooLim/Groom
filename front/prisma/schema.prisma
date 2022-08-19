@@ -30,15 +30,14 @@ model Post {
   title String
   content String
   HTMLcontent String
-  tags Tag[]
+  tags Tag[] @relation("PostsAndTags")
   comments Comment[]
   likeCount Int @default(0)
   category Category? @relation(fields: [categoryId], references: [id])
   categoryId Int?
   author User? @relation("OwnPosts", fields: [authorId], references: [id])
   authorId Int?
-  subscriber User? @relation("OwnSubscribedPosts", fields: [subscriberId], references: [id])
-  subscriberId Int?
+  subscriber User[] @relation("OwnSubscribedPosts")
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -59,7 +58,7 @@ model TempPost {
 model Tag {
   id Int @id @default(autoincrement())
   name String @unique
-  posts Post[]
+  posts Post[] @relation("PostsAndTags")
   tempPosts TempPost[] @relation("TempPostsAndTags")
 }
 

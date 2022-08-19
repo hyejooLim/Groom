@@ -1,5 +1,6 @@
 import React, { FC, ChangeEvent, useState, useEffect } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
+import Router from 'next/router';
 import AWS from 'aws-sdk';
 
 import EditorToolbar from './EditorToobar';
@@ -7,11 +8,12 @@ import EditorContent from './EditorContent';
 import TempPostsModal from '../TempPostsModal';
 import ToastMessage from '../ToastMessage';
 import { tinymceEditorState } from '../../recoil/tinymce';
+import { tempPostsCountState, tempPostsState } from '../../recoil/tempPosts';
 import createTempPost from '../../apis/createTempPost';
+import createPost from '../../apis/createPost';
+import getTempPosts from '../../apis/getTempPosts';
 import * as ContentMode from '../../constants/ContentMode';
 import { ContentModeType, PostItem, CategoryItem, TempPostItem } from '../../types';
-import { tempPostsCountState, tempPostsState } from '../../recoil/tempPosts';
-import getTempPosts from '../../apis/getTempPosts';
 import { EditorWrapper, ContentAside, PublishButton } from '../../styles/ts/components/editor/Editor';
 
 AWS.config.update({
@@ -274,6 +276,28 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
     }, 4000);
   };
 
+  const onPublishPost = async () => {
+    try {
+      if (!postData.title && !postData.content) {
+        alert('글을 작성해 주세요.');
+        return;
+      }
+
+      const confirm = window.confirm('글을 발행하시겠습니까?');
+      if (!confirm) {
+        return;
+      }
+
+      const result = await createPost({ data: postData });
+
+      if (result.ok) {
+        Router.push('/manage/post');
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   return (
     <EditorWrapper className='groom_wrapper'>
       <EditorToolbar />
@@ -308,7 +332,9 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
               </a>
             </span>
           )}
-          <PublishButton className='publish btn'>완료</PublishButton>
+          <PublishButton className='publish btn' onClick={onPublishPost}>
+            완료
+          </PublishButton>
         </div>
       </ContentAside>
       <ToastMessage toastMessage={toastMessage} showToastMessage={showToastMessage} show={show} />
