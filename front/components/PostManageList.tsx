@@ -2,6 +2,7 @@ import React, { FC, useCallback } from 'react';
 import Link from 'next/link';
 import { Button } from 'antd';
 import { PaperClipOutlined } from '@ant-design/icons';
+import dayjs from 'dayjs';
 
 import { PostButton, ListWrapper, PostInfo } from '../styles/ts/components/PostManageList';
 import useGetUser from '../hooks/query/useGetUser';
@@ -62,7 +63,7 @@ const PostManageList: FC<PostManageListProps> = ({ posts, firstIndex, lastIndex,
                 </span>
               </a>
               <span>{post.author?.name}</span>
-              <span>{post.createdAt}</span>
+              <span>{dayjs(post.createdAt).format('YYYY.MM.DD')}</span>
             </div>
           </div>
           <PostButton>
