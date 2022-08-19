@@ -45,6 +45,7 @@ export const mainPosts: PostItem[] = [
     id: 10,
     title: '입국심사',
     content: '...',
+    HTMLcontent: '<p>...</p>',
     tags: [{ name: 'algorithm' }],
     comments: [],
     author: null,

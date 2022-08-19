@@ -95,7 +95,7 @@ const PostCard: FC<PostCardProps> = ({ post }) => {
             </Link>
           ))}
         </div>
-        <div className='article'>{currentPost.thumbnailContent}</div>
+        <div className='article'>{currentPost.content}</div>
         <div style={{ display: 'flex' }}>
           <PostButton>
             <span>

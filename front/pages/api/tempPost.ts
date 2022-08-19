@@ -25,7 +25,7 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
         data: {
           title: req.body.title,
           content: req.body.content,
-          thumbnailContent: req.body.thumbnailContent,
+          HTMLcontent: req.body.HTMLcontent,
           tags: {
             connect: req.body.tags,
           },

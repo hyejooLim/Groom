@@ -151,9 +151,7 @@ const TempPostsModal: FC<TempPostsModalProps> = ({ isOpen, setIsOpen, onLoadPost
                           </RemoveButton>
                           <ItemInfoWrapper className='item_info_wrapper' style={{ left: '0', top: '0' }}>
                             <div className='item_info'>
-                              {!post.thumbnailContent || !post.thumbnailContent.trim()
-                                ? '[내용 없음]'
-                                : post.thumbnailContent}
+                              {!post.content || !post.content.trim() ? '[내용 없음]' : post.content}
                             </div>
                           </ItemInfoWrapper>
                         </dd>

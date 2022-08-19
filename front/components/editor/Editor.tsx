@@ -31,7 +31,7 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
       return {
         title: post.title,
         content: post.content,
-        thumbnailContent: post.thumbnailContent,
+        HTMLcontent: post.HTMLcontent,
         tags: post.tags,
         category: post.category,
       };
@@ -39,7 +39,7 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
       return {
         title: '',
         content: '',
-        thumbnailContent: '',
+        HTMLcontent: '',
         tags: [],
         category: { id: null, name: '' },
       };
@@ -125,8 +125,8 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
   const handleChangeContent = (HTMLvalue: string, textValue: string) => {
     setPostData({
       ...postData,
-      content: HTMLvalue,
-      thumbnailContent: textValue,
+      HTMLcontent: HTMLvalue,
+      content: textValue,
     });
   };
 
@@ -202,7 +202,7 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
       const newTempPost: TempPostItem = {
         title: postData.title,
         content: postData.content,
-        thumbnailContent: postData.thumbnailContent,
+        HTMLcontent: postData.HTMLcontent,
         tags: postData.tags,
         category: postData.category,
       };
@@ -251,7 +251,7 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
     setPostData({
       ...postData,
       title: post.title,
-      content: post.content,
+      HTMLcontent: post.HTMLcontent,
       tags: post.tags,
       category: post.category,
     });
@@ -280,7 +280,7 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
       <EditorContent
         title={postData.title}
         onChangeTitle={handleChangeTitle}
-        content={postData.content}
+        HTMLcontent={postData.HTMLcontent}
         onChangeContent={handleChangeContent}
         tags={postData.tags}
         onAddTag={handleAddTag}

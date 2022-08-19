@@ -40,7 +40,7 @@ const Manage = () => {
               >
                 <a>
                   <PostTitle>{`[${post.category?.name}] ${post.title}`}</PostTitle>
-                  <PostContent>{post.thumbnailContent.slice(0, 60)}</PostContent>
+                  <PostContent>{post.content.slice(0, 60)}</PostContent>
                 </a>
               </Link>
               <InfoWrapper>

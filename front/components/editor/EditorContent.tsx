@@ -12,7 +12,7 @@ import { Container, SelectCategory, PostTitle, TagArea } from '../../styles/ts/c
 interface EditorContentProps {
   title: string;
   onChangeTitle: (e: ChangeEvent<HTMLInputElement>) => void;
-  content: string;
+  HTMLcontent: string;
   onChangeContent: (HTMLvalue: string, textValue: string) => void;
   tags: TagItem[];
   onAddTag: (value: string) => void;
@@ -27,7 +27,7 @@ interface EditorContentProps {
 const EditorContent: FC<EditorContentProps> = ({
   title,
   onChangeTitle,
-  content,
+  HTMLcontent,
   onChangeContent,
   tags,
   onAddTag,
@@ -92,7 +92,7 @@ const EditorContent: FC<EditorContentProps> = ({
             })}
           >
             <TinymceEditor
-              content={content}
+              HTMLcontent={HTMLcontent}
               onChangeContent={onChangeContent}
               onOpenFile={handleOpenFile}
               onGetImageUrl={onGetImageUrl}
