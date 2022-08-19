@@ -8,6 +8,9 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
 
     if (req.method === 'POST') {
       const session = await getSession({ req });
+      if (!session) {
+        return res.status(403).send('세션이 만료되었습니다.');
+      }
 
       await Promise.all(
         req.body.tags?.map((tag) =>
