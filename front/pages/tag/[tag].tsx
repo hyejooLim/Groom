@@ -5,13 +5,15 @@ import { useRouter } from 'next/router';
 import AppLayout from '../../components/layouts/AppLayout';
 import Title from '../../components/Title';
 import PostList from '../../components/PostList';
-import { mainPosts } from '..';
+import useGetPosts from '../../hooks/query/useGetPosts';
 
 const Tag = () => {
   const router = useRouter();
   const { tag } = router.query;
 
-  const posts = mainPosts.filter((post) => post.tags && post.tags[0].name?.includes(tag as string));
+  const { data: posts } = useGetPosts();
+
+  // const posts => tag와 같은 name을 가진 게시글 반환
 
   return (
     <AppLayout>
