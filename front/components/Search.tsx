@@ -4,9 +4,10 @@ import { Input } from 'antd';
 
 import useInput from '../hooks/common/input';
 import { SearchWrapper } from '../styles/ts/components/Search';
-import { mainPosts } from '../pages';
+import useGetPosts from '../hooks/query/useGetPosts';
 
 const Search = () => {
+  const { data: posts } = useGetPosts();
   const [keyword, onChangeKeyword] = useInput('');
 
   const handleKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
@@ -15,7 +16,7 @@ const Search = () => {
     }
 
     if (e.key === 'Enter') {
-      const targetPosts = mainPosts.filter((post) => {
+      const targetPosts = posts.filter((post) => {
         const { title, category, content, author } = post;
         const insentiveKeyword = new RegExp(keyword, 'gi');
 
