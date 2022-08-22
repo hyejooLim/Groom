@@ -44,7 +44,7 @@ const Manage = () => {
                 </a>
               </Link>
               <InfoWrapper>
-                <span>댓글 {post.comments.length}</span>
+                <span>댓글 {post.comments?.length}</span>
                 <span>공감 {post.likeCount}</span>
               </InfoWrapper>
             </li>

@@ -10,9 +10,9 @@ import PaginationContainer from './PaginationContainer';
 import CommentForm from './CommentForm';
 import CommentList from './CommentList';
 import { PostItem } from '../types';
-import { mainPosts } from '../pages'; // dummyData
 import useGetUser from '../hooks/query/useGetUser';
 import { HeadWrapper, Date, ContentWrapper, PostButton, EditButton } from '../styles/ts/components/PostCard';
+import useGetPosts from '../hooks/query/useGetPosts';
 
 interface PostCardProps {
   post: PostItem;
@@ -20,10 +20,11 @@ interface PostCardProps {
 
 const PostCard: FC<PostCardProps> = ({ post }) => {
   const { data: user } = useGetUser();
-  const [posts, setPosts] = useState(mainPosts);
+  const { data: posts } = useGetPosts();
+
   const [liked, setLiked] = useState(null);
   const [currentPost, setCurrentPost] = useState(post);
-  const [currentPage, setCurrentPage] = useState(mainPosts.length + 1 - Number(post.id));
+  const [currentPage, setCurrentPage] = useState(posts.length + 1 - post.id);
 
   const onLike = useCallback(() => {
     if (!user) {
@@ -76,9 +77,9 @@ const PostCard: FC<PostCardProps> = ({ post }) => {
   const onChangePage = useCallback(
     (page: number) => {
       setCurrentPage(page);
-      setCurrentPost(mainPosts.find((item) => item.id === mainPosts.length + 1 - page));
+      setCurrentPost(posts.find((item) => item.id === posts.length + 1 - page));
     },
-    [mainPosts]
+    [posts]
   );
 
   return (
