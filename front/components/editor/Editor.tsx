@@ -165,10 +165,14 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
       '<img src="' + imageUrl + '" data-filename="' + filename + '" />'
     );
 
-    let img = dom.select('img');
-    dom.bind(img, 'load', (e) => {
+    let images = dom.select('img');
+    images.map((image) => {
+      image.removeAttribute('data-mce-src');
+    });
+
+    dom.bind(images, 'load', (e) => {
       tinymceEditor.nodeChanged();
-      dom.unbind(img, 'load');
+      dom.unbind(images, 'load');
     });
   };
 
