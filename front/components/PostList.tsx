@@ -31,7 +31,7 @@ const PostList: FC<PostListProps> = ({ posts }) => {
         <ul>
           {posts?.slice(firstIndex, lastIndex).map((post) => (
             <li key={post.id}>
-              <Link href={`/post/${post.id}`} as={`/post/${post.id}`}>
+              <Link href={`/post/${post.id}`}>
                 <a>
                   [{post.category?.name}] {post.title}
                 </a>
