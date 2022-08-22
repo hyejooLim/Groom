@@ -6,7 +6,7 @@ import { tinymceEditorState } from '../../../recoil/tinymce';
 import { EditorWrapper } from '../../../styles/ts/components/editor/tinymce/TinymceEditor';
 
 interface TinymceEditorProps {
-  HTMLcontent: string;
+  htmlContent: string;
   onChangeContent: (HTMLvalue: string, textValue: string) => void;
   onOpenFile: () => void;
   onGetImageUrl: (file: any) => void;
@@ -15,7 +15,7 @@ interface TinymceEditorProps {
 }
 
 const TinymceEditor: FC<TinymceEditorProps> = ({
-  HTMLcontent,
+  htmlContent,
   onChangeContent,
   onOpenFile,
   onGetImageUrl,
@@ -25,7 +25,7 @@ const TinymceEditor: FC<TinymceEditorProps> = ({
   const [tinymceEditor, setTinymceEditor] = useRecoilState(tinymceEditorState);
   const editorRef = useRef(null);
 
-  console.log('HTMLcontent', HTMLcontent);
+  console.log('htmlContent', htmlContent);
 
   const tinymcePlugins = ['link', 'lists', 'autoresize'];
   const tinymceToolbar =
@@ -36,10 +36,10 @@ const TinymceEditor: FC<TinymceEditorProps> = ({
 
   useEffect(() => {
     if (loadTempPost) {
-      tinymceEditor.setContent(HTMLcontent);
+      tinymceEditor.setContent(htmlContent);
       setLoadTempPost(false);
     }
-  }, [HTMLcontent, loadTempPost]);
+  }, [htmlContent, loadTempPost]);
 
   const handleDrop = (e: any) => {
     if (e.dataTransfer && e.dataTransfer.files) {
@@ -84,7 +84,7 @@ const TinymceEditor: FC<TinymceEditorProps> = ({
           },
           init_instance_callback: (editor) => {
             editor.on('drop', handleDrop);
-            editor.setContent(HTMLcontent);
+            editor.setContent(htmlContent);
             editor.execCommand('mceAutoResize');
           },
         }}

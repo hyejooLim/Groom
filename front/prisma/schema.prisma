@@ -29,7 +29,7 @@ model Post {
   id Int @id @default(autoincrement())
   title String
   content String
-  HTMLcontent String
+  htmlContent String
   tags Tag[] @relation("PostsAndTags")
   comments Comment[]
   likeCount Int @default(0)
@@ -46,7 +46,7 @@ model TempPost {
   id Int @id @default(autoincrement())
   title String
   content String
-  HTMLcontent String
+  htmlContent String
   tags Tag[] @relation("TempPostsAndTags")
   category Category? @relation(fields: [categoryId], references: [id])
   categoryId Int?

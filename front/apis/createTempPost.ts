@@ -3,7 +3,7 @@ import { CategoryItem, TagItem } from '../types';
 interface createTempPostProps {
   title: string;
   content: string;
-  HTMLcontent: string;
+  htmlContent: string;
   tags?: TagItem[];
   category: CategoryItem;
 }
