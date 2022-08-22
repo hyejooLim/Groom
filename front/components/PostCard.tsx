@@ -24,7 +24,7 @@ const PostCard: FC<PostCardProps> = ({ post }) => {
 
   const [liked, setLiked] = useState(null);
   const [currentPost, setCurrentPost] = useState(post);
-  const [currentPage, setCurrentPage] = useState(posts.length + 1 - post.id);
+  const [currentPage, setCurrentPage] = useState(posts?.length + 1 - post.id);
 
   const onLike = useCallback(() => {
     if (!user) {
