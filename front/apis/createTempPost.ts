@@ -8,7 +8,7 @@ interface createTempPostProps {
   category: CategoryItem;
 }
 
-const createTempPost = async ({ data }: { data: createTempPostProps }) => {
+const createTempPost = async ({ data }: { data: createTempPostProps }): Promise<Response> => {
   const response = await fetch('/api/tempPost', {
     method: 'POST',
     body: JSON.stringify(data),

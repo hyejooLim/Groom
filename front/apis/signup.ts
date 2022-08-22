@@ -4,7 +4,7 @@ interface SignupProps {
   name: string;
 }
 
-const signup = async ({ data }: { data: SignupProps }) => {
+const signup = async ({ data }: { data: SignupProps }): Promise<Response> => {
   const response = await fetch('/api/signup', {
     method: 'POST',
     body: JSON.stringify(data),

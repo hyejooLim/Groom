@@ -1,6 +1,8 @@
 import { NextApiHandler, NextApiRequest, NextApiResponse } from 'next';
 import { getSession } from 'next-auth/react';
+
 import prisma from '../../../lib/prisma';
+import { TagItem } from '../../../types';
 
 const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
@@ -13,7 +15,7 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
       }
 
       await Promise.all(
-        req.body.tags?.map((tag) =>
+        req.body.tags?.map((tag: TagItem) =>
           prisma.tag.upsert({
             where: { name: tag.name },
             update: {},

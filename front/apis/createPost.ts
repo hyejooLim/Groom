@@ -8,7 +8,7 @@ interface createPostProps {
   category: CategoryItem;
 }
 
-const createPost = async ({ data }: { data: createPostProps }) => {
+const createPost = async ({ data }: { data: createPostProps }): Promise<Response> => {
   const response = await fetch('/api/post', {
     method: 'POST',
     body: JSON.stringify(data),
