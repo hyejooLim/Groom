@@ -28,8 +28,8 @@ model User {
 model Post {
   id Int @id @default(autoincrement())
   title String
-  content String
-  htmlContent String
+  content String @db.LongText
+  htmlContent String @db.LongText
   tags Tag[] @relation("PostsAndTags")
   comments Comment[]
   likeCount Int @default(0)
@@ -45,8 +45,8 @@ model Post {
 model TempPost {
   id Int @id @default(autoincrement())
   title String
-  content String
-  htmlContent String
+  content String @db.LongText
+  htmlContent String @db.LongText
   tags Tag[] @relation("TempPostsAndTags")
   category Category? @relation(fields: [categoryId], references: [id])
   categoryId Int?
