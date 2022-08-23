@@ -6,6 +6,7 @@ import dayjs from 'dayjs';
 
 import { PostButton, ListWrapper, PostInfo } from '../styles/ts/components/PostManageList';
 import useGetUser from '../hooks/query/useGetUser';
+import deletePost from '../apis/deletePost';
 import { PostItem } from '../types';
 
 interface PostManageListProps {
@@ -16,15 +17,22 @@ interface PostManageListProps {
 }
 
 const PostManageList: FC<PostManageListProps> = ({ posts, firstIndex, lastIndex, onChangePostList }) => {
-  const { data: user } = useGetUser();
+  const { data: user, refetch } = useGetUser();
 
-  const onDeletePost = useCallback(() => {
-    const confirm = window.confirm('정말로 삭제하시겠습니까?');
+  const onDeletePost = useCallback(async (id: number) => {
+    try {
+      const confirm = window.confirm('선택한 글을 삭제하시겠습니까?');
+      if (!confirm) {
+        return;
+      }
 
-    if (confirm) {
-      // 게시글 삭제
-      alert('삭제 되었습니다.');
-      return;
+      const result = await deletePost(id);
+
+      if (result.ok) {
+        refetch();
+      }
+    } catch (err) {
+      console.error(err);
     }
   }, []);
 
@@ -74,7 +82,7 @@ const PostManageList: FC<PostManageListProps> = ({ posts, firstIndex, lastIndex,
                     <Button className='modify btn'>수정</Button>
                   </a>
                 </Link>
-                <Button className='delete btn' onClick={onDeletePost}>
+                <Button className='delete btn' onClick={() => onDeletePost(post.id)}>
                   삭제
                 </Button>
               </>
