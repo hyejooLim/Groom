@@ -77,7 +77,7 @@ const PostManageList: FC<PostManageListProps> = ({ posts, firstIndex, lastIndex,
           <PostButton>
             {user?.id === post?.authorId ? (
               <>
-                <Link href={{ pathname: '/write', query: { post: JSON.stringify(post) } }} as={`/write/${post.id}`}>
+                <Link href={`/write/${post.id}`}>
                   <a>
                     <Button className='modify btn'>수정</Button>
                   </a>

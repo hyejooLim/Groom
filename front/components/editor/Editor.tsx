@@ -11,6 +11,7 @@ import { tinymceEditorState } from '../../recoil/tinymce';
 import { tempPostsCountState, tempPostsState } from '../../recoil/tempPosts';
 import createTempPost from '../../apis/createTempPost';
 import createPost from '../../apis/createPost';
+import updatePost from '../../apis/updatePost';
 import getTempPosts from '../../apis/getTempPosts';
 import * as ContentMode from '../../constants/ContentMode';
 import { ContentModeType, PostItem, CategoryItem, TempPostItem } from '../../types';
@@ -31,6 +32,7 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
   const makePostState = () => {
     if (post && mode === ContentMode.EDIT) {
       return {
+        id: post.id,
         title: post.title,
         content: post.content,
         htmlContent: post.htmlContent,
@@ -292,7 +294,14 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
         return;
       }
 
-      const result = await createPost({ data: postData });
+      // 글쓰기 모드에 따라 api 호출
+      let result: Response = null;
+
+      if (mode === ContentMode.ADD) {
+        result = await createPost({ data: postData });
+      } else if (mode === ContentMode.EDIT) {
+        result = await updatePost({ data: postData });
+      }
 
       if (result.ok) {
         Router.push('/manage/post');
