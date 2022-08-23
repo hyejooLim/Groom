@@ -51,7 +51,7 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
           content: req.body.content,
           htmlContent: req.body.htmlContent,
           tags: {
-            set: [],
+            set: [], // disconnect
             connect: req.body.tags,
           },
           category: {
