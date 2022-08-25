@@ -13,7 +13,7 @@ const Category = () => {
       <ul>
         {categories?.map((category) => (
           <li key={category.id}>
-            <Link href={`/category/${category.id}`}>
+            <Link href={`/category/${category.name}`}>
               <a className='category_item'>
                 {category.name} ({category.posts?.length})
               </a>

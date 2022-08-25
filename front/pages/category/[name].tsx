@@ -5,14 +5,13 @@ import { useRouter } from 'next/router';
 import AppLayout from '../../components/layouts/AppLayout';
 import Title from '../../components/Title';
 import PostList from '../../components/PostList';
-import { categories } from '../../components/Category';
+import useGetCategory from '../../hooks/query/useGetCategory';
 
 const Category = () => {
   const router = useRouter();
-  const { id } = router.query;
+  const { name } = router.query;
 
-  // dummy data
-  const category = categories?.find((category) => category.id === Number(id));
+  const { data: category } = useGetCategory(name as string);
 
   return (
     <AppLayout>
