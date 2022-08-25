@@ -1,34 +1,12 @@
 import React from 'react';
 import Link from 'next/link';
 
-import { CategoryItem } from '../types';
+import useGetCategories from '../hooks/query/useGetCategories';
 import { CategoryWrapper } from '../styles/ts/components/Category';
 
-// dummy data
-export const categories: CategoryItem[] = [
-  {
-    id: 1,
-    name: 'algorithm',
-    posts: [],
-  },
-  {
-    id: 2,
-    name: 'typescript',
-    posts: [],
-  },
-  {
-    id: 3,
-    name: 'react',
-    posts: [],
-  },
-  {
-    id: 4,
-    name: 'next',
-    posts: [],
-  },
-];
-
 const Category = () => {
+  const { data: categories } = useGetCategories();
+
   return (
     <CategoryWrapper>
       <span style={{ fontSize: '18px', fontWeight: 600, margin: '20px 0 30px 0' }}>카테고리</span>
