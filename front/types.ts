@@ -54,7 +54,8 @@ export type TagItem = {
 
 export type CategoryItem = {
   id?: number;
-  name: string;
+  name?: string;
+  priority?: number;
   posts?: PostItem[];
   tempPosts?: TempPostItem[];
 };
@@ -67,4 +68,10 @@ export type CommentItem = {
   authorId?: number;
   content: string;
   datetime: string;
+};
+
+export type CategoryJson = {
+  append: CategoryItem[];
+  update: CategoryItem[];
+  delete: CategoryItem[];
 };
