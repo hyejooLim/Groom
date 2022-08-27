@@ -1,6 +1,7 @@
 import React, { useCallback, useState, useEffect } from 'react';
 import Head from 'next/head';
 import { useRecoilValue } from 'recoil';
+import { FiCheck } from 'react-icons/fi';
 
 import ManageLayout from '../../components/layouts/ManageLayout';
 import CategoryManageList from '../../components/CategoryManageList';
@@ -20,9 +21,12 @@ const ManageCategory = () => {
   const [isDisabled, setIsDisabled] = useState(true);
 
   useEffect(() => {
-    setIsDisabled(
-      categoryJson.append.length === 0 && categoryJson.update.length === 0 && categoryJson.delete.length === 0
-    );
+    if (categoryJson.append.length === 0 && categoryJson.update.length === 0 && categoryJson.delete.length === 0) {
+      setIsDisabled(true);
+    } else {
+      setIsDisabled(false);
+      setIsSave(false);
+    }
   }, [categoryJson]);
 
   const onUpdateCategories = useCallback(async () => {
@@ -59,7 +63,14 @@ const ManageCategory = () => {
         <CategoryManageList categoryJson={categoryJson} setCategoryJson={setCategoryJson} />
         <div className='set_btn'>
           <SaveDiffButton onClick={onUpdateCategories} disabled={isDisabled}>
-            {isSave ? '저장 완료' : '변경사항 저장'}
+            {isSave ? (
+              <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                <p style={{ display: 'inline-block', margin: '0 5px 0 0' }}>저장 완료</p>
+                <FiCheck />
+              </div>
+            ) : (
+              '변경사항 저장'
+            )}
           </SaveDiffButton>
         </div>
       </ManageCategoryWrapper>
