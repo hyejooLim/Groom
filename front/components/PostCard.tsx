@@ -3,6 +3,7 @@ import Link from 'next/link';
 import Router from 'next/router';
 import { Button } from 'antd';
 import { HeartOutlined, HeartTwoTone } from '@ant-design/icons';
+import { Markup } from 'interweave';
 import dayjs from 'dayjs';
 
 import Title from './Title';
@@ -96,7 +97,9 @@ const PostCard: FC<PostCardProps> = ({ post }) => {
             </Link>
           ))}
         </div>
-        <div className='article'>{currentPost.content}</div>
+        <div className='article'>
+          <Markup content={currentPost.htmlContent} />
+        </div>
         <div style={{ display: 'flex' }}>
           <PostButton>
             <span>
