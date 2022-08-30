@@ -10,7 +10,7 @@ const Keyword = () => {
   const router = useRouter();
   const { keyword, targetPosts } = router.query;
 
-  const posts = targetPosts && (JSON.parse(targetPosts as string) as PostItem[]);
+  const posts: PostItem[] = targetPosts && JSON.parse(targetPosts as string);
 
   return (
     <AppLayout>
