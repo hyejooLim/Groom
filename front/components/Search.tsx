@@ -3,40 +3,38 @@ import Router from 'next/router';
 import { Input } from 'antd';
 
 import useInput from '../hooks/common/input';
-import { SearchWrapper } from '../styles/ts/components/Search';
 import useGetPosts from '../hooks/query/useGetPosts';
+import { SearchWrapper } from '../styles/ts/components/Search';
 
 const Search = () => {
   const { data: posts } = useGetPosts();
   const [keyword, onChangeKeyword] = useInput('');
 
   const handleKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.key !== 'Enter') {
+      return;
+    }
+
     if (keyword === '' || !keyword.trim()) {
       return;
     }
 
-    if (e.key === 'Enter') {
-      const targetPosts = posts.filter((post) => {
-        const { title, category, content, author } = post;
-        const insentiveKeyword = new RegExp(keyword, 'gi');
+    const targetPosts = posts?.filter((post) => {
+      const { title, category, content, author } = post;
+      const keywordRegex = new RegExp(keyword, 'gi');
 
-        return (
-          insentiveKeyword.test(category.name) ||
-          insentiveKeyword.test(title) ||
-          insentiveKeyword.test(content) ||
-          insentiveKeyword.test(author?.name)
-        );
-      });
+      return (
+        keywordRegex.test(category.name) ||
+        keywordRegex.test(title) ||
+        keywordRegex.test(content) ||
+        keywordRegex.test(author.name)
+      );
+    });
 
+    if (targetPosts) {
       Router.push(
-        {
-          pathname: '/',
-          query: {
-            keyword,
-            targetPosts: JSON.stringify(targetPosts),
-          },
-        },
-        `/keyword=${keyword}`
+        { pathname: `/search/${keyword}`, query: { targetPosts: JSON.stringify(targetPosts) } },
+        `/search/${keyword}`
       );
     }
   };
