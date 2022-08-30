@@ -52,10 +52,7 @@ const PostManageList: FC<PostManageListProps> = ({ posts, firstIndex, lastIndex,
         <PostInfo key={post.id}>
           <div>
             <div className='post_title'>
-              <Link
-                href={{ pathname: `/post/${post.id}`, query: { post: JSON.stringify(post) } }}
-                as={`/post/${post.id}`}
-              >
+              <Link href={`/post/${post.id}`}>
                 <a>
                   <span>
                     [{post?.category?.name}] {post.title}
