@@ -6,6 +6,8 @@
 
   --text-color: #000;
   --a-hover-color: #07a;
+  --i-border-hover-color: #ddd;
+  --i-border-focus-color: #b7cff1;
 
   --grey-color: #a5a5a5;
   --dark-grey-color: #808080;
@@ -84,8 +86,19 @@ button {
   color: inherit;
 }
 
+.ant-btn:focus {
+  background-color: inherit;
+  border-color: inherit;
+  color: inherit;
+}
+
+.ant-input:hover {
+  border-color: var(--i-border-hover-color);
+  box-shadow: none;
+}
+
 .ant-input:focus {
-  border-color: none;
+  border-color: var(--i-border-focus-color);
   box-shadow: none;
 }
 
