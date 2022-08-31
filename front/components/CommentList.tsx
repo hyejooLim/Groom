@@ -43,20 +43,16 @@ const CommentList: FC<CommentListProps> = ({ postId }) => {
   );
 
   const onUpdateComment = useCallback(() => {
-    try {
-      if (!currentComment.content || !currentComment.content.trim()) {
-        alert('내용을 입력해 주세요.');
-        return;
-      }
-
-      updateComment.mutate({ data: { id: currentComment.id, content: currentComment.content } });
-
-      setTimeout(() => {
-        setCurrentComment(null);
-      }, 1000);
-    } catch (err) {
-      console.error(err);
+    if (!currentComment.content || !currentComment.content.trim()) {
+      alert('내용을 입력해 주세요.');
+      return;
     }
+
+    updateComment.mutate({ data: { id: currentComment.id, content: currentComment.content } });
+
+    setTimeout(() => {
+      setCurrentComment(null);
+    }, 1000);
   }, [currentComment]);
 
   const onCancelUpdateComment = useCallback(() => {
