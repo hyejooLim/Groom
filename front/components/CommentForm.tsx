@@ -1,8 +1,9 @@
-import React, { FC, useCallback, useState } from 'react';
+import React, { FC, useCallback } from 'react';
 import { Form } from 'antd';
 
 import { PostItem } from '../types';
 import useInput from '../hooks/common/input';
+import useCreateComment from '../hooks/query/useCreateComment';
 import { AddCommentButton, StyledTextArea } from '../styles/ts/components/CommentForm';
 
 interface CommentFormProps {
@@ -10,24 +11,22 @@ interface CommentFormProps {
 }
 
 const CommentForm: FC<CommentFormProps> = ({ post }) => {
+  const createComment = useCreateComment();
   const [commentText, onChangeCommentText, setCommentText] = useInput('');
-  const [loading, setLoading] = useState(false);
 
-  const onSubmitForm = useCallback(() => {
-    if (!commentText && !commentText.trim()) {
-      alert('내용을 입력해 주세요.');
-      return;
+  const onSubmitForm = useCallback(async () => {
+    try {
+      if (!commentText && !commentText.trim()) {
+        alert('내용을 입력해 주세요.');
+        return;
+      }
+
+      createComment.mutate({ data: { content: commentText, postId: post.id } });
+      setCommentText('');
+    } catch (err) {
+      console.error(err);
     }
-
-    setLoading(true);
-    setCommentText('');
-
-    setTimeout(() => {
-      setLoading(false);
-    }, 1000);
-
-    // addComment action
-  }, [commentText]);
+  }, [commentText, post]);
 
   return (
     <Form onFinish={onSubmitForm} style={{ marginTop: 50 }}>
@@ -38,7 +37,7 @@ const CommentForm: FC<CommentFormProps> = ({ post }) => {
           onChange={onChangeCommentText}
           placeholder='내용을 입력해 주세요.'
         />
-        <AddCommentButton htmlType='submit' type='primary' loading={loading}>
+        <AddCommentButton htmlType='submit' type='primary' loading={createComment.isLoading}>
           Write
         </AddCommentButton>
       </Form.Item>
