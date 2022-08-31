@@ -5,6 +5,7 @@ import { Comment, List, Button } from 'antd';
 import useGetUser from '../hooks/query/useGetUser';
 import useGetComments from '../hooks/query/useGetComments';
 import useUpdateComment from '../hooks/query/useUpdateComment';
+import useDeleteComment from '../hooks/query/useDeleteComment';
 import { CommentItem } from '../types';
 import { CommentBox, ButtonWrapper, StyledForm, StyledTextArea } from '../styles/ts/components/CommentList';
 
@@ -16,6 +17,7 @@ const CommentList: FC<CommentListProps> = ({ postId }) => {
   const { data: user } = useGetUser();
   const { data: comments } = useGetComments(postId);
   const updateComment = useUpdateComment();
+  const deleteComment = useDeleteComment();
 
   const [currentComment, setCurrentComment] = useState<CommentItem>(null);
 
@@ -61,6 +63,10 @@ const CommentList: FC<CommentListProps> = ({ postId }) => {
     setCurrentComment(null);
   }, []);
 
+  const onDeleteComment = useCallback((id: number) => {
+    deleteComment.mutate(id);
+  }, []);
+
   return (
     <List
       dataSource={comments}
@@ -96,7 +102,9 @@ const CommentList: FC<CommentListProps> = ({ postId }) => {
                 <Button className='modify btn' onClick={() => onClickModifyButton(item.id, item.content)}>
                   수정
                 </Button>
-                <Button className='delete btn'>삭제</Button>
+                <Button className='delete btn' onClick={() => onDeleteComment(item.id)}>
+                  삭제
+                </Button>
               </ButtonWrapper>
             )}
           </CommentBox>

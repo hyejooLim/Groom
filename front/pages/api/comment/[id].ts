@@ -15,6 +15,16 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
 
       res.status(200).send('ok');
     }
+
+    if (req.method === 'DELETE') {
+      await prisma.comment.delete({
+        where: {
+          id: Number(req.query.id),
+        },
+      });
+
+      res.status(200).send('ok');
+    }
   } catch (err) {
     console.error(err);
   }
