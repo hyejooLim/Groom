@@ -92,7 +92,7 @@ const PostCard: FC<PostCardProps> = ({ post }) => {
       <ContentWrapper>
         <div className='tag_label'>
           {currentPost.tags?.map((tag) => (
-            <Link key={tag.id} href={`/tag/${tag}`}>
+            <Link key={tag.id} href={`/tag/${tag.name}`}>
               <a>#{tag.name}</a>
             </Link>
           ))}
