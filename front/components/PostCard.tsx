@@ -132,7 +132,7 @@ const PostCard: FC<PostCardProps> = ({ post }) => {
       <PaginationContainer pageSize={1} current={currentPage} total={posts?.length} onChange={onChangePage} />
       <div>
         <CommentForm post={currentPost} />
-        {currentPost.comments && <CommentList comments={currentPost.comments} />}
+        <CommentList postId={currentPost.id} />
       </div>
     </>
   );

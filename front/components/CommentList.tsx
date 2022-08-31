@@ -1,29 +1,27 @@
 import React, { FC } from 'react';
-import Link from 'next/link';
 import dayjs from 'dayjs';
 import { Comment, List } from 'antd';
 
 import { CommentItem } from '../types';
+import useGetComments from '../hooks/query/useGetComments';
 import { CommentBox } from '../styles/ts/components/CommentList';
 
 interface CommentListProps {
-  comments: CommentItem[];
+  postId: number;
 }
 
-const CommentList: FC<CommentListProps> = ({ comments }) => {
+const CommentList: FC<CommentListProps> = ({ postId }) => {
+  const { data: comments } = useGetComments(postId);
+
   return (
     <List
       dataSource={comments}
-      header={`${comments.length}개의 댓글`}
+      header={`${comments?.length}개의 댓글`}
       itemLayout='horizontal'
       renderItem={(item: CommentItem) => (
         <CommentBox>
           <Comment
-            author={
-              <Link href={`/user/${item.author.id}`}>
-                <a>{item.author.name}</a>
-              </Link>
-            }
+            author={item.author?.name}
             content={item.content}
             datetime={<span style={{ marginLeft: '10px', fontSize: '13px' }}>{dayjs().format('YYYY.MM.DD')}</span>}
           />
