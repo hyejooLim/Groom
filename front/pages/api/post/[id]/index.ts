@@ -1,7 +1,7 @@
 import { NextApiHandler, NextApiRequest, NextApiResponse } from 'next';
 
-import prisma from '../../../lib/prisma';
-import { TagItem } from '../../../types';
+import prisma from '../../../../lib/prisma';
+import { TagItem } from '../../../../types';
 
 const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
@@ -18,6 +18,11 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
           },
           comments: true,
           category: true,
+          likers: {
+            select: {
+              id: true,
+            },
+          },
           author: {
             select: {
               name: true,

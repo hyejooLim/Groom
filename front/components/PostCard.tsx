@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useState } from 'react';
+import React, { FC, useCallback, useEffect, useState } from 'react';
 import Link from 'next/link';
 import Router from 'next/router';
 import { Button } from 'antd';
@@ -10,10 +10,11 @@ import Title from './Title';
 import PaginationContainer from './PaginationContainer';
 import CommentForm from './CommentForm';
 import CommentList from './CommentList';
-import { PostItem } from '../types';
 import useGetUser from '../hooks/query/useGetUser';
-import { HeadWrapper, Date, ContentWrapper, PostButton, EditButton } from '../styles/ts/components/PostCard';
 import useGetPosts from '../hooks/query/useGetPosts';
+import useLikePost from '../hooks/query/useLikePost';
+import { PostItem } from '../types';
+import { HeadWrapper, Date, ContentWrapper, PostButton, EditButton } from '../styles/ts/components/PostCard';
 
 interface PostCardProps {
   post: PostItem;
@@ -22,25 +23,29 @@ interface PostCardProps {
 const PostCard: FC<PostCardProps> = ({ post }) => {
   const { data: user } = useGetUser();
   const { data: posts } = useGetPosts();
+  const likePost = useLikePost();
 
-  const [liked, setLiked] = useState(null);
-  const [currentPost, setCurrentPost] = useState(post);
+  const [currentPost, setCurrentPost] = useState<PostItem>(post);
   const [currentPage, setCurrentPage] = useState(posts?.length + 1 - post.id);
 
-  const onLike = useCallback(() => {
+  useEffect(() => {
+    setCurrentPost(post);
+  }, [post]);
+
+  const onLikePost = useCallback(async () => {
+    if (!user) {
+      alert('로그인이 필요합니다.');
+      return;
+    }
+
+    likePost.mutate(currentPost.id);
+  }, [user, currentPost]);
+
+  const onUnLikePost = useCallback(() => {
     if (!user) {
       alert('로그인이 필요합니다.');
     }
-
-    // LIKE_POST_REQUEST
-  }, [user]);
-
-  const onUnLike = useCallback(() => {
-    if (!user) {
-      alert('로그인이 필요합니다.');
-
-      // UNLIKE_POST_REQUEST
-    }
+    
   }, [user]);
 
   const onSubscribePost = useCallback(() => {
@@ -103,10 +108,10 @@ const PostCard: FC<PostCardProps> = ({ post }) => {
         <div style={{ display: 'flex' }}>
           <PostButton>
             <span>
-              {liked ? (
-                <HeartTwoTone key='heart' twoToneColor='red' onClick={onUnLike} />
+              {currentPost.likers?.find((liker) => liker.id === user?.id) ? (
+                <HeartTwoTone key='heart' twoToneColor='red' onClick={onUnLikePost} />
               ) : (
-                <HeartOutlined key='heart' onClick={onLike} />
+                <HeartOutlined key='heart' onClick={onLikePost} />
               )}
             </span>
             <span style={{ marginLeft: 7 }}>공감</span>
