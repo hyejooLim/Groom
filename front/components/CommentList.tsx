@@ -48,6 +48,8 @@ const CommentList: FC<CommentListProps> = ({ postId }) => {
       return;
     }
 
+    // const regex = new RegExp('\n', 'g');
+    // const newContent = currentComment.content.replaceAll(regex, '<br>');
     updateComment.mutate({ data: { id: currentComment.id, content: currentComment.content } });
 
     setTimeout(() => {
@@ -90,7 +92,7 @@ const CommentList: FC<CommentListProps> = ({ postId }) => {
           <CommentBox>
             <Comment
               author={item.author?.name}
-              content={item.content}
+              content={<p style={{ whiteSpace: 'pre-line' }}>{item.content}</p>}
               datetime={
                 <span style={{ marginLeft: '10px', fontSize: '13px' }}>
                   {dayjs(item.datetime).format('YYYY.MM.DD')}
