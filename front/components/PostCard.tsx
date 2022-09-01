@@ -46,7 +46,10 @@ const PostCard: FC<PostCardProps> = ({ post }) => {
 
   const onLikePost = useCallback(() => {
     if (!user) {
-      alert('로그인이 필요합니다.');
+      if (confirm('로그인이 필요합니다. 로그인 페이지로 이동하시겠습니까?')) {
+        Router.push('/login');
+      }
+
       return;
     }
 
@@ -54,20 +57,19 @@ const PostCard: FC<PostCardProps> = ({ post }) => {
   }, [user, currentPost]);
 
   const onUnLikePost = useCallback(() => {
-    if (!user) {
-      alert('로그인이 필요합니다.');
-      return;
-    }
-
     unLikePost.mutate(currentPost.id);
-  }, [user, currentPost]);
+  }, [currentPost]);
 
   const onSubscribePost = useCallback(() => {
     if (!user) {
-      alert('로그인이 필요합니다.');
+      if (confirm('로그인이 필요합니다. 로그인 페이지로 이동하시겠습니까?')) {
+        Router.push('/login');
+      }
+
+      return;
     }
 
-    if (user.subscribedPosts.find((post) => post.id === currentPost.id)) {
+    if (user?.subscribedPosts.find((post) => post.id === currentPost.id)) {
       alert('이미 구독한 글입니다.');
     }
 

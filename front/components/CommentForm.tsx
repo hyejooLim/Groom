@@ -1,9 +1,11 @@
 import React, { FC, useCallback } from 'react';
+import Router from 'next/router';
 import { Form } from 'antd';
 
-import { PostItem } from '../types';
 import useInput from '../hooks/common/input';
+import useGetUser from '../hooks/query/useGetUser';
 import useCreateComment from '../hooks/query/useCreateComment';
+import { PostItem } from '../types';
 import { AddCommentButton, StyledTextArea } from '../styles/ts/components/CommentForm';
 
 interface CommentFormProps {
@@ -11,21 +13,27 @@ interface CommentFormProps {
 }
 
 const CommentForm: FC<CommentFormProps> = ({ post }) => {
+  const { data: user } = useGetUser();
   const createComment = useCreateComment();
   const [commentText, onChangeCommentText, setCommentText] = useInput('');
 
-  const onSubmitForm = useCallback(async () => {
-    try {
-      if (!commentText && !commentText.trim()) {
-        alert('내용을 입력해 주세요.');
-        return;
+  const onSubmitForm = useCallback(() => {
+    if (!user) {
+      if (confirm('로그인이 필요합니다. 로그인 페이지로 이동하시겠습니까?')) {
+        Router.push('/login');
       }
 
-      createComment.mutate({ data: { content: commentText, postId: post.id } });
       setCommentText('');
-    } catch (err) {
-      console.error(err);
+      return;
     }
+
+    if (!commentText && !commentText.trim()) {
+      alert('내용을 입력해 주세요.');
+      return;
+    }
+
+    createComment.mutate({ data: { content: commentText, postId: post.id } });
+    setCommentText('');
   }, [commentText, post]);
 
   return (
