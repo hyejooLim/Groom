@@ -10,6 +10,7 @@ export type UserType = {
   posts?: PostItem[]; // 작성한 게시글
   tempPosts?: TempPostItem[];
   subscribedPosts?: PostItem[]; // 유저가 구독한 게시글
+  likedPosts?: PostItem[]; // 유저가 좋아요한 게시글
   createdAt?: string;
   updatedAt?: string;
 };
@@ -21,13 +22,12 @@ export type PostItem = {
   htmlContent: string;
   tags?: TagItem[];
   comments?: CommentItem[];
-  likeCount?: number;
   category: CategoryItem;
   categoryId?: number;
   author?: UserType;
   authorId?: number;
-  subscriber?: UserType;
-  subscriberId?: number;
+  subscribers?: UserType[];
+  likers?: UserType[];
   createdAt?: string;
   updatedAt?: string;
 };

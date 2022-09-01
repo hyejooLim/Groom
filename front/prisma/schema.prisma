@@ -3,7 +3,7 @@
 
 generator client {
   provider = "prisma-client-js"
-  previewFeatures = ["referentialIntegrity"]
+  previewFeatures = ["referentialIntegrity", "fullTextSearch", "fullTextIndex"]
 }
 
 datasource db {
@@ -21,6 +21,7 @@ model User {
   posts Post[] @relation("OwnPosts")
   tempPosts TempPost[]
   subscribedPosts Post[] @relation("OwnSubscribedPosts")
+  likedPosts Post[] @relation("LikedPosts")
   createdAt DateTime @default(now()) @map(name: "created_at")
   updatedAt DateTime @updatedAt @map(name: "updated_at")
 }
@@ -32,12 +33,12 @@ model Post {
   htmlContent String @db.LongText
   tags Tag[] @relation("PostsAndTags")
   comments Comment[]
-  likeCount Int @default(0)
   category Category? @relation(fields: [categoryId], references: [id])
   categoryId Int?
   author User? @relation("OwnPosts", fields: [authorId], references: [id])
   authorId Int?
   subscriber User[] @relation("OwnSubscribedPosts")
+  likers User[] @relation("LikedPosts")
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -76,6 +77,6 @@ model Comment {
   postId Int
   author User @relation(fields: [authorId], references: [id])
   authorId Int
-  content String
+  content String @db.LongText
   datetime DateTime @default(now())
 }
