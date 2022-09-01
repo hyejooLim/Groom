@@ -91,7 +91,11 @@ const CommentList: FC<CommentListProps> = ({ postId }) => {
             <Comment
               author={item.author?.name}
               content={item.content}
-              datetime={<span style={{ marginLeft: '10px', fontSize: '13px' }}>{dayjs().format('YYYY.MM.DD')}</span>}
+              datetime={
+                <span style={{ marginLeft: '10px', fontSize: '13px' }}>
+                  {dayjs(item.datetime).format('YYYY.MM.DD')}
+                </span>
+              }
             />
             {user?.id === item.authorId && (
               <ButtonWrapper>
