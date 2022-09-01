@@ -13,6 +13,7 @@ import CommentList from './CommentList';
 import useGetUser from '../hooks/query/useGetUser';
 import useGetPosts from '../hooks/query/useGetPosts';
 import useLikePost from '../hooks/query/useLikePost';
+import useUnLikePost from '../hooks/query/useUnLikePost';
 import { PostItem } from '../types';
 import { HeadWrapper, Date, ContentWrapper, PostButton, EditButton } from '../styles/ts/components/PostCard';
 
@@ -24,6 +25,7 @@ const PostCard: FC<PostCardProps> = ({ post }) => {
   const { data: user } = useGetUser();
   const { data: posts } = useGetPosts();
   const likePost = useLikePost();
+  const unLikePost = useUnLikePost();
 
   const [currentPost, setCurrentPost] = useState<PostItem>(post);
   const [currentPage, setCurrentPage] = useState(posts?.length + 1 - post.id);
@@ -44,9 +46,11 @@ const PostCard: FC<PostCardProps> = ({ post }) => {
   const onUnLikePost = useCallback(() => {
     if (!user) {
       alert('로그인이 필요합니다.');
+      return;
     }
-    
-  }, [user]);
+
+    unLikePost.mutate(currentPost.id);
+  }, [user, currentPost]);
 
   const onSubscribePost = useCallback(() => {
     if (!user) {
