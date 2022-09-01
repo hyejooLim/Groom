@@ -16,6 +16,7 @@ import useLikePost from '../hooks/query/useLikePost';
 import useUnLikePost from '../hooks/query/useUnLikePost';
 import { PostItem } from '../types';
 import { HeadWrapper, Date, ContentWrapper, PostButton, EditButton } from '../styles/ts/components/PostCard';
+import useDeletePost from '../hooks/query/useDeletePost';
 
 interface PostCardProps {
   post: PostItem;
@@ -24,8 +25,9 @@ interface PostCardProps {
 const PostCard: FC<PostCardProps> = ({ post }) => {
   const { data: user } = useGetUser();
   const { data: posts } = useGetPosts();
-  const likePost = useLikePost();
   const unLikePost = useUnLikePost();
+  const deletePost = useDeletePost();
+  const likePost = useLikePost();
 
   const [currentPost, setCurrentPost] = useState<PostItem>(post);
   const [currentPage, setCurrentPage] = useState(posts?.length + 1 - post.id);
@@ -34,7 +36,15 @@ const PostCard: FC<PostCardProps> = ({ post }) => {
     setCurrentPost(post);
   }, [post]);
 
-  const onLikePost = useCallback(async () => {
+  useEffect(() => {
+    if (deletePost.isSuccess) {
+      setTimeout(() => {
+        Router.push('/');
+      }, 200);
+    }
+  }, [deletePost]);
+
+  const onLikePost = useCallback(() => {
     if (!user) {
       alert('로그인이 필요합니다.');
       return;
@@ -74,15 +84,13 @@ const PostCard: FC<PostCardProps> = ({ post }) => {
   }, []);
 
   const onDeletePost = useCallback(() => {
-    const confirm = window.confirm('정말 게시글을 삭제하시겠습니까?');
-    if (confirm) {
-      // 게시글 삭제
-
-      alert('게시글이 삭제되었습니다.');
-    } else {
+    const confirm = window.confirm('선택한 글을 삭제하시겠습니까?');
+    if (!confirm) {
       return;
     }
-  }, []);
+
+    deletePost.mutate(currentPost.id);
+  }, [currentPost]);
 
   const onChangePage = useCallback(
     (page: number) => {

@@ -1,4 +1,4 @@
-import React, { FC, useCallback } from 'react';
+import React, { FC, useCallback, useEffect } from 'react';
 import Link from 'next/link';
 import { Button } from 'antd';
 import { PaperClipOutlined } from '@ant-design/icons';
@@ -6,7 +6,7 @@ import dayjs from 'dayjs';
 
 import { PostButton, ListWrapper, PostInfo } from '../styles/ts/components/PostManageList';
 import useGetUser from '../hooks/query/useGetUser';
-import deletePost from '../apis/deletePost';
+import useDeletePost from '../hooks/query/useDeletePost';
 import { PostItem } from '../types';
 
 interface PostManageListProps {
@@ -17,23 +17,16 @@ interface PostManageListProps {
 }
 
 const PostManageList: FC<PostManageListProps> = ({ posts, firstIndex, lastIndex, onChangePostList }) => {
-  const { data: user, refetch } = useGetUser();
+  const { data: user } = useGetUser();
+  const deletePost = useDeletePost();
 
-  const onDeletePost = useCallback(async (id: number) => {
-    try {
-      const confirm = window.confirm('선택한 글을 삭제하시겠습니까?');
-      if (!confirm) {
-        return;
-      }
-
-      const result = await deletePost(id);
-
-      if (result.ok) {
-        refetch();
-      }
-    } catch (err) {
-      console.error(err);
+  const onDeletePost = useCallback((id: number) => {
+    const confirm = window.confirm('선택한 글을 삭제하시겠습니까?');
+    if (!confirm) {
+      return;
     }
+
+    deletePost.mutate(id);
   }, []);
 
   const onCancelSubscribe = () => {
