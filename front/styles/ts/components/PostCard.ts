@@ -49,7 +49,7 @@ export const Date = styled.div`
 `;
 
 export const ContentWrapper = styled.div`
-  padding: 50px 15px 18px;
+  padding: 50px 15px;
   background-color: #fff;
   border: 1px solid #ddd;
   line-height: 180%;
@@ -75,7 +75,7 @@ export const ContentWrapper = styled.div`
 `;
 
 export const PostButton = styled(Button)`
-  margin-top: 50px; //
+  margin-top: 50px;
   background-color: transparent;
   width: 80px;
   height: 32px;
