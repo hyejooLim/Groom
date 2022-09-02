@@ -16,7 +16,7 @@ export const SignupWrapper = styled.div`
 
 export const StyledForm = styled(Form)`
   .input_form {
-    margin-bottom: 20px;
+    margin-bottom: 10px;
   }
 `;
 
@@ -31,6 +31,18 @@ export const InputWrapper = styled(Input)`
 
 export const ErrorMessage = styled.div`
   color: red;
+  font-size: 13px;
+  visibility: hidden;
+
+  &.error {
+    visibility: visible;
+  }
+`;
+
+export const CorrectMessage = styled.div`
+  color: green;
+  height: 10px;
+  font-size: 13px;
 `;
 
 export const SubmitButton = styled(Button)`

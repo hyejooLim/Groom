@@ -1,56 +1,56 @@
-import React, { ChangeEvent, useCallback, useState } from 'react';
+import React, { ChangeEvent, useCallback, useEffect, useState } from 'react';
 import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
 import Router from 'next/router';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import classNames from 'classnames';
 
 import useInput from '../hooks/common/input';
 import signup from '../apis/signup';
-import { SignupWrapper, StyledForm, InputWrapper, ErrorMessage, SubmitButton } from '../styles/ts/pages/signup';
+import {
+  SignupWrapper,
+  StyledForm,
+  InputWrapper,
+  ErrorMessage,
+  SubmitButton,
+  CorrectMessage,
+} from '../styles/ts/pages/signup';
 import logo from '../public/Groom_Logo_No_Background.png';
-
-const regex = /[a-zA-Z0-9._+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9.]+/g;
 
 const Signup = () => {
   const [email, setEmail] = useState('');
-  const [password, onChangePassword] = useInput('');
+  const [password, setPassword] = useState('');
+  const [passwordCheck, setPasswordCheck] = useState('');
   const [name, onChangeName] = useInput('');
 
   const [emailError, setEmailError] = useState(false);
-  const [passwordCheck, setPasswordCheck] = useState('');
   const [passwordError, setPasswordError] = useState(false);
+  const [passwordCheckError, setPasswordCheckError] = useState(false);
 
-  const onChangeEmail = useCallback(
-    (e: ChangeEvent<HTMLInputElement>) => {
-      setEmail(e.target.value);
+  const onChangeEmail = useCallback((e: ChangeEvent<HTMLInputElement>) => {
+    setEmail(e.target.value);
 
-      if (!e.target.value || !e.target.value.trim()) {
-        setEmailError(false);
-      } else {
-        setEmailError(!regex.test(e.target.value));
-      }
-    },
-    [regex]
-  );
+    const regex = /[a-zA-Z0-9._+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9.]+/g;
+    setEmailError(e.target.value.length > 0 && !regex.test(e.target.value));
+  }, []);
+
+  const onChangePassword = useCallback((e: ChangeEvent<HTMLInputElement>) => {
+    setPassword(e.target.value);
+    setPasswordError(0 < e.target.value.length && e.target.value.length < 8);
+  }, []);
 
   const onChangePasswordCheck = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
       setPasswordCheck(e.target.value);
-      setPasswordError(e.target.value !== password);
+      setPasswordCheckError(e.target.value !== password);
     },
     [password]
   );
 
   const onSubmitForm = useCallback(async () => {
     try {
-      if (password !== passwordCheck) {
-        setPasswordError(true);
-        alert('비밀번호가 일치하지 않습니다.');
-        return;
-      }
-
       const result = await signup({ data: { email, password, name } });
 
       if (!result.ok) {
@@ -98,10 +98,10 @@ const Signup = () => {
               value={email}
               type='email'
               placeholder='이메일을 입력하세요.'
-              required
               onChange={onChangeEmail}
+              required
             />
-            {emailError && <ErrorMessage>이메일 형식이 올바르지 않습니다.</ErrorMessage>}
+            <ErrorMessage className={classNames({ error: emailError })}>이메일 형식이 올바르지 않습니다.</ErrorMessage>
           </div>
           <div className='input_form'>
             <label htmlFor='user-password'>Password</label>
@@ -111,9 +111,12 @@ const Signup = () => {
               value={password}
               type='password'
               placeholder='비밀번호를 입력하세요.'
-              required
               onChange={onChangePassword}
+              required
             />
+            <ErrorMessage className={classNames({ error: passwordError })}>
+              비밀번호는 8자리 이상이어야 합니다.
+            </ErrorMessage>
           </div>
           <div className='input_form'>
             <label htmlFor='user-password-check'>Password Check</label>
@@ -123,10 +126,12 @@ const Signup = () => {
               value={passwordCheck}
               type='password'
               placeholder='비밀번호를 입력하세요.'
-              required
               onChange={onChangePasswordCheck}
+              required
             />
-            {passwordError && <ErrorMessage>비밀번호가 일치하지 않습니다.</ErrorMessage>}
+            <ErrorMessage className={classNames({ error: passwordCheckError })}>
+              비밀번호가 일치하지 않습니다.
+            </ErrorMessage>
           </div>
           <div className='input_form'>
             <label htmlFor='user-name'>Name</label>
@@ -135,11 +140,18 @@ const Signup = () => {
               name='user-name'
               value={name}
               placeholder='이름을 입력하세요.'
-              required
               onChange={onChangeName}
+              required
             />
           </div>
-          <SubmitButton htmlType='submit'>가입하기</SubmitButton>
+          <SubmitButton
+            htmlType='submit'
+            disabled={
+              !email || !password || !passwordCheck || !name || emailError || passwordError || passwordCheckError
+            }
+          >
+            가입하기
+          </SubmitButton>
         </StyledForm>
       </SignupWrapper>
       <ToastContainer />
