@@ -54,4 +54,13 @@ export const SubmitButton = styled(Button)`
     background-color: #0fc19e;
     transform: scale(1.02);
   }
+
+  &:disabled {
+    background-color: #fff;
+
+    :hover {
+      background-color: #fff;
+      transform: none;
+    }
+  }
 `;
