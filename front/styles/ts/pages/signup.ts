@@ -39,12 +39,6 @@ export const ErrorMessage = styled.div`
   }
 `;
 
-export const CorrectMessage = styled.div`
-  color: green;
-  height: 10px;
-  font-size: 13px;
-`;
-
 export const SubmitButton = styled(Button)`
   margin-top: 20px;
   width: 80px;

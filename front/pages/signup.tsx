@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useCallback, useEffect, useState } from 'react';
+import React, { ChangeEvent, useCallback, useState } from 'react';
 import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -9,14 +9,7 @@ import classNames from 'classnames';
 
 import useInput from '../hooks/common/input';
 import signup from '../apis/signup';
-import {
-  SignupWrapper,
-  StyledForm,
-  InputWrapper,
-  ErrorMessage,
-  SubmitButton,
-  CorrectMessage,
-} from '../styles/ts/pages/signup';
+import { SignupWrapper, StyledForm, InputWrapper, ErrorMessage, SubmitButton } from '../styles/ts/pages/signup';
 import logo from '../public/Groom_Logo_No_Background.png';
 
 const Signup = () => {
