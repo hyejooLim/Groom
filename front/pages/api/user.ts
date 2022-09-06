@@ -22,11 +22,37 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
               },
             ],
             include: {
-              category: true,
-              author: true,
+              category: {
+                select: {
+                  name: true,
+                },
+              },
+              author: {
+                select: {
+                  name: true,
+                },
+              },
             },
           },
-          subscribedPosts: true,
+          subscribedPosts: {
+            orderBy: [
+              {
+                createdAt: 'desc',
+              },
+            ],
+            include: {
+              category: {
+                select: {
+                  name: true,
+                },
+              },
+              author: {
+                select: {
+                  name: true,
+                },
+              },
+            },
+          },
           tempPosts: true,
         },
       });

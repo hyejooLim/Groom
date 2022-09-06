@@ -41,7 +41,7 @@ const ManagePost = () => {
 
       /** will delete. */
       // let newPosts = [...posts];
-      // newPosts = newPosts.filter((post) => post.category.name === e.target.dataset.name);
+      // newPosts = newPosts.filter((post) => post.category.id === e.target.dataset.id);
       // setPosts(newPosts);
       // setPostsCount(newPosts.length);
 
