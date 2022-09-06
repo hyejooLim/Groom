@@ -37,7 +37,7 @@ model Post {
   categoryId Int?
   author User? @relation("OwnPosts", fields: [authorId], references: [id])
   authorId Int?
-  subscriber User[] @relation("OwnSubscribedPosts")
+  subscribers User[] @relation("OwnSubscribedPosts")
   likers User[] @relation("LikedPosts")
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
