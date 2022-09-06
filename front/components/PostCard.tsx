@@ -14,9 +14,10 @@ import useGetUser from '../hooks/query/useGetUser';
 import useGetPosts from '../hooks/query/useGetPosts';
 import useLikePost from '../hooks/query/useLikePost';
 import useUnLikePost from '../hooks/query/useUnLikePost';
+import useSubscribePost from '../hooks/query/useSubscribePost';
+import useDeletePost from '../hooks/query/useDeletePost';
 import { PostItem } from '../types';
 import { HeadWrapper, Date, ContentWrapper, PostButton, EditButton } from '../styles/ts/components/PostCard';
-import useDeletePost from '../hooks/query/useDeletePost';
 
 interface PostCardProps {
   post: PostItem;
@@ -25,9 +26,11 @@ interface PostCardProps {
 const PostCard: FC<PostCardProps> = ({ post }) => {
   const { data: user } = useGetUser();
   const { data: posts } = useGetPosts();
-  const unLikePost = useUnLikePost();
-  const deletePost = useDeletePost();
+
   const likePost = useLikePost();
+  const unLikePost = useUnLikePost();
+  const subscribePost = useSubscribePost();
+  const deletePost = useDeletePost();
 
   const [currentPost, setCurrentPost] = useState<PostItem>(post);
   const [currentPage, setCurrentPage] = useState(posts?.length + 1 - post.id);
@@ -71,11 +74,14 @@ const PostCard: FC<PostCardProps> = ({ post }) => {
 
     if (user?.subscribedPosts.find((post) => post.id === currentPost.id)) {
       alert('이미 구독한 글입니다.');
+      return;
     }
 
-    // 로그인한 유저의 구독 목록에 해당 게시글의 id를 추가
+    subscribePost.mutate(currentPost.id);
   }, [user, currentPost]);
 
+  const onUnSubscribePost = () => {};
+  
   const onClickModifyBtn = useCallback(() => {
     Router.push({
       pathname: '/write',
@@ -130,9 +136,15 @@ const PostCard: FC<PostCardProps> = ({ post }) => {
             </span>
             <span style={{ marginLeft: 7 }}>공감</span>
           </PostButton>
-          <PostButton style={{ marginLeft: 10 }} onClick={onSubscribePost}>
-            구독하기
-          </PostButton>
+          {currentPost.subscribers?.find((subscriber) => subscriber.id === user?.id) ? (
+            <PostButton style={{ marginLeft: 10 }} onClick={onUnSubscribePost}>
+              구독취소
+            </PostButton>
+          ) : (
+            <PostButton style={{ marginLeft: 10 }} onClick={onSubscribePost}>
+              구독하기
+            </PostButton>
+          )}
         </div>
         {user?.id === currentPost.authorId && (
           <EditButton>

@@ -23,6 +23,11 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
               id: true,
             },
           },
+          subscribers: {
+            select: {
+              id: true,
+            },
+          },
           author: {
             select: {
               name: true,
@@ -76,7 +81,7 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
           postId: Number(req.query.id),
         },
       });
-      
+
       await prisma.post.delete({
         where: {
           id: Number(req.query.id),
