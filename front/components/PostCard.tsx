@@ -15,6 +15,7 @@ import useGetPosts from '../hooks/query/useGetPosts';
 import useLikePost from '../hooks/query/useLikePost';
 import useUnLikePost from '../hooks/query/useUnLikePost';
 import useSubscribePost from '../hooks/query/useSubscribePost';
+import useUnSubscribePost from '../hooks/query/useUnSubscribePost';
 import useDeletePost from '../hooks/query/useDeletePost';
 import { PostItem } from '../types';
 import { HeadWrapper, Date, ContentWrapper, PostButton, EditButton } from '../styles/ts/components/PostCard';
@@ -30,6 +31,7 @@ const PostCard: FC<PostCardProps> = ({ post }) => {
   const likePost = useLikePost();
   const unLikePost = useUnLikePost();
   const subscribePost = useSubscribePost();
+  const unSubscribePost = useUnSubscribePost();
   const deletePost = useDeletePost();
 
   const [currentPost, setCurrentPost] = useState<PostItem>(post);
@@ -72,16 +74,13 @@ const PostCard: FC<PostCardProps> = ({ post }) => {
       return;
     }
 
-    if (user?.subscribedPosts.find((post) => post.id === currentPost.id)) {
-      alert('이미 구독한 글입니다.');
-      return;
-    }
-
     subscribePost.mutate(currentPost.id);
   }, [user, currentPost]);
 
-  const onUnSubscribePost = () => {};
-  
+  const onUnSubscribePost = useCallback(() => {
+    unSubscribePost.mutate(currentPost.id);
+  }, [currentPost]);
+
   const onClickModifyBtn = useCallback(() => {
     Router.push({
       pathname: '/write',
