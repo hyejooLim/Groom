@@ -8,6 +8,7 @@ import { PostButton, ListWrapper, PostInfo } from '../styles/ts/components/PostM
 import useGetUser from '../hooks/query/useGetUser';
 import useDeletePost from '../hooks/query/useDeletePost';
 import { PostItem } from '../types';
+import useUnSubscribePost from '../hooks/query/useUnSubscribePost';
 
 interface PostManageListProps {
   posts: PostItem[];
@@ -18,6 +19,7 @@ interface PostManageListProps {
 
 const PostManageList: FC<PostManageListProps> = ({ posts, firstIndex, lastIndex, onChangePostList }) => {
   const { data: user } = useGetUser();
+  const unSubscribePost = useUnSubscribePost();
   const deletePost = useDeletePost();
 
   const onDeletePost = useCallback((id: number) => {
@@ -29,15 +31,14 @@ const PostManageList: FC<PostManageListProps> = ({ posts, firstIndex, lastIndex,
     deletePost.mutate(id);
   }, []);
 
-  const onCancelSubscribe = () => {
+  const onUnSubscribe = useCallback((id: number) => {
     const confirm = window.confirm('구독을 취소하시겠습니까?');
     if (!confirm) {
       return;
     }
 
-    // 구독 취소 액션
-    // user.subscribedPost에서 제거
-  };
+    unSubscribePost.mutate(id);
+  }, []);
 
   return (
     <ListWrapper>
@@ -77,7 +78,7 @@ const PostManageList: FC<PostManageListProps> = ({ posts, firstIndex, lastIndex,
                 </Button>
               </>
             ) : (
-              <Button className='subscribe_cancel btn' onClick={onCancelSubscribe}>
+              <Button className='subscribe_cancel btn' onClick={() => onUnSubscribe(post.id)}>
                 구독 취소
               </Button>
             )}

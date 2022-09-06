@@ -7,6 +7,7 @@ const useUnSubscribePost = () => {
   return useMutation(unSubscribePost, {
     onSuccess: () => {
       queryClient.invalidateQueries(['post']);
+      queryClient.invalidateQueries(['user']);
     },
   });
 };
