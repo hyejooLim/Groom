@@ -94,6 +94,10 @@ export const PostButton = styled(Button)`
     border-color: rgba(185, 185, 185, 0.5);
     color: inherit;
   }
+
+  :focus {
+    border-color: rgba(185, 185, 185, 0.5);
+  }
 `;
 
 export const EditButton = styled.div`
