@@ -22,6 +22,11 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
               },
             ],
             include: {
+              comments: {
+                select: {
+                  id: true,
+                },
+              },
               category: {
                 select: {
                   name: true,
@@ -30,6 +35,11 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
               author: {
                 select: {
                   name: true,
+                },
+              },
+              likers: {
+                select: {
+                  id: true,
                 },
               },
             },
