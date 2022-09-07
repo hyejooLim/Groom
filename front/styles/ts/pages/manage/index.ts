@@ -112,3 +112,19 @@ export const InfoWrapper = styled.div`
     background-color: #c5c5c5;
   }
 `;
+
+export const EmptyBox = styled.div`
+  float: left;
+  position: relative;
+  width: 217px;
+  height: 246px;
+  margin: 6px 7px 0 0;
+  border: 1px solid #e0e5ee;
+  color: #777;
+  background: #fff;
+  line-height: 246px;
+  text-align: center;
+  font-size: 18px;
+  font-style: italic;
+  font-family: sans-serif;
+`;

@@ -10,12 +10,23 @@ import {
   PostTitle,
   PostContent,
   InfoWrapper,
+  EmptyBox,
 } from '../../styles/ts/pages/manage';
 
 const Manage = () => {
   const { data: user } = useGetUser();
   const [todayVisitorNumber, setTodayVisitorNumber] = useState(23);
   const [totalVisitorNumber, setTotalVisitorNumber] = useState(1500);
+
+  const renderEmptyBox = () => {
+    let emptyBoxes = [];
+
+    for (let i = 0; i < 4 - user?.posts.length; i++) {
+      emptyBoxes.push(<EmptyBox>No Post</EmptyBox>);
+    }
+
+    return emptyBoxes;
+  };
 
   return (
     <ManageLayout>
@@ -32,23 +43,23 @@ const Manage = () => {
       <LastPosts>
         <span style={{ fontWeight: 700, fontSize: '18px' }}>최근 작성 글</span>
         <ul>
-          {user?.posts?.slice(0, 4).map((post) => (
-            <li key={post.id}>
-              <Link
-                href={{ pathname: `/post/${post.id}`, query: { post: JSON.stringify(post) } }}
-                as={`/post/${post.id}`}
-              >
-                <a>
-                  <PostTitle>{`[${post.category?.name}] ${post.title}`}</PostTitle>
-                  <PostContent>{post.content.slice(0, 60)}</PostContent>
-                </a>
-              </Link>
-              <InfoWrapper>
-                <span>댓글 {post.comments?.length}</span>
-                <span>공감 {post.likers?.length}</span>
-              </InfoWrapper>
-            </li>
-          ))}
+          <>
+            {user?.posts?.slice(0, 4).map((post) => (
+              <li key={post.id}>
+                <Link href={`/post/${post.id}`}>
+                  <a>
+                    <PostTitle>{`[${post.category?.name}] ${post.title}`}</PostTitle>
+                    <PostContent>{post.content.slice(0, 60)}</PostContent>
+                  </a>
+                </Link>
+                <InfoWrapper>
+                  <span>댓글 {post.comments?.length}</span>
+                  <span>공감 {post.likers?.length}</span>
+                </InfoWrapper>
+              </li>
+            ))}
+            {user?.posts?.length < 4 && renderEmptyBox()}
+          </>
         </ul>
       </LastPosts>
     </ManageLayout>
