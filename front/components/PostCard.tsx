@@ -81,15 +81,6 @@ const PostCard: FC<PostCardProps> = ({ post }) => {
     unSubscribePost.mutate(currentPost.id);
   }, [currentPost]);
 
-  const onClickModifyBtn = useCallback(() => {
-    Router.push({
-      pathname: '/write',
-      query: {
-        post: JSON.stringify(post),
-      },
-    });
-  }, []);
-
   const onDeletePost = useCallback(() => {
     const confirm = window.confirm('선택한 글을 삭제하시겠습니까?');
     if (!confirm) {
@@ -147,7 +138,7 @@ const PostCard: FC<PostCardProps> = ({ post }) => {
         </div>
         {user?.id === currentPost.authorId && (
           <EditButton>
-            <Link href={{ pathname: '/write', query: { post: JSON.stringify(post) } }} as={`/write/${post.id}`}>
+            <Link href={`/write/${post.id}`}>
               <a>
                 <Button className='modify btn'>Modify</Button>
               </a>
