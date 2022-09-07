@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { useSetRecoilState } from 'recoil';
 
-import getCategories from '../../apis/getCategories';
+import getCategories from '../../apis/categories/getCategories';
 import { categoriesState } from '../../recoil/categories';
 
 const useGetCategories = () => {

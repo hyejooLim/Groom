@@ -1,4 +1,4 @@
-import { UserType } from '../types';
+import { UserType } from '../../types';
 
 const getUser = async (): Promise<UserType> => {
   const response = await fetch('/api/user', {

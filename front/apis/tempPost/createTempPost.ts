@@ -1,4 +1,4 @@
-import { CategoryItem, TagItem } from '../types';
+import { CategoryItem, TagItem } from '../../types';
 
 interface createTempPostProps {
   title: string;

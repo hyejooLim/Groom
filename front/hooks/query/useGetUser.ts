@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useSetRecoilState } from 'recoil';
 
 import { userState } from '../../recoil/user';
-import getUser from '../../apis/getUser';
+import getUser from '../../apis/user/getUser';
 
 const useGetUser = () => {
   const setUser = useSetRecoilState(userState);

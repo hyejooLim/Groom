@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import getPosts from '../../apis/getPosts';
+import getPosts from '../../apis/posts/getPosts';
 
 const useGetPosts = () =>
   useQuery(['posts'], getPosts, {

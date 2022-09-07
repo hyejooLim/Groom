@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import getTags from '../../apis/getTags';
+import getTags from '../../apis/tags/getTags';
 
 const useGetTags = () =>
   useQuery(['tags'], getTags, {

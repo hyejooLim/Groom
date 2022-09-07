@@ -1,4 +1,4 @@
-import { PostItem } from "../types";
+import { PostItem } from "../../types";
 
 const getPosts = async (): Promise<PostItem[]> => {
   const response = await fetch('/api/posts', {

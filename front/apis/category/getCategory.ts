@@ -1,4 +1,4 @@
-import { CategoryItem } from '../types';
+import { CategoryItem } from '../../types';
 
 const getCategory = async (name: string): Promise<CategoryItem> => {
   const response = await fetch(`/api/category/${name}`, {

@@ -1,4 +1,4 @@
-import { TagItem } from '../types';
+import { TagItem } from '../../types';
 
 const getTags = async (): Promise<TagItem[]> => {
   const response = await fetch('/api/tags', {

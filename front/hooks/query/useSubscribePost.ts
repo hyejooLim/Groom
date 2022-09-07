@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import subscribePost from '../../apis/subscribePost';
+import subscribePost from '../../apis/post/subscribePost';
 
 const useSubscribePost = () => {
   const queryClient = useQueryClient();

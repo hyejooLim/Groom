@@ -1,4 +1,4 @@
-import { CommentItem } from '../types';
+import { CommentItem } from '../../types';
 
 const getComments = async (postId: number): Promise<CommentItem[]> => {
   const response = await fetch(`/api/comments/${postId}`, {

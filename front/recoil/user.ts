@@ -1,7 +1,7 @@
 import { atom, selector } from 'recoil';
 
 import { UserType } from '../types';
-import getUser from '../apis/getUser';
+import getUser from '../apis/user/getUser';
 
 export const userState = atom<UserType>({
   key: 'userState',

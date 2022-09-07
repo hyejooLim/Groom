@@ -1,4 +1,4 @@
-import { TagItem, CategoryItem } from './../types';
+import { TagItem, CategoryItem } from '../../types';
 
 interface updatePostProps {
   id?: number;

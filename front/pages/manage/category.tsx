@@ -7,7 +7,7 @@ import ManageLayout from '../../components/layouts/ManageLayout';
 import CategoryManageList from '../../components/CategoryManageList';
 import useGetCategories from '../../hooks/query/useGetCategories';
 import { categoriesState } from '../../recoil/categories';
-import updateCategories from '../../apis/updateCategories';
+import updateCategories from '../../apis/categories/updateCategories';
 import { CategoryJson } from '../../types';
 import { ManageCategoryWrapper, Description, SaveDiffButton, TotalCount } from '../../styles/ts/pages/manage/category';
 

@@ -1,4 +1,4 @@
-import { CategoryItem } from './../types';
+import { CategoryItem } from '../../types';
 
 interface updateCategoriesProps {
   append: CategoryItem[];

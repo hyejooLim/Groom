@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import getPost from '../../apis/getPost';
+import getPost from '../../apis/post/getPost';
 
 const useGetPost = (id: number) => {
   return useQuery(['post', id], () => getPost(id), {

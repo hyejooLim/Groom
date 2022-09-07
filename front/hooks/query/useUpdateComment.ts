@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import updateComment from '../../apis/updateComment';
+import updateComment from '../../apis/comment/updateComment';
 
 const useUpdateComment = () => {
   const queryClient = useQueryClient();

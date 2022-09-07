@@ -5,7 +5,7 @@ import { useRecoilState, useSetRecoilState } from 'recoil';
 import { GrTrash } from 'react-icons/gr';
 import dayjs from 'dayjs';
 
-import deleteTempPost from '../apis/deleteTempPost';
+import deleteTempPost from '../apis/tempPost/deleteTempPost';
 import { tempPostsCountState, tempPostsState } from '../recoil/tempPosts';
 import { TempPostItem } from '../types';
 import {
