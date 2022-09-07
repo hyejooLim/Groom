@@ -5,15 +5,15 @@ import { CloseCircleOutlined } from '@ant-design/icons';
 import ManageLayout from '../../components/layouts/ManageLayout';
 import PostManageList from '../../components/PostManageList';
 import PaginationContainer from '../../components/PaginationContainer';
-import { CloseButton } from '../../styles/ts/common';
 import useGetUser from '../../hooks/query/useGetUser';
+import { CloseButton } from '../../styles/ts/common';
 import { PostItem } from '../../types';
 
 const pageSize = 5;
 
 const ManageSubscribedPost = () => {
   const { data: user } = useGetUser();
-  
+
   const [currentPage, setCurrentPage] = useState(1);
   const [firstIndex, setFirstIndex] = useState(0);
   const [lastIndex, setLastIndex] = useState(pageSize);
@@ -39,11 +39,11 @@ const ManageSubscribedPost = () => {
       setFirstIndex(0);
       setLastIndex(pageSize);
 
-      const newPosts = user?.subscribedPosts.filter((post) => post.category.id === e.target.dataset.id);
+      const newPosts = user?.subscribedPosts.filter((post) => post.categoryId === Number(e.target.dataset.id));
       setPosts(newPosts);
       setPostsCount(newPosts?.length);
     },
-    [pageSize, posts]
+    [pageSize, user?.subscribedPosts]
   );
 
   const onChangePage = useCallback(

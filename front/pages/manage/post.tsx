@@ -6,26 +6,27 @@ import ManageLayout from '../../components/layouts/ManageLayout';
 import SearchInput from '../../components/SearchInput';
 import PaginationContainer from '../../components/PaginationContainer';
 import PostManageList from '../../components/PostManageList';
-import { CloseButton } from '../../styles/ts/common';
 import useGetUser from '../../hooks/query/useGetUser';
+import { CloseButton } from '../../styles/ts/common';
 import { PostItem } from '../../types';
 
 const pageSize = 5;
 
 const ManagePost = () => {
   const { data: user } = useGetUser();
+  
   const [currentPage, setCurrentPage] = useState(1);
   const [firstIndex, setFirstIndex] = useState(0);
   const [lastIndex, setLastIndex] = useState(pageSize);
 
   const [posts, setPosts] = useState<PostItem[]>(null);
+  const [postsCount, setPostsCount] = useState(null);
   const [title, setTitle] = useState('');
-  // const [postsCount, setPostsCount] = useState(user?.posts?.length);
 
   const onLoadMainPosts = useCallback(() => {
     setTitle('');
     setPosts(null);
-    // setPostsCount(user.posts.length);
+    setPostsCount(null);
 
     setCurrentPage(1);
     setFirstIndex(0);
@@ -39,18 +40,11 @@ const ManagePost = () => {
       setFirstIndex(0);
       setLastIndex(pageSize);
 
-      /** will delete. */
-      // let newPosts = [...posts];
-      // newPosts = newPosts.filter((post) => post.category.id === e.target.dataset.id);
-      // setPosts(newPosts);
-      // setPostsCount(newPosts.length);
-
-      /**  will use. */
-      // const categoryId = e.target.dataset.id;
-      // const result = await getPostsOnCategory({ id: categoryId });
-      // setPosts(result);
+      const newPosts = user?.posts.filter((post) => post.categoryId === Number(e.target.dataset.id));
+      setPosts(newPosts);
+      setPostsCount(newPosts?.length);
     },
-    [pageSize, posts]
+    [pageSize, user?.posts]
   );
 
   const onChangePage = useCallback(
@@ -80,7 +74,7 @@ const ManagePost = () => {
             <span style={{ fontSize: '18px' }}>글 관리</span>
           )}
           <span style={{ fontSize: '14px', color: '#888', marginLeft: '8px' }}>
-            {posts?.length ?? user?.posts?.length}
+            {postsCount ?? user?.posts?.length}
           </span>
         </div>
         <SearchInput />
@@ -94,7 +88,7 @@ const ManagePost = () => {
       <PaginationContainer
         pageSize={pageSize}
         current={currentPage}
-        total={posts?.length ?? user?.posts?.length}
+        total={postsCount ?? user?.posts?.length}
         onChange={onChangePage}
       />
     </ManageLayout>
