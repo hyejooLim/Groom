@@ -1,15 +1,25 @@
-import React from 'react';
-import { signOut } from 'next-auth/react';
+import React, { useEffect } from 'react';
+import { signOut, useSession } from 'next-auth/react';
+import Router from 'next/router';
 import { Button, Card } from 'antd';
 
 import useGetUser from '../hooks/query/useGetUser';
 import { StyledCard } from '../styles/ts/components/ManageProfile';
 
 const ManageProfile = () => {
+  const { status } = useSession();
   const { data: user } = useGetUser();
 
+  useEffect(() => {
+    if (status === 'unauthenticated') {
+      Router.push('/login');
+    }
+  }, [status]);
+
   const handleLogout = () => {
-    signOut();
+    if (confirm('로그인 후 이용하실 수 있습니다.')) {
+      signOut();
+    }
   };
 
   return (
