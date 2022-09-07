@@ -1,8 +1,8 @@
 import Link from 'next/link';
 import React, { useState } from 'react';
 
-import ManageLayout from '../components/layouts/ManageLayout';
-import useGetUser from '../hooks/query/useGetUser';
+import ManageLayout from '../../components/layouts/ManageLayout';
+import useGetUser from '../../hooks/query/useGetUser';
 import {
   CountVisitorWrapper,
   CountVisitor,
@@ -10,7 +10,7 @@ import {
   PostTitle,
   PostContent,
   InfoWrapper,
-} from '../styles/ts/pages/manage';
+} from '../../styles/ts/pages/manage';
 
 const Manage = () => {
   const { data: user } = useGetUser();
@@ -45,7 +45,7 @@ const Manage = () => {
               </Link>
               <InfoWrapper>
                 <span>댓글 {post.comments?.length}</span>
-                <span>공감 {post.likeCount}</span>
+                <span>공감 {post.likers?.length}</span>
               </InfoWrapper>
             </li>
           ))}

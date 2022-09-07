@@ -105,7 +105,7 @@ export const InfoWrapper = styled.div`
     content: '';
     display: block;
     position: absolute;
-    top: 9px;
+    top: 11px;
     left: 59px;
     width: 2px;
     height: 2px;
