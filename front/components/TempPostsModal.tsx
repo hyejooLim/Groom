@@ -95,7 +95,7 @@ const TempPostsModal: FC<TempPostsModalProps> = ({ isOpen, setIsOpen, onLoadPost
         return;
       }
 
-      const result = await deleteTempPost({ id });
+      const result = await deleteTempPost(id);
 
       if (result.ok) {
         let newTempPosts = [...tempPosts];

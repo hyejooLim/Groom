@@ -1,6 +1,6 @@
 import { CategoryItem, TagItem } from '../../types';
 
-interface createTempPostProps {
+interface CreateTempPostProps {
   title: string;
   content: string;
   htmlContent: string;
@@ -8,7 +8,7 @@ interface createTempPostProps {
   category: CategoryItem;
 }
 
-const createTempPost = async ({ data }: { data: createTempPostProps }): Promise<Response> => {
+const createTempPost = async ({ data }: { data: CreateTempPostProps }): Promise<Response> => {
   const response = await fetch('/api/tempPost', {
     method: 'POST',
     body: JSON.stringify(data),

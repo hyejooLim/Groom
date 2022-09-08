@@ -1,8 +1,4 @@
-interface DeleteTempPostProps {
-  id: number;
-}
-
-const deleteTempPost = async ({ id }: DeleteTempPostProps): Promise<Response> => {
+const deleteTempPost = async (id: number): Promise<Response> => {
   const response = await fetch('/api/tempPost', {
     method: 'DELETE',
     body: JSON.stringify(id),
