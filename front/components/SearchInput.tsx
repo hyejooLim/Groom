@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, MouseEvent } from 'react';
 import { Dropdown } from 'antd';
 import { UpOutlined, DownOutlined, SearchOutlined } from '@ant-design/icons';
 
@@ -33,8 +33,8 @@ const SearchInput = () => {
   const [searchType, setSearchType] = useState(searchTypeItem[0].label);
   const [openMenu, setOpenMenu] = useState(false);
 
-  const onClickLabel = useCallback((e: any) => {
-    setSearchType(e.target.dataset.label);
+  const onClickLabel = useCallback((e: MouseEvent<HTMLButtonElement>) => {
+    setSearchType(e.currentTarget.dataset.label);
   }, []);
 
   const menu = (

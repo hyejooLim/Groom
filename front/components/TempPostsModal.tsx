@@ -1,4 +1,4 @@
-import React, { FC, useCallback } from 'react';
+import React, { FC, useCallback, MouseEvent } from 'react';
 import Modal from 'react-modal';
 import { AiFillQuestionCircle } from 'react-icons/ai';
 import { GrTrash } from 'react-icons/gr';
@@ -57,13 +57,13 @@ const TempPostsModal: FC<TempPostsModalProps> = ({ isOpen, setIsOpen, onLoadPost
     setIsOpen(false);
   };
 
-  const onMouseOverTitle = (e, idx: number) => {
-    const dd = e.target.closest('dd') as HTMLElement;
+  const onMouseOverTitle = (e: MouseEvent<HTMLAnchorElement>, idx: number) => {
+    const dd = e.currentTarget.closest('dd') as HTMLElement;
     dd.classList.add('hover');
 
     const innerModalLayerElement = document.querySelector('.inner_modal_layer') as HTMLElement;
     const headLayerElement = document.querySelector('.head_layer') as HTMLElement;
-    const listItemElement = e.target.closest('.list_item') as HTMLElement;
+    const listItemElement = e.currentTarget.closest('.list_item') as HTMLElement;
     const itemInfoWrapper = dd.lastElementChild as HTMLElement;
 
     const innerModalLayerElementMarginLeft = getComputedStyle(innerModalLayerElement).marginLeft;
@@ -82,8 +82,8 @@ const TempPostsModal: FC<TempPostsModalProps> = ({ isOpen, setIsOpen, onLoadPost
     itemInfoWrapper.style.top = computedTop + 'px';
   };
 
-  const onMouseLeaveTitle = (e) => {
-    const dd = e.target.closest('dd') as HTMLElement;
+  const onMouseLeaveTitle = (e: MouseEvent<HTMLAnchorElement>) => {
+    const dd = e.currentTarget.closest('dd') as HTMLElement;
     dd.classList.remove('hover');
   };
 
