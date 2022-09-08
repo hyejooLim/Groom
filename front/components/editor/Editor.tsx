@@ -1,5 +1,5 @@
 import React, { FC, ChangeEvent, useState, useEffect } from 'react';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilValue } from 'recoil';
 import Router from 'next/router';
 import AWS from 'aws-sdk';
 
@@ -8,11 +8,10 @@ import EditorContent from './EditorContent';
 import TempPostsModal from '../TempPostsModal';
 import ToastMessage from '../ToastMessage';
 import { tinymceEditorState } from '../../recoil/tinymce';
-import { tempPostsCountState, tempPostsState } from '../../recoil/tempPosts';
-import createTempPost from '../../apis/tempPost/createTempPost';
+import useGetTempPosts from '../../hooks/query/useGetTempPosts';
+import useCreateTempPost from '../../hooks/query/useCreateTempPost';
 import createPost from '../../apis/post/createPost';
 import updatePost from '../../apis/post/updatePost';
-import getTempPosts from '../../apis/tempPosts/getTempPosts';
 import * as ContentMode from '../../constants/ContentMode';
 import { ContentModeType, PostItem, CategoryItem, TempPostItem } from '../../types';
 import { EditorWrapper, ContentAside, PublishButton } from '../../styles/ts/components/editor/Editor';
@@ -53,9 +52,8 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
   let editorUrl = '';
   const [postData, setPostData] = useState<PostItem>(makePostState());
 
-  const [tempPost, setTempPost] = useState<TempPostItem>(null);
-  const [tempPosts, setTempPosts] = useRecoilState(tempPostsState);
-  const [tempPostsCount, setTempPostsCount] = useRecoilState(tempPostsCountState);
+  const { data: tempPosts } = useGetTempPosts();
+  const createTempPost = useCreateTempPost();
   const [loadTempPost, setLoadTempPost] = useState(false);
 
   const [toastMessage, setToastMessage] = useState('');
@@ -64,21 +62,6 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const tinymceEditor = useRecoilValue(tinymceEditorState);
-
-  useEffect(() => {
-    handleGetTempPosts();
-  }, []);
-
-  const handleGetTempPosts = async () => {
-    try {
-      const result = await getTempPosts();
-
-      setTempPosts(result);
-      setTempPostsCount(result.length);
-    } catch (err) {
-      console.error(err);
-    }
-  };
 
   useEffect(() => {
     window.addEventListener('beforeunload', preventUnload);
@@ -195,62 +178,50 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
     });
   };
 
-  const handleTempPost = async () => {
-    try {
-      if (!postData.title && !postData.content) {
-        alert('제목을 입력하세요.');
-        return;
-      }
+  useEffect(() => {
+    if (createTempPost.isSuccess) {
+      setShowToastMessage(true);
+      setToastMessage('작성 중인 글이 저장되었습니다.');
 
-      if (tempPosts.length === 100) {
-        alert('최대 100개의 글을 임시 저장할 수 있습니다.');
-        return;
-      }
+      setTimeout(() => {
+        setShow(true);
+      }, 1000);
 
-      const newTempPost: TempPostItem = {
-        title: postData.title,
-        content: postData.content,
-        htmlContent: postData.htmlContent,
-        tags: postData.tags,
-        category: postData.category,
-      };
+      setTimeout(() => {
+        setShow(false);
+      }, 3000);
 
-      setTempPost(newTempPost);
-
-      if (tempPosts.find((post: TempPostItem) => JSON.stringify(post) === JSON.stringify(newTempPost))) {
-        alert('이미 저장된 글입니다.');
-        return;
-      }
-
-      const result = await createTempPost({
-        data: newTempPost,
-      });
-
-      if (result.ok) {
-        setTempPosts((prevState: TempPostItem[]) => {
-          return [newTempPost, ...prevState];
-        });
-
-        setTempPostsCount((prev) => prev + 1);
-
-        setShowToastMessage(true);
-        setToastMessage('작성 중인 글이 저장되었습니다.');
-
-        setTimeout(() => {
-          setShow(true);
-        }, 1000);
-
-        setTimeout(() => {
-          setShow(false);
-        }, 3000);
-
-        setTimeout(() => {
-          setShowToastMessage(false);
-        }, 4000);
-      }
-    } catch (err) {
-      console.error(err);
+      setTimeout(() => {
+        setShowToastMessage(false);
+      }, 4000);
     }
+  }, [createTempPost.isSuccess]);
+
+  const handleTempPost = () => {
+    if (tempPosts.length === 100) {
+      alert('최대 100개의 글을 임시 저장할 수 있습니다.');
+      return;
+    }
+
+    if (!postData.title && !postData.content) {
+      alert('제목을 입력하세요.');
+      return;
+    }
+
+    const newTempPost: TempPostItem = {
+      title: postData.title,
+      content: postData.content,
+      htmlContent: postData.htmlContent,
+      tags: postData.tags,
+      category: postData.category,
+    };
+
+    if (tempPosts.find((post: TempPostItem) => JSON.stringify(post) === JSON.stringify(newTempPost))) {
+      alert('이미 저장된 글입니다.');
+      return;
+    }
+
+    createTempPost.mutate({ data: newTempPost });
   };
 
   const onLoadPost = (post: TempPostItem) => {
@@ -337,11 +308,11 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
               </a>
               <a
                 aria-expanded='false'
-                aria-label={`임시저장 개수 ${tempPostsCount}개`}
+                aria-label={`임시저장 개수 ${tempPosts?.length}개`}
                 className='count'
                 onClick={() => setIsOpen(true)}
               >
-                {tempPostsCount}
+                {tempPosts?.length}
               </a>
             </span>
           )}

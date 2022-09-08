@@ -1,12 +1,11 @@
 import React, { FC, useCallback } from 'react';
 import Modal from 'react-modal';
 import { AiFillQuestionCircle } from 'react-icons/ai';
-import { useRecoilState, useSetRecoilState } from 'recoil';
 import { GrTrash } from 'react-icons/gr';
 import dayjs from 'dayjs';
 
-import deleteTempPost from '../apis/tempPost/deleteTempPost';
-import { tempPostsCountState, tempPostsState } from '../recoil/tempPosts';
+import useGetTempPosts from '../hooks/query/useGetTempPosts';
+import useDeleteTempPost from '../hooks/query/useDeleteTempPost';
 import { TempPostItem } from '../types';
 import {
   InnerModal,
@@ -27,8 +26,8 @@ interface TempPostsModalProps {
 }
 
 const TempPostsModal: FC<TempPostsModalProps> = ({ isOpen, setIsOpen, onLoadPost }) => {
-  const [tempPosts, setTempPosts] = useRecoilState(tempPostsState);
-  const setTempPostsCount = useSetRecoilState(tempPostsCountState);
+  const { data: tempPosts } = useGetTempPosts();
+  const deleteTempPost = useDeleteTempPost();
 
   const getDateDiff = useCallback((createdAt: string) => {
     const createdDate = dayjs(createdAt);
@@ -88,25 +87,13 @@ const TempPostsModal: FC<TempPostsModalProps> = ({ isOpen, setIsOpen, onLoadPost
     dd.classList.remove('hover');
   };
 
-  const onDeleteTempPost = async (id: number) => {
-    try {
-      const confirm = window.confirm('임시저장글을 정말 삭제하시겠습니까?');
-      if (!confirm) {
-        return;
-      }
-
-      const result = await deleteTempPost(id);
-
-      if (result.ok) {
-        let newTempPosts = [...tempPosts];
-        newTempPosts = newTempPosts.filter((tempPost) => tempPost.id !== id);
-
-        setTempPosts(newTempPosts);
-        setTempPostsCount((prev) => prev - 1);
-      }
-    } catch (err) {
-      console.error(err);
+  const onDeleteTempPost = (id: number) => {
+    const confirm = window.confirm('임시저장글을 정말 삭제하시겠습니까?');
+    if (!confirm) {
+      return;
     }
+
+    deleteTempPost.mutate(id);
   };
 
   return (
@@ -134,7 +121,7 @@ const TempPostsModal: FC<TempPostsModalProps> = ({ isOpen, setIsOpen, onLoadPost
               ) : (
                 <div className='list_wrapper'>
                   <div className='list'>
-                    {tempPosts.map((post, idx) => (
+                    {tempPosts?.map((post, idx) => (
                       <div className='list_item' key={post.id}>
                         <dt>{getDateDiff(post.createdAt)}</dt>
                         <dd>
