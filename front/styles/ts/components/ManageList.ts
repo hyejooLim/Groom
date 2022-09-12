@@ -39,20 +39,29 @@ export const WrapMenu = styled.div`
 `;
 
 export const ListWrapper = styled.ul`
-  margin-left: 25px;
   display: flex;
   flex-direction: column;
 
   & li {
-    margin: 8px 0 0 8px;
+    margin-top: 4px;
+    padding-left: 47px;
+    display: block;
+    height: 24px;
+    line-height: 24px;
+    font-size: 13px;
+    color: #555;
+    text-decoration: none;
+
+    :hover {
+      background: #f3f5f7;
+    }
 
     & a {
-      color: #000;
-      margin-left: 14px;
-
-      :hover {
-        color: #ff5544;
-      }
+      color: inherit;
+    }
+    
+    & .on {
+      color: #ff5544;
     }
   }
 `;
