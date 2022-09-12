@@ -1,14 +1,25 @@
-import React, { useEffect } from 'react';
+import React, { ChangeEvent, useEffect } from 'react';
 import { signOut, useSession } from 'next-auth/react';
 import Router from 'next/router';
 import { Button, Card } from 'antd';
+import { FiCamera } from 'react-icons/fi';
+import { BsCloudFill } from 'react-icons/bs';
+import AWS from 'aws-sdk';
 
 import useGetUser from '../hooks/query/useGetUser';
-import { StyledCard } from '../styles/ts/components/ManageProfile';
+import useUpdateUser from '../hooks/query/useUpdateUser';
+import { StyledCard, CameraButton, EmptyProfile } from '../styles/ts/components/ManageProfile';
+
+AWS.config.update({
+  region: 'ap-northeast-2',
+  accessKeyId: process.env.NEXT_PUBLIC_BUCKET_ACCESS_KEY_ID,
+  secretAccessKey: process.env.NEXT_PUBLIC_BUCKET_SECRET_ACCESS_KEY,
+});
 
 const ManageProfile = () => {
   const { status } = useSession();
   const { data: user } = useGetUser();
+  const updateUser = useUpdateUser();
 
   useEffect(() => {
     if (status === 'unauthenticated') {
@@ -22,10 +33,37 @@ const ManageProfile = () => {
     }
   };
 
+  const onChangeProfile = async (e: ChangeEvent<HTMLInputElement>) => {
+    const upload = new AWS.S3.ManagedUpload({
+      params: {
+        Bucket: 'groom-project',
+        Key: e.target.files[0].name,
+        Body: e.target.files[0],
+      },
+    });
+
+    const promise = upload.promise();
+    const imageUrl = await promise.then((response) => response.Location);
+
+    updateUser.mutate(imageUrl);
+  };
+
   return (
     <StyledCard
       cover={
-        <img alt='example' src='https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png' width={214} height={200} />
+        <>
+          {user?.imageUrl ? (
+            <img className='profile' alt='profile' src={user?.imageUrl} width={214} height={200} />
+          ) : (
+            <EmptyProfile>
+              <BsCloudFill />
+            </EmptyProfile>
+          )}
+          <CameraButton>
+            <FiCamera className='icon' />
+            <input className='edit_btn' type='file' accept='image/*' onChange={onChangeProfile} />
+          </CameraButton>
+        </>
       }
     >
       <div className='card_meta'>
