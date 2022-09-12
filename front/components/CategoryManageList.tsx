@@ -142,7 +142,7 @@ const CategoryManageList: FC<CategoryManageListProps> = ({ categoryJson, setCate
 
   const onAddCategory = useCallback(
     (e: FormEvent<HTMLButtonElement>) => {
-      const lastCategoryId = categories[categories.length - 1].id;
+      const lastCategoryId = categories[categories.length - 1]?.id;
 
       setCategories([
         ...categories,

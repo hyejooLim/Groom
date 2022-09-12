@@ -12,7 +12,7 @@ const useGetUser = () => {
   return useQuery(['user'], getUser, {
     onSuccess: (data) => {
       setUser(data); // 새로고침하면 null
-      setManagePosts(data.posts);
+      setManagePosts(data?.posts);
 
       console.log('user', data);
     },
