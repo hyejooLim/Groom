@@ -17,6 +17,7 @@ model User {
   email String @unique
   password String
   name String
+  imageUrl String? @db.LongText
   comments Comment[]
   posts Post[] @relation("OwnPosts")
   tempPosts TempPost[]
@@ -66,7 +67,7 @@ model Tag {
 model Category {
   id Int @id @default(autoincrement())
   name String @unique
-  priority Int?
+  priority Int
   posts Post[]
   tempPosts TempPost[]
 }

@@ -6,6 +6,7 @@ export type UserType = {
   email: string;
   password: string;
   name: string;
+  imageUrl?: string; // 프로필 이미지 주소
   comments: CommentItem[];
   posts?: PostItem[]; // 작성한 게시글
   tempPosts?: TempPostItem[];
