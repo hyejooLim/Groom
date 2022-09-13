@@ -81,6 +81,25 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
     };
   }, []);
 
+  useEffect(() => {
+    if (createTempPost.isSuccess) {
+      setShowToastMessage(true);
+      setToastMessage('작성 중인 글이 저장되었습니다.');
+
+      setTimeout(() => {
+        setShow(true);
+      }, 1000);
+
+      setTimeout(() => {
+        setShow(false);
+      }, 3000);
+
+      setTimeout(() => {
+        setShowToastMessage(false);
+      }, 4000);
+    }
+  }, [createTempPost.isSuccess]);
+
   // 새로고침 및 창 닫기 방지
   const preventUnload = (e: BeforeUnloadEvent) => {
     e.preventDefault();
@@ -177,25 +196,6 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
       handleUploadImage(imageUrl, file.name);
     });
   };
-
-  useEffect(() => {
-    if (createTempPost.isSuccess) {
-      setShowToastMessage(true);
-      setToastMessage('작성 중인 글이 저장되었습니다.');
-
-      setTimeout(() => {
-        setShow(true);
-      }, 1000);
-
-      setTimeout(() => {
-        setShow(false);
-      }, 3000);
-
-      setTimeout(() => {
-        setShowToastMessage(false);
-      }, 4000);
-    }
-  }, [createTempPost.isSuccess]);
 
   const handleTempPost = () => {
     if (tempPosts.length === 100) {
