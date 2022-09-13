@@ -3,7 +3,7 @@ import { useRecoilState } from 'recoil';
 import { Editor } from '@tinymce/tinymce-react';
 
 import { tinymceEditorState } from '../../../recoil/tinymce';
-import { EditorWrapper } from '../../../styles/ts/components/editor/tinymce/TinymceEditor';
+import { CONTENT_STYLE, EditorWrapper } from '../../../styles/ts/components/editor/tinymce/TinymceEditor';
 
 interface TinymceEditorProps {
   htmlContent: string;
@@ -24,8 +24,6 @@ const TinymceEditor: FC<TinymceEditorProps> = ({
 }) => {
   const [tinymceEditor, setTinymceEditor] = useRecoilState(tinymceEditorState);
   const editorRef = useRef(null);
-
-  console.log('htmlContent', htmlContent);
 
   const tinymcePlugins = ['link', 'lists', 'autoresize'];
   const tinymceToolbar =
@@ -53,18 +51,16 @@ const TinymceEditor: FC<TinymceEditorProps> = ({
         onInit={(e, editor) => (editorRef.current = editor)}
         onEditorChange={(value, editor) => onChangeContent(value, editor.getContent({ format: 'text' }))}
         init={{
+          body_class: 'content',
           plugins: tinymcePlugins,
           toolbar: tinymceToolbar,
           min_height: 500,
           menubar: false,
           branding: false,
           statusbar: false,
+          content_style: CONTENT_STYLE,
           block_formats: '제목1=h2;제목2=h3;제목3=h4;본문=p;',
-          body_class: 'content',
-          // content_css: 'styles/content.css',
           iframe_attrs: { style: 'width: 100%; height: 100%; display: block;' },
-          content_style:
-            'body { font-family: Nanum Godic; font-size: 16px; padding: 0 10px 50px 10px; margin: 0; color: #333; -webkit-font-smoothing: antialiased; overflow-y: hidden } img[data-mce-selected] { outline-color: #000 !important } img { max-width: 100%; height: auto; } div.mce-resizehandle { background: #fff !important; border-radius: 6px !important; border: 2px solid #000 !important; width: 12px !important; height: 12px !important; } p[data-ke-size="size16"] { line-height: 1.75 } body > * { margin: 20px 0 0 0 }',
           /** image **/
           image_caption: true, // figure로 감싸짐 (작동 안함)
           paste_data_images: false, // 자동 drag&drop 제거
