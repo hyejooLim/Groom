@@ -2,7 +2,7 @@ import React from 'react';
 import { signOut } from 'next-auth/react';
 import Link from 'next/link';
 import { Avatar } from 'antd';
-import { UserOutlined } from '@ant-design/icons';
+import { BsCloudFill } from 'react-icons/bs';
 
 import useGetUser from '../hooks/query/useGetUser';
 import {
@@ -24,7 +24,7 @@ const UserProfile = () => {
   return (
     <UserProfileWrapper>
       <InfoArea>
-        <Avatar size={60} icon={<UserOutlined />} />
+        <Avatar size={80} icon={<BsCloudFill style={{ position: 'relative', top: '5px' }} />} src={user?.imageUrl} />
         <UserInfo>
           <InfoBox>
             <Link href={`/manage`}>
