@@ -52,4 +52,8 @@ export const LogoutButton = styled(Button)`
   color: #909090;
   text-align: left;
   box-shadow: none;
+
+  &:hover {
+    color: #13a085;
+  }
 `;
