@@ -32,7 +32,7 @@ export const ListWrapper = styled.div`
   margin-top: 8px;
   line-height: 180%;
   word-break: break-all; // ?
-  height: 386px;
+  height: 383px;
   border: 1px solid #e0e5ee;
 `;
 
