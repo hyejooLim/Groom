@@ -75,7 +75,7 @@ const ManagePost = () => {
           ) : (
             <span className='text'>글 관리</span>
           )}
-          <span className='count'>{managePosts.length}</span>
+          <span className='count'>{managePosts?.length}</span>
         </TitleWrapper>
         <SearchInput />
         <PostManageList
@@ -88,7 +88,7 @@ const ManagePost = () => {
       <PaginationContainer
         pageSize={pageSize}
         current={currentPage}
-        total={managePosts.length}
+        total={managePosts?.length}
         onChange={onChangePage}
       />
     </ManageLayout>

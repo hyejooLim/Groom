@@ -1,12 +1,13 @@
 import React, { useState, useCallback, MouseEvent } from 'react';
-import { useRecoilState, useSetRecoilState } from 'recoil';
+import { useSetRecoilState } from 'recoil';
 import { Dropdown } from 'antd';
 import { UpOutlined, DownOutlined, SearchOutlined } from '@ant-design/icons';
 
 import useInput from '../hooks/common/input';
 import useGetTags from '../hooks/query/useGetTags';
+import useGetUser from '../hooks/query/useGetUser';
 import { isSearchState, managePostsState, manageTitleState } from '../recoil/posts';
-import { PostItem } from '../types';
+import { PostItem, TagItem } from '../types';
 import {
   FormWrapper,
   StyledForm,
@@ -33,14 +34,15 @@ const searchTypeItem = [
 ];
 
 const SearchInput = () => {
+  const { data: user } = useGetUser();
   const { data: tags } = useGetTags();
 
   const [keyword, onChangeKeyword] = useInput('');
-  const [searchType, setSearchType] = useState({ key: searchTypeItem[0].key, label: searchTypeItem[0].label });
   const [openMenu, setOpenMenu] = useState(false);
+  const [searchType, setSearchType] = useState({ key: searchTypeItem[0].key, label: searchTypeItem[0].label });
 
-  const [managePosts, setManagePosts] = useRecoilState(managePostsState);
   const setIsSearch = useSetRecoilState(isSearchState);
+  const setManagePosts = useSetRecoilState(managePostsState);
   const setManageTitle = useSetRecoilState(manageTitleState);
 
   const onClickLabel = useCallback((e: MouseEvent<HTMLButtonElement>) => {
@@ -68,22 +70,24 @@ const SearchInput = () => {
     setManageTitle(`'${keyword}'`);
     setIsSearch(true);
 
-    const keywordRegex = new RegExp(keyword, 'gi');
-
     if (searchType.key === '0') {
       // 제목
-      const filteredPosts = managePosts.filter((post: PostItem) => keywordRegex.test(post.title));
+      const filteredPosts = user?.posts.filter((post: PostItem) =>
+        post.title.toLowerCase().includes(keyword.toLowerCase())
+      );
       setManagePosts(filteredPosts);
     } else if (searchType.key === '1') {
       // 내용
-      const filteredPosts = managePosts.filter((post: PostItem) => keywordRegex.test(post.content));
+      const filteredPosts = user?.posts.filter((post: PostItem) =>
+        post.content.toLowerCase().includes(keyword.toLowerCase())
+      );
       setManagePosts(filteredPosts);
     } else if (searchType.key === '2') {
       // 태그
-      const matchedTag = tags.find((tag) => keyword === tag.name);
-      setManagePosts(matchedTag.posts);
+      const matchedTag = tags?.find((tag: TagItem) => tag.name === keyword);
+      setManagePosts(matchedTag?.posts);
     }
-  }, [keyword, searchType, managePosts]);
+  }, [keyword, searchType]);
 
   return (
     <FormWrapper>
