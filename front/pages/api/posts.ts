@@ -12,6 +12,11 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
         ],
         include: {
           comments: true,
+          tags: {
+            select: {
+              name: true,
+            },
+          },
           category: true,
           author: {
             select: {

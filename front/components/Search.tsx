@@ -1,17 +1,15 @@
 import React, { KeyboardEvent } from 'react';
-import Router from 'next/router';
+import Router, { useRouter } from 'next/router';
 import { Input } from 'antd';
 
 import useInput from '../hooks/common/input';
 import useGetPosts from '../hooks/query/useGetPosts';
-import useGetTags from '../hooks/query/useGetTags';
 import { SearchWrapper } from '../styles/ts/components/Search';
-import { PostItem, TagItem } from '../types';
+import { PostItem } from '../types';
 
 const Search = () => {
+  const router = useRouter();
   const { data: posts } = useGetPosts();
-  const { data: tags } = useGetTags();
-
   const [keyword, onChangeKeyword] = useInput('');
 
   const handleKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
@@ -23,26 +21,22 @@ const Search = () => {
       return;
     }
 
-    const targetPosts: PostItem[] = [];
+    const keywordRegex = new RegExp(keyword, 'gi');
 
     const filteredPosts = posts?.filter((post: PostItem) => {
-      const { title, category, content, author } = post;
-      const keywordRegex = new RegExp(keyword, 'gi');
+      const { title, category, content, author, tags } = post;
 
       return (
         keywordRegex.test(category.name) ||
         keywordRegex.test(title) ||
         keywordRegex.test(content) ||
-        keywordRegex.test(author.name)
+        keywordRegex.test(author.name) ||
+        tags?.find((tag) => tag.name === keyword)
       );
     });
-    filteredPosts && targetPosts.push(...filteredPosts);
-
-    const matchedTag = tags?.find((tag: TagItem) => tag.name === keyword);
-    matchedTag && targetPosts.push(...matchedTag.posts);
 
     Router.push(
-      { pathname: `/search/${keyword}`, query: { targetPosts: JSON.stringify(targetPosts) } },
+      { pathname: `/search/${keyword}`, query: { targetPosts: JSON.stringify(filteredPosts) } },
       `/search/${keyword}`
     );
   };
