@@ -1,15 +1,16 @@
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
-import Link from 'next/link';
+import Router from 'next/router';
 import Image from 'next/image';
+import { useSetRecoilState } from 'recoil';
 import { Layout } from 'antd';
 
 import LoginForm from '../../components/LoginForm';
 import UserProfile from '../../components/UserProfile';
 import Category from '../../components/Category';
-import logo from '../../public/Groom_Logo_No_Background.png';
 import Counter from '../Counter';
 import Search from '../Search';
+import { currentPageState, firstIndexState, lastIndexState, PAGE_SIZE } from '../../recoil/page';
 import {
   Container,
   ImageWrapper,
@@ -18,12 +19,25 @@ import {
   StyledHeader,
   StyledFooter,
 } from '../../styles/ts/components/layouts/AppLayout';
+import logo from '../../public/Groom_Logo_No_Background.png';
 
 const AppLayout = ({ children }) => {
   const { data: session, status } = useSession();
 
+  const setCurrentPage = useSetRecoilState(currentPageState);
+  const setFirstIndex = useSetRecoilState(firstIndexState);
+  const setLastIndex = useSetRecoilState(lastIndexState);
+
   useEffect(() => {
     console.log(session);
+  }, []);
+
+  const onClickLogo = useCallback(() => {
+    setCurrentPage(1);
+    setFirstIndex(0);
+    setLastIndex(PAGE_SIZE);
+
+    Router.push('/');
   }, []);
 
   return (
@@ -38,11 +52,9 @@ const AppLayout = ({ children }) => {
         <StyledLayout>
           <StyledHeader>
             <ImageWrapper>
-              <Link href='/'>
-                <a>
-                  <Image src={logo} alt='groom_logo' width={140} height={60} />
-                </a>
-              </Link>
+              <a onClick={onClickLogo}>
+                <Image src={logo} alt='groom_logo' width={140} height={60} />
+              </a>
             </ImageWrapper>
           </StyledHeader>
           <Layout.Content>

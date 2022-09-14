@@ -1,28 +1,29 @@
-import React, { FC, useState, useCallback } from 'react';
+import React, { FC, useCallback } from 'react';
+import { useRecoilState } from 'recoil';
 import Link from 'next/link';
 import dayjs from 'dayjs';
 
 import PaginationContainer from '../components/PaginationContainer';
-import { ListWrapper, PostInfo } from '../styles/ts/components/PostList';
+import { currentPageState, firstIndexState, lastIndexState, PAGE_SIZE } from '../recoil/page';
 import { PostItem } from '../types';
+import { ListWrapper, PostInfo } from '../styles/ts/components/PostList';
 
 interface PostListProps {
   posts: PostItem[];
 }
 
 const PostList: FC<PostListProps> = ({ posts }) => {
-  const pageSize = 8;
-  const [currentPage, setCurrentPage] = useState(1);
-  const [firstIndex, setFirstIndex] = useState(0);
-  const [lastIndex, setLastIndex] = useState(pageSize);
+  const [currentPage, setCurrentPage] = useRecoilState(currentPageState);
+  const [firstIndex, setFirstIndex] = useRecoilState(firstIndexState);
+  const [lastIndex, setLastIndex] = useRecoilState(lastIndexState);
 
   const onChangePage = useCallback(
     (page: number) => {
       setCurrentPage(page);
-      setFirstIndex((page - 1) * pageSize);
-      setLastIndex(page * pageSize);
+      setFirstIndex((page - 1) * PAGE_SIZE);
+      setLastIndex(page * PAGE_SIZE);
     },
-    [pageSize]
+    [PAGE_SIZE]
   );
 
   return (
@@ -44,7 +45,7 @@ const PostList: FC<PostListProps> = ({ posts }) => {
           ))}
         </ul>
       </ListWrapper>
-      <PaginationContainer pageSize={pageSize} current={currentPage} total={posts?.length} onChange={onChangePage} />
+      <PaginationContainer pageSize={PAGE_SIZE} current={currentPage} total={posts?.length} onChange={onChangePage} />
     </>
   );
 };
