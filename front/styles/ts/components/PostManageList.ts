@@ -86,3 +86,30 @@ export const PostInfo = styled.div`
     }
   }
 `;
+
+export const EmptySearchBox = styled.div`
+  color: #959595;
+  text-align: center;
+  box-sizing: border-box;
+  padding: 140.4px 0;
+
+  .icon_wrapper {
+    display: block;
+    width: 60px;
+    height: 60px;
+    margin: 0 auto 17px;
+    padding-top: 16px;
+    border-radius: 80px;
+    background: #d0d0d0;
+    box-sizing: border-box;
+
+    .icon {
+      display: block;
+      width: 27px;
+      height: 27px;
+      margin: 0 auto;
+      background-position: -260px 0;
+      color: #fff;
+    }
+  }
+`;
