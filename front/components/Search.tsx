@@ -1,5 +1,5 @@
 import React, { KeyboardEvent } from 'react';
-import Router, { useRouter } from 'next/router';
+import Router from 'next/router';
 import { Input } from 'antd';
 
 import useInput from '../hooks/common/input';
@@ -8,7 +8,6 @@ import { SearchWrapper } from '../styles/ts/components/Search';
 import { PostItem } from '../types';
 
 const Search = () => {
-  const router = useRouter();
   const { data: posts } = useGetPosts();
   const [keyword, onChangeKeyword] = useInput('');
 
