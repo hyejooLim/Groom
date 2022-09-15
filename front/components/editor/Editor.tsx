@@ -293,6 +293,11 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
         return;
       }
 
+      if (!postData.category.id) {
+        alert('카테고리를 설정하세요.');
+        return;
+      }
+
       const confirm = window.confirm('글을 발행하시겠습니까?');
       if (!confirm) {
         return;
