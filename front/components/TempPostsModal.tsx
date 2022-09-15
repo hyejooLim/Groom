@@ -23,9 +23,10 @@ interface TempPostsModalProps {
   isOpen: boolean;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
   onLoadPost: (post: TempPostItem) => void;
+  onSaveTempPost: () => void;
 }
 
-const TempPostsModal: FC<TempPostsModalProps> = ({ isOpen, setIsOpen, onLoadPost }) => {
+const TempPostsModal: FC<TempPostsModalProps> = ({ isOpen, setIsOpen, onLoadPost, onSaveTempPost }) => {
   const { data: tempPosts } = useGetTempPosts();
   const deleteTempPost = useDeleteTempPost();
 
@@ -155,7 +156,7 @@ const TempPostsModal: FC<TempPostsModalProps> = ({ isOpen, setIsOpen, onLoadPost
               <button type='button' className='cancel btn' onClick={onCloseModal}>
                 취소
               </button>
-              <button type='button' className='default btn'>
+              <button type='button' className='default btn' onClick={onSaveTempPost}>
                 임시저장하기
               </button>
             </div>

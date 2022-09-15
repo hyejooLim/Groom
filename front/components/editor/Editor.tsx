@@ -355,7 +355,12 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
         </div>
       </ContentAside>
       <ToastMessage toastMessage={toastMessage} showToastMessage={showToastMessage} show={show} />
-      <TempPostsModal isOpen={isOpen} setIsOpen={setIsOpen} onLoadPost={onLoadPost} />
+      <TempPostsModal
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
+        onLoadPost={onLoadPost}
+        onSaveTempPost={handleSaveTempPost}
+      />
     </EditorWrapper>
   );
 };
