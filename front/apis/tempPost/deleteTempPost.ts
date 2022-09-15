@@ -1,8 +1,6 @@
 const deleteTempPost = async (id: number): Promise<Response> => {
-  const response = await fetch('/api/tempPost', {
+  const response = await fetch(`/api/tempPost/${id}`, {
     method: 'DELETE',
-    body: JSON.stringify(id),
-    headers: { 'Content-Type': 'application/json' },
   });
 
   return response;
