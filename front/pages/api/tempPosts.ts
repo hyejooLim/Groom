@@ -14,16 +14,9 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
 
       await prisma.tempPost.deleteMany({
         where: {
-          AND: [
-            {
-              author: { email: session.user?.email },
-            },
-            {
-              createdAt: {
-                lte: new Date(dayjs().subtract(90, 'day').format('YYYY-MM-DD hh:mm:ss')),
-              },
-            },
-          ],
+          createdAt: {
+            lte: new Date(dayjs().subtract(90, 'day').format('YYYY-MM-DD hh:mm:ss')),
+          },
         },
       });
 
