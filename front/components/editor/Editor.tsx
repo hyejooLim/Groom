@@ -1,4 +1,4 @@
-import React, { FC, ChangeEvent, useState, useEffect } from 'react';
+import React, { FC, ChangeEvent, useState, useEffect, useCallback } from 'react';
 import { useRecoilValue } from 'recoil';
 import Router from 'next/router';
 import AWS from 'aws-sdk';
@@ -10,6 +10,7 @@ import ToastMessage from '../ToastMessage';
 import { tinymceEditorState } from '../../recoil/tinymce';
 import useGetTempPosts from '../../hooks/query/useGetTempPosts';
 import useCreateTempPost from '../../hooks/query/useCreateTempPost';
+import useUpdateTempPost from '../../hooks/query/useUpdateTempPost';
 import createPost from '../../apis/post/createPost';
 import updatePost from '../../apis/post/updatePost';
 import * as ContentMode from '../../constants/ContentMode';
@@ -54,7 +55,10 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
 
   const { data: tempPosts } = useGetTempPosts();
   const createTempPost = useCreateTempPost();
+  const updateTempPost = useUpdateTempPost();
+
   const [loadTempPost, setLoadTempPost] = useState(false);
+  const [localStorageValue, setLocalStorageValue] = useState(null);
 
   const [toastMessage, setToastMessage] = useState('');
   const [showToastMessage, setShowToastMessage] = useState(false);
@@ -62,6 +66,55 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const tinymceEditor = useRecoilValue(tinymceEditorState);
+
+  useEffect(() => {
+    if (localStorage.getItem('postData')) {
+      if (confirm('YYYY.MM.DD hh:mm에 저장된 글이 있습니다. 이어서 작성하시곘습니까?')) {
+        setPostData(JSON.parse(localStorage.getItem('postData')));
+      } else {
+        localStorage.removeItem('isSaved');
+        setLocalStorageValue(JSON.parse(localStorage.getItem('postData')));
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    if (postData.title || postData.content) {
+      localStorage.setItem('postData', JSON.stringify(postData));
+    } else {
+      localStorage.setItem('postData', JSON.stringify(localStorageValue));
+    }
+  }, [postData, localStorageValue]);
+
+  const ShowSuccessBox = useCallback(() => {
+    setShowToastMessage(true);
+    setToastMessage('작성 중인 글이 저장되었습니다.');
+
+    setTimeout(() => {
+      setShow(true);
+    }, 1000);
+
+    setTimeout(() => {
+      setShow(false);
+    }, 3000);
+
+    setTimeout(() => {
+      setShowToastMessage(false);
+    }, 4000);
+  }, []);
+
+  useEffect(() => {
+    if (createTempPost.isSuccess) {
+      ShowSuccessBox();
+      localStorage.setItem('isSaved', 'true');
+    }
+  }, [createTempPost.isSuccess]);
+
+  useEffect(() => {
+    if (updateTempPost.isSuccess) {
+      ShowSuccessBox();
+    }
+  }, [updateTempPost.isSuccess]);
 
   useEffect(() => {
     window.addEventListener('beforeunload', preventUnload);
@@ -80,25 +133,6 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
       window.removeEventListener('popstate', preventGoBack);
     };
   }, []);
-
-  useEffect(() => {
-    if (createTempPost.isSuccess) {
-      setShowToastMessage(true);
-      setToastMessage('작성 중인 글이 저장되었습니다.');
-
-      setTimeout(() => {
-        setShow(true);
-      }, 1000);
-
-      setTimeout(() => {
-        setShow(false);
-      }, 3000);
-
-      setTimeout(() => {
-        setShowToastMessage(false);
-      }, 4000);
-    }
-  }, [createTempPost.isSuccess]);
 
   // 새로고침 및 창 닫기 방지
   const preventUnload = (e: BeforeUnloadEvent) => {
@@ -197,7 +231,7 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
     });
   };
 
-  const handleTempPost = () => {
+  const handleSaveTempPost = () => {
     if (tempPosts.length === 100) {
       alert('최대 100개의 글을 임시 저장할 수 있습니다.');
       return;
@@ -216,12 +250,11 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
       category: postData.category,
     };
 
-    if (tempPosts.find((post: TempPostItem) => JSON.stringify(post) === JSON.stringify(newTempPost))) {
-      alert('이미 저장된 글입니다.');
-      return;
-    }
+    const { title, content, htmlContent, tags, category } = postData;
 
-    createTempPost.mutate({ data: newTempPost });
+    localStorage.getItem('isSaved')
+      ? updateTempPost.mutate({ data: { id: tempPosts[0].id, title, content, htmlContent, tags, category } })
+      : createTempPost.mutate({ data: newTempPost });
   };
 
   const onLoadPost = (post: TempPostItem) => {
@@ -303,7 +336,7 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
         <div className='btn_wrapper'>
           {mode === ContentMode.ADD && (
             <span className='temp_save btn'>
-              <a className='text' onClick={handleTempPost}>
+              <a className='text' onClick={handleSaveTempPost}>
                 임시저장
               </a>
               <a
