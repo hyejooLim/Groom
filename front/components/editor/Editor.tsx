@@ -68,7 +68,7 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
   const tinymceEditor = useRecoilValue(tinymceEditorState);
 
   useEffect(() => {
-    if (localStorage.getItem('postData')) {
+    if (localStorage.getItem('postData') !== 'null') {
       if (confirm('YYYY.MM.DD hh:mm에 저장된 글이 있습니다. 이어서 작성하시곘습니까?')) {
         setPostData(JSON.parse(localStorage.getItem('postData')));
       } else {
