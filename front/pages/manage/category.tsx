@@ -57,7 +57,7 @@ const ManageCategory = () => {
             <p className='info'>드래그 앤 드롭으로 카테고리 순서를 변경할 수 있습니다.</p>
           </div>
           <TotalCount>
-            <span>{categories?.length}</span> / 12
+            <span>{categories?.length}</span> / 100
           </TotalCount>
         </Description>
         <CategoryManageList categoryJson={categoryJson} setCategoryJson={setCategoryJson} />

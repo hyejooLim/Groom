@@ -144,6 +144,11 @@ const CategoryManageList: FC<CategoryManageListProps> = ({ categoryJson, setCate
     (e: FormEvent<HTMLButtonElement>) => {
       const lastCategoryId = categories[categories.length - 1]?.id;
 
+      if (categories.length === 100) {
+        alert('최대 100개의 카테고리를 추가할 수 있습니다.');
+        return;
+      }
+
       setCategories([
         ...categories,
         {
@@ -309,7 +314,7 @@ const CategoryManageList: FC<CategoryManageListProps> = ({ categoryJson, setCate
               <span className='add_category_text'>카테고리 추가</span>
             </div>
             <TotalCount>
-              <span style={{ color: '#333' }}>{categories?.length}</span> / 12
+              <span style={{ color: '#333' }}>{categories?.length}</span> / 100
             </TotalCount>
           </AddCategoryWrapper>
         </div>
