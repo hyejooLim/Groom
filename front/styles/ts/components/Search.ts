@@ -1,10 +1,10 @@
 import styled from 'styled-components';
 
 export const SearchWrapper = styled.div`
-  margin-top: 40px;
-  padding: 0;
+  margin: 40px 0;
   line-height: 200%;
   text-align: center;
+  padding-bottom: 100px;
 
   .input {
     padding: 10px;
