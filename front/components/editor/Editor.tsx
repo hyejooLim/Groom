@@ -72,7 +72,7 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
       if (confirm('YYYY.MM.DD hh:mm에 저장된 글이 있습니다. 이어서 작성하시곘습니까?')) {
         setPostData(JSON.parse(localStorage.getItem('postData')));
       } else {
-        localStorage.removeItem('isSaved');
+        localStorage.removeItem('isSaved'); // 글을 이어서 작성하지 않는 경우 임시저장글을 새로 저장할 수 있음
         setLocalStorageValue(JSON.parse(localStorage.getItem('postData')));
       }
     }
