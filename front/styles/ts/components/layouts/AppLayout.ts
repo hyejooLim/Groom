@@ -55,7 +55,7 @@ export const StyledFooter = styled(Footer)`
   text-align: center;
   font-size: 12px;
   position: relative;
-  margin-top: 100px;
+  margin-top: 50px;
   height: 30px;
   color: #666;
 `;
