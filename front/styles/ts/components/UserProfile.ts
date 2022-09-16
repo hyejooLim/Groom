@@ -7,6 +7,7 @@ export const UserProfileWrapper = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  margin: 10px 0;
 `;
 
 export const InfoArea = styled.div`
@@ -51,9 +52,11 @@ export const NewBox = styled.div`
 export const LogoutButton = styled(Button)`
   background-color: #13a085;
   color: #fff;
-  width: 80px;
-  height: 36px;
+  width: 70px;
+  height: 32px;
+  font-size: 13px;
   border-radius: 8px;
+  margin-top: 10px;
   padding: 0;
 
   :hover {
