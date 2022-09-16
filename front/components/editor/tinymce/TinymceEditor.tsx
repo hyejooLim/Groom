@@ -61,6 +61,7 @@ const TinymceEditor: FC<TinymceEditorProps> = ({
           content_style: CONTENT_STYLE,
           block_formats: '제목1=h2;제목2=h3;제목3=h4;본문=p;',
           iframe_attrs: { style: 'width: 100%; height: 100%; display: block;' },
+          toolbar_mode: 'wrap',
           /** image **/
           image_caption: true, // figure로 감싸짐 (작동 안함)
           paste_data_images: false, // 자동 drag&drop 제거
