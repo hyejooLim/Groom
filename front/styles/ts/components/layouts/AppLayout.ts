@@ -26,6 +26,40 @@ export const StyledSider = styled(Sider)`
   height: 100%;
   background-color: #fff;
   border-right: 1px solid #ddd;
+  overflow-y: scroll;
+
+  // 스크롤바 영역에 대한 설정
+  &.scrollbar::-webkit-scrollbar {
+    width: 3px;
+  }
+
+  // 스크롤바 막대에 대한 설정
+  &.scrollbar::-webkit-scrollbar-thumb {
+    height: 30px;
+    border-radius: 10px;
+    opacity: 0;
+    background-color: inherit;
+    transition: opacity 2s ease-in-out, background-color 2s ease-in-out;
+  }
+
+  // 스크롤바 뒷 배경에 대한 설정
+  &.scrollbar::-webkit-scrollbar-track {
+    opacity: 0;
+    background-color: inherit;
+    transition: opacity 2s ease-in-out, background-color 2s ease-in-out;
+  }
+
+  &.scrollbar:hover {
+    &.scrollbar::-webkit-scrollbar-thumb {
+      opacity: 1;
+      background-color: #13a085;
+    }
+
+    &.scrollbar::-webkit-scrollbar-track {
+      opacity: 1;
+      background-color: rgba(0, 0, 0, 0.15);
+    }
+  }
 
   @media (max-width: 959px) {
     z-index: 100;

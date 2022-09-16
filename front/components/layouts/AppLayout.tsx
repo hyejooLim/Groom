@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback } from 'react';
 import { useSession } from 'next-auth/react';
 import Router from 'next/router';
 import Image from 'next/image';
@@ -22,15 +22,11 @@ import {
 import logo from '../../public/Groom_Logo_No_Background.png';
 
 const AppLayout = ({ children }) => {
-  const { data: session, status } = useSession();
+  const { status } = useSession();
 
   const setCurrentPage = useSetRecoilState(currentPageState);
   const setFirstIndex = useSetRecoilState(firstIndexState);
   const setLastIndex = useSetRecoilState(lastIndexState);
-
-  useEffect(() => {
-    console.log(session);
-  }, []);
 
   const onClickLogo = useCallback(() => {
     setCurrentPage(1);
@@ -43,7 +39,7 @@ const AppLayout = ({ children }) => {
   return (
     <>
       <Container>
-        <StyledSider width={300}>
+        <StyledSider className='scrollbar' width={300}>
           {status === 'authenticated' ? <UserProfile /> : <LoginForm />}
           <Category />
           <Counter />
