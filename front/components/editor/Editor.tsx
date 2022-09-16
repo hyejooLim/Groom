@@ -2,6 +2,7 @@ import React, { FC, ChangeEvent, useState, useEffect, useCallback } from 'react'
 import { useRecoilValue } from 'recoil';
 import Router from 'next/router';
 import AWS from 'aws-sdk';
+import dayjs from 'dayjs';
 
 import EditorToolbar from './EditorToobar';
 import EditorContent from './EditorContent';
@@ -58,7 +59,8 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
   const updateTempPost = useUpdateTempPost();
 
   const [loadTempPost, setLoadTempPost] = useState(false);
-  const [localStorageValue, setLocalStorageValue] = useState(null);
+  const [prevPostData, setPrevPostData] = useState(null);
+  const [prevSaveTime, setPrevSaveTime] = useState('');
 
   const [toastMessage, setToastMessage] = useState('');
   const [showToastMessage, setShowToastMessage] = useState(false);
@@ -66,25 +68,6 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const tinymceEditor = useRecoilValue(tinymceEditorState);
-
-  useEffect(() => {
-    if (localStorage.getItem('postData') !== 'null') {
-      if (confirm('YYYY.MM.DD hh:mm에 저장된 글이 있습니다. 이어서 작성하시곘습니까?')) {
-        setPostData(JSON.parse(localStorage.getItem('postData')));
-      } else {
-        localStorage.removeItem('isSaved'); // 글을 이어서 작성하지 않는 경우 임시저장글을 새로 저장할 수 있음
-        setLocalStorageValue(JSON.parse(localStorage.getItem('postData')));
-      }
-    }
-  }, []);
-
-  useEffect(() => {
-    if (postData.title || postData.content) {
-      localStorage.setItem('postData', JSON.stringify(postData));
-    } else {
-      localStorage.setItem('postData', JSON.stringify(localStorageValue));
-    }
-  }, [postData, localStorageValue]);
 
   const ShowSuccessBox = useCallback(() => {
     setShowToastMessage(true);
@@ -102,6 +85,36 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
       setShowToastMessage(false);
     }, 4000);
   }, []);
+
+  const askContinueWrite = () => {
+    const saveTime = localStorage.getItem('saveTime');
+    const data = localStorage.getItem('postData');
+
+    if (confirm(`${saveTime}에 저장된 글이 있습니다. 이어서 작성하시곘습니까?`)) {
+      setPostData(JSON.parse(data));
+    } else {
+      localStorage.removeItem('isSaved'); // 글을 이어서 작성하지 않는 경우 임시저장글을 새로 저장할 수 있음
+
+      setPrevPostData(JSON.parse(data));
+      setPrevSaveTime(saveTime);
+    }
+  };
+
+  useEffect(() => {
+    if (localStorage.getItem('postData') !== 'null') {
+      askContinueWrite();
+    }
+  }, []);
+
+  useEffect(() => {
+    if (postData.title || postData.content) {
+      localStorage.setItem('postData', JSON.stringify(postData));
+      localStorage.setItem('saveTime', dayjs().format('YYYY.MM.DD hh:mm'));
+    } else {
+      localStorage.setItem('postData', JSON.stringify(prevPostData));
+      localStorage.setItem('saveTime', prevSaveTime);
+    }
+  }, [postData, prevPostData, prevSaveTime]);
 
   useEffect(() => {
     if (createTempPost.isSuccess) {
