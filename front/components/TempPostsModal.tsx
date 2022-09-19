@@ -7,8 +7,8 @@ import dayjs from 'dayjs';
 import useGetTempPosts from '../hooks/query/useGetTempPosts';
 import useDeleteTempPost from '../hooks/query/useDeleteTempPost';
 import { TempPostItem } from '../types';
+import ReactModal from './ReactModal';
 import {
-  InnerModal,
   InfoBoxWrapper,
   HeadLayer,
   ItemInfoWrapper,
@@ -16,8 +16,6 @@ import {
   BodyLayer,
   FootLayer,
 } from '../styles/ts/components/TempPostsModal';
-
-Modal.setAppElement('#__next');
 
 interface TempPostsModalProps {
   isOpen: boolean;
@@ -91,70 +89,66 @@ const TempPostsModal: FC<TempPostsModalProps> = ({ isOpen, setIsOpen, onLoadPost
   };
 
   return (
-    <>
-      <Modal className='modal_layer' isOpen={isOpen} onRequestClose={onCloseModal}>
-        <InnerModal className='inner_modal_layer'>
-          <HeadLayer className='head_layer'>
-            <strong className='head_layer_title'>임시저장</strong>
-            <div className='head_layer_info'>
-              <AiFillQuestionCircle className='info_icon' />
-              <InfoBoxWrapper className='info_box_wrapper'>
-                <div className='info_box'>
-                  최대 100개의 글을 임시저장할 수 있습니다.
-                  <br />
-                  임시저장 글은 저장일로부터 90일간 보관됩니다.
-                </div>
-              </InfoBoxWrapper>
+    <ReactModal isOpen={isOpen} onRequestClose={onCloseModal}>
+      <HeadLayer className='head_layer'>
+        <strong className='head_layer_title'>임시저장</strong>
+        <div className='head_layer_info'>
+          <AiFillQuestionCircle className='info_icon' />
+          <InfoBoxWrapper className='info_box_wrapper'>
+            <div className='info_box'>
+              최대 100개의 글을 임시저장할 수 있습니다.
+              <br />
+              임시저장 글은 저장일로부터 90일간 보관됩니다.
             </div>
-          </HeadLayer>
-          <BodyLayer className='body_layer'>
-            <div className='list_container'>
-              {tempPosts?.length === 0 ? (
-                <div className='empty'>임시저장된 글이 없습니다.</div>
-              ) : (
-                <div className='list_wrapper'>
-                  <div className='list'>
-                    {tempPosts?.map((post) => (
-                      <div className='list_item' key={post.id}>
-                        <dt>{getDateDiff(post.createdAt)}</dt>
-                        <dd>
-                          <a
-                            className='list_item_link'
-                            onClick={() => onLoadPost(post)}
-                            onMouseOver={onMouseOverTitle}
-                            onMouseLeave={onMouseLeaveTitle}
-                          >
-                            {post.title || '제목 없음'}
-                          </a>
-                          <RemoveButton type='button' className='remove btn' onClick={() => onDeleteTempPost(post.id)}>
-                            <GrTrash className='trash_icon' />
-                          </RemoveButton>
-                          <ItemInfoWrapper className='item_info_wrapper' style={{ left: '0', top: '0' }}>
-                            <div className='item_info'>
-                              {!post.content || !post.content.trim() ? '[내용 없음]' : post.content}
-                            </div>
-                          </ItemInfoWrapper>
-                        </dd>
-                      </div>
-                    ))}
+          </InfoBoxWrapper>
+        </div>
+      </HeadLayer>
+      <BodyLayer className='body_layer'>
+        <div className='list_container'>
+          {tempPosts?.length === 0 ? (
+            <div className='empty'>임시저장된 글이 없습니다.</div>
+          ) : (
+            <div className='list_wrapper'>
+              <div className='list'>
+                {tempPosts?.map((post) => (
+                  <div className='list_item' key={post.id}>
+                    <dt>{getDateDiff(post.createdAt)}</dt>
+                    <dd>
+                      <a
+                        className='list_item_link'
+                        onClick={() => onLoadPost(post)}
+                        onMouseOver={onMouseOverTitle}
+                        onMouseLeave={onMouseLeaveTitle}
+                      >
+                        {post.title || '제목 없음'}
+                      </a>
+                      <RemoveButton type='button' className='remove btn' onClick={() => onDeleteTempPost(post.id)}>
+                        <GrTrash className='trash_icon' />
+                      </RemoveButton>
+                      <ItemInfoWrapper className='item_info_wrapper' style={{ left: '0', top: '0' }}>
+                        <div className='item_info'>
+                          {!post.content || !post.content.trim() ? '[내용 없음]' : post.content}
+                        </div>
+                      </ItemInfoWrapper>
+                    </dd>
                   </div>
-                </div>
-              )}
+                ))}
+              </div>
             </div>
-          </BodyLayer>
-          <FootLayer className='foot_layer'>
-            <div className='btn_wrapper'>
-              <button type='button' className='cancel btn' onClick={onCloseModal}>
-                취소
-              </button>
-              <button type='button' className='default btn' onClick={onSaveTempPost}>
-                임시저장하기
-              </button>
-            </div>
-          </FootLayer>
-        </InnerModal>
-      </Modal>
-    </>
+          )}
+        </div>
+      </BodyLayer>
+      <FootLayer className='foot_layer'>
+        <div className='btn_wrapper'>
+          <button type='button' className='cancel btn' onClick={onCloseModal}>
+            취소
+          </button>
+          <button type='button' className='default btn' onClick={onSaveTempPost}>
+            임시저장하기
+          </button>
+        </div>
+      </FootLayer>
+    </ReactModal>
   );
 };
 
