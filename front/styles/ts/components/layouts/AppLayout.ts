@@ -24,40 +24,37 @@ export const StyledSider = styled(Sider)`
   bottom: 0;
   width: 300px;
   height: 100%;
+  color: #fff;
   background-color: #fff;
   border-right: 1px solid #ddd;
   overflow-y: scroll;
+  scroll-behavior: smooth;
+  transition: color 0.5s ease-in-out;
+
+  &:hover {
+    color: #13a085;
+  }
 
   // 스크롤바 영역에 대한 설정
-  &.scrollbar::-webkit-scrollbar {
+  &::-webkit-scrollbar {
     width: 3px;
   }
 
   // 스크롤바 막대에 대한 설정
-  &.scrollbar::-webkit-scrollbar-thumb {
-    height: 30px;
-    border-radius: 10px;
-    opacity: 0;
-    background-color: inherit;
-    transition: opacity 2s ease-in-out, background-color 2s ease-in-out;
+  &::-webkit-scrollbar-thumb {
+    height: 30%;
+    border-radius: 20px;
+    box-shadow: inset 0 0 0 10px;
   }
 
   // 스크롤바 뒷 배경에 대한 설정
-  &.scrollbar::-webkit-scrollbar-track {
-    opacity: 0;
-    background-color: inherit;
-    transition: opacity 2s ease-in-out, background-color 2s ease-in-out;
+  &::-webkit-scrollbar-track {
+    /* box-shadow: inset 0 0 0 10px; */
   }
 
-  &.scrollbar:hover {
-    &.scrollbar::-webkit-scrollbar-thumb {
-      opacity: 1;
+  &:hover {
+    &::-webkit-scrollbar-thumb {
       background-color: #13a085;
-    }
-
-    &.scrollbar::-webkit-scrollbar-track {
-      opacity: 1;
-      background-color: rgba(0, 0, 0, 0.15);
     }
   }
 

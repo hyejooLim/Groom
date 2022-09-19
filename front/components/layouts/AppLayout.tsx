@@ -39,7 +39,7 @@ const AppLayout = ({ children }) => {
   return (
     <>
       <Container>
-        <StyledSider className='scrollbar' width={300}>
+        <StyledSider width={300}>
           {status === 'authenticated' ? <UserProfile /> : <LoginForm />}
           <Category />
           <Counter />

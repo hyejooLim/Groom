@@ -37,6 +37,7 @@ export const NewBox = styled.div`
 
   .posts {
     margin-right: 12px;
+    color: #000;
   }
 
   .count:before {
