@@ -6,13 +6,24 @@ export const CategoryWrapper = styled.div`
   flex-direction: column;
   border-top: 1px dashed black;
 
-  & li {
-    color: #3b3e3f;
-    font-size: 15px;
-    margin-bottom: 10px;
+  & span {
+    font-size: 18px;
+    font-weight: 600;
+    margin: 20px 0 30px 0;
+    color: #1c1c1c;
+  }
 
-    .category_item:hover {
-      color: #07a;
+  & ul {
+    min-height: 180px;
+
+    & li {
+      color: #3b3e3f;
+      font-size: 15px;
+      margin-bottom: 10px;
+
+      .category_item:hover {
+        color: #07a;
+      }
     }
   }
 `;

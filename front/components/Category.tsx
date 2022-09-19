@@ -9,7 +9,7 @@ const Category = () => {
 
   return (
     <CategoryWrapper>
-      <span style={{ fontSize: '18px', fontWeight: 600, margin: '20px 0 30px 0' }}>카테고리</span>
+      <span>카테고리</span>
       <ul>
         {categories?.map((category) => (
           <li key={category.id}>
