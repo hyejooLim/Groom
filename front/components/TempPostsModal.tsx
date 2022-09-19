@@ -58,26 +58,19 @@ const TempPostsModal: FC<TempPostsModalProps> = ({ isOpen, setIsOpen, onLoadPost
     setIsOpen(false);
   };
 
-  const onMouseOverTitle = (e: MouseEvent<HTMLAnchorElement>, idx: number) => {
+  const onMouseOverTitle = (e: MouseEvent<HTMLAnchorElement>) => {
     const dd = e.currentTarget.closest('dd') as HTMLElement;
     dd.classList.add('hover');
 
     const innerModalLayerElement = document.querySelector('.inner_modal_layer') as HTMLElement;
-    const headLayerElement = document.querySelector('.head_layer') as HTMLElement;
     const listItemElement = e.currentTarget.closest('.list_item') as HTMLElement;
     const itemInfoWrapper = dd.lastElementChild as HTMLElement;
 
     const innerModalLayerElementMarginLeft = getComputedStyle(innerModalLayerElement).marginLeft;
-    const innerModalLayerElementPaddingTop = getComputedStyle(innerModalLayerElement).paddingTop;
-    const headLayerElementHeight = headLayerElement.offsetHeight;
-    const listItemElementHeight = listItemElement.offsetHeight;
+    const listItemElementClientY = listItemElement.getBoundingClientRect().y;
 
     const computedLeft = Number(innerModalLayerElementMarginLeft.slice(0, -2)) + 96;
-    const computedTop =
-      Number(innerModalLayerElementPaddingTop.slice(0, -2)) +
-      headLayerElementHeight +
-      listItemElementHeight * (idx + 1) +
-      22;
+    const computedTop = listItemElementClientY - 191;
 
     itemInfoWrapper.style.left = computedLeft + 'px';
     itemInfoWrapper.style.top = computedTop + 'px';
@@ -114,7 +107,6 @@ const TempPostsModal: FC<TempPostsModalProps> = ({ isOpen, setIsOpen, onLoadPost
               </InfoBoxWrapper>
             </div>
           </HeadLayer>
-
           <BodyLayer className='body_layer'>
             <div className='list_container'>
               {tempPosts?.length === 0 ? (
@@ -122,14 +114,14 @@ const TempPostsModal: FC<TempPostsModalProps> = ({ isOpen, setIsOpen, onLoadPost
               ) : (
                 <div className='list_wrapper'>
                   <div className='list'>
-                    {tempPosts?.map((post, idx) => (
+                    {tempPosts?.map((post) => (
                       <div className='list_item' key={post.id}>
                         <dt>{getDateDiff(post.createdAt)}</dt>
                         <dd>
                           <a
                             className='list_item_link'
                             onClick={() => onLoadPost(post)}
-                            onMouseOver={(e) => onMouseOverTitle(e, idx)}
+                            onMouseOver={onMouseOverTitle}
                             onMouseLeave={onMouseLeaveTitle}
                           >
                             {post.title || '제목 없음'}
@@ -150,7 +142,6 @@ const TempPostsModal: FC<TempPostsModalProps> = ({ isOpen, setIsOpen, onLoadPost
               )}
             </div>
           </BodyLayer>
-
           <FootLayer className='foot_layer'>
             <div className='btn_wrapper'>
               <button type='button' className='cancel btn' onClick={onCloseModal}>
