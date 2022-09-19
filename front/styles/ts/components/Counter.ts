@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 export const CounterWrapper = styled.div`
-  font-size: 13px;
+  font-size: 14px;
   margin-top: 80px;
   padding: 0;
   line-height: 200%;

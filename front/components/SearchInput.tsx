@@ -95,24 +95,19 @@ const SearchInput = () => {
         <InnerWrapper>
           <DropdownWrapper>
             <Dropdown overlay={menu} trigger={['click']} overlayStyle={{ width: '100px' }}>
-              <a
+              <span
                 onClick={(e) => {
                   e.preventDefault();
                   setOpenMenu((prev) => !prev);
                 }}
               >
-                <span style={{ fontSize: '13px', margin: '0 24px 0 -10px' }}>{searchType.label}</span>
+                <span style={{ fontSize: '14px', margin: '0 24px 0 -10px' }}>{searchType.label}</span>
                 {openMenu ? <UpOutlined style={{ fontSize: '12px' }} /> : <DownOutlined style={{ fontSize: '12px' }} />}
-              </a>
+              </span>
             </Dropdown>
           </DropdownWrapper>
-          <StyledInput
-            style={{ width: '654px', border: 0, outline: 'none', fontSize: '15px', background: 'none' }}
-            type='text'
-            value={keyword}
-            onChange={onChangeKeyword}
-            placeholder='글 관리에서 검색합니다.'
-          />
+
+          <StyledInput type='text' value={keyword} onChange={onChangeKeyword} placeholder='글 관리에서 검색합니다.' />
           <SearchButton htmlType='submit' disabled={!keyword || !keyword.trim()}>
             <SearchOutlined />
           </SearchButton>

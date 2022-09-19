@@ -1,6 +1,7 @@
 import React, { ChangeEvent, FC, useCallback, useState } from 'react';
+import { BsCloudFill } from 'react-icons/bs';
+import { Comment, List, Button, Avatar } from 'antd';
 import dayjs from 'dayjs';
-import { Comment, List, Button } from 'antd';
 
 import useGetUser from '../hooks/query/useGetUser';
 import useGetComments from '../hooks/query/useGetComments';
@@ -89,7 +90,14 @@ const CommentList: FC<CommentListProps> = ({ postId }) => {
         ) : (
           <CommentBox>
             <Comment
-              author={item.author?.name}
+              avatar={
+                <Avatar
+                  size={40}
+                  icon={<BsCloudFill style={{ height: '40px', lineHeight: '40px' }} />}
+                  src={user?.imageUrl}
+                />
+              }
+              author={<span style={{ fontSize: '14px' }}>{item.author?.name}</span>}
               content={<p style={{ whiteSpace: 'pre-wrap' }}>{item.content}</p>}
               datetime={
                 <span style={{ marginLeft: '10px', fontSize: '13px' }}>

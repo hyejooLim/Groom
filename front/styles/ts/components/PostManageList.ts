@@ -56,7 +56,7 @@ export const PostInfo = styled.div`
 
   .post_title a {
     margin-right: 5px;
-    font-size: 15px;
+    font-size: 16px;
 
     :hover {
       text-decoration: underline;

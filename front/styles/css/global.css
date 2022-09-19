@@ -21,7 +21,6 @@ body {
   overflow-x: hidden;
   padding: 0;
   margin: 0;
-  /* font-family: 'Courier New', Courier, monospace; */
   font-family: 'Nanum Gothic', 'Noto Sans Korean', 'Ubuntu Condensed';
 }
 
@@ -49,6 +48,11 @@ input,
 textarea,
 li {
   transition: all 0.3s;
+}
+
+input {
+  font-family: Noto Sans DemiLight, AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, '돋움', sans-serif;
+  -webkit-font-smoothing: antialiased;
 }
 
 ul {

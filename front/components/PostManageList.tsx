@@ -50,9 +50,7 @@ const PostManageList: FC<PostManageListProps> = ({ posts, firstIndex, lastIndex,
               <div className='post_title'>
                 <Link href={`/post/${post.id}`}>
                   <a>
-                    <span>
-                      [{post?.category?.name}] {post.title}
-                    </span>
+                    <span>{post.title}</span>
                   </a>
                 </Link>
                 <PaperClipOutlined />
@@ -92,7 +90,7 @@ const PostManageList: FC<PostManageListProps> = ({ posts, firstIndex, lastIndex,
           <div className='icon_wrapper'>
             <FiSearch className='icon' />
           </div>
-          검색 결과가 없습니다.
+          결과가 없습니다.
         </EmptySearchBox>
       )}
     </ListWrapper>

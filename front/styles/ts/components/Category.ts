@@ -18,7 +18,7 @@ export const CategoryWrapper = styled.div`
 
     & li {
       color: #3b3e3f;
-      font-size: 15px;
+      font-size: 16px;
       margin-bottom: 10px;
 
       .category_item:hover {

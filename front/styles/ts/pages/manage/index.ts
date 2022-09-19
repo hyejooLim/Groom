@@ -65,7 +65,7 @@ export const PostTitle = styled.p`
   max-height: 60px;
   line-height: 20px;
   margin-bottom: 12px;
-  font-size: 15px;
+  font-size: 16px;
   font-weight: normal;
   font-family: 'Noto Sans Regular', AppleSDGothicNeo, '돋움', dotum, sans-serif;
 `;
@@ -73,9 +73,9 @@ export const PostTitle = styled.p`
 export const PostContent = styled.p`
   max-height: 90px;
   line-height: 18px;
-  margin: 0;
-  font-size: 12px;
+  font-size: 13px;
   color: #808080;
+  margin: 0;
 `;
 
 export const InfoWrapper = styled.div`
@@ -95,7 +95,7 @@ export const InfoWrapper = styled.div`
     float: left;
     position: relative;
     margin: 4px 12px 0 0;
-    font-size: 12px;
+    font-size: 13px;
     font-family: 'Avenir Next Regular', 'Noto Sans DemiLight', AppleSDGothicNeo, '돋움', dotum, sans-serif;
     white-space: nowrap;
     text-overflow: ellipsis;
@@ -106,7 +106,7 @@ export const InfoWrapper = styled.div`
     display: block;
     position: absolute;
     top: 11px;
-    left: 59px;
+    left: 61.4px;
     width: 2px;
     height: 2px;
     background-color: #c5c5c5;

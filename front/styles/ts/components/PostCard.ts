@@ -110,7 +110,7 @@ export const EditButton = styled.div`
     width: 70px;
     color: #777;
     background-color: transparent;
-    font-size: 14px;
+    font-size: 15px;
     font-family: 'Courier New';
 
     :hover {

@@ -49,7 +49,7 @@ const ManageCategory = () => {
       <Head>
         <title>Groom | 카테고리 관리</title>
       </Head>
-      <span style={{ fontSize: '18px' }}>카테고리 관리</span>
+      <span style={{ fontSize: '20px' }}>카테고리 관리</span>
       <ManageCategoryWrapper>
         <Description>
           <div className='desc_text'>

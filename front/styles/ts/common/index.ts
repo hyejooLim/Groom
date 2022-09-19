@@ -6,7 +6,7 @@ export const TitleWrapper = styled.div`
   align-items: center;
 
   & .text {
-    font-size: 18px;
+    font-size: 20px;
   }
 
   & .title {

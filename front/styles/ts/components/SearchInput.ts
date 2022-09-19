@@ -5,29 +5,30 @@ export const FormWrapper = styled.div`
   width: 100%;
   border: 1px solid #475466;
   background: #fff;
-  height: 52px;
+  height: 58px;
   border-radius: 1px;
   margin-top: 10px;
 `;
 
 export const StyledForm = styled(Form)`
   width: 834px;
-  margin: 10px 29px 0 0;
+  height: 100%;
 `;
 
 export const InnerWrapper = styled.div`
   display: flex;
   align-items: center;
+  height: 100%;
+  line-height: 100%;
 `;
 
 export const DropdownWrapper = styled.div`
   width: 81px;
-  height: 23px;
-  margin: 3px 18px 0 46px;
+  margin: 0 18px 0 46px;
   border-right: 1px solid #e0e5ee;
 
-  & a {
-    color: #000;
+  &:hover {
+    cursor: pointer;
   }
 `;
 
@@ -35,7 +36,7 @@ export const StyledInput = styled(Input)`
   width: 654px;
   border: 0;
   outline: none;
-  font-size: 15px;
+  font-size: 18px;
   background: none;
 `;
 

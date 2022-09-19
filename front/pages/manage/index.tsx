@@ -41,7 +41,7 @@ const Manage = () => {
         </CountVisitor>
       </CountVisitorWrapper>
       <LastPosts>
-        <span style={{ fontWeight: 700, fontSize: '18px' }}>최근 작성 글</span>
+        <span style={{ fontSize: '20px' }}>최근 작성 글</span>
         <ul>
           <>
             {user?.posts?.slice(0, 4).map((post) => (

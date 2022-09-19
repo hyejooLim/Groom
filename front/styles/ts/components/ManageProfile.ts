@@ -48,7 +48,7 @@ export const StyledCard = styled(Card)`
   }
 
   .ant-card-body {
-    padding: 18px;
+    padding: 20px;
 
     .card_meta {
       display: flex;
@@ -56,11 +56,11 @@ export const StyledCard = styled(Card)`
 
       .ant-card-meta {
         .ant-card-meta-title {
-          font-size: 14px;
+          font-size: 16px;
         }
 
         .ant-card-meta-description {
-          font-size: 12px;
+          font-size: 14px;
         }
       }
 
@@ -68,9 +68,13 @@ export const StyledCard = styled(Card)`
         padding: 0;
         width: 58px;
         height: 24px;
-        font-size: 12px;
+        font-size: 13px;
         background-color: #fff;
         color: #13a085;
+
+        & :hover {
+          text-decoration: underline;
+        }
       }
     }
 

@@ -24,7 +24,7 @@ const UserProfile = () => {
   return (
     <UserProfileWrapper>
       <InfoArea>
-        <Avatar size={80} icon={<BsCloudFill style={{ position: 'relative', top: '5px' }} />} src={user?.imageUrl} />
+        <Avatar size={80} icon={<BsCloudFill style={{ height: '80px', lineHeight: '80px' }} />} src={user?.imageUrl} />
         <UserInfo>
           <InfoBox>
             <Link href={`/manage`}>

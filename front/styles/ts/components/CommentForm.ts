@@ -14,7 +14,8 @@ export const AddCommentButton = styled(Button)`
 
 export const StyledTextArea = styled(Input.TextArea)`
   width: 100%;
-  font-size: 15px;
+  font-size: 16px;
   border: 1px solid #ddd;
   line-height: 160%;
+  -webkit-font-smoothing: antialiased;
 `;

@@ -7,13 +7,19 @@ import { EditOutlined } from '@ant-design/icons';
 import ManageProfile from '../../components/ManageProfile';
 import ManageList from '../../components/ManageList';
 import logo from '../../public/Groom_Logo_No_Background.png';
-import { Container, HomeButton, AddPostButton, StyledSider, StyledHeader } from '../../styles/ts/components/layouts/ManageLayout';
+import {
+  Container,
+  HomeButton,
+  AddPostButton,
+  StyledSider,
+  StyledHeader,
+} from '../../styles/ts/components/layouts/ManageLayout';
 
 const ManageLayout = ({ children }) => {
   return (
     <>
       <Container>
-        <StyledSider width={214}>
+        <StyledSider width={240}>
           <ManageProfile />
           <ManageList />
         </StyledSider>
@@ -22,7 +28,7 @@ const ManageLayout = ({ children }) => {
             <HomeButton>
               <Link href='/'>
                 <a>
-                  <Image src={logo} alt='groom_logo' width={140} height={60} />
+                  <Image src={logo} alt='groom_logo' width={160} height={70} />
                 </a>
               </Link>
             </HomeButton>
@@ -35,7 +41,7 @@ const ManageLayout = ({ children }) => {
               </a>
             </Link>
           </StyledHeader>
-          <Layout.Content style={{ width: '886px' }}>{children}</Layout.Content>
+          <Layout.Content style={{ width: '889px' }}>{children}</Layout.Content>
         </Layout>
       </Container>
     </>

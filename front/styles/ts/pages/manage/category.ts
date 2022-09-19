@@ -2,7 +2,6 @@ import styled from 'styled-components';
 import { Button } from 'antd';
 
 export const ManageCategoryWrapper = styled.div`
-  font-size: 14px;
   background: #fff;
   border-radius: 1px;
   border: 1px solid #e0e5ee;
@@ -27,9 +26,10 @@ export const Description = styled.div`
 
   .desc_text {
     line-height: 60%;
+    font-size: 15px;
 
     .info {
-      font-size: 13px;
+      font-size: 14px;
       color: #808080;
     }
   }
@@ -71,7 +71,7 @@ export const SaveDiffButton = styled(Button)`
 export const TotalCount = styled.div`
   float: right;
   color: #959595;
-  font-size: 12px;
+  font-size: 13px;
 
   & span {
     color: #333;

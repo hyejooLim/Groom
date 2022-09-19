@@ -104,7 +104,7 @@ export const TextArea = styled.div`
     align-items: center;
 
     & span:first-child {
-      font-size: 17px;
+      font-size: 18px;
     }
   }
 `;
@@ -112,7 +112,7 @@ export const TextArea = styled.div`
 export const StyledInput = styled(Input)`
   width: 330px;
   height: 40px;
-  font-size: 17px;
+  font-size: 18px;
 
   .ant-input:focus {
     border-color: none;
