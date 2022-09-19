@@ -238,7 +238,7 @@ export const FootLayer = styled.div`
       width: 150px;
       margin: 0 4px;
       height: 40px;
-      border: 1px solid #d0d0d0;
+      border: 1px solid #9c9c9c;
       border-radius: 20px;
       font-size: 13px;
       transition: border-color 0.2s, color 0.2s, background-color 0.2s;
