@@ -64,7 +64,7 @@ const EditorContent: FC<EditorContentProps> = ({
         <SelectCategory>
           <Select
             defaultValue={'카테고리'}
-            value={category.name || '카테고리'}
+            value={category?.name || '카테고리'}
             style={{ width: '170px' }}
             onChange={onChangeCategory}
           >
