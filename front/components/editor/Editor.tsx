@@ -8,6 +8,7 @@ import EditorToolbar from './EditorToobar';
 import EditorContent from './EditorContent';
 import TempPostsModal from '../TempPostsModal';
 import ToastMessage from '../ToastMessage';
+import SettingModal from '../SettingModal';
 import { tinymceEditorState } from '../../recoil/tinymce';
 import useGetTempPosts from '../../hooks/query/useGetTempPosts';
 import useCreateTempPost from '../../hooks/query/useCreateTempPost';
@@ -16,7 +17,7 @@ import createPost from '../../apis/post/createPost';
 import updatePost from '../../apis/post/updatePost';
 import * as ContentMode from '../../constants/ContentMode';
 import { ContentModeType, PostItem, CategoryItem, TempPostItem } from '../../types';
-import { EditorWrapper, ContentAside, PublishButton } from '../../styles/ts/components/editor/Editor';
+import { EditorWrapper, ContentAside, CompleteButton } from '../../styles/ts/components/editor/Editor';
 
 AWS.config.update({
   region: 'ap-northeast-2',
@@ -65,7 +66,9 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
   const [toastMessage, setToastMessage] = useState('');
   const [showToastMessage, setShowToastMessage] = useState(false);
   const [show, setShow] = useState(false);
-  const [isOpen, setIsOpen] = useState(false);
+
+  const [isOpenTempPostsModal, setIsOpenTempPostsModal] = useState(false);
+  const [isOpenSettingModal, setIsOpenSettingModal] = useState(false);
 
   const tinymceEditor = useRecoilValue(tinymceEditorState);
 
@@ -271,7 +274,7 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
   };
 
   const onLoadPost = (post: TempPostItem) => {
-    setIsOpen(false);
+    setIsOpenTempPostsModal(false);
 
     setPostData({
       ...postData,
@@ -299,23 +302,22 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
     }, 4000);
   };
 
+  const onClickCompleteButton = useCallback(() => {
+    if (!postData.title && !postData.content) {
+      alert('글을 작성해 주세요.');
+      return;
+    }
+
+    if (!postData.category.id) {
+      alert('카테고리를 설정하세요.');
+      return;
+    }
+
+    setIsOpenSettingModal(true);
+  }, [postData.title, postData.content, postData.category]);
+
   const onPublishPost = async () => {
     try {
-      if (!postData.title && !postData.content) {
-        alert('글을 작성해 주세요.');
-        return;
-      }
-
-      if (!postData.category.id) {
-        alert('카테고리를 설정하세요.');
-        return;
-      }
-
-      const confirm = window.confirm('글을 발행하시겠습니까?');
-      if (!confirm) {
-        return;
-      }
-
       // 글쓰기 모드에 따라 api 호출
       let result: Response = null;
 
@@ -361,23 +363,29 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
                 aria-expanded='false'
                 aria-label={`임시저장 개수 ${tempPosts?.length}개`}
                 className='count'
-                onClick={() => setIsOpen(true)}
+                onClick={() => setIsOpenTempPostsModal(true)}
               >
                 {tempPosts?.length}
               </a>
             </span>
           )}
-          <PublishButton className='publish btn' onClick={onPublishPost}>
+          <CompleteButton className='complete btn' onClick={onClickCompleteButton}>
             완료
-          </PublishButton>
+          </CompleteButton>
         </div>
       </ContentAside>
       <ToastMessage toastMessage={toastMessage} showToastMessage={showToastMessage} show={show} />
       <TempPostsModal
-        isOpen={isOpen}
-        setIsOpen={setIsOpen}
+        isOpen={isOpenTempPostsModal}
+        setIsOpen={setIsOpenTempPostsModal}
         onLoadPost={onLoadPost}
         onSaveTempPost={handleSaveTempPost}
+      />
+      <SettingModal
+        isOpen={isOpenSettingModal}
+        setIsOpen={setIsOpenSettingModal}
+        postTitle={postData.title}
+        onPublishPost={onPublishPost}
       />
     </EditorWrapper>
   );

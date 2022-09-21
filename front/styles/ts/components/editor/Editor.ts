@@ -48,7 +48,7 @@ export const ContentAside = styled.div`
   }
 `;
 
-export const PublishButton = styled(Button)`
+export const CompleteButton = styled(Button)`
   color: #fff;
   background-color: #000;
   border: 1px solid #000;
