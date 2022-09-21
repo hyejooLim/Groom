@@ -88,6 +88,8 @@ export const PrivateInfoBox = styled.div`
 export const BodyLayer = styled.div`
   dl {
     margin: 0;
+    display: flex;
+    align-items: center;
   }
 
   dt {
@@ -140,17 +142,15 @@ export const BodyLayer = styled.div`
     }
 
     & .default {
-      & dd {
-        & .radio_public:hover {
-          ${PublicInfoBox} {
-            display: block;
-          }
+      & .radio_public:hover {
+        ${PublicInfoBox} {
+          display: block;
         }
+      }
 
-        & .radio_private:hover {
-          ${PrivateInfoBox} {
-            display: block;
-          }
+      & .radio_private:hover {
+        ${PrivateInfoBox} {
+          display: block;
         }
       }
     }
@@ -161,8 +161,6 @@ export const BodyLayer = styled.div`
         float: left;
         padding: 0 0 0 2px;
         color: #909090;
-        height: 20px;
-        line-height: 20px;
       }
 
       & .date_btn.on {
@@ -187,11 +185,6 @@ export const BodyLayer = styled.div`
 
     & .url > * {
       color: #ddd;
-    }
-
-    & .url dd {
-      height: 17px;
-      line-height: 17px;
     }
   }
 `;
