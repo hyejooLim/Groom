@@ -45,7 +45,7 @@ export const HeadLayer = styled.div`
     float: left;
     padding: 0 0 12px;
     font-weight: 400;
-    font-size: 16px;
+    font-size: 18px;
     font-family: Noto Sans Medium, AppleSDGothicNeo-Regular, Malgun Gothic, dotum, sans-serif;
     color: #000;
   }
