@@ -103,23 +103,25 @@ const SettingModal: FC<SettingModalProps> = ({ isOpen, setIsOpen, postTitle, onP
                   </S.DropdownWrapper>
                 </dd>
               </dl>
-              <dl className='editor_info publishedAt' aria-disabled={radioValue === 'private'}>
-                <dt>발행일</dt>
-                <dd>
-                  <Button
-                    className={classNames('date_btn', { on: publishedAt === 'now' })}
-                    onClick={() => setPublishedAt('now')}
-                  >
-                    현재
-                  </Button>
-                  <Button
-                    className={classNames('date_btn', { on: publishedAt === 'reserve' })}
-                    onClick={() => setPublishedAt('reserve')}
-                  >
-                    예약
-                  </Button>
-                  {publishedAt === 'reserve' && <ReactDatePicker />}
-                </dd>
+              <dl className='editor_info publishedAt'>
+                <dt className={classNames({ disabled: radioValue === 'private' })}>발행일</dt>
+                {radioValue === 'public' && (
+                  <dd>
+                    <Button
+                      className={classNames('date_btn', { on: publishedAt === 'now' })}
+                      onClick={() => setPublishedAt('now')}
+                    >
+                      현재
+                    </Button>
+                    <Button
+                      className={classNames('date_btn', { on: publishedAt === 'reserve' })}
+                      onClick={() => setPublishedAt('reserve')}
+                    >
+                      예약
+                    </Button>
+                    {publishedAt === 'reserve' && <ReactDatePicker />}
+                  </dd>
+                )}
               </dl>
               <dl className='editor_info url'>
                 <dt>URL</dt>

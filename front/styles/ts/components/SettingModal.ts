@@ -95,7 +95,8 @@ export const BodyLayer = styled.div`
   dt {
     width: 70px;
     padding: 0;
-    line-height: 19px;
+    height: 19px;
+    line-height: 20px;
     float: left;
     font-size: 15px;
     color: #000;
@@ -180,6 +181,10 @@ export const BodyLayer = styled.div`
           background-color: rgba(0, 0, 0, 0.1);
           content: '';
         }
+      }
+
+      & dt.disabled {
+        color: #ddd;
       }
     }
 
