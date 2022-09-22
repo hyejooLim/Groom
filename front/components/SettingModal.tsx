@@ -108,13 +108,13 @@ const SettingModal: FC<SettingModalProps> = ({ isOpen, setIsOpen, postTitle, onP
                 {radioValue === 'public' && (
                   <dd>
                     <Button
-                      className={classNames('date_btn', { on: publishedAt === 'now' })}
+                      className={classNames('date_btn now', { on: publishedAt === 'now' })}
                       onClick={() => setPublishedAt('now')}
                     >
                       현재
                     </Button>
                     <Button
-                      className={classNames('date_btn', { on: publishedAt === 'reserve' })}
+                      className={classNames('date_btn reserve', { on: publishedAt === 'reserve' })}
                       onClick={() => setPublishedAt('reserve')}
                     >
                       예약

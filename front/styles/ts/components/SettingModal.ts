@@ -168,13 +168,17 @@ export const BodyLayer = styled.div`
         color: #111;
       }
 
-      & .date_btn + .date_btn {
+      & .now {
+        padding: 0;
+      }
+
+      & .reserve {
         position: relative;
         margin: 0 0 0 23px;
 
-        ::before {
+        & span::before {
           position: absolute;
-          top: 4px;
+          top: 10px;
           left: -10px;
           width: 1px;
           height: 12px;
