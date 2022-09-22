@@ -4,6 +4,7 @@ import { DownOutlined, UpOutlined } from '@ant-design/icons';
 import classNames from 'classnames';
 
 import ReactModal from './ReactModal';
+import ReactDatePicker from './ReactDatePicker';
 import * as S from '../styles/ts/components/SettingModal';
 
 interface SettingModalProps {
@@ -117,6 +118,7 @@ const SettingModal: FC<SettingModalProps> = ({ isOpen, setIsOpen, postTitle, onP
                   >
                     예약
                   </Button>
+                  {publishedAt === 'reserve' && <ReactDatePicker />}
                 </dd>
               </dl>
               <dl className='editor_info url'>
