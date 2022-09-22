@@ -1,19 +1,45 @@
-import React, { ChangeEvent, useEffect, useState } from 'react';
+import React, { ChangeEvent, useEffect, useState, useCallback } from 'react';
 import DatePicker from 'react-datepicker';
 import ko from 'date-fns/locale/ko';
 import dayjs from 'dayjs';
+import classNames from 'classnames';
 
 import 'react-datepicker/dist/react-datepicker.css';
 import * as S from '../styles/ts/components/ReactDatePicker';
 
 const ReactDatePicker = () => {
-  const [startDate, setStartDate] = useState(new Date(dayjs().format('YYYY-MM-DD')));
+  const [isOpenCalendar, setIsOpenCalendar] = useState(false);
+
+  const [startDate, setStartDate] = useState(dayjs().format('YYYY-MM-DD'));
   const [hour, setHour] = useState(String(dayjs().hour()));
   const [minute, setMinute] = useState(String(dayjs().minute()));
 
   useEffect(() => {
-    console.log('startDate', startDate);
-  }, [startDate]);
+    if (isOpenCalendar) {
+      document.addEventListener('mousedown', onCloseCalendar);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', onCloseCalendar);
+    };
+  });
+
+  const onCloseCalendar = useCallback((e) => {
+    const { className } = e.target;
+
+    if (!className.includes('react-datepicker') && !className.includes('date_input')) {
+      setIsOpenCalendar(false);
+    }
+  }, []);
+
+  const onClickInput = () => {
+    setIsOpenCalendar((prev) => !prev);
+  };
+
+  const onChangeInput = (date: Date) => {
+    setIsOpenCalendar(false);
+    setStartDate(dayjs(date).format('YYYY-MM-DD'));
+  };
 
   const onChangeHour = (e: ChangeEvent<HTMLInputElement>) => {
     const numberValue = Number(e.target.value);
@@ -58,11 +84,15 @@ const ReactDatePicker = () => {
   return (
     <S.DatePickerWrapper>
       <DatePicker
+        className={classNames('date_input', { on: isOpenCalendar })}
         locale={ko}
-        selected={startDate}
+        selected={new Date(startDate)}
         dateFormat='yyyy-MM-dd'
         minDate={new Date()}
-        onChange={(date: Date) => setStartDate(date)}
+        open={isOpenCalendar}
+        onInputClick={onClickInput}
+        onChange={onChangeInput}
+        readOnly
       ></DatePicker>
       <S.DateBox>
         <input type='number' value={hour} onChange={onChangeHour} />

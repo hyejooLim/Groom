@@ -13,10 +13,14 @@ export const DatePickerWrapper = styled.div`
     height: 30px;
     margin: 0 0 0 7px;
 
-    input {
+    .date_input {
       width: 100px;
       height: 30px;
       cursor: pointer;
+
+      &.on {
+        border-color: #909090 !important;
+      }
     }
   }
 
@@ -77,13 +81,12 @@ export const DatePickerWrapper = styled.div`
     text-align: center;
     border: 1px solid #e9e9e9;
     box-sizing: border-box;
-    line-height: 31px;
     display: block;
     outline: none;
+  }
 
-    &:focus {
-      border-color: #909090 !important;
-    }
+  input[type='number']:focus {
+    border-color: #909090 !important;
   }
 
   & .sign {
