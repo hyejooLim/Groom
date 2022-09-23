@@ -157,22 +157,7 @@ export const BodyLayer = styled.div`
     }
 
     & .publishedAt {
-      & .date_btn {
-        overflow: visible;
-        float: left;
-        padding: 0 0 0 2px;
-        color: #909090;
-      }
-
-      & .date_btn.on {
-        color: #111;
-      }
-
-      & .now {
-        padding: 0;
-      }
-
-      & .reserve {
+      & .date_btn:not(:first-child) {
         position: relative;
         margin: 0 0 0 23px;
 
@@ -187,8 +172,30 @@ export const BodyLayer = styled.div`
         }
       }
 
-      & dt.disabled {
+      & .date_btn {
+        overflow: visible;
+        float: left;
+        padding: 0 0 0 2px;
+        color: #909090;
+      }
+
+      & .date_btn.on {
+        color: #111;
+      }
+
+      & .current {
+        padding: 0;
+      }
+
+      & .createdAt {
+        padding: 0;
+        transition: none;
+      }
+
+      & dt.disabled,
+      .createdAt.disabled {
         color: #ddd;
+        transition: none;
       }
     }
 

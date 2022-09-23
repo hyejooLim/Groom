@@ -382,6 +382,8 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
         onSaveTempPost={handleSaveTempPost}
       />
       <SettingModal
+        mode={mode}
+        createdAt={post?.createdAt}
         isOpen={isOpenSettingModal}
         setIsOpen={setIsOpenSettingModal}
         postTitle={postData.title}
