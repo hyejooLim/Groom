@@ -41,7 +41,7 @@ const SettingModal: FC<SettingModalProps> = ({
   setIsOpen,
   onPublishPost,
 }) => {
-  const [isOpenMenu, setIsOpenMenu] = useState(false);
+  const [showDropdown, setShowDropdown] = useState(false);
   const [dropdownItem, setDropdownItem] = useState(dropdownList[postData.allowComments ? 0 : 1]);
 
   const [radioValue, setRadioValue] = useState<boolean>(postData.isPublic);
@@ -135,11 +135,11 @@ const SettingModal: FC<SettingModalProps> = ({
                       <button
                         onClick={(e) => {
                           e.preventDefault();
-                          setIsOpenMenu((prev) => !prev);
+                          setShowDropdown((prev) => !prev);
                         }}
                       >
                         <span className='dropdown_label'>{dropdownItem.label}</span>
-                        {isOpenMenu ? (
+                        {showDropdown ? (
                           <UpOutlined className='dropdown_icon' />
                         ) : (
                           <DownOutlined className='dropdown_icon' />
