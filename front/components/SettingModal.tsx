@@ -44,7 +44,7 @@ const SettingModal: FC<SettingModalProps> = ({
   const [showDropdown, setShowDropdown] = useState(false);
   const [dropdownItem, setDropdownItem] = useState(dropdownList[postData.allowComments ? 0 : 1]);
 
-  const [radioValue, setRadioValue] = useState<boolean>(postData.isPublic);
+  const [radioValue, setRadioValue] = useState(postData.isPublic ? 'public' : 'private');
   const [publishedAt, setPublishedAt] = useState(
     mode === ContentMode.EDIT ? PublishMode.CREATEDAT : PublishMode.CURRENT
   );
@@ -77,7 +77,7 @@ const SettingModal: FC<SettingModalProps> = ({
   const onChangeRadioValue = (e: RadioChangeEvent) => {
     setRadioValue(e.target.value);
 
-    setPostData({ ...postData, isPublic: e.target.value });
+    setPostData({ ...postData, isPublic: e.target.value === 'public' ? true : false });
   };
 
   const onClickLabel = (e: MouseEvent<HTMLSpanElement>) => {
@@ -120,11 +120,11 @@ const SettingModal: FC<SettingModalProps> = ({
                 <dt>기본</dt>
                 <dd>
                   <Radio.Group value={radioValue} onChange={onChangeRadioValue}>
-                    <Radio className='radio_public' value={true}>
+                    <Radio className='radio_public' value='public'>
                       공개
                       <S.PublicInfoBox>누구나 글을 읽을 수 있습니다</S.PublicInfoBox>
                     </Radio>
-                    <Radio className='radio_private' value={false}>
+                    <Radio className='radio_private' value='private'>
                       비공개
                       <S.PrivateInfoBox>작성자만 글을 읽을 수 있습니다</S.PrivateInfoBox>
                     </Radio>
