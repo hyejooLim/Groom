@@ -6,6 +6,7 @@
 
   --text-color: #000;
   --a-hover-color: #07a;
+  --border-color: #d9d9d9;
   --i-border-hover-color: #ddd;
   --i-border-focus-color: #b7cff1;
 
@@ -109,6 +110,28 @@ button {
 
 .ant-input:focus {
   border-color: var(--i-border-focus-color);
+  box-shadow: none;
+}
+
+.ant-radio-wrapper:hover .ant-radio,
+.ant-radio:hover .ant-radio-inner,
+.ant-radio-input:focus + .ant-radio-inner {
+  border-color: var(--border-color);
+}
+
+.ant-radio-checked .ant-radio-inner {
+  border-color: var(--border-color);
+}
+
+.ant-radio .ant-radio-inner::after {
+  background-color: var(--primary-color);
+  width: 18px;
+  height: 18px;
+  margin-top: -9px;
+  margin-left: -8.8px;
+}
+
+.ant-radio-input:focus + .ant-radio-inner {
   box-shadow: none;
 }
 
