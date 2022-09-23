@@ -104,7 +104,7 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
   };
 
   useEffect(() => {
-    if (localStorage.getItem('postData') !== 'null') {
+    if (mode === ContentMode.ADD && localStorage.getItem('postData') !== 'null') {
       askContinueWrite();
     }
   }, []);
