@@ -5,6 +5,7 @@ export const DatePickerWrapper = styled.div`
   position: relative;
   margin-left: 10px;
   padding: 2px 0 0 2px;
+  width: 200px;
 
   & .react-datepicker-wrapper {
     float: left;
