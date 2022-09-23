@@ -10,6 +10,11 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
         },
         include: {
           posts: {
+            orderBy: [
+              {
+                createdAt: 'desc',
+              },
+            ],
             include: {
               author: {
                 select: {
