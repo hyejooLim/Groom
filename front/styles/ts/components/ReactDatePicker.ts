@@ -3,9 +3,8 @@ import styled from 'styled-components';
 export const DatePickerWrapper = styled.div`
   float: left;
   position: relative;
-  margin-left: 20px;
+  margin-left: 10px;
   padding: 2px 0 0 2px;
-  width: 600px;
 
   & .react-datepicker-wrapper {
     float: left;
