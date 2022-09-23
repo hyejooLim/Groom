@@ -6,6 +6,9 @@ interface CreatePostProps {
   htmlContent: string;
   tags?: TagItem[];
   category: CategoryItem;
+  isPublic: boolean;
+  allowComments: boolean;
+  createdAt?: string;
 }
 
 const createPost = async ({ data }: { data: CreatePostProps }): Promise<Response> => {

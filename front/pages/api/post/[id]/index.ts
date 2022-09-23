@@ -52,27 +52,54 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
         )
       );
 
-      const post = await prisma.post.update({
-        where: {
-          id: Number(req.query.id),
-        },
-        data: {
-          title: req.body.title,
-          content: req.body.content,
-          htmlContent: req.body.htmlContent,
-          tags: {
-            set: [], // disconnect
-            connect: req.body.tags,
+      if (req.body.isPublic && req.body.createdAt) {
+        await prisma.post.update({
+          where: {
+            id: Number(req.query.id),
           },
-          category: {
-            connect: {
-              id: req.body.category.id,
+          data: {
+            title: req.body.title,
+            content: req.body.content,
+            htmlContent: req.body.htmlContent,
+            tags: {
+              set: [], // disconnect
+              connect: req.body.tags,
             },
+            category: {
+              connect: {
+                id: req.body.category.id,
+              },
+            },
+            isPublic: req.body.isPublic,
+            allowComments: req.body.allowComments,
+            createdAt: new Date(req.body.createdAt),
           },
-        },
-      });
+        });
+      } else {
+        await prisma.post.update({
+          where: {
+            id: Number(req.query.id),
+          },
+          data: {
+            title: req.body.title,
+            content: req.body.content,
+            htmlContent: req.body.htmlContent,
+            tags: {
+              set: [], // disconnect
+              connect: req.body.tags,
+            },
+            category: {
+              connect: {
+                id: req.body.category.id,
+              },
+            },
+            isPublic: req.body.isPublic,
+            allowComments: req.body.allowComments,
+          },
+        });
+      }
 
-      res.status(201).json(post);
+      res.status(201).json('ok');
     }
 
     if (req.method === 'DELETE') {

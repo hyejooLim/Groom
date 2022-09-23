@@ -1,6 +1,13 @@
 export type ContentModeType = 'ADD' | 'EDIT' | 'VIEW';
 export type WriteModeType = 'DEFAULT' | 'MARKDOWN';
 
+// 게시글 발행 예약 날짜
+export type ReserveDate = {
+  date: string;
+  hour: string;
+  minute: string;
+};
+
 export type UserType = {
   id?: number;
   email: string;
@@ -22,6 +29,8 @@ export type PostItem = {
   content: string;
   htmlContent: string;
   tags?: TagItem[];
+  isPublic: boolean; // 공개 또는 비공개 (작성자만 볼 수 있음)
+  allowComments: boolean;
   comments?: CommentItem[];
   category: CategoryItem;
   categoryId?: number;

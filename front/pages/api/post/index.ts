@@ -2,7 +2,7 @@ import { NextApiHandler, NextApiRequest, NextApiResponse } from 'next';
 import { getSession } from 'next-auth/react';
 
 import prisma from '../../../lib/prisma';
-import { TagItem } from '../../../types';
+import { PostItem, TagItem } from '../../../types';
 
 const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
@@ -26,28 +26,56 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
         )
       );
 
-      const post = await prisma.post.create({
-        data: {
-          title: req.body.title,
-          content: req.body.content,
-          htmlContent: req.body.htmlContent,
-          tags: {
-            connect: req.body.tags,
-          },
-          category: {
-            connect: {
-              id: req.body.category.id,
+      if (req.body.isPublic && req.body.createdAt) {
+        await prisma.post.create({
+          data: {
+            title: req.body.title,
+            content: req.body.content,
+            htmlContent: req.body.htmlContent,
+            tags: {
+              connect: req.body.tags,
+            },
+            category: {
+              connect: {
+                id: req.body.category.id,
+              },
+            },
+            isPublic: req.body.isPublic,
+            allowComments: req.body.allowComments,
+            createdAt: new Date(req.body.createdAt),
+            author: {
+              connect: {
+                email: session?.user?.email,
+              },
             },
           },
-          author: {
-            connect: {
-              email: session?.user?.email,
+        });
+      } else {
+        await prisma.post.create({
+          data: {
+            title: req.body.title,
+            content: req.body.content,
+            htmlContent: req.body.htmlContent,
+            tags: {
+              connect: req.body.tags,
+            },
+            category: {
+              connect: {
+                id: req.body.category.id,
+              },
+            },
+            isPublic: req.body.isPublic,
+            allowComments: req.body.allowComments,
+            author: {
+              connect: {
+                email: session?.user?.email,
+              },
             },
           },
-        },
-      });
+        });
+      }
 
-      res.status(201).json(post);
+      res.status(201).json('ok');
     }
   } catch (err) {
     console.error(err);

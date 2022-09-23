@@ -7,6 +7,9 @@ interface UpdatePostProps {
   htmlContent: string;
   tags?: TagItem[];
   category: CategoryItem;
+  isPublic: boolean;
+  allowComments: boolean;
+  createdAt?: string;
 }
 
 const updatePost = async ({ data }: { data: UpdatePostProps }) => {

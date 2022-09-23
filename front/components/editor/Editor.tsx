@@ -40,6 +40,9 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
         htmlContent: post.htmlContent,
         tags: post.tags,
         category: post.category,
+        isPublic: post.isPublic,
+        allowComments: post.allowComments,
+        createdAt: post.createdAt,
       };
     } else {
       return {
@@ -48,6 +51,8 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
         htmlContent: '',
         tags: [],
         category: { id: null, name: '' },
+        isPublic: true,
+        allowComments: true,
       };
     }
   };
@@ -104,7 +109,7 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
   };
 
   useEffect(() => {
-    if (mode === ContentMode.ADD && localStorage.getItem('postData') !== 'null') {
+    if (mode === ContentMode.ADD && localStorage.getItem('postData') && localStorage.getItem('postData') !== 'null') {
       askContinueWrite();
     }
   }, []);
@@ -384,9 +389,10 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
       <SettingModal
         mode={mode}
         createdAt={post?.createdAt}
+        postData={postData}
+        setPostData={setPostData}
         isOpen={isOpenSettingModal}
         setIsOpen={setIsOpenSettingModal}
-        postTitle={postData.title}
         onPublishPost={onPublishPost}
       />
     </EditorWrapper>

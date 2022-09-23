@@ -1,4 +1,4 @@
-import React, { FC, useCallback } from 'react';
+import React, { FC, useCallback, useState } from 'react';
 import { useRecoilState } from 'recoil';
 import Link from 'next/link';
 import dayjs from 'dayjs';
@@ -13,6 +13,8 @@ interface PostListProps {
 }
 
 const PostList: FC<PostListProps> = ({ posts }) => {
+  const [publicPosts, setPublicPosts] = useState<PostItem[]>(posts.filter((post) => post.isPublic));
+
   const [currentPage, setCurrentPage] = useRecoilState(currentPageState);
   const [firstIndex, setFirstIndex] = useRecoilState(firstIndexState);
   const [lastIndex, setLastIndex] = useRecoilState(lastIndexState);
@@ -30,7 +32,7 @@ const PostList: FC<PostListProps> = ({ posts }) => {
     <>
       <ListWrapper>
         <ul>
-          {posts?.slice(firstIndex, lastIndex).map((post) => (
+          {publicPosts?.slice(firstIndex, lastIndex).map((post) => (
             <li key={post.id}>
               <Link href={`/post/${post.id}`}>
                 <a>

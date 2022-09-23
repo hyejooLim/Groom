@@ -33,6 +33,8 @@ model Post {
   content String @db.LongText
   htmlContent String @db.LongText
   tags Tag[] @relation("PostsAndTags")
+  isPublic Boolean
+  allowComments Boolean
   comments Comment[]
   category Category? @relation(fields: [categoryId], references: [id])
   categoryId Int?
