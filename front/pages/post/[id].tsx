@@ -8,7 +8,7 @@ import useGetPost from '../../hooks/query/useGetPost';
 
 const Post = () => {
   const router = useRouter();
-  const { id } = router.query;
+  const { id, idx } = router.query;
 
   const { data: post } = useGetPost(Number(id));
 
@@ -17,7 +17,7 @@ const Post = () => {
       <Head>
         <title>Groom | {id}번째 게시글</title>
       </Head>
-      {post && <PostCard post={post} />}
+      {post && <PostCard post={post} idx={Number(idx)} />}
     </AppLayout>
   );
 };

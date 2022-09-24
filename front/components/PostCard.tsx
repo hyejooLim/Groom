@@ -4,6 +4,7 @@ import Router from 'next/router';
 import { Button } from 'antd';
 import { HeartOutlined, HeartTwoTone } from '@ant-design/icons';
 import { Markup } from 'interweave';
+import { useRecoilValue } from 'recoil';
 import dayjs from 'dayjs';
 
 import Title from './Title';
@@ -11,22 +12,22 @@ import PaginationContainer from './PaginationContainer';
 import CommentForm from './CommentForm';
 import CommentList from './CommentList';
 import useGetUser from '../hooks/query/useGetUser';
-import useGetPosts from '../hooks/query/useGetPosts';
 import useLikePost from '../hooks/query/useLikePost';
 import useUnLikePost from '../hooks/query/useUnLikePost';
 import useSubscribePost from '../hooks/query/useSubscribePost';
 import useUnSubscribePost from '../hooks/query/useUnSubscribePost';
 import useDeletePost from '../hooks/query/useDeletePost';
+import { publicPostsState } from '../recoil/posts';
 import { PostItem } from '../types';
 import { HeadWrapper, Date, ContentWrapper, PostButton, EditButton } from '../styles/ts/components/PostCard';
 
 interface PostCardProps {
   post: PostItem;
+  idx: number;
 }
 
-const PostCard: FC<PostCardProps> = ({ post }) => {
+const PostCard: FC<PostCardProps> = ({ post, idx }) => {
   const { data: user } = useGetUser();
-  const { data: posts } = useGetPosts();
 
   const likePost = useLikePost();
   const unLikePost = useUnLikePost();
@@ -34,8 +35,9 @@ const PostCard: FC<PostCardProps> = ({ post }) => {
   const unSubscribePost = useUnSubscribePost();
   const deletePost = useDeletePost();
 
+  const publicPosts = useRecoilValue(publicPostsState);
   const [currentPost, setCurrentPost] = useState<PostItem>(post);
-  const [currentPage, setCurrentPage] = useState(posts?.length + 1 - post.id);
+  const [currentPage, setCurrentPage] = useState(idx + 1);
 
   useEffect(() => {
     setCurrentPost(post);
@@ -93,9 +95,9 @@ const PostCard: FC<PostCardProps> = ({ post }) => {
   const onChangePage = useCallback(
     (page: number) => {
       setCurrentPage(page);
-      setCurrentPost(posts.find((item) => item.id === posts.length + 1 - page));
+      setCurrentPost(publicPosts.find((item, idx) => idx === page - 1));
     },
-    [posts]
+    [publicPosts]
   );
 
   return (
@@ -150,7 +152,7 @@ const PostCard: FC<PostCardProps> = ({ post }) => {
           </EditButton>
         )}
       </ContentWrapper>
-      <PaginationContainer pageSize={1} current={currentPage} total={posts?.length} onChange={onChangePage} />
+      <PaginationContainer pageSize={1} current={currentPage} total={publicPosts?.length} onChange={onChangePage} />
       <div>
         {currentPost.allowComments && <CommentForm post={currentPost} />}
         <CommentList postId={currentPost.id} />

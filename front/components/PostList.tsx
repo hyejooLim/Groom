@@ -1,11 +1,11 @@
-import React, { FC, useCallback, useEffect, useState } from 'react';
+import React, { FC, useCallback } from 'react';
 import { useRecoilState } from 'recoil';
 import Link from 'next/link';
 import dayjs from 'dayjs';
 
-import PaginationContainer from '../components/PaginationContainer';
-import { currentPageState, firstIndexState, lastIndexState, PAGE_SIZE } from '../recoil/page';
 import { PostItem } from '../types';
+import { currentPageState, firstIndexState, lastIndexState, PAGE_SIZE } from '../recoil/page';
+import PaginationContainer from '../components/PaginationContainer';
 import { ListWrapper, PostInfo } from '../styles/ts/components/PostList';
 
 interface PostListProps {
@@ -13,15 +13,9 @@ interface PostListProps {
 }
 
 const PostList: FC<PostListProps> = ({ posts }) => {
-  const [publicPosts, setPublicPosts] = useState<PostItem[]>([]);
-
   const [currentPage, setCurrentPage] = useRecoilState(currentPageState);
   const [firstIndex, setFirstIndex] = useRecoilState(firstIndexState);
   const [lastIndex, setLastIndex] = useRecoilState(lastIndexState);
-
-  useEffect(() => {
-    setPublicPosts(posts?.filter((post) => post.isPublic));
-  }, [posts]);
 
   const onChangePage = useCallback(
     (page: number) => {
@@ -36,9 +30,9 @@ const PostList: FC<PostListProps> = ({ posts }) => {
     <>
       <ListWrapper>
         <ul>
-          {publicPosts?.slice(firstIndex, lastIndex).map((post) => (
+          {posts?.slice(firstIndex, lastIndex).map((post, idx) => (
             <li key={post.id}>
-              <Link href={`/post/${post.id}`}>
+              <Link href={{ pathname: `/post/${post.id}`, query: { idx } }} as={`/post/${post.id}`}>
                 <a>
                   [{post.category?.name}] {post.title}
                 </a>

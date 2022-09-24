@@ -1,19 +1,20 @@
 import React from 'react';
+import { useRecoilValue } from 'recoil';
 
 import AppLayout from '../components/layouts/AppLayout';
 import Title from '../components/Title';
 import PostList from '../components/PostList';
-import useGetPosts from '../hooks/query/useGetPosts';
+import { publicPostsState } from '../recoil/posts';
 
 const Home = () => {
-  const { data: posts } = useGetPosts();
+  const publicPosts = useRecoilValue(publicPostsState);
 
   return (
     <AppLayout>
       <div style={{ textAlign: 'center' }}>
         <Title title='전체 글' />
       </div>
-      <PostList posts={posts} />
+      <PostList posts={publicPosts} />
     </AppLayout>
   );
 };

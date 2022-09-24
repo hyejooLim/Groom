@@ -18,3 +18,9 @@ export const isSearchState = atom<boolean>({
   default: false,
   dangerouslyAllowMutability: true,
 });
+
+export const publicPostsState = atom<PostItem[]>({
+  key: 'publicPosts',
+  default: [],
+  dangerouslyAllowMutability: true,
+});

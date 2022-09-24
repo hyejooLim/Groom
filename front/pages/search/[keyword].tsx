@@ -20,7 +20,7 @@ const Keyword = () => {
       <div style={{ textAlign: 'center' }}>
         <Title title={keyword as string} />
       </div>
-      <PostList posts={posts} />
+      <PostList posts={posts?.filter((post) => post.isPublic)} />
     </AppLayout>
   );
 };

@@ -21,7 +21,7 @@ const Category = () => {
       <div style={{ textAlign: 'center' }}>
         <Title title={category?.name} />
       </div>
-      <PostList posts={category?.posts} />
+      <PostList posts={category?.posts.filter((post) => post.isPublic)} />
     </AppLayout>
   );
 };
