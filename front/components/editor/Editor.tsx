@@ -117,7 +117,7 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
   useEffect(() => {
     if (postData.title || postData.content) {
       localStorage.setItem('postData', JSON.stringify(postData));
-      localStorage.setItem('saveTime', dayjs().format('YYYY.MM.DD hh:mm'));
+      localStorage.setItem('saveTime', dayjs().format('YYYY.MM.DD HH:mm'));
     } else {
       localStorage.setItem('postData', JSON.stringify(prevPostData));
       localStorage.setItem('saveTime', prevSaveTime);

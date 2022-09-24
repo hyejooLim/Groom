@@ -104,7 +104,7 @@ const PostCard: FC<PostCardProps> = ({ post, idx }) => {
     <>
       <HeadWrapper>
         <Title title={`[${currentPost.category?.name}] ${currentPost.title}`} />
-        <Date>{dayjs(currentPost.createdAt).format('YYYY.MM.DD hh:mm')}</Date>
+        <Date>{dayjs(currentPost.createdAt).format('YYYY.MM.DD HH:mm')}</Date>
       </HeadWrapper>
       <ContentWrapper>
         <div className='tag_label'>

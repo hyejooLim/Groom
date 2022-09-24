@@ -15,7 +15,7 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
       await prisma.tempPost.deleteMany({
         where: {
           createdAt: {
-            lte: new Date(dayjs().subtract(90, 'day').format('YYYY-MM-DD hh:mm:ss')),
+            lte: new Date(dayjs().subtract(90, 'day').format('YYYY-MM-DD HH:mm:ss')),
           },
         },
       });

@@ -62,7 +62,7 @@ const PostManageList: FC<PostManageListProps> = ({ posts, firstIndex, lastIndex,
                   </span>
                 </a>
                 <span>{post.author?.name}</span>
-                <span>{dayjs(post.createdAt).format('YYYY.MM.DD hh:mm')}</span>
+                <span>{dayjs(post.createdAt).format('YYYY.MM.DD HH:mm')}</span>
               </div>
             </div>
             <PostButton>

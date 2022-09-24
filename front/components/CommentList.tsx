@@ -101,7 +101,7 @@ const CommentList: FC<CommentListProps> = ({ postId }) => {
               content={<p style={{ whiteSpace: 'pre-wrap' }}>{item.content}</p>}
               datetime={
                 <span style={{ marginLeft: '10px', fontSize: '13px' }}>
-                  {dayjs(item.datetime).format('YYYY.MM.DD')}
+                  {dayjs(item.datetime).format('YYYY.MM.DD HH:mm')}
                 </span>
               }
             />
