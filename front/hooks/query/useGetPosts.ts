@@ -11,8 +11,6 @@ const useGetPosts = () => {
       setPublicPosts(data.filter((post) => post.isPublic));
       console.log('posts', data);
     },
-    // staleTime: Infinity,
-    // cacheTime: Infinity,
   });
 };
 
