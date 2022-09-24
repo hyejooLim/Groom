@@ -6,7 +6,7 @@ import { LoginFormWrapper, LoginButton } from '../styles/ts/components/LoginForm
 const LoginForm = () => {
   return (
     <LoginFormWrapper>
-      <p style={{ marginBottom: 30, fontSize: '15px' }}>지금 바로 Groom을 이용해 보세요.</p>
+      <p className='info'>지금 바로 Groom을 이용해 보세요.</p>
       <Link href='/login'>
         <a>
           <LoginButton>

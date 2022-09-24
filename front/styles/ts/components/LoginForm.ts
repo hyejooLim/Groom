@@ -8,6 +8,12 @@ export const LoginFormWrapper = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
+
+  .info {
+    margin-bottom: 30px;
+    font-size: 15px;
+    color: #000;
+  }
 `;
 
 export const LoginButton = styled(Button)`
