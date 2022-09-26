@@ -1,14 +1,15 @@
 import { useSetRecoilState } from 'recoil';
 import { useQuery } from '@tanstack/react-query';
+
 import getPosts from '../../apis/posts/getPosts';
-import { publicPostsState } from './../../recoil/posts';
+import { mainPostsState } from '../../recoil/posts';
 
 const useGetPosts = () => {
-  const setPublicPosts = useSetRecoilState(publicPostsState);
+  const setMainPosts = useSetRecoilState(mainPostsState);
 
   return useQuery(['posts'], getPosts, {
     onSuccess: (data) => {
-      setPublicPosts(data.filter((post) => post.isPublic));
+      setMainPosts(data.filter((post) => post.isPublic));
       console.log('posts', data);
     },
   });

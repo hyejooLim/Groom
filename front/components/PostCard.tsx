@@ -17,7 +17,7 @@ import useUnLikePost from '../hooks/query/useUnLikePost';
 import useSubscribePost from '../hooks/query/useSubscribePost';
 import useUnSubscribePost from '../hooks/query/useUnSubscribePost';
 import useDeletePost from '../hooks/query/useDeletePost';
-import { publicPostsState } from '../recoil/posts';
+import { mainPostsState } from '../recoil/posts';
 import { PostItem } from '../types';
 import { HeadWrapper, Date, ContentWrapper, PostButton, EditButton } from '../styles/ts/components/PostCard';
 
@@ -35,7 +35,7 @@ const PostCard: FC<PostCardProps> = ({ post, idx }) => {
   const unSubscribePost = useUnSubscribePost();
   const deletePost = useDeletePost();
 
-  const publicPosts = useRecoilValue(publicPostsState);
+  const mainPosts = useRecoilValue(mainPostsState);
   const [currentPost, setCurrentPost] = useState<PostItem>(post);
   const [currentPage, setCurrentPage] = useState(idx + 1);
 
@@ -95,9 +95,9 @@ const PostCard: FC<PostCardProps> = ({ post, idx }) => {
   const onChangePage = useCallback(
     (page: number) => {
       setCurrentPage(page);
-      setCurrentPost(publicPosts.find((item, idx) => idx === page - 1));
+      setCurrentPost(mainPosts.find((item, idx) => idx === page - 1));
     },
-    [publicPosts]
+    [mainPosts]
   );
 
   return (
@@ -152,7 +152,7 @@ const PostCard: FC<PostCardProps> = ({ post, idx }) => {
           </EditButton>
         )}
       </ContentWrapper>
-      <PaginationContainer pageSize={1} current={currentPage} total={publicPosts?.length} onChange={onChangePage} />
+      <PaginationContainer pageSize={1} current={currentPage} total={mainPosts?.length} onChange={onChangePage} />
       <div>
         {currentPost.allowComments && <CommentForm post={currentPost} />}
         <CommentList postId={currentPost.id} />
