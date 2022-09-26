@@ -6,7 +6,7 @@ import { UpOutlined, DownOutlined, SearchOutlined } from '@ant-design/icons';
 import useInput from '../hooks/common/input';
 import useGetTags from '../hooks/query/useGetTags';
 import useGetUser from '../hooks/query/useGetUser';
-import { isSearchState, managePostsState, manageTitleState } from '../recoil/posts';
+import { isSearchState, managePostsState, manageTitleState } from '../recoil/manage';
 import { PostItem, TagItem } from '../types';
 import {
   FormWrapper,

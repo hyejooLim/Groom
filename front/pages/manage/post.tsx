@@ -8,7 +8,7 @@ import SearchInput from '../../components/SearchInput';
 import PaginationContainer from '../../components/PaginationContainer';
 import PostManageList from '../../components/PostManageList';
 import useGetUser from '../../hooks/query/useGetUser';
-import { isSearchState, managePostsState, manageTitleState } from '../../recoil/posts';
+import { isSearchState, managePostsState, manageTitleState } from '../../recoil/manage';
 import { TitleWrapper, CloseButton } from '../../styles/ts/common';
 
 const pageSize = 5;
