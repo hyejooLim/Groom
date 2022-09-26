@@ -18,7 +18,7 @@ import {
   OverrideMenu,
 } from '../styles/ts/components/SearchInput';
 
-const searchTypeItem = [
+const searchTypeList = [
   {
     key: '0',
     label: '제목',
@@ -39,7 +39,7 @@ const SearchInput = () => {
 
   const [keyword, onChangeKeyword] = useInput('');
   const [openMenu, setOpenMenu] = useState(false);
-  const [searchType, setSearchType] = useState({ key: searchTypeItem[0].key, label: searchTypeItem[0].label });
+  const [searchType, setSearchType] = useState(searchTypeList[0]);
 
   const setIsSearch = useSetRecoilState(isSearchState);
   const setManagePosts = useSetRecoilState(managePostsState);
@@ -53,7 +53,7 @@ const SearchInput = () => {
     <OverrideMenu
       selectable
       defaultSelectedKeys={['0']}
-      items={searchTypeItem.map((item) => {
+      items={searchTypeList.map((item) => {
         return {
           key: item.key,
           label: (
