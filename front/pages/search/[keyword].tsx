@@ -1,16 +1,16 @@
 import Head from 'next/head';
 import { useRouter } from 'next/router';
+import { useRecoilValue } from 'recoil';
 
 import AppLayout from '../../components/layouts/AppLayout';
 import Title from '../../components/Title';
 import PostList from '../../components/PostList';
-import { PostItem } from '../../types';
+import { searchPostsState } from '../../recoil/posts';
 
 const Keyword = () => {
   const router = useRouter();
-  const { keyword, targetPosts } = router.query;
-
-  const posts: PostItem[] = targetPosts && JSON.parse(targetPosts as string);
+  const { keyword } = router.query;
+  const searchPosts = useRecoilValue(searchPostsState);
 
   return (
     <AppLayout>
@@ -20,7 +20,7 @@ const Keyword = () => {
       <div style={{ textAlign: 'center' }}>
         <Title title={keyword as string} />
       </div>
-      <PostList posts={posts?.filter((post) => post.isPublic)} />
+      <PostList posts={searchPosts} />
     </AppLayout>
   );
 };
