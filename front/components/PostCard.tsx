@@ -94,8 +94,10 @@ const PostCard: FC<PostCardProps> = ({ post, idx }) => {
 
   const onChangePage = useCallback(
     (page: number) => {
+      const postId = mainPosts.find((item, idx) => idx === page - 1).id;
       setCurrentPage(page);
-      setCurrentPost(mainPosts.find((item, idx) => idx === page - 1));
+
+      Router.push(`/post/${postId}`);
     },
     [mainPosts]
   );
