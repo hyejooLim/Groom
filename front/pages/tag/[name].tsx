@@ -6,6 +6,7 @@ import AppLayout from '../../components/layouts/AppLayout';
 import Title from '../../components/Title';
 import PostList from '../../components/PostList';
 import useGetTags from '../../hooks/query/useGetTags';
+import { getPublicAndPublishedPosts } from '../../lib/posts';
 
 const Tag = () => {
   const router = useRouter();
@@ -22,7 +23,7 @@ const Tag = () => {
       <div style={{ textAlign: 'center' }}>
         <Title title={name as string} />
       </div>
-      {posts && <PostList posts={posts.filter((post) => post.isPublic)} />}
+      {posts && <PostList posts={getPublicAndPublishedPosts(posts)} />}
     </AppLayout>
   );
 };

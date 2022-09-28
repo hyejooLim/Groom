@@ -6,6 +6,7 @@ import AppLayout from '../../components/layouts/AppLayout';
 import Title from '../../components/Title';
 import PostList from '../../components/PostList';
 import useGetCategory from '../../hooks/query/useGetCategory';
+import { getPublicAndPublishedPosts } from '../../lib/posts';
 
 const Category = () => {
   const router = useRouter();
@@ -21,7 +22,7 @@ const Category = () => {
       <div style={{ textAlign: 'center' }}>
         <Title title={category?.name} />
       </div>
-      <PostList posts={category?.posts.filter((post) => post.isPublic)} />
+      {category?.posts && <PostList posts={getPublicAndPublishedPosts(category.posts)} />}
     </AppLayout>
   );
 };

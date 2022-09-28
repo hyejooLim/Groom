@@ -1,9 +1,10 @@
 import React from 'react';
 import Link from 'next/link';
 
-import { CategoryItem, PostItem } from '../types';
+import { CategoryItem } from '../types';
 import useGetCategories from '../hooks/query/useGetCategories';
 import { CategoryWrapper } from '../styles/ts/components/Category';
+import { getPublicAndPublishedPosts } from '../lib/posts';
 
 const Category = () => {
   const { data: categories } = useGetCategories();
@@ -16,7 +17,7 @@ const Category = () => {
           <li key={category.id}>
             <Link href={`/category/${category.name}`}>
               <a className='category_item'>
-                {category.name} ({category.posts?.filter((post: PostItem) => post.isPublic).length})
+                {category.name} ({getPublicAndPublishedPosts(category.posts).length})
               </a>
             </Link>
           </li>
