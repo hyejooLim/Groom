@@ -8,7 +8,7 @@ import SearchInput from '../../components/SearchInput';
 import PaginationContainer from '../../components/PaginationContainer';
 import PostManageList from '../../components/PostManageList';
 import useGetUser from '../../hooks/query/useGetUser';
-import { isSearchState, managePostsState, manageTitleState } from '../../recoil/manage';
+import { isSearchManagePostsState, managePostsState, managePostsTitleState } from '../../recoil/manage';
 import { TitleWrapper, CloseButton } from '../../styles/ts/common';
 
 const pageSize = 5;
@@ -20,13 +20,13 @@ const ManagePost = () => {
   const [firstIndex, setFirstIndex] = useState(0);
   const [lastIndex, setLastIndex] = useState(pageSize);
 
-  const [isSearch, setIsSearch] = useRecoilState(isSearchState);
+  const [isSearch, setIsSearch] = useRecoilState(isSearchManagePostsState);
   const [managePosts, setManagePosts] = useRecoilState(managePostsState);
-  const [manageTitle, setManageTitle] = useRecoilState(manageTitleState);
+  const [managePostsTitle, setManagePostsTitle] = useRecoilState(managePostsTitleState);
 
   const onLoadMainPosts = useCallback(() => {
     setIsSearch(false);
-    setManageTitle('');
+    setManagePostsTitle('');
     setManagePosts(user.posts);
 
     setCurrentPage(1);
@@ -37,7 +37,7 @@ const ManagePost = () => {
   const onChangePostList = useCallback(
     (e: any) => {
       setIsSearch(false);
-      setManageTitle(e.target.dataset.name);
+      setManagePostsTitle(e.target.dataset.name);
       setCurrentPage(1);
       setFirstIndex(0);
       setLastIndex(pageSize);
@@ -64,12 +64,12 @@ const ManagePost = () => {
       </Head>
       <div style={{ marginTop: -20 }}>
         <TitleWrapper>
-          {manageTitle ? (
+          {managePostsTitle ? (
             <div style={{ display: 'flex', alignItems: 'center' }}>
               <CloseButton onClick={onLoadMainPosts}>
                 <CloseCircleOutlined />
               </CloseButton>
-              <span className='title text'>{manageTitle}</span>
+              <span className='title text'>{managePostsTitle}</span>
               <span className='text'>{isSearch ? '검색결과' : '글'}</span>
             </div>
           ) : (
@@ -77,7 +77,13 @@ const ManagePost = () => {
           )}
           <span className='count'>{managePosts?.length}</span>
         </TitleWrapper>
-        <SearchInput />
+        <SearchInput
+          posts={user?.posts}
+          setIsSearch={setIsSearch}
+          setPosts={setManagePosts}
+          setTitle={setManagePostsTitle}
+          placeholder='글 관리에서 검색합니다.'
+        />
         <PostManageList
           posts={managePosts}
           firstIndex={firstIndex}

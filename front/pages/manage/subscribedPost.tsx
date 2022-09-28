@@ -1,13 +1,19 @@
 import React, { useState, useCallback } from 'react';
 import Head from 'next/head';
 import { CloseCircleOutlined } from '@ant-design/icons';
+import { useRecoilState } from 'recoil';
 
 import ManageLayout from '../../components/layouts/ManageLayout';
 import PostManageList from '../../components/PostManageList';
 import PaginationContainer from '../../components/PaginationContainer';
 import useGetUser from '../../hooks/query/useGetUser';
-import { CloseButton } from '../../styles/ts/common';
-import { PostItem } from '../../types';
+import SearchInput from '../../components/SearchInput';
+import { TitleWrapper, CloseButton } from '../../styles/ts/common';
+import {
+  isSearchManageSubscribedPostsState,
+  manageSubscribedPostsState,
+  manageSubscribedPostsTitleState,
+} from '../../recoil/manage';
 
 const pageSize = 5;
 
@@ -18,14 +24,14 @@ const ManageSubscribedPost = () => {
   const [firstIndex, setFirstIndex] = useState(0);
   const [lastIndex, setLastIndex] = useState(pageSize);
 
-  const [posts, setPosts] = useState<PostItem[]>(null);
-  const [postsCount, setPostsCount] = useState(null);
-  const [title, setTitle] = useState('');
+  const [isSearch, setIsSearch] = useRecoilState(isSearchManageSubscribedPostsState);
+  const [manageSubscribedPosts, setManageSubscribedPosts] = useRecoilState(manageSubscribedPostsState);
+  const [manageSubscribedPostsTitle, setManageSubscribedPostsTitle] = useRecoilState(manageSubscribedPostsTitleState);
 
   const onLoadMainPosts = useCallback(() => {
-    setTitle('');
-    setPosts(null);
-    setPostsCount(null);
+    setIsSearch(false);
+    setManageSubscribedPostsTitle('');
+    setManageSubscribedPosts(user.subscribedPosts);
 
     setCurrentPage(1);
     setFirstIndex(0);
@@ -34,14 +40,14 @@ const ManageSubscribedPost = () => {
 
   const onChangePostList = useCallback(
     (e: any) => {
-      setTitle(e.target.dataset.name);
+      setIsSearch(false);
+      setManageSubscribedPostsTitle(e.target.dataset.name);
       setCurrentPage(1);
       setFirstIndex(0);
       setLastIndex(pageSize);
 
       const newPosts = user?.subscribedPosts.filter((post) => post.categoryId === Number(e.target.dataset.id));
-      setPosts(newPosts);
-      setPostsCount(newPosts?.length);
+      setManageSubscribedPosts(newPosts);
     },
     [pageSize, user?.subscribedPosts]
   );
@@ -60,31 +66,39 @@ const ManageSubscribedPost = () => {
       <Head>
         <title>Groom | 구독 글 관리</title>
       </Head>
-      <div style={{ display: 'flex', alignItems: 'center' }}>
-        {title ? (
-          <div style={{ display: 'flex', alignItems: 'center' }}>
-            <CloseButton onClick={onLoadMainPosts}>
-              <CloseCircleOutlined />
-            </CloseButton>
-            <span style={{ fontSize: '18px', marginLeft: '8px' }}>{title} 글</span>
-          </div>
-        ) : (
-          <span style={{ fontSize: '18px' }}>구독 글 관리</span>
-        )}
-        <span style={{ fontSize: '14px', color: '#888', marginLeft: '8px' }}>
-          {postsCount ?? user?.subscribedPosts.length}
-        </span>
+      <div style={{ marginTop: -20 }}>
+        <TitleWrapper>
+          {manageSubscribedPostsTitle ? (
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              <CloseButton onClick={onLoadMainPosts}>
+                <CloseCircleOutlined />
+              </CloseButton>
+              <span className='title text'>{manageSubscribedPostsTitle}</span>
+              <span className='text'>{isSearch ? '검색결과' : '글'}</span>
+            </div>
+          ) : (
+            <span className='text'>구독 글 관리</span>
+          )}
+          <span className='count'>{manageSubscribedPosts?.length}</span>
+        </TitleWrapper>
+        <SearchInput
+          posts={user?.subscribedPosts}
+          setIsSearch={setIsSearch}
+          setPosts={setManageSubscribedPosts}
+          setTitle={setManageSubscribedPostsTitle}
+          placeholder='구독 글 관리에서 검색합니다.'
+        />
+        <PostManageList
+          posts={manageSubscribedPosts}
+          firstIndex={firstIndex}
+          lastIndex={lastIndex}
+          onChangePostList={onChangePostList}
+        />
       </div>
-      <PostManageList
-        posts={posts ?? user?.subscribedPosts}
-        firstIndex={firstIndex}
-        lastIndex={lastIndex}
-        onChangePostList={onChangePostList}
-      />
       <PaginationContainer
         pageSize={pageSize}
         current={currentPage}
-        total={postsCount ?? user?.subscribedPosts.length}
+        total={manageSubscribedPosts?.length}
         onChange={onChangePage}
       />
     </ManageLayout>

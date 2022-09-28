@@ -1,12 +1,10 @@
-import React, { useState, useCallback, MouseEvent } from 'react';
-import { useSetRecoilState } from 'recoil';
+import React, { FC, useState, useCallback, MouseEvent } from 'react';
+import { SetterOrUpdater } from 'recoil';
 import { Dropdown } from 'antd';
 import { UpOutlined, DownOutlined, SearchOutlined } from '@ant-design/icons';
 
 import useInput from '../hooks/common/input';
 import useGetTags from '../hooks/query/useGetTags';
-import useGetUser from '../hooks/query/useGetUser';
-import { isSearchState, managePostsState, manageTitleState } from '../recoil/manage';
 import { PostItem, TagItem } from '../types';
 import {
   FormWrapper,
@@ -17,6 +15,14 @@ import {
   SearchButton,
   OverrideMenu,
 } from '../styles/ts/components/SearchInput';
+
+interface SearchInputProps {
+  posts: PostItem[];
+  setIsSearch: SetterOrUpdater<boolean>;
+  setPosts: SetterOrUpdater<PostItem[]>;
+  setTitle: SetterOrUpdater<string>;
+  placeholder: string;
+}
 
 const searchTypeList = [
   {
@@ -33,17 +39,12 @@ const searchTypeList = [
   },
 ];
 
-const SearchInput = () => {
-  const { data: user } = useGetUser();
+const SearchInput: FC<SearchInputProps> = ({ posts, setIsSearch, setPosts, setTitle, placeholder }) => {
   const { data: tags } = useGetTags();
 
   const [keyword, onChangeKeyword] = useInput('');
   const [openMenu, setOpenMenu] = useState(false);
   const [searchType, setSearchType] = useState(searchTypeList[0]);
-
-  const setIsSearch = useSetRecoilState(isSearchState);
-  const setManagePosts = useSetRecoilState(managePostsState);
-  const setManageTitle = useSetRecoilState(manageTitleState);
 
   const onClickLabel = useCallback((e: MouseEvent<HTMLButtonElement>) => {
     setSearchType({ key: e.currentTarget.dataset.key, label: e.currentTarget.dataset.label });
@@ -67,25 +68,23 @@ const SearchInput = () => {
   );
 
   const onSubmitInput = useCallback(() => {
-    setManageTitle(`'${keyword}'`);
+    setTitle(`'${keyword}'`);
     setIsSearch(true);
 
     if (searchType.key === '0') {
       // 제목
-      const filteredPosts = user?.posts.filter((post: PostItem) =>
-        post.title.toLowerCase().includes(keyword.toLowerCase())
-      );
-      setManagePosts(filteredPosts);
+      const filteredPosts = posts.filter((post: PostItem) => post.title.toLowerCase().includes(keyword.toLowerCase()));
+      setPosts(filteredPosts);
     } else if (searchType.key === '1') {
       // 내용
-      const filteredPosts = user?.posts.filter((post: PostItem) =>
+      const filteredPosts = posts.filter((post: PostItem) =>
         post.content.toLowerCase().includes(keyword.toLowerCase())
       );
-      setManagePosts(filteredPosts);
+      setPosts(filteredPosts);
     } else if (searchType.key === '2') {
       // 태그
       const matchedTag = tags?.find((tag: TagItem) => tag.name === keyword);
-      setManagePosts(matchedTag?.posts);
+      setPosts(matchedTag?.posts);
     }
   }, [keyword, searchType]);
 
@@ -106,8 +105,7 @@ const SearchInput = () => {
               </span>
             </Dropdown>
           </DropdownWrapper>
-
-          <StyledInput type='text' value={keyword} onChange={onChangeKeyword} placeholder='글 관리에서 검색합니다.' />
+          <StyledInput type='text' value={keyword} onChange={onChangeKeyword} placeholder={placeholder} />
           <SearchButton htmlType='submit' disabled={!keyword || !keyword.trim()}>
             <SearchOutlined />
           </SearchButton>
