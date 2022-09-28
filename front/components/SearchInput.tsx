@@ -21,7 +21,7 @@ interface SearchInputProps {
   setIsSearch: SetterOrUpdater<boolean>;
   setPosts: SetterOrUpdater<PostItem[]>;
   setTitle: SetterOrUpdater<string>;
-  placeholder: string;
+  pageName: string;
 }
 
 const searchTypeList = [
@@ -39,7 +39,7 @@ const searchTypeList = [
   },
 ];
 
-const SearchInput: FC<SearchInputProps> = ({ posts, setIsSearch, setPosts, setTitle, placeholder }) => {
+const SearchInput: FC<SearchInputProps> = ({ posts, setIsSearch, setPosts, setTitle, pageName }) => {
   const { data: tags } = useGetTags();
 
   const [keyword, onChangeKeyword] = useInput('');
@@ -74,19 +74,28 @@ const SearchInput: FC<SearchInputProps> = ({ posts, setIsSearch, setPosts, setTi
     if (searchType.key === '0') {
       // 제목
       const filteredPosts = posts.filter((post: PostItem) => post.title.toLowerCase().includes(keyword.toLowerCase()));
+      const item = { posts: filteredPosts, title: keyword, isSearch: true };
+
       setPosts(filteredPosts);
+      localStorage.setItem(pageName, JSON.stringify(item));
     } else if (searchType.key === '1') {
       // 내용
       const filteredPosts = posts.filter((post: PostItem) =>
         post.content.toLowerCase().includes(keyword.toLowerCase())
       );
+      const item = { posts: filteredPosts, title: keyword, isSearch: true };
+
       setPosts(filteredPosts);
+      localStorage.setItem(pageName, JSON.stringify(item));
     } else if (searchType.key === '2') {
       // 태그
       const matchedTag = tags?.find((tag: TagItem) => tag.name === keyword);
+      const item = { posts: matchedTag?.posts, title: keyword, isSearch: true };
+
       setPosts(matchedTag?.posts);
+      localStorage.setItem(pageName, JSON.stringify(item));
     }
-  }, [keyword, searchType]);
+  }, [keyword, searchType, pageName]);
 
   return (
     <FormWrapper>
@@ -105,7 +114,12 @@ const SearchInput: FC<SearchInputProps> = ({ posts, setIsSearch, setPosts, setTi
               </span>
             </Dropdown>
           </DropdownWrapper>
-          <StyledInput type='text' value={keyword} onChange={onChangeKeyword} placeholder={placeholder} />
+          <StyledInput
+            type='text'
+            value={keyword}
+            onChange={onChangeKeyword}
+            placeholder={(pageName === 'managePosts' ? '글' : '구독 글') + ' 관리에서 검색합니다.'}
+          />
           <SearchButton htmlType='submit' disabled={!keyword || !keyword.trim()}>
             <SearchOutlined />
           </SearchButton>

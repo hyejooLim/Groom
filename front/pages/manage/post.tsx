@@ -1,13 +1,13 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import Head from 'next/head';
 import { useRecoilState } from 'recoil';
 import { CloseCircleOutlined } from '@ant-design/icons';
 
 import ManageLayout from '../../components/layouts/ManageLayout';
-import SearchInput from '../../components/SearchInput';
-import PaginationContainer from '../../components/PaginationContainer';
 import PostManageList from '../../components/PostManageList';
+import PaginationContainer from '../../components/PaginationContainer';
 import useGetUser from '../../hooks/query/useGetUser';
+import SearchInput from '../../components/SearchInput';
 import { isSearchManagePostsState, managePostsState, managePostsTitleState } from '../../recoil/manage';
 import { TitleWrapper, CloseButton } from '../../styles/ts/common';
 
@@ -24,6 +24,18 @@ const ManagePost = () => {
   const [managePosts, setManagePosts] = useRecoilState(managePostsState);
   const [managePostsTitle, setManagePostsTitle] = useRecoilState(managePostsTitleState);
 
+  useEffect(() => {
+    setManagePostsTitle('');
+
+    if (localStorage.getItem('managePosts')) {
+      const item = JSON.parse(localStorage.getItem('managePosts'));
+
+      setIsSearch(item.isSearch);
+      setManagePostsTitle(item.title);
+      setManagePosts(item.posts);
+    }
+  }, [user?.posts]);
+
   const onLoadMainPosts = useCallback(() => {
     setIsSearch(false);
     setManagePostsTitle('');
@@ -32,6 +44,8 @@ const ManagePost = () => {
     setCurrentPage(1);
     setFirstIndex(0);
     setLastIndex(pageSize);
+
+    localStorage.removeItem('managePosts');
   }, [user, pageSize]);
 
   const onChangePostList = useCallback(
@@ -44,6 +58,9 @@ const ManagePost = () => {
 
       const newPosts = user?.posts.filter((post) => post.categoryId === Number(e.target.dataset.id));
       setManagePosts(newPosts);
+
+      const item = { posts: newPosts, title: e.target.dataset.name, isSearch: false };
+      localStorage.setItem('managePosts', JSON.stringify(item));
     },
     [pageSize, user?.posts]
   );
@@ -82,7 +99,7 @@ const ManagePost = () => {
           setIsSearch={setIsSearch}
           setPosts={setManagePosts}
           setTitle={setManagePostsTitle}
-          placeholder='글 관리에서 검색합니다.'
+          pageName='managePosts'
         />
         <PostManageList
           posts={managePosts}

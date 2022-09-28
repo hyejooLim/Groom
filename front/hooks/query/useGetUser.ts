@@ -1,10 +1,10 @@
-import { manageSubscribedPostsState } from './../../recoil/manage';
 import { useQuery } from '@tanstack/react-query';
 import { useSetRecoilState } from 'recoil';
 
+import getUser from '../../apis/user/getUser';
 import { userState } from '../../recoil/user';
 import { managePostsState } from '../../recoil/manage';
-import getUser from '../../apis/user/getUser';
+import { manageSubscribedPostsState } from './../../recoil/manage';
 
 const useGetUser = () => {
   const setUser = useSetRecoilState(userState);

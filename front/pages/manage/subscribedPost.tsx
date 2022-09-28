@@ -1,7 +1,7 @@
-import React, { useState, useCallback } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import Head from 'next/head';
-import { CloseCircleOutlined } from '@ant-design/icons';
 import { useRecoilState } from 'recoil';
+import { CloseCircleOutlined } from '@ant-design/icons';
 
 import ManageLayout from '../../components/layouts/ManageLayout';
 import PostManageList from '../../components/PostManageList';
@@ -28,6 +28,18 @@ const ManageSubscribedPost = () => {
   const [manageSubscribedPosts, setManageSubscribedPosts] = useRecoilState(manageSubscribedPostsState);
   const [manageSubscribedPostsTitle, setManageSubscribedPostsTitle] = useRecoilState(manageSubscribedPostsTitleState);
 
+  useEffect(() => {
+    setManageSubscribedPostsTitle('');
+
+    if (localStorage.getItem('manageSubscribedPosts')) {
+      const item = JSON.parse(localStorage.getItem('manageSubscribedPosts'));
+
+      setIsSearch(item.isSearch);
+      setManageSubscribedPostsTitle(item.title);
+      setManageSubscribedPosts(item.posts);
+    }
+  }, [user?.subscribedPosts]);
+
   const onLoadMainPosts = useCallback(() => {
     setIsSearch(false);
     setManageSubscribedPostsTitle('');
@@ -36,6 +48,8 @@ const ManageSubscribedPost = () => {
     setCurrentPage(1);
     setFirstIndex(0);
     setLastIndex(pageSize);
+
+    localStorage.removeItem('manageSubscribedPosts');
   }, [user, pageSize]);
 
   const onChangePostList = useCallback(
@@ -48,6 +62,9 @@ const ManageSubscribedPost = () => {
 
       const newPosts = user?.subscribedPosts.filter((post) => post.categoryId === Number(e.target.dataset.id));
       setManageSubscribedPosts(newPosts);
+
+      const item = { posts: newPosts, title: e.target.dataset.name, isSearch: false };
+      localStorage.setItem('manageSubscribedPosts', JSON.stringify(item));
     },
     [pageSize, user?.subscribedPosts]
   );
@@ -86,7 +103,7 @@ const ManageSubscribedPost = () => {
           setIsSearch={setIsSearch}
           setPosts={setManageSubscribedPosts}
           setTitle={setManageSubscribedPostsTitle}
-          placeholder='구독 글 관리에서 검색합니다.'
+          pageName='manageSubscribedPosts'
         />
         <PostManageList
           posts={manageSubscribedPosts}
