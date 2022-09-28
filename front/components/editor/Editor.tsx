@@ -167,8 +167,12 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
       return;
     }
 
-    const confirm = window.confirm('사이트에서 나가시겠습니까? 변경사항이 저장되지 않을 수 있습니다.');
-    if (confirm) {
+    if (!localStorage.getItem('postData') || localStorage.getItem('postData') === 'null') {
+      history.back();
+      return;
+    }
+
+    if (window.confirm('사이트에서 나가시겠습니까? 변경사항이 저장되지 않을 수 있습니다.')) {
       history.back(); // popstate 이벤트 발생
       return;
     }
