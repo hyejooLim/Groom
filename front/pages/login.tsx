@@ -35,7 +35,7 @@ const Login = () => {
     });
 
     setTimeout(() => {
-      Router.push('/');
+      Router.back();
     }, 3000);
   }, [email, password]);
 
