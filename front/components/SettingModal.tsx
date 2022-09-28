@@ -150,20 +150,20 @@ const SettingModal: FC<SettingModalProps> = ({
                 </dd>
               </dl>
               <dl className='editor_info publishedAt'>
-                <dt className={classNames({ disabled: !radioValue })}>발행일</dt>
+                <dt className={classNames({ disabled: radioValue === 'private' })}>발행일</dt>
                 <dd>
                   {mode === ContentMode.EDIT && (
                     <Button
                       className={classNames('date_btn createdAt', {
                         on: publishedAt === PublishMode.CREATEDAT,
-                        disabled: !radioValue,
+                        disabled: radioValue === 'private',
                       })}
                       onClick={() => setPublishedAt(PublishMode.CREATEDAT)}
                     >
                       {dayjs(createdAt).format('YYYY-MM-DD HH:mm')}
                     </Button>
                   )}
-                  {radioValue && (
+                  {radioValue === 'public' && (
                     <>
                       <Button
                         className={classNames('date_btn current', { on: publishedAt === PublishMode.CURRENT })}
