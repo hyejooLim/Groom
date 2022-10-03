@@ -50,8 +50,8 @@ const SettingModal: FC<SettingModalProps> = ({
   );
   const [reserveDate, setReserveDate] = useState<ReserveDate>({
     date: dayjs().format('YYYY-MM-DD'),
-    hour: String(dayjs().hour()),
-    minute: String(dayjs().minute()),
+    hour: String(dayjs().hour()).length === 1 ? '0' + String(dayjs().hour()) : String(dayjs().hour()),
+    minute: String(dayjs().minute()).length === 1 ? '0' + String(dayjs().minute()) : String(dayjs().minute()),
   });
 
   useEffect(() => {
