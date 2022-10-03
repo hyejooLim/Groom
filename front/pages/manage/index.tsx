@@ -10,10 +10,10 @@ const Manage = () => {
   const [todayVisitorNumber, setTodayVisitorNumber] = useState(23);
   const [totalVisitorNumber, setTotalVisitorNumber] = useState(1500);
 
-  const renderEmptyBox = () => {
+  const renderEmptyBox = (length: number) => {
     let emptyBoxes = [];
 
-    for (let i = 0; i < 4 - user?.posts.length; i++) {
+    for (let i = 0; i < 4 - length; i++) {
       emptyBoxes.push(<S.EmptyBox>No Post</S.EmptyBox>);
     }
 
@@ -50,7 +50,7 @@ const Manage = () => {
                 </S.InfoWrapper>
               </li>
             ))}
-            {user?.posts?.length < 4 && renderEmptyBox()}
+            {user?.posts?.length < 4 && renderEmptyBox(user?.posts.length)}
           </>
         </ul>
       </S.LastPosts>
