@@ -3,7 +3,7 @@ import Dropzone from 'react-dropzone';
 import { Input, Select } from 'antd';
 import { CloseOutlined } from '@ant-design/icons';
 
-import TinymceEditor from './tinymce/TinymceEditor';
+import TinymceEditor from './TinymceEditor';
 import useInput from '../../hooks/common/input';
 import { CategoryItem, TagItem } from '../../types';
 import { Container, SelectCategory, PostTitle, TagArea } from '../../styles/ts/components/editor/EditorContent';

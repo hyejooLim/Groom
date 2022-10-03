@@ -2,8 +2,8 @@ import React, { FC, useEffect, useRef } from 'react';
 import { useRecoilState } from 'recoil';
 import { Editor } from '@tinymce/tinymce-react';
 
-import { tinymceEditorState } from '../../../recoil/tinymce';
-import { CONTENT_STYLE, EditorWrapper } from '../../../styles/ts/components/editor/tinymce/TinymceEditor';
+import { tinymceEditorState } from '../../recoil/tinymce';
+import { CONTENT_STYLE, EditorWrapper } from '../../styles/ts/components/editor/tinymce/TinymceEditor';
 
 interface TinymceEditorProps {
   htmlContent: string;

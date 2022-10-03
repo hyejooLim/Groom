@@ -1,5 +1,4 @@
 import React, { FC, useCallback, MouseEvent } from 'react';
-import Modal from 'react-modal';
 import { AiFillQuestionCircle } from 'react-icons/ai';
 import { GrTrash } from 'react-icons/gr';
 import dayjs from 'dayjs';
