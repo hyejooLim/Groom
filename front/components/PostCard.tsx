@@ -23,7 +23,7 @@ import * as S from '../styles/ts/components/PostCard';
 
 interface PostCardProps {
   post: PostItem;
-  idx: number;
+  idx?: number;
 }
 
 const PostCard: FC<PostCardProps> = ({ post, idx }) => {
@@ -95,9 +95,15 @@ const PostCard: FC<PostCardProps> = ({ post, idx }) => {
   const onChangePage = useCallback(
     (page: number) => {
       const postId = mainPosts.find((item, idx) => idx === page - 1).id;
-      setCurrentPage(page);
 
-      Router.push(`/post/${postId}`);
+      setCurrentPage(page);
+      Router.push(
+        {
+          pathname: `/post/${postId}`,
+          query: { idx: page - 1 },
+        },
+        `/post/${postId}`
+      );
     },
     [mainPosts]
   );
