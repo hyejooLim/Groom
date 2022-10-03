@@ -4,12 +4,11 @@ import Image from 'next/image';
 import Link from 'next/link';
 import Router from 'next/router';
 import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 import classNames from 'classnames';
 
 import useInput from '../hooks/common/input';
 import signup from '../apis/signup';
-import { SignupWrapper, StyledForm, InputWrapper, ErrorMessage, SubmitButton } from '../styles/ts/pages/signup';
+import * as S from '../styles/ts/pages/signup';
 import logo from '../public/Groom_Logo_No_Background.png';
 
 const Signup = () => {
@@ -71,7 +70,7 @@ const Signup = () => {
       <Head>
         <title>Groom | 회원가입</title>
       </Head>
-      <SignupWrapper>
+      <S.SignupWrapper>
         <div className='logo'>
           <Link href='/'>
             <a>
@@ -79,14 +78,14 @@ const Signup = () => {
             </a>
           </Link>
         </div>
-        <StyledForm
+        <S.StyledForm
           onFinish={onSubmitForm}
           style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}
         >
           <div className='input_form'>
             <label htmlFor='user-email'>Email</label>
             <br />
-            <InputWrapper
+            <S.InputWrapper
               name='user-email'
               value={email}
               type='email'
@@ -94,12 +93,14 @@ const Signup = () => {
               onChange={onChangeEmail}
               required
             />
-            <ErrorMessage className={classNames({ error: emailError })}>이메일 형식이 올바르지 않습니다.</ErrorMessage>
+            <S.ErrorMessage className={classNames({ error: emailError })}>
+              이메일 형식이 올바르지 않습니다.
+            </S.ErrorMessage>
           </div>
           <div className='input_form'>
             <label htmlFor='user-password'>Password</label>
             <br />
-            <InputWrapper
+            <S.InputWrapper
               name='user-password'
               value={password}
               type='password'
@@ -107,14 +108,14 @@ const Signup = () => {
               onChange={onChangePassword}
               required
             />
-            <ErrorMessage className={classNames({ error: passwordError })}>
+            <S.ErrorMessage className={classNames({ error: passwordError })}>
               비밀번호는 8자리 이상이어야 합니다.
-            </ErrorMessage>
+            </S.ErrorMessage>
           </div>
           <div className='input_form'>
             <label htmlFor='user-password-check'>Password Check</label>
             <br />
-            <InputWrapper
+            <S.InputWrapper
               name='user-password-check'
               value={passwordCheck}
               type='password'
@@ -122,14 +123,14 @@ const Signup = () => {
               onChange={onChangePasswordCheck}
               required
             />
-            <ErrorMessage className={classNames({ error: passwordCheckError })}>
+            <S.ErrorMessage className={classNames({ error: passwordCheckError })}>
               비밀번호가 일치하지 않습니다.
-            </ErrorMessage>
+            </S.ErrorMessage>
           </div>
           <div className='input_form'>
             <label htmlFor='user-name'>Name</label>
             <br />
-            <InputWrapper
+            <S.InputWrapper
               name='user-name'
               value={name}
               placeholder='이름을 입력하세요.'
@@ -137,16 +138,16 @@ const Signup = () => {
               required
             />
           </div>
-          <SubmitButton
+          <S.SubmitButton
             htmlType='submit'
             disabled={
               !email || !password || !passwordCheck || !name || emailError || passwordError || passwordCheckError
             }
           >
             가입하기
-          </SubmitButton>
-        </StyledForm>
-      </SignupWrapper>
+          </S.SubmitButton>
+        </S.StyledForm>
+      </S.SignupWrapper>
       <ToastContainer />
     </>
   );

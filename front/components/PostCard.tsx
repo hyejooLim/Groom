@@ -19,7 +19,7 @@ import useUnSubscribePost from '../hooks/query/useUnSubscribePost';
 import useDeletePost from '../hooks/query/useDeletePost';
 import { mainPostsState } from '../recoil/posts';
 import { PostItem } from '../types';
-import { HeadWrapper, Date, ContentWrapper, PostButton, EditButton } from '../styles/ts/components/PostCard';
+import * as S from '../styles/ts/components/PostCard';
 
 interface PostCardProps {
   post: PostItem;
@@ -104,11 +104,11 @@ const PostCard: FC<PostCardProps> = ({ post, idx }) => {
 
   return (
     <>
-      <HeadWrapper>
+      <S.HeadWrapper>
         <Title title={`[${currentPost.category?.name}] ${currentPost.title}`} />
-        <Date>{dayjs(currentPost.createdAt).format('YYYY.MM.DD HH:mm')}</Date>
-      </HeadWrapper>
-      <ContentWrapper>
+        <S.Date>{dayjs(currentPost.createdAt).format('YYYY.MM.DD HH:mm')}</S.Date>
+      </S.HeadWrapper>
+      <S.ContentWrapper>
         <div className='tag_label'>
           {currentPost.tags?.map((tag) => (
             <Link key={tag.id} href={`/tag/${tag.name}`}>
@@ -120,7 +120,7 @@ const PostCard: FC<PostCardProps> = ({ post, idx }) => {
           <Markup content={currentPost.htmlContent} />
         </div>
         <div style={{ display: 'flex' }}>
-          <PostButton>
+          <S.PostButton>
             <span>
               {currentPost.likers?.find((liker) => liker.id === user?.id) ? (
                 <HeartTwoTone key='heart' twoToneColor='red' onClick={onUnLikePost} />
@@ -129,19 +129,19 @@ const PostCard: FC<PostCardProps> = ({ post, idx }) => {
               )}
             </span>
             <span style={{ marginLeft: 7 }}>공감</span>
-          </PostButton>
+          </S.PostButton>
           {currentPost.subscribers?.find((subscriber) => subscriber.id === user?.id) ? (
-            <PostButton style={{ marginLeft: 10 }} onClick={onUnSubscribePost}>
+            <S.PostButton style={{ marginLeft: 10 }} onClick={onUnSubscribePost}>
               구독취소
-            </PostButton>
+            </S.PostButton>
           ) : (
-            <PostButton style={{ marginLeft: 10 }} onClick={onSubscribePost}>
+            <S.PostButton style={{ marginLeft: 10 }} onClick={onSubscribePost}>
               구독하기
-            </PostButton>
+            </S.PostButton>
           )}
         </div>
         {user?.id === currentPost.authorId && (
-          <EditButton>
+          <S.EditButton>
             <Link href={`/write/${post.id}`}>
               <a>
                 <Button className='modify btn'>Modify</Button>
@@ -151,9 +151,9 @@ const PostCard: FC<PostCardProps> = ({ post, idx }) => {
             <Button className='delete btn' onClick={onDeletePost}>
               Delete
             </Button>
-          </EditButton>
+          </S.EditButton>
         )}
-      </ContentWrapper>
+      </S.ContentWrapper>
       <PaginationContainer pageSize={1} current={currentPage} total={mainPosts?.length} onChange={onChangePage} />
       <div>
         {currentPost.allowComments && <CommentForm post={currentPost} />}

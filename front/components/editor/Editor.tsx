@@ -17,7 +17,7 @@ import createPost from '../../apis/post/createPost';
 import updatePost from '../../apis/post/updatePost';
 import * as ContentMode from '../../constants/ContentMode';
 import { ContentModeType, PostItem, CategoryItem, TempPostItem } from '../../types';
-import { EditorWrapper, ContentAside, CompleteButton } from '../../styles/ts/components/editor/Editor';
+import * as S from '../../styles/ts/components/editor/Editor';
 
 AWS.config.update({
   region: 'ap-northeast-2',
@@ -348,7 +348,7 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
   };
 
   return (
-    <EditorWrapper className='groom_wrapper'>
+    <S.EditorWrapper className='groom_wrapper'>
       <EditorToolbar />
       <EditorContent
         title={postData.title}
@@ -364,7 +364,7 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
         loadTempPost={loadTempPost}
         setLoadTempPost={setLoadTempPost}
       />
-      <ContentAside>
+      <S.ContentAside>
         <div className='btn_wrapper'>
           {mode === ContentMode.ADD && (
             <span className='temp_save btn'>
@@ -381,11 +381,11 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
               </a>
             </span>
           )}
-          <CompleteButton className='complete btn' onClick={onClickCompleteButton}>
+          <S.CompleteButton className='complete btn' onClick={onClickCompleteButton}>
             완료
-          </CompleteButton>
+          </S.CompleteButton>
         </div>
-      </ContentAside>
+      </S.ContentAside>
       <ToastMessage toastMessage={toastMessage} showToastMessage={showToastMessage} show={show} />
       <TempPostsModal
         isOpen={isOpenTempPostsModal}
@@ -402,7 +402,7 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
         setIsOpen={setIsOpenSettingModal}
         onPublishPost={onPublishPost}
       />
-    </EditorWrapper>
+    </S.EditorWrapper>
   );
 };
 

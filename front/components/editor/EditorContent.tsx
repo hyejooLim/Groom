@@ -6,7 +6,7 @@ import { CloseOutlined } from '@ant-design/icons';
 import TinymceEditor from './TinymceEditor';
 import useInput from '../../hooks/common/input';
 import { CategoryItem, TagItem } from '../../types';
-import { Container, SelectCategory, PostTitle, TagArea } from '../../styles/ts/components/editor/EditorContent';
+import * as S from '../../styles/ts/components/editor/EditorContent';
 import useGetCategories from '../../hooks/query/useGetCategories';
 
 interface EditorContentProps {
@@ -59,9 +59,9 @@ const EditorContent: FC<EditorContentProps> = ({
   }, [dropzoneRef]);
 
   return (
-    <Container className='container'>
+    <S.Container className='container'>
       <div className='post_header'>
-        <SelectCategory>
+        <S.SelectCategory>
           <Select
             defaultValue={'카테고리'}
             value={category?.name || '카테고리'}
@@ -74,8 +74,8 @@ const EditorContent: FC<EditorContentProps> = ({
               </Select.Option>
             ))}
           </Select>
-        </SelectCategory>
-        <PostTitle>
+        </S.SelectCategory>
+        <S.PostTitle>
           <Input
             className='title_input'
             value={title}
@@ -83,7 +83,7 @@ const EditorContent: FC<EditorContentProps> = ({
             placeholder='제목을 입력하세요'
             autoFocus
           />
-        </PostTitle>
+        </S.PostTitle>
       </div>
       <Dropzone ref={dropzoneRef} accept={{ 'image/*': ['.gif', '.jpg', 'jpeg', '.png'] }} onDrop={onGetImageUrl}>
         {({ getRootProps, getInputProps, isDragActive }) => (
@@ -105,7 +105,7 @@ const EditorContent: FC<EditorContentProps> = ({
           </div>
         )}
       </Dropzone>
-      <TagArea>
+      <S.TagArea>
         {tags?.map((tag, idx) => (
           <div key={idx} style={{ display: 'inline-block' }}>
             <span className='tag'>
@@ -126,8 +126,8 @@ const EditorContent: FC<EditorContentProps> = ({
             />
           </div>
         </span>
-      </TagArea>
-    </Container>
+      </S.TagArea>
+    </S.Container>
   );
 };
 

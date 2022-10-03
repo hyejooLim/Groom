@@ -8,13 +8,7 @@ import { EditOutlined } from '@ant-design/icons';
 import ManageProfile from '../../components/ManageProfile';
 import ManageList from '../../components/ManageList';
 import logo from '../../public/Groom_Logo_No_Background.png';
-import {
-  Container,
-  HomeButton,
-  AddPostButton,
-  StyledSider,
-  StyledHeader,
-} from '../../styles/ts/components/layouts/ManageLayout';
+import * as S from '../../styles/ts/components/layouts/ManageLayout';
 
 const ManageLayout = ({ children }) => {
   const router = useRouter();
@@ -31,32 +25,32 @@ const ManageLayout = ({ children }) => {
 
   return (
     <>
-      <Container>
-        <StyledSider width={240}>
+      <S.Container>
+        <S.StyledSider width={240}>
           <ManageProfile />
           <ManageList />
-        </StyledSider>
+        </S.StyledSider>
         <Layout style={{ width: '100%' }}>
-          <StyledHeader>
-            <HomeButton>
+          <S.StyledHeader>
+            <S.HomeButton>
               <Link href='/'>
                 <a>
                   <Image src={logo} alt='groom_logo' width={160} height={70} />
                 </a>
               </Link>
-            </HomeButton>
+            </S.HomeButton>
             <Link href='/write'>
               <a>
-                <AddPostButton>
+                <S.AddPostButton>
                   <span>글쓰기</span>
                   <EditOutlined />
-                </AddPostButton>
+                </S.AddPostButton>
               </a>
             </Link>
-          </StyledHeader>
+          </S.StyledHeader>
           <Layout.Content style={{ width: '889px' }}>{children}</Layout.Content>
         </Layout>
-      </Container>
+      </S.Container>
     </>
   );
 };

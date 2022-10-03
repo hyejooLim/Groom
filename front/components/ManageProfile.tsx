@@ -8,7 +8,7 @@ import AWS from 'aws-sdk';
 
 import useGetUser from '../hooks/query/useGetUser';
 import useUpdateUser from '../hooks/query/useUpdateUser';
-import { StyledCard, CameraButton, EmptyProfile } from '../styles/ts/components/ManageProfile';
+import * as S from '../styles/ts/components/ManageProfile';
 
 AWS.config.update({
   region: 'ap-northeast-2',
@@ -49,20 +49,20 @@ const ManageProfile = () => {
   };
 
   return (
-    <StyledCard
+    <S.StyledCard
       cover={
         <>
           {user?.imageUrl ? (
             <img className='profile' alt='profile' src={user?.imageUrl} width={214} height={200} />
           ) : (
-            <EmptyProfile>
+            <S.EmptyProfile>
               <BsCloudFill />
-            </EmptyProfile>
+            </S.EmptyProfile>
           )}
-          <CameraButton>
+          <S.CameraButton>
             <FiCamera className='icon' />
             <input className='edit_btn' type='file' accept='image/*' onChange={onChangeProfile} />
-          </CameraButton>
+          </S.CameraButton>
         </>
       }
     >
@@ -72,7 +72,7 @@ const ManageProfile = () => {
           로그아웃
         </Button>
       </div>
-    </StyledCard>
+    </S.StyledCard>
   );
 };
 

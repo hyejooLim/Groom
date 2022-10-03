@@ -11,14 +11,7 @@ import Category from '../../components/Category';
 import Counter from '../Counter';
 import Search from '../Search';
 import { currentPageState, firstIndexState, lastIndexState, PAGE_SIZE } from '../../recoil/page';
-import {
-  Container,
-  ImageWrapper,
-  StyledSider,
-  StyledLayout,
-  StyledHeader,
-  StyledFooter,
-} from '../../styles/ts/components/layouts/AppLayout';
+import * as S from '../../styles/ts/components/layouts/AppLayout';
 import logo from '../../public/Groom_Logo_No_Background.png';
 
 const AppLayout = ({ children }) => {
@@ -38,27 +31,27 @@ const AppLayout = ({ children }) => {
 
   return (
     <>
-      <Container>
-        <StyledSider width={300}>
+      <S.Container>
+        <S.StyledSider width={300}>
           {status === 'authenticated' ? <UserProfile /> : <LoginForm />}
           <Category />
           <Counter />
           <Search />
-        </StyledSider>
-        <StyledLayout>
-          <StyledHeader>
-            <ImageWrapper>
+        </S.StyledSider>
+        <S.StyledLayout>
+          <S.StyledHeader>
+            <S.ImageWrapper>
               <a onClick={onClickLogo}>
                 <Image src={logo} alt='groom_logo' width={140} height={60} />
               </a>
-            </ImageWrapper>
-          </StyledHeader>
+            </S.ImageWrapper>
+          </S.StyledHeader>
           <Layout.Content>
             {children}
-            <StyledFooter>Powered by Groom, Designed by sandy</StyledFooter>
+            <S.StyledFooter>Powered by Groom, Designed by sandy</S.StyledFooter>
           </Layout.Content>
-        </StyledLayout>
-      </Container>
+        </S.StyledLayout>
+      </S.Container>
     </>
   );
 };

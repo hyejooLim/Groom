@@ -6,10 +6,9 @@ import Image from 'next/image';
 import Router from 'next/router';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import { toast, ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 
 import useInput from '../hooks/common/input';
-import { LoginWrapper, StyledForm, StyledInput, LoginButton, SignupButton } from '../styles/ts/pages/login';
+import * as S from '../styles/ts/pages/login';
 import logo from '../public/Groom_Logo_No_Background.png';
 
 const Login = () => {
@@ -44,8 +43,8 @@ const Login = () => {
       <Head>
         <title>Groom | 로그인</title>
       </Head>
-      <LoginWrapper>
-        <StyledForm onFinish={onSubmitForm}>
+      <S.LoginWrapper>
+        <S.StyledForm onFinish={onSubmitForm}>
           <div className='logo'>
             <Link href='/'>
               <a>
@@ -55,13 +54,19 @@ const Login = () => {
           </div>
           <div className='email input_form'>
             <UserOutlined className='icon' />
-            <StyledInput type='email' value={email} onChange={onChangeEmail} placeholder='email' required />
+            <S.StyledInput type='email' value={email} onChange={onChangeEmail} placeholder='email' required />
           </div>
           <div className='password input_form'>
             <LockOutlined className='icon' />
-            <StyledInput type='password' value={password} onChange={onChangePassword} placeholder='password' required />
+            <S.StyledInput
+              type='password'
+              value={password}
+              onChange={onChangePassword}
+              placeholder='password'
+              required
+            />
           </div>
-          <LoginButton htmlType='submit'>로그인</LoginButton>
+          <S.LoginButton htmlType='submit'>로그인</S.LoginButton>
           <div
             style={{
               display: 'flex',
@@ -73,12 +78,12 @@ const Login = () => {
             <span style={{ color: '#888' }}>아직 계정이 없으신가요?</span>
             <Link href='/signup'>
               <a>
-                <SignupButton>회원가입</SignupButton>
+                <S.SignupButton>회원가입</S.SignupButton>
               </a>
             </Link>
           </div>
-        </StyledForm>
-      </LoginWrapper>
+        </S.StyledForm>
+      </S.LoginWrapper>
       <ToastContainer />
     </>
   );

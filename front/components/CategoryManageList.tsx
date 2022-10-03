@@ -1,4 +1,4 @@
-import React, { FC, useState, useCallback, useEffect, ChangeEvent, FormEvent, DragEvent, Dispatch } from 'react';
+import React, { FC, useState, useCallback, useEffect, ChangeEvent, FormEvent, DragEvent } from 'react';
 import { useRecoilState } from 'recoil';
 import { Button, Form } from 'antd';
 import { MenuOutlined, PlusOutlined } from '@ant-design/icons';
@@ -13,21 +13,11 @@ import {
   changePriorityWhenDelete,
   changePriorityWhenDeleteExcludeNewItem,
 } from '../lib/newList';
-import {
-  CategoryManageListWrapper,
-  EditButton,
-  DragIconWrapper,
-  ItemWrapper,
-  TextArea,
-  StyledInput,
-  FormButton,
-  AddCategoryWrapper,
-  TotalCount,
-} from '../styles/ts/components/CategoryManageList';
+import * as S from '../styles/ts/components/CategoryManageList';
 
 interface CategoryManageListProps {
   categoryJson: CategoryJson;
-  setCategoryJson: Dispatch<React.SetStateAction<CategoryJson>>;
+  setCategoryJson: React.Dispatch<React.SetStateAction<CategoryJson>>;
 }
 
 const CategoryManageList: FC<CategoryManageListProps> = ({ categoryJson, setCategoryJson }) => {
@@ -218,20 +208,25 @@ const CategoryManageList: FC<CategoryManageListProps> = ({ categoryJson, setCate
   };
 
   return (
-    <CategoryManageListWrapper>
+    <S.CategoryManageListWrapper>
       <div className='set_order'>
         <div className='wrap_order'>
           <div className='list_order'>
             {categories &&
               categories.map((item, idx) =>
                 item.id === currentCategory.id ? (
-                  <ItemWrapper key={item.id} style={{ background: '#fbfbfb' }}>
+                  <S.ItemWrapper key={item.id} style={{ background: '#fbfbfb' }}>
                     <Form
                       onFinish={onUpdateCategory}
                       style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
                     >
-                      <StyledInput type='text' value={currentCategory.name} onChange={onChangeCategoryName} autoFocus />
-                      <FormButton>
+                      <S.StyledInput
+                        type='text'
+                        value={currentCategory.name}
+                        onChange={onChangeCategoryName}
+                        autoFocus
+                      />
+                      <S.FormButton>
                         <Button className='cancel btn' onClick={onCancelUpdateCategoryName}>
                           취소
                         </Button>
@@ -246,11 +241,11 @@ const CategoryManageList: FC<CategoryManageListProps> = ({ categoryJson, setCate
                         >
                           확인
                         </Button>
-                      </FormButton>
+                      </S.FormButton>
                     </Form>
-                  </ItemWrapper>
+                  </S.ItemWrapper>
                 ) : (
-                  <ItemWrapper
+                  <S.ItemWrapper
                     key={item.id}
                     data-key={item.id}
                     data-index={idx}
@@ -262,17 +257,17 @@ const CategoryManageList: FC<CategoryManageListProps> = ({ categoryJson, setCate
                     onDragOver={(e) => e.preventDefault()}
                     onDrop={onDrop}
                   >
-                    <DragIconWrapper>
+                    <S.DragIconWrapper>
                       <MenuOutlined />
-                    </DragIconWrapper>
-                    <TextArea>
+                    </S.DragIconWrapper>
+                    <S.TextArea>
                       <div className='category_name'>
                         <span>{item.name}</span>
                         <span style={{ fontSize: '13px', marginLeft: '4px', color: '#808080' }}>
                           ({item.posts?.length || 0})
                         </span>
                       </div>
-                      <EditButton>
+                      <S.EditButton>
                         <Button className='modify btn' onClick={() => onClickUpdateButton(item.id, item.name, idx)}>
                           수정
                         </Button>
@@ -283,43 +278,42 @@ const CategoryManageList: FC<CategoryManageListProps> = ({ categoryJson, setCate
                         >
                           삭제
                         </Button>
-                      </EditButton>
-                    </TextArea>
-                  </ItemWrapper>
+                      </S.EditButton>
+                    </S.TextArea>
+                  </S.ItemWrapper>
                 )
               )}
-
             {showInput && (
-              <ItemWrapper style={{ background: '#fbfbfb' }}>
+              <S.ItemWrapper style={{ background: '#fbfbfb' }}>
                 <Form
                   onFinish={onAddCategory}
                   style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
                 >
-                  <StyledInput type='text' value={category} onChange={onChangeCategory} autoFocus />
-                  <FormButton>
+                  <S.StyledInput type='text' value={category} onChange={onChangeCategory} autoFocus />
+                  <S.FormButton>
                     <Button className='cancel btn' onClick={onCancelAddCategory}>
                       취소
                     </Button>
                     <Button className='submit btn' htmlType='submit' disabled={!category || !category.trim()}>
                       확인
                     </Button>
-                  </FormButton>
+                  </S.FormButton>
                 </Form>
-              </ItemWrapper>
+              </S.ItemWrapper>
             )}
           </div>
-          <AddCategoryWrapper onClick={onClickAddCategoryField}>
+          <S.AddCategoryWrapper onClick={onClickAddCategoryField}>
             <div>
               <PlusOutlined />
               <span className='add_category_text'>카테고리 추가</span>
             </div>
-            <TotalCount>
+            <S.TotalCount>
               <span style={{ color: '#333' }}>{categories?.length}</span> / 100
-            </TotalCount>
-          </AddCategoryWrapper>
+            </S.TotalCount>
+          </S.AddCategoryWrapper>
         </div>
       </div>
-    </CategoryManageListWrapper>
+    </S.CategoryManageListWrapper>
   );
 };
 

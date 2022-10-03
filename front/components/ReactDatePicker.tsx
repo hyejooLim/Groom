@@ -4,9 +4,8 @@ import ko from 'date-fns/locale/ko';
 import dayjs from 'dayjs';
 import classNames from 'classnames';
 
-import 'react-datepicker/dist/react-datepicker.css';
-import * as S from '../styles/ts/components/ReactDatePicker';
 import { ReserveDate } from '../types';
+import * as S from '../styles/ts/components/ReactDatePicker';
 
 interface ReactDatePickerProps {
   reserveDate: ReserveDate;

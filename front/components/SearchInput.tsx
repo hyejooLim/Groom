@@ -6,15 +6,7 @@ import { UpOutlined, DownOutlined, SearchOutlined } from '@ant-design/icons';
 import useInput from '../hooks/common/input';
 import useGetTags from '../hooks/query/useGetTags';
 import { PostItem, TagItem } from '../types';
-import {
-  FormWrapper,
-  StyledForm,
-  InnerWrapper,
-  DropdownWrapper,
-  StyledInput,
-  SearchButton,
-  OverrideMenu,
-} from '../styles/ts/components/SearchInput';
+import * as S from '../styles/ts/components/SearchInput';
 
 interface SearchInputProps {
   posts: PostItem[];
@@ -51,7 +43,7 @@ const SearchInput: FC<SearchInputProps> = ({ posts, setIsSearch, setPosts, setTi
   }, []);
 
   const menu = (
-    <OverrideMenu
+    <S.OverrideMenu
       selectable
       defaultSelectedKeys={['0']}
       items={searchTypeList.map((item) => {
@@ -98,10 +90,10 @@ const SearchInput: FC<SearchInputProps> = ({ posts, setIsSearch, setPosts, setTi
   }, [keyword, searchType, pageName]);
 
   return (
-    <FormWrapper>
-      <StyledForm onFinish={onSubmitInput}>
-        <InnerWrapper>
-          <DropdownWrapper>
+    <S.FormWrapper>
+      <S.StyledForm onFinish={onSubmitInput}>
+        <S.InnerWrapper>
+          <S.DropdownWrapper>
             <Dropdown overlay={menu} trigger={['click']} overlayStyle={{ width: '100px' }}>
               <span
                 onClick={(e) => {
@@ -113,19 +105,19 @@ const SearchInput: FC<SearchInputProps> = ({ posts, setIsSearch, setPosts, setTi
                 {openMenu ? <UpOutlined style={{ fontSize: '12px' }} /> : <DownOutlined style={{ fontSize: '12px' }} />}
               </span>
             </Dropdown>
-          </DropdownWrapper>
-          <StyledInput
+          </S.DropdownWrapper>
+          <S.StyledInput
             type='text'
             value={keyword}
             onChange={onChangeKeyword}
             placeholder={(pageName === 'managePosts' ? '글' : '구독 글') + ' 관리에서 검색합니다.'}
           />
-          <SearchButton htmlType='submit' disabled={!keyword || !keyword.trim()}>
+          <S.SearchButton htmlType='submit' disabled={!keyword || !keyword.trim()}>
             <SearchOutlined />
-          </SearchButton>
-        </InnerWrapper>
-      </StyledForm>
-    </FormWrapper>
+          </S.SearchButton>
+        </S.InnerWrapper>
+      </S.StyledForm>
+    </S.FormWrapper>
   );
 };
 

@@ -9,7 +9,7 @@ import useGetUser from '../hooks/query/useGetUser';
 import useDeletePost from '../hooks/query/useDeletePost';
 import { PostItem } from '../types';
 import useUnSubscribePost from '../hooks/query/useUnSubscribePost';
-import { PostButton, ListWrapper, PostInfo, EmptySearchBox } from '../styles/ts/components/PostManageList';
+import * as S from '../styles/ts/components/PostManageList';
 
 interface PostManageListProps {
   posts: PostItem[];
@@ -42,10 +42,10 @@ const PostManageList: FC<PostManageListProps> = ({ posts, firstIndex, lastIndex,
   }, []);
 
   return (
-    <ListWrapper>
+    <S.ListWrapper>
       {posts?.length > 0 ? (
         posts?.slice(firstIndex, lastIndex).map((post) => (
-          <PostInfo key={post.id}>
+          <S.PostInfo key={post.id}>
             <div>
               <div className='post_title'>
                 <Link href={`/post/${post.id}`}>
@@ -65,7 +65,7 @@ const PostManageList: FC<PostManageListProps> = ({ posts, firstIndex, lastIndex,
                 <span>{dayjs(post.createdAt).format('YYYY.MM.DD HH:mm')}</span>
               </div>
             </div>
-            <PostButton>
+            <S.PostButton>
               {user?.id === post?.authorId ? (
                 <>
                   <Link href={`/write/${post.id}`}>
@@ -82,18 +82,18 @@ const PostManageList: FC<PostManageListProps> = ({ posts, firstIndex, lastIndex,
                   구독 취소
                 </Button>
               )}
-            </PostButton>
-          </PostInfo>
+            </S.PostButton>
+          </S.PostInfo>
         ))
       ) : (
-        <EmptySearchBox>
+        <S.EmptySearchBox>
           <div className='icon_wrapper'>
             <FiSearch className='icon' />
           </div>
           결과가 없습니다.
-        </EmptySearchBox>
+        </S.EmptySearchBox>
       )}
-    </ListWrapper>
+    </S.ListWrapper>
   );
 };
 

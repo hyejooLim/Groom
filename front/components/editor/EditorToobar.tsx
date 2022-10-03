@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { Avatar, Popover } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
 
-import { Toolbar, ImageWrapper, AuthorInfo, LogoutButton } from '../../styles/ts/components/editor/EditorToolbar';
+import * as S from '../../styles/ts/components/editor/EditorToolbar';
 import logo from '../../public/Groom_Logo_No_Background.png';
 
 const EditorToolbar = () => {
@@ -34,11 +34,11 @@ const EditorToolbar = () => {
     </div>
   );
 
-  const content = <LogoutButton onClick={handleLogout}>로그아웃</LogoutButton>;
+  const content = <S.LogoutButton onClick={handleLogout}>로그아웃</S.LogoutButton>;
 
   return (
-    <Toolbar className='tool_bar'>
-      <ImageWrapper>
+    <S.Toolbar className='tool_bar'>
+      <S.ImageWrapper>
         <Image
           src={logo}
           alt='groom_logo'
@@ -47,8 +47,8 @@ const EditorToolbar = () => {
           onClick={handleRouteHome}
           style={{ cursor: 'pointer' }}
         />
-      </ImageWrapper>
-      <AuthorInfo>
+      </S.ImageWrapper>
+      <S.AuthorInfo>
         <span>{session?.user.name}</span>
         <Popover
           placement='bottomRight'
@@ -62,8 +62,8 @@ const EditorToolbar = () => {
             <Avatar icon={<UserOutlined />} />
           </div>
         </Popover>
-      </AuthorInfo>
-    </Toolbar>
+      </S.AuthorInfo>
+    </S.Toolbar>
   );
 };
 

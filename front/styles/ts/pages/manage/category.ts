@@ -52,6 +52,17 @@ export const SaveDiffButton = styled(Button)`
       color: #959595;
       box-shadow: none;
     }
+
+    & .checkBox {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      & p {
+        display: inline-block;
+        margin: 0 5px 0 0;
+      }
+    }
   }
 
   &:enabled {

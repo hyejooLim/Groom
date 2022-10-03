@@ -3,7 +3,7 @@ import { useRecoilState } from 'recoil';
 import { Editor } from '@tinymce/tinymce-react';
 
 import { tinymceEditorState } from '../../recoil/tinymce';
-import { CONTENT_STYLE, EditorWrapper } from '../../styles/ts/components/editor/tinymce/TinymceEditor';
+import * as S from '../../styles/ts/components/editor/TinymceEditor';
 
 interface TinymceEditorProps {
   htmlContent: string;
@@ -46,7 +46,7 @@ const TinymceEditor: FC<TinymceEditorProps> = ({
   };
 
   return (
-    <EditorWrapper>
+    <S.EditorWrapper>
       <Editor
         onInit={(e, editor) => (editorRef.current = editor)}
         onEditorChange={(value, editor) => onChangeContent(value, editor.getContent({ format: 'text' }))}
@@ -58,7 +58,7 @@ const TinymceEditor: FC<TinymceEditorProps> = ({
           menubar: false,
           branding: false,
           statusbar: false,
-          content_style: CONTENT_STYLE,
+          content_style: S.CONTENT_STYLE,
           block_formats: '제목1=h2;제목2=h3;제목3=h4;본문=p;',
           iframe_attrs: { style: 'width: 100%; height: 100%; display: block;' },
           toolbar_mode: 'wrap',
@@ -86,7 +86,7 @@ const TinymceEditor: FC<TinymceEditorProps> = ({
           },
         }}
       />
-    </EditorWrapper>
+    </S.EditorWrapper>
   );
 };
 

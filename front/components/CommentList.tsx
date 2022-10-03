@@ -8,7 +8,7 @@ import useGetComments from '../hooks/query/useGetComments';
 import useUpdateComment from '../hooks/query/useUpdateComment';
 import useDeleteComment from '../hooks/query/useDeleteComment';
 import { CommentItem } from '../types';
-import { CommentBox, ButtonWrapper, StyledForm, StyledTextArea } from '../styles/ts/components/CommentList';
+import * as S from '../styles/ts/components/CommentList';
 
 interface CommentListProps {
   postId: number;
@@ -71,24 +71,24 @@ const CommentList: FC<CommentListProps> = ({ postId }) => {
       itemLayout='horizontal'
       renderItem={(item: CommentItem) => {
         return item.id === currentComment?.id ? (
-          <StyledForm onFinish={onUpdateComment}>
-            <StyledTextArea
+          <S.StyledForm onFinish={onUpdateComment}>
+            <S.StyledTextArea
               value={currentComment.content}
               onChange={onChangeContent}
               autoSize={{ minRows: 3, maxRows: 3 }}
               autoFocus
             />
-            <ButtonWrapper>
+            <S.ButtonWrapper>
               <Button className='submit btn' htmlType='submit'>
                 완료
               </Button>
               <Button className='cancel btn' onClick={onCancelUpdateComment}>
                 취소
               </Button>
-            </ButtonWrapper>
-          </StyledForm>
+            </S.ButtonWrapper>
+          </S.StyledForm>
         ) : (
-          <CommentBox>
+          <S.CommentBox>
             <Comment
               avatar={
                 <Avatar
@@ -106,16 +106,16 @@ const CommentList: FC<CommentListProps> = ({ postId }) => {
               }
             />
             {user?.id === item.authorId && (
-              <ButtonWrapper>
+              <S.ButtonWrapper>
                 <Button className='modify btn' onClick={() => onClickModifyButton(item.id, item.content)}>
                   수정
                 </Button>
                 <Button className='delete btn' onClick={() => onDeleteComment(item.id)}>
                   삭제
                 </Button>
-              </ButtonWrapper>
+              </S.ButtonWrapper>
             )}
-          </CommentBox>
+          </S.CommentBox>
         );
       }}
     ></List>
