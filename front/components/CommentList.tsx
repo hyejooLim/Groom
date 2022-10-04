@@ -61,6 +61,10 @@ const CommentList: FC<CommentListProps> = ({ postId }) => {
   }, []);
 
   const onDeleteComment = useCallback((id: number) => {
+    if (!confirm('댓글을 삭제하시겠습니까?')) {
+      return;
+    }
+
     deleteComment.mutate(id);
   }, []);
 
