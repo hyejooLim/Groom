@@ -6,19 +6,19 @@ import { FiCheck } from 'react-icons/fi';
 import ManageLayout from '../../components/layouts/ManageLayout';
 import CategoryManageList from '../../components/CategoryManageList';
 import useGetCategories from '../../hooks/query/useGetCategories';
+import useUpdateCategories from '../../hooks/query/useUpdateCategories';
 import { categoriesState } from '../../recoil/categories';
-import updateCategories from '../../apis/categories/updateCategories';
 import { CategoryJson } from '../../types';
 import * as S from '../../styles/ts/pages/manage/category';
 
 const ManageCategory = () => {
-  const { refetch } = useGetCategories();
+  const { data } = useGetCategories();
   const categories = useRecoilValue(categoriesState);
-
-  const [categoryJson, setCategoryJson] = useState<CategoryJson>({ append: [], update: [], delete: [] });
+  const updateCategories = useUpdateCategories();
 
   const [isSave, setIsSave] = useState(false);
   const [isDisabled, setIsDisabled] = useState(true);
+  const [categoryJson, setCategoryJson] = useState<CategoryJson>({ append: [], update: [], delete: [] });
 
   useEffect(() => {
     if (categoryJson.append.length === 0 && categoryJson.update.length === 0 && categoryJson.delete.length === 0) {
@@ -29,19 +29,15 @@ const ManageCategory = () => {
     }
   }, [categoryJson]);
 
-  const onUpdateCategories = useCallback(async () => {
-    try {
-      const result = await updateCategories({ data: categoryJson });
-
-      if (result.ok) {
-        refetch();
-
-        setIsSave(true);
-        setCategoryJson({ append: [], update: [], delete: [] });
-      }
-    } catch (err) {
-      console.error(err);
+  useEffect(() => {
+    if (updateCategories.isSuccess) {
+      setIsSave(true);
+      setCategoryJson({ append: [], update: [], delete: [] });
     }
+  }, [updateCategories.isSuccess]);
+
+  const onUpdateCategories = useCallback(() => {
+    updateCategories.mutate({ data: categoryJson });
   }, [categoryJson]);
 
   return (
