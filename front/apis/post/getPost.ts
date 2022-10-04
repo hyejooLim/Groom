@@ -1,11 +1,10 @@
+import clientApi from '..';
 import { PostItem } from '../../types';
 
 const getPost = async (id: number): Promise<PostItem> => {
-  const response = await fetch(`/api/post/${id}`, {
-    method: 'GET',
-  });
+  const response = await clientApi.get<PostItem>(`/post/${id}`);
 
-  return response.json();
+  return response;
 };
 
 export default getPost;

@@ -1,11 +1,10 @@
+import clientApi from '..';
 import { TagItem } from '../../types';
 
 const getTags = async (): Promise<TagItem[]> => {
-  const response = await fetch('/api/tags', {
-    method: 'GET',
-  });
+  const response = await clientApi.get<TagItem[]>('/tags');
 
-  return response.json();
+  return response;
 };
 
 export default getTags;

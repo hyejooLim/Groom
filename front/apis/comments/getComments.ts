@@ -1,11 +1,10 @@
+import clientApi from '..';
 import { CommentItem } from '../../types';
 
 const getComments = async (postId: number): Promise<CommentItem[]> => {
-  const response = await fetch(`/api/comments/${postId}`, {
-    method: 'GET',
-  });
+  const response = await clientApi.get<CommentItem[]>(`/comments/${postId}`);
 
-  return response.json();
+  return response;
 };
 
 export default getComments;

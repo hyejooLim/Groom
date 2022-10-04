@@ -1,9 +1,7 @@
-const unSubscribePost = async (id: number): Promise<Response> => {
-  const response = await fetch(`/api/post/${id}/subscribe`, {
-    method: 'DELETE',
-  });
+import clientApi from '..';
 
-  return response;
+const unSubscribePost = async (id: number): Promise<Response> => {
+  return await clientApi.delete(`/post/${id}/subscribe`);
 };
 
 export default unSubscribePost;

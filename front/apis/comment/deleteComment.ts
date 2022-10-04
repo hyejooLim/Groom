@@ -1,9 +1,7 @@
-const deleteComment = async (id: number): Promise<Response> => {
-  const response = await fetch(`/api/comment/${id}`, {
-    method: 'DELETE',
-  });
+import clientApi from '..';
 
-  return response;
+const deleteComment = async (id: number): Promise<Response> => {
+  return await clientApi.delete(`/comment/${id}`);
 };
 
 export default deleteComment;

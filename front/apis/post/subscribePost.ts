@@ -1,9 +1,7 @@
-const subscribePost = async (id: number): Promise<Response> => {
-  const response = await fetch(`/api/post/${id}/subscribe`, {
-    method: 'PUT',
-  });
+import clientApi from '..';
 
-  return response;
+const subscribePost = async (id: number): Promise<Response> => {
+  return await clientApi.put(`/post/${id}/subscribe`);
 };
 
 export default subscribePost;

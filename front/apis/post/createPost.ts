@@ -1,3 +1,4 @@
+import clientApi from '..';
 import { TagItem, CategoryItem } from '../../types';
 
 interface CreatePostProps {
@@ -11,14 +12,8 @@ interface CreatePostProps {
   createdAt?: string;
 }
 
-const createPost = async ({ data }: { data: CreatePostProps }): Promise<Response> => {
-  const response = await fetch('/api/post', {
-    method: 'POST',
-    body: JSON.stringify(data),
-    headers: { 'Content-Type': 'application/json' },
-  });
-
-  return response;
+const createPost = async ({ data }: { data: CreatePostProps }): Promise<Response | string> => {
+  return await clientApi.post('/post', data);
 };
 
 export default createPost;

@@ -1,9 +1,7 @@
-const deletePost = async (id: number): Promise<Response> => {
-  const response = await fetch(`/api/post/${id}`, {
-    method: 'DELETE',
-  });
+import clientApi from '..';
 
-  return response;
+const deletePost = async (id: number): Promise<Response> => {
+  return await clientApi.delete(`/post/${id}`);
 };
 
 export default deletePost;

@@ -81,7 +81,7 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
           email: session.user?.email,
         },
         data: {
-          imageUrl: req.body,
+          imageUrl: req.body?.imageUrl,
         },
       });
 

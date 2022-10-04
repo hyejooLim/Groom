@@ -328,7 +328,7 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
   const onPublishPost = async () => {
     try {
       // 글쓰기 모드에 따라 api 호출
-      let result: Response = null;
+      let result: Response | string = null;
 
       if (mode === ContentMode.ADD) {
         result = await createPost({ data: postData });
@@ -336,7 +336,7 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
         result = await updatePost({ data: postData });
       }
 
-      if (result.ok) {
+      if (result === 'ok') {
         localStorage.removeItem('saveTime');
         localStorage.removeItem('postData');
 

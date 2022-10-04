@@ -1,15 +1,13 @@
+import clientApi from '.';
+
 interface SignupProps {
   email: string;
   password: string;
   name: string;
 }
 
-const signup = async ({ data }: { data: SignupProps }): Promise<Response> => {
-  const response = await fetch('/api/signup', {
-    method: 'POST',
-    body: JSON.stringify(data),
-    headers: { 'Content-Type': 'application/json' },
-  });
+const signup = async ({ data }: { data: SignupProps }): Promise<Response | string> => {
+  const response = await clientApi.post<Response | string>('/signup', data);
 
   return response;
 };

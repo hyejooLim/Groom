@@ -6,9 +6,6 @@ const useGetCategory = (name: string) =>
     onSuccess: (data) => {
       console.log('category', data);
     },
-    onError: (err) => {
-      throw new Error('Request failed.', err);
-    },
   });
 
 export default useGetCategory;

@@ -1,11 +1,10 @@
+import clientApi from '..';
 import { CategoryItem } from '../../types';
 
 const getCategory = async (name: string): Promise<CategoryItem> => {
-  const response = await fetch(`/api/category/${name}`, {
-    method: 'GET',
-  });
+  const response = await clientApi.get<CategoryItem>(`/category/${name}`);
 
-  return response.json();
+  return response;
 };
 
 export default getCategory;

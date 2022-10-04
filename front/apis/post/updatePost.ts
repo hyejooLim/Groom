@@ -1,3 +1,4 @@
+import clientApi from '..';
 import { TagItem, CategoryItem } from '../../types';
 
 interface UpdatePostProps {
@@ -12,14 +13,8 @@ interface UpdatePostProps {
   createdAt?: string;
 }
 
-const updatePost = async ({ data }: { data: UpdatePostProps }) => {
-  const response = await fetch(`/api/post/${data.id}`, {
-    method: 'PUT',
-    body: JSON.stringify(data),
-    headers: { 'Content-Type': 'application/json' },
-  });
-
-  return response;
+const updatePost = async ({ data }: { data: UpdatePostProps }): Promise<Response | string> => {
+  return await clientApi.put(`/post/${data.id}`, data);
 };
 
 export default updatePost;

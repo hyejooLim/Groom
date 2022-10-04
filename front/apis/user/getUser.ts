@@ -1,11 +1,10 @@
+import clientApi from '..';
 import { UserType } from '../../types';
 
 const getUser = async (): Promise<UserType> => {
-  const response = await fetch('/api/user', {
-    method: 'GET',
-  });
+  const response = await clientApi.get<UserType>('/user');
 
-  return response.json();
+  return response;
 };
 
 export default getUser;

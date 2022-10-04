@@ -1,9 +1,7 @@
-const likePost = async (id: number): Promise<Response> => {
-  const response = await fetch(`/api/post/${id}/like`, {
-    method: 'PUT',
-  });
+import clientApi from '..';
 
-  return response;
+const likePost = async (id: number): Promise<Response> => {
+  return await clientApi.put(`/post/${id}/like`);
 };
 
 export default likePost;

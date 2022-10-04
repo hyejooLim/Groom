@@ -1,3 +1,4 @@
+import clientApi from '..';
 import { CategoryItem } from '../../types';
 
 interface UpdateCategoriesProps {
@@ -7,13 +8,7 @@ interface UpdateCategoriesProps {
 }
 
 const updateCategories = async ({ data }: { data: UpdateCategoriesProps }): Promise<Response> => {
-  const response = await fetch('/api/categories', {
-    method: 'PUT',
-    body: JSON.stringify(data),
-    headers: { 'Content-Type': 'application/json' },
-  });
-
-  return response;
+  return await clientApi.put('/categories', data);
 };
 
 export default updateCategories;

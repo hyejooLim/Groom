@@ -45,9 +45,8 @@ const Signup = () => {
     try {
       const result = await signup({ data: { email, password, name } });
 
-      if (!result.ok) {
-        const json = await result.json();
-        alert(json.message || '문제가 발생했습니다.');
+      if (result !== 'ok') {
+        alert(result || '문제가 발생했습니다.');
         return;
       }
 

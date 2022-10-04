@@ -1,11 +1,10 @@
+import clientApi from '..';
 import { TempPostItem } from '../../types';
 
 const getTempPosts = async (): Promise<TempPostItem[]> => {
-  const response = await fetch('/api/tempPosts', {
-    method: 'GET',
-  });
+  const response = await clientApi.get<TempPostItem[]>('/tempPosts');
 
-  return response.json();
+  return response;
 };
 
 export default getTempPosts;
