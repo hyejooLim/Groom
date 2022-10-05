@@ -1,6 +1,6 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
-import Router from 'next/router';
+import Router, { useRouter } from 'next/router';
 import Image from 'next/image';
 import { useSetRecoilState } from 'recoil';
 import { Layout } from 'antd';
@@ -16,10 +16,17 @@ import logo from '../../public/Groom_Logo_No_Background.png';
 
 const AppLayout = ({ children }) => {
   const { status } = useSession();
+  const router = useRouter();
 
   const setCurrentPage = useSetRecoilState(currentPageState);
   const setFirstIndex = useSetRecoilState(firstIndexState);
   const setLastIndex = useSetRecoilState(lastIndexState);
+
+  useEffect(() => {
+    setCurrentPage(1);
+    setFirstIndex(0);
+    setLastIndex(PAGE_SIZE);
+  }, [router.pathname]);
 
   const onClickLogo = useCallback(() => {
     setCurrentPage(1);

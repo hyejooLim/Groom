@@ -13,15 +13,15 @@ interface PostListProps {
 }
 
 const PostList: FC<PostListProps> = ({ posts }) => {
-  const [currentPage, setCurrentPage] = useRecoilState(currentPageState);
   const [firstIndex, setFirstIndex] = useRecoilState(firstIndexState);
   const [lastIndex, setLastIndex] = useRecoilState(lastIndexState);
+  const [currentPage, setCurrentPage] = useRecoilState(currentPageState);
 
   const onChangePage = useCallback(
     (page: number) => {
-      setCurrentPage(page);
       setFirstIndex((page - 1) * PAGE_SIZE);
       setLastIndex(page * PAGE_SIZE);
+      setCurrentPage(page);
     },
     [PAGE_SIZE]
   );
