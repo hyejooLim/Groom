@@ -38,7 +38,7 @@ const ManageProfile = () => {
   }, [status]);
 
   const handleLogout = () => {
-    if (confirm('로그인 후 이용하실 수 있습니다.')) {
+    if (confirm('로그아웃 하시겠습니까?')) {
       signOut();
     }
   };
@@ -56,6 +56,8 @@ const ManageProfile = () => {
       },
       (err, data) => {
         if (err) throw err;
+
+        localStorage.removeItem('imageKey');
         console.log('deleted', data);
       }
     );
