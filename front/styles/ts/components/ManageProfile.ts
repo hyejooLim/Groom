@@ -38,10 +38,34 @@ export const CameraButton = styled.label`
   }
 `;
 
+export const RemoveButton = styled.label`
+  display: none;
+  position: absolute;
+  top: -1px;
+  left: 219px;
+  z-index: 10;
+  width: 20.31px;
+  height: 20.31px;
+  cursor: pointer;
+  background-color: #fff;
+
+  & .icon {
+    font-size: 26px;
+    z-index: 11;
+    position: absolute;
+    top: -3px;
+    left: -3px;
+  }
+`;
+
 export const StyledCard = styled(Card)`
   .ant-card-cover {
     &:hover {
       ${CameraButton} {
+        display: block;
+      }
+
+      & .show {
         display: block;
       }
     }
