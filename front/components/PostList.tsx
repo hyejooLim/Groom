@@ -30,9 +30,9 @@ const PostList: FC<PostListProps> = ({ posts }) => {
     <>
       <ListWrapper>
         <ul>
-          {posts?.slice(firstIndex, lastIndex).map((post, idx) => (
+          {posts?.slice(firstIndex, lastIndex).map((post) => (
             <li key={post.id}>
-              <Link href={{ pathname: `/post/${post.id}`, query: { idx } }} as={`/post/${post.id}`}>
+              <Link href={`/post/${post.id}`}>
                 <a>
                   [{post.category?.name}] {post.title}
                 </a>

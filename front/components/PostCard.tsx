@@ -23,10 +23,9 @@ import * as S from '../styles/ts/components/PostCard';
 
 interface PostCardProps {
   post: PostItem;
-  idx?: number;
 }
 
-const PostCard: FC<PostCardProps> = ({ post, idx }) => {
+const PostCard: FC<PostCardProps> = ({ post }) => {
   const { data: user } = useGetUser();
 
   const likePost = useLikePost();
@@ -37,7 +36,9 @@ const PostCard: FC<PostCardProps> = ({ post, idx }) => {
 
   const mainPosts = useRecoilValue(mainPostsState);
   const [currentPost, setCurrentPost] = useState<PostItem>(post);
-  const [currentPage, setCurrentPage] = useState(idx + 1);
+
+  const findPostIndex = (element: PostItem) => element.id === post.id;
+  const [currentPage, setCurrentPage] = useState(mainPosts.findIndex(findPostIndex) + 1);
 
   useEffect(() => {
     setCurrentPost(post);
@@ -97,13 +98,8 @@ const PostCard: FC<PostCardProps> = ({ post, idx }) => {
       const postId = mainPosts.find((item, idx) => idx === page - 1).id;
 
       setCurrentPage(page);
-      Router.push(
-        {
-          pathname: `/post/${postId}`,
-          query: { idx: page - 1 },
-        },
-        `/post/${postId}`
-      );
+
+      Router.push(`/post/${postId}`);
     },
     [mainPosts]
   );
