@@ -17,10 +17,18 @@ const UserProfile = () => {
   return (
     <S.UserProfileWrapper>
       <S.InfoArea>
-        <Avatar size={80} icon={<BsCloudFill style={{ height: '80px', lineHeight: '80px' }} />} src={user?.imageUrl} />
+        <Link href='/manage'>
+          <a className='go_to_profile'>
+            <Avatar
+              size={80}
+              icon={<BsCloudFill style={{ height: '80px', lineHeight: '80px' }} />}
+              src={user?.imageUrl}
+            />
+          </a>
+        </Link>
         <S.UserInfo>
           <S.InfoBox>
-            <Link href={`/manage`}>
+            <Link href='/manage'>
               <a className='go_to_profile'>
                 <span>{user?.name}님</span>
               </a>
