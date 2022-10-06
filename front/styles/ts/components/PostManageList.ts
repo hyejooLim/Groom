@@ -21,9 +21,7 @@ export const PostButton = styled.div`
   }
 
   .subscribe_cancel {
-    width: 85px;
-    height: 30px;
-    font-size: 13px;
+    width: 70px;
   }
 
   .public {

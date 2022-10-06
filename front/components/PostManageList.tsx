@@ -1,4 +1,5 @@
 import React, { FC, useCallback } from 'react';
+import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { Button } from 'antd';
 import { PaperClipOutlined } from '@ant-design/icons';
@@ -21,6 +22,7 @@ interface PostManageListProps {
 }
 
 const PostManageList: FC<PostManageListProps> = ({ posts, firstIndex, lastIndex, onChangePostList }) => {
+  const router = useRouter();
   const { data: user } = useGetUser();
 
   const deletePost = useDeletePost();
@@ -75,7 +77,7 @@ const PostManageList: FC<PostManageListProps> = ({ posts, firstIndex, lastIndex,
             </div>
             {!post.isPublic && <AiOutlineEyeInvisible className='invisible_icon' />}
             <S.PostButton>
-              {user?.id === post?.authorId ? (
+              {user?.id === post?.authorId && (
                 <>
                   <Link href={`/write/${post.id}`}>
                     <a>
@@ -89,7 +91,8 @@ const PostManageList: FC<PostManageListProps> = ({ posts, firstIndex, lastIndex,
                     {post.isPublic ? '공개' : '비공개'}
                   </Button>
                 </>
-              ) : (
+              )}
+              {router.pathname === '/manage/subscribedPost' && (
                 <Button className='subscribe_cancel btn' onClick={() => onUnSubscribe(post.id)}>
                   구독 취소
                 </Button>
