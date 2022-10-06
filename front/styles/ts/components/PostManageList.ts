@@ -25,6 +25,10 @@ export const PostButton = styled.div`
     height: 30px;
     font-size: 13px;
   }
+
+  .public {
+    width: 50px;
+  }
 `;
 
 export const ListWrapper = styled.div`
@@ -84,6 +88,13 @@ export const PostInfo = styled.div`
         content: '';
       }
     }
+  }
+
+  & .invisible_icon {
+    position: absolute;
+    right: 28px;
+    font-size: 20px;
+    color: #ddd;
   }
 `;
 

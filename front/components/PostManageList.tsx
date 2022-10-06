@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { Button } from 'antd';
 import { PaperClipOutlined } from '@ant-design/icons';
 import { FiSearch } from 'react-icons/fi';
+import { AiOutlineEyeInvisible } from 'react-icons/ai';
 import dayjs from 'dayjs';
 
 import useGetUser from '../hooks/query/useGetUser';
@@ -10,6 +11,7 @@ import useDeletePost from '../hooks/query/useDeletePost';
 import { PostItem } from '../types';
 import useUnSubscribePost from '../hooks/query/useUnSubscribePost';
 import * as S from '../styles/ts/components/PostManageList';
+import useToggleIsPublicPost from '../hooks/query/useToggleIsPublicPost';
 
 interface PostManageListProps {
   posts: PostItem[];
@@ -20,8 +22,10 @@ interface PostManageListProps {
 
 const PostManageList: FC<PostManageListProps> = ({ posts, firstIndex, lastIndex, onChangePostList }) => {
   const { data: user } = useGetUser();
-  const unSubscribePost = useUnSubscribePost();
+
   const deletePost = useDeletePost();
+  const toggleIsPublicPost = useToggleIsPublicPost();
+  const unSubscribePost = useUnSubscribePost();
 
   const onDeletePost = useCallback((id: number) => {
     const confirm = window.confirm('선택한 글을 삭제하시겠습니까?');
@@ -31,6 +35,10 @@ const PostManageList: FC<PostManageListProps> = ({ posts, firstIndex, lastIndex,
 
     deletePost.mutate(id);
   }, []);
+
+  const onToggleIsPublicPost = (id: number, isPublic: boolean) => {
+    toggleIsPublicPost.mutate({ id, isPublic: !isPublic });
+  };
 
   const onUnSubscribe = useCallback((id: number) => {
     const confirm = window.confirm('구독을 취소하시겠습니까?');
@@ -65,6 +73,7 @@ const PostManageList: FC<PostManageListProps> = ({ posts, firstIndex, lastIndex,
                 <span>{dayjs(post.createdAt).format('YYYY.MM.DD HH:mm')}</span>
               </div>
             </div>
+            {!post.isPublic && <AiOutlineEyeInvisible className='invisible_icon' />}
             <S.PostButton>
               {user?.id === post?.authorId ? (
                 <>
@@ -75,6 +84,9 @@ const PostManageList: FC<PostManageListProps> = ({ posts, firstIndex, lastIndex,
                   </Link>
                   <Button className='delete btn' onClick={() => onDeletePost(post.id)}>
                     삭제
+                  </Button>
+                  <Button className='public btn' onClick={() => onToggleIsPublicPost(post.id, post.isPublic)}>
+                    {post.isPublic ? '공개' : '비공개'}
                   </Button>
                 </>
               ) : (
