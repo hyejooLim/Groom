@@ -1,17 +1,22 @@
 import styled from 'styled-components';
-import { Form, Input, Button, Menu, Dropdown } from 'antd';
+import { Form, Input, Button, Menu } from 'antd';
 
 export const FormWrapper = styled.div`
   width: 100%;
-  border: 1px solid #475466;
-  background: #fff;
   height: 58px;
   border-radius: 1px;
   margin-top: 10px;
+  border: 1px solid #e0e5ee;
+  background: #fafbfd;
+
+  &.on {
+    border: 1px solid #475466;
+    background: #fff;
+  }
 `;
 
 export const StyledForm = styled(Form)`
-  width: 834px;
+  width: 889px;
   height: 100%;
 `;
 
@@ -20,6 +25,7 @@ export const InnerWrapper = styled.div`
   align-items: center;
   height: 100%;
   line-height: 100%;
+  width: 100%;
 `;
 
 export const DropdownWrapper = styled.div`
@@ -33,7 +39,7 @@ export const DropdownWrapper = styled.div`
 `;
 
 export const StyledInput = styled(Input)`
-  width: 654px;
+  width: 640px;
   border: 0;
   outline: none;
   font-size: 18px;
@@ -41,13 +47,48 @@ export const StyledInput = styled(Input)`
 `;
 
 export const SearchButton = styled(Button)`
-  width: 52px;
   font-size: 18px;
-  margin-right: -18px;
   background-color: transparent;
+  margin-left: 10px;
+  position: relative;
+  top: 4px;
+
+  &:disabled {
+    background-color: inherit;
+
+    &:hover {
+      background-color: inherit;
+    }
+  }
 
   :hover {
     color: #000;
+  }
+`;
+
+export const CloseButton = styled(Button)`
+  color: #808080;
+  font-size: 15px;
+  margin-left: 17px;
+
+  &:hover {
+    color: #808080;
+  }
+`;
+
+export const ShowInputButton = styled(Button)`
+  width: 80px;
+  font-size: 16px;
+  position: absolute;
+  right: 30px;
+  background: transparent;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #333;
+
+  & .icon {
+    margin-left: 10px;
   }
 `;
 
