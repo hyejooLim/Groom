@@ -5,10 +5,13 @@ import { useRecoilValue } from 'recoil';
 import { todayCountState, totalCountState } from '../../recoil/count';
 import ManageLayout from '../../components/layouts/ManageLayout';
 import useGetUser from '../../hooks/query/useGetUser';
+import useGetVisitorsCount from '../../hooks/query/useGetVisitorsCount';
 import * as S from '../../styles/ts/pages/manage';
 
 const Manage = () => {
   const { data: user } = useGetUser();
+
+  useGetVisitorsCount();
   const todayCount = useRecoilValue(todayCountState);
   const totalCount = useRecoilValue(totalCountState);
 
