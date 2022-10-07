@@ -8,6 +8,13 @@ export type ReserveDate = {
   minute: string;
 };
 
+export type VisitorsCount = {
+  id: number;
+  todayCount: number;
+  totalCount: number;
+  expireDate: string;
+};
+
 export type UserType = {
   id?: number;
   email: string;

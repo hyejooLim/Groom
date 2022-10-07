@@ -83,3 +83,14 @@ model Comment {
   content String @db.LongText
   datetime DateTime @default(now())
 }
+
+model Visitor {
+  id Int @id @unique
+}
+
+model VisitorsCount {
+  id Int @id @default(autoincrement())
+  todayCount Int 
+  totalCount Int
+  expireDate String
+}

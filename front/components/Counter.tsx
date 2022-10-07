@@ -1,13 +1,16 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { useRecoilValue } from 'recoil';
+
+import { todayCountState, totalCountState } from '../recoil/count';
 import { CounterWrapper } from '../styles/ts/components/Counter';
 
 const Counter = () => {
-  const [todayVisitorNumber, setTodayVisitorNumber] = useState(23);
-  const [totalVisitorNumber, setTotalVisitorNumber] = useState(1500);
+  const todayCount = useRecoilValue(todayCountState);
+  const totalCount = useRecoilValue(totalCountState);
 
   return (
     <CounterWrapper>
-      <span className='today'>{todayVisitorNumber}</span> / <span className='total'>{totalVisitorNumber}</span>
+      <span className='today'>{todayCount}</span> / <span className='total'>{totalCount}</span>
     </CounterWrapper>
   );
 };

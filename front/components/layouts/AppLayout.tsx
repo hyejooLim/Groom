@@ -11,13 +11,15 @@ import Category from '../../components/Category';
 import Counter from '../Counter';
 import Search from '../Search';
 import { currentPageState, firstIndexState, lastIndexState, PAGE_SIZE } from '../../recoil/page';
+import useGetVisitorsCount from '../../hooks/query/useGetVisitorsCount';
 import * as S from '../../styles/ts/components/layouts/AppLayout';
 import logo from '../../public/Groom_Logo_No_Background.png';
 
 const AppLayout = ({ children }) => {
-  const { status } = useSession();
   const router = useRouter();
-
+  const { status } = useSession();
+  useGetVisitorsCount();
+  
   const setCurrentPage = useSetRecoilState(currentPageState);
   const setFirstIndex = useSetRecoilState(firstIndexState);
   const setLastIndex = useSetRecoilState(lastIndexState);

@@ -1,14 +1,16 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Link from 'next/link';
+import { useRecoilValue } from 'recoil';
 
+import { todayCountState, totalCountState } from '../../recoil/count';
 import ManageLayout from '../../components/layouts/ManageLayout';
 import useGetUser from '../../hooks/query/useGetUser';
 import * as S from '../../styles/ts/pages/manage';
 
 const Manage = () => {
   const { data: user } = useGetUser();
-  const [todayVisitorNumber, setTodayVisitorNumber] = useState(23);
-  const [totalVisitorNumber, setTotalVisitorNumber] = useState(1500);
+  const todayCount = useRecoilValue(todayCountState);
+  const totalCount = useRecoilValue(totalCountState);
 
   const renderEmptyBox = (length: number) => {
     let emptyBoxes = [];
@@ -25,11 +27,11 @@ const Manage = () => {
       <S.CountVisitorWrapper>
         <S.CountVisitor style={{ marginRight: '50px' }}>
           <div className='title'>오늘 방문 수</div>
-          <div className='number'>{todayVisitorNumber}</div>
+          <div className='number'>{todayCount}</div>
         </S.CountVisitor>
         <S.CountVisitor>
           <div className='title'>누적 방문 수</div>
-          <div className='number'>{totalVisitorNumber}</div>
+          <div className='number'>{totalCount}</div>
         </S.CountVisitor>
       </S.CountVisitorWrapper>
       <S.LastPosts>
