@@ -49,10 +49,11 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
         if (dayjs().diff(visitorsCountModel.expireDate) > 0) {
           console.log('하루가 지남');
 
-          await prisma.visitor.deleteMany();
-          await prisma.visitor.create({
-            data: {
-              id: user.id,
+          await prisma.visitor.deleteMany({
+            where: {
+              NOT: {
+                id: user.id,
+              },
             },
           });
 
