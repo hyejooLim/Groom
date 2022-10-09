@@ -3,7 +3,7 @@ import { signIn } from 'next-auth/react';
 import Head from 'next/head';
 import Link from 'next/link';
 import Image from 'next/image';
-import Router from 'next/router';
+import Router, { useRouter } from 'next/router';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import { toast, ToastContainer } from 'react-toastify';
 
@@ -12,6 +12,9 @@ import * as S from '../styles/ts/pages/login';
 import logo from '../public/Groom_Logo_No_Background.png';
 
 const Login = () => {
+  const router = useRouter();
+  const { prevPathname } = router.query;
+
   const [email, onChangeEmail] = useInput('');
   const [password, onChangePassword] = useInput('');
 
@@ -34,7 +37,7 @@ const Login = () => {
     });
 
     setTimeout(() => {
-      Router.back();
+      prevPathname === 'signup' ? Router.push('/') : Router.back();
     }, 3000);
   }, [email, password]);
 

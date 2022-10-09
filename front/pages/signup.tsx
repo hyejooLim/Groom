@@ -57,7 +57,7 @@ const Signup = () => {
       });
 
       setTimeout(() => {
-        Router.push('/login');
+        Router.push({ pathname: '/login', query: { prevPathname: 'signup' } }, '/login');
       }, 3000);
     } catch (error) {
       console.error(error);
