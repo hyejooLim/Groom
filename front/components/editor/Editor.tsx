@@ -196,10 +196,10 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
     });
   };
 
-  const handleChangeContent = (HTMLvalue: string, textValue: string) => {
+  const handleChangeContent = (htmlValue: string, textValue: string) => {
     setPostData({
       ...postData,
-      htmlContent: HTMLvalue,
+      htmlContent: htmlValue,
       content: textValue,
     });
   };
