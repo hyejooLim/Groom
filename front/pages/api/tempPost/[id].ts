@@ -20,7 +20,7 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
         )
       );
 
-      if (req.body.category.id) {
+      if (req.body.category?.id) {
         await prisma.tempPost.update({
           where: {
             id: Number(req.query.id),

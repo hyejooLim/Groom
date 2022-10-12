@@ -9,7 +9,7 @@ interface CreateTempPostProps {
   category: CategoryItem;
 }
 
-const createTempPost = async ({ data }: { data: CreateTempPostProps }): Promise<Response> => {
+const createTempPost = async (data: CreateTempPostProps): Promise<Response> => {
   return await clientApi.post('/tempPost', data);
 };
 

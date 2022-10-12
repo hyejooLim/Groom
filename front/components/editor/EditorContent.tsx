@@ -22,6 +22,8 @@ interface EditorContentProps {
   onGetImageUrl: (files: any) => void;
   loadTempPost: boolean;
   setLoadTempPost: React.Dispatch<React.SetStateAction<boolean>>;
+  loadContent: boolean;
+  setLoadContent: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const EditorContent: FC<EditorContentProps> = ({
@@ -37,6 +39,8 @@ const EditorContent: FC<EditorContentProps> = ({
   onGetImageUrl,
   loadTempPost,
   setLoadTempPost,
+  loadContent,
+  setLoadContent,
 }) => {
   const { data: categories } = useGetCategories();
 
@@ -100,6 +104,8 @@ const EditorContent: FC<EditorContentProps> = ({
               onGetImageUrl={onGetImageUrl}
               loadTempPost={loadTempPost}
               setLoadTempPost={setLoadTempPost}
+              loadContent={loadContent}
+              setLoadContent={setLoadContent}
             />
             <input {...getInputProps()} />
           </div>

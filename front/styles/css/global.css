@@ -10,6 +10,11 @@
   --i-border-hover-color: #ddd;
   --i-border-focus-color: #b7cff1;
 
+  --light-blue-color: #5982da;
+  --blue-color: #2d65dd;
+
+  --more-light-grey-color: #e9e9e9;
+  --light-grey-color: #e0e0e0;
   --grey-color: #a5a5a5;
   --dark-grey-color: #808080;
 }
@@ -133,6 +138,46 @@ button {
 
 .ant-radio-input:focus + .ant-radio-inner {
   box-shadow: none;
+}
+
+.ant-modal-content {
+  width: 420px;
+  height: 180px;
+  border-radius: 12px;
+}
+
+.ant-modal-confirm .ant-modal-body {
+  padding: 30px 34px;
+}
+
+.ant-modal-confirm-btns {
+  margin-top: 36px !important;
+}
+
+.ant-modal-confirm-btns .ant-btn {
+  width: 65px;
+  height: 34px;
+  font-size: 13px;
+  border-radius: 6px;
+}
+
+/* 취소 버튼 */
+.ant-modal-confirm-btns .ant-btn-default {
+  background: var(--light-grey-color);
+}
+
+.ant-modal-confirm-btns .ant-btn-default:hover {
+  background: var(--more-light-grey-color);
+}
+
+/* 확인 버튼 */
+.ant-modal-confirm-btns .ant-btn-primary {
+  background: var(--blue-color);
+  color: white;
+}
+
+.ant-modal-confirm-btns .ant-btn-primary:hover {
+  background: var(--light-blue-color);
 }
 
 /* tinymce editor */

@@ -10,7 +10,7 @@ interface UpdateTempPostProps {
   category: CategoryItem;
 }
 
-const updateTempPost = async ({ data }: { data: UpdateTempPostProps }): Promise<Response> => {
+const updateTempPost = async (data: UpdateTempPostProps): Promise<Response> => {
   return await clientApi.put(`/tempPost/${data.id}`, data);
 };
 

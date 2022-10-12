@@ -12,6 +12,8 @@ interface TinymceEditorProps {
   onGetImageUrl: (file: any) => void;
   loadTempPost: boolean;
   setLoadTempPost: React.Dispatch<React.SetStateAction<boolean>>;
+  loadContent: boolean;
+  setLoadContent: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const TinymceEditor: FC<TinymceEditorProps> = ({
@@ -21,6 +23,8 @@ const TinymceEditor: FC<TinymceEditorProps> = ({
   onGetImageUrl,
   loadTempPost,
   setLoadTempPost,
+  loadContent,
+  setLoadContent,
 }) => {
   const [tinymceEditor, setTinymceEditor] = useRecoilState(tinymceEditorState);
   const editorRef = useRef(null);
@@ -37,7 +41,12 @@ const TinymceEditor: FC<TinymceEditorProps> = ({
       tinymceEditor.setContent(htmlContent);
       setLoadTempPost(false);
     }
-  }, [htmlContent, loadTempPost]);
+
+    if (loadContent) {
+      tinymceEditor.setContent(htmlContent);
+      setLoadContent(false);
+    }
+  }, [htmlContent, loadTempPost || loadContent]);
 
   const handleDrop = (e: any) => {
     if (e.dataTransfer && e.dataTransfer.files) {

@@ -3,6 +3,7 @@ import { useRecoilValue } from 'recoil';
 import Router from 'next/router';
 import AWS from 'aws-sdk';
 import dayjs from 'dayjs';
+import { Modal } from 'antd';
 
 import EditorToolbar from './EditorToobar';
 import EditorContent from './EditorContent';
@@ -59,6 +60,7 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
 
   let editorUrl = '';
   const [postData, setPostData] = useState<PostItem>(makePostState());
+  const [loadContent, setLoadContent] = useState(false);
 
   const { data: tempPosts } = useGetTempPosts();
   const createTempPost = useCreateTempPost();
@@ -96,16 +98,23 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
 
   const askContinueWrite = () => {
     const saveTime = localStorage.getItem('saveTime');
-    const data = localStorage.getItem('postData');
+    const data = JSON.parse(localStorage.getItem('postData'));
 
-    if (confirm(`${saveTime}에 저장된 글이 있습니다. 이어서 작성하시곘습니까?`)) {
-      setPostData(JSON.parse(data));
-    } else {
-      localStorage.removeItem('isSaved'); // 글을 이어서 작성하지 않는 경우 임시저장글을 새로 저장할 수 있음
+    Modal.confirm({
+      content: `${saveTime}에 저장된 글이 있습니다. 이어서 작성하시겠습니까?`,
+      cancelText: '취소',
+      okText: '확인',
+      onCancel: () => {
+        localStorage.removeItem('isSaved'); // 글을 이어서 작성하지 않는 경우 임시저장글을 새로 저장할 수 있음
 
-      setPrevPostData(JSON.parse(data));
-      setPrevSaveTime(saveTime);
-    }
+        setPrevPostData(data);
+        setPrevSaveTime(saveTime);
+      },
+      onOk: () => {
+        setPostData(data);
+        setLoadContent(true);
+      },
+    });
   };
 
   useEffect(() => {
@@ -115,14 +124,14 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
   }, []);
 
   useEffect(() => {
-    if (postData.title || postData.content) {
+    if (postData.title || (postData.content && postData.content !== '\n')) {
       localStorage.setItem('postData', JSON.stringify(postData));
       localStorage.setItem('saveTime', dayjs().format('YYYY.MM.DD HH:mm'));
     } else {
       localStorage.setItem('postData', JSON.stringify(prevPostData));
       localStorage.setItem('saveTime', prevSaveTime);
     }
-  }, [postData, prevPostData, prevSaveTime]);
+  }, [postData, prevPostData && prevSaveTime]);
 
   useEffect(() => {
     if (createTempPost.isSuccess) {
@@ -278,8 +287,8 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
     const { title, content, htmlContent, tags, category } = postData;
 
     localStorage.getItem('isSaved')
-      ? updateTempPost.mutate({ data: { id: tempPosts[0].id, title, content, htmlContent, tags, category } })
-      : createTempPost.mutate({ data: newTempPost });
+      ? updateTempPost.mutate({ id: tempPosts[0].id, title, content, htmlContent, tags, category })
+      : createTempPost.mutate(newTempPost);
   };
 
   const onLoadPost = (post: TempPostItem) => {
@@ -363,6 +372,8 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
         onGetImageUrl={handleGetImageUrl}
         loadTempPost={loadTempPost}
         setLoadTempPost={setLoadTempPost}
+        loadContent={loadContent}
+        setLoadContent={setLoadContent}
       />
       <S.ContentAside>
         <div className='btn_wrapper'>
