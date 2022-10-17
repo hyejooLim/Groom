@@ -6,7 +6,7 @@ import { GrSearch } from 'react-icons/gr';
 import classNames from 'classnames';
 
 import useInput from '../../hooks/common/input';
-import useGetTags from '../../hooks/query/useGetTags';
+import useGetTags from '../../hooks/query/tags';
 import { PostItem, TagItem } from '../../types';
 import * as S from '../../styles/ts/components/SearchInput';
 

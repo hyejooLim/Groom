@@ -6,8 +6,8 @@ import { CloseOutlined } from '@ant-design/icons';
 import TinymceEditor from './TinymceEditor';
 import useInput from '../../hooks/common/input';
 import { CategoryItem, TagItem } from '../../types';
+import { useGetCategories } from '../../hooks/query/categories';
 import * as S from '../../styles/ts/components/editor/EditorContent';
-import useGetCategories from '../../hooks/query/useGetCategories';
 
 interface EditorContentProps {
   title: string;

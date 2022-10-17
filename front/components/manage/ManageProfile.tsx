@@ -8,8 +8,7 @@ import { AiFillMinusSquare } from 'react-icons/ai';
 import classNames from 'classnames';
 import AWS from 'aws-sdk';
 
-import useGetUser from '../../hooks/query/useGetUser';
-import useUpdateUser from '../../hooks/query/useUpdateUser';
+import { useGetUser, useUpdateUser } from '../../hooks/query/user';
 import * as S from '../../styles/ts/components/ManageProfile';
 
 const s3 = new AWS.S3();

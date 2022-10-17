@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
 
 import Editor from '../../components/editor/Editor';
-import useGetPost from '../../hooks/query/useGetPost';
+import { useGetPost } from '../../hooks/query/post';
 import * as ContentMode from '../../constants/ContentMode';
 
 const Writes = () => {

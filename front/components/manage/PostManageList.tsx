@@ -7,12 +7,10 @@ import { FiSearch } from 'react-icons/fi';
 import { AiOutlineEyeInvisible } from 'react-icons/ai';
 import dayjs from 'dayjs';
 
-import useGetUser from '../../hooks/query/useGetUser';
-import useDeletePost from '../../hooks/query/useDeletePost';
+import { useGetUser } from '../../hooks/query/user';
+import { useDeletePost, useUnSubscribePost, useToggleIsPublicPost } from '../../hooks/query/post';
 import { PostItem } from '../../types';
-import useUnSubscribePost from '../../hooks/query/useUnSubscribePost';
 import * as S from '../../styles/ts/components/PostManageList';
-import useToggleIsPublicPost from '../../hooks/query/useToggleIsPublicPost';
 
 interface PostManageListProps {
   posts: PostItem[];

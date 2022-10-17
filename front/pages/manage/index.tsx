@@ -4,8 +4,8 @@ import { useRecoilValue } from 'recoil';
 
 import { todayCountState, totalCountState } from '../../recoil/count';
 import ManageLayout from '../../components/layouts/ManageLayout';
-import useGetUser from '../../hooks/query/useGetUser';
-import useGetVisitorsCount from '../../hooks/query/useGetVisitorsCount';
+import { useGetUser } from '../../hooks/query/user';
+import useGetVisitorsCount from '../../hooks/query/visitorsCount';
 import * as S from '../../styles/ts/pages/manage';
 
 const Manage = () => {

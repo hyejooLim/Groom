@@ -4,14 +4,14 @@ import { useRouter } from 'next/router';
 
 import AppLayout from '../../components/layouts/AppLayout';
 import PostCard from '../../components/post/PostCard';
-import useGetPost from '../../hooks/query/useGetPost';
+import { useGetPost } from '../../hooks/query/post';
 
 const Post = () => {
   const router = useRouter();
   const { id } = router.query;
 
   const { data: post } = useGetPost(Number(id));
-  
+
   return (
     <AppLayout>
       <Head>

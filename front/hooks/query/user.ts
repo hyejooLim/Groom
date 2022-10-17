@@ -1,9 +1,10 @@
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useSetRecoilState } from 'recoil';
 
-import getUser from '../../apis/user/getUser';
 import { managePostsState } from '../../recoil/manage';
-import { manageSubscribedPostsState } from './../../recoil/manage';
+import { manageSubscribedPostsState } from '../../recoil/manage';
+import getUser from '../../apis/user/getUser';
+import updateUser from '../../apis/user/updateUser';
 
 const useGetUser = () => {
   const setManagePosts = useSetRecoilState(managePostsState);
@@ -20,4 +21,14 @@ const useGetUser = () => {
   });
 };
 
-export default useGetUser;
+const useUpdateUser = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation(updateUser, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['user']);
+    },
+  });
+};
+
+export { useGetUser, useUpdateUser };

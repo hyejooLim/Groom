@@ -6,7 +6,7 @@ import { CloseCircleOutlined } from '@ant-design/icons';
 import ManageLayout from '../../components/layouts/ManageLayout';
 import PostManageList from '../../components/manage/PostManageList';
 import PaginationContainer from '../../components/common/PaginationContainer';
-import useGetUser from '../../hooks/query/useGetUser';
+import { useGetUser } from '../../hooks/query/user';
 import SearchInput from '../../components/manage/SearchInput';
 import { TitleWrapper, CloseButton } from '../../styles/ts/common';
 import {

@@ -3,10 +3,9 @@ import { BsCloudFill } from 'react-icons/bs';
 import { Comment, List, Button, Avatar } from 'antd';
 import dayjs from 'dayjs';
 
-import useGetUser from '../../hooks/query/useGetUser';
-import useGetComments from '../../hooks/query/useGetComments';
-import useUpdateComment from '../../hooks/query/useUpdateComment';
-import useDeleteComment from '../../hooks/query/useDeleteComment';
+import { useGetUser } from '../../hooks/query/user';
+import useGetComments from '../../hooks/query/comments';
+import { useUpdateComment, useDeleteComment } from '../../hooks/query/comment';
 import { CommentItem } from '../../types';
 import * as S from '../../styles/ts/components/CommentList';
 

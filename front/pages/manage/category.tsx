@@ -5,14 +5,13 @@ import { FiCheck } from 'react-icons/fi';
 
 import ManageLayout from '../../components/layouts/ManageLayout';
 import CategoryManageList from '../../components/manage/CategoryManageList';
-import useGetCategories from '../../hooks/query/useGetCategories';
-import useUpdateCategories from '../../hooks/query/useUpdateCategories';
+import { useGetCategories, useUpdateCategories } from '../../hooks/query/categories';
 import { categoriesState } from '../../recoil/categories';
 import { CategoryJson } from '../../types';
 import * as S from '../../styles/ts/pages/manage/category';
 
 const ManageCategory = () => {
-  const { data } = useGetCategories();
+  useGetCategories();
   const categories = useRecoilValue(categoriesState);
   const updateCategories = useUpdateCategories();
 

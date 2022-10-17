@@ -10,8 +10,8 @@ import Category from '../main/Category';
 import Counter from '../common/Counter';
 import Search from '../main/Search';
 import { currentPageState, firstIndexState, lastIndexState, PAGE_SIZE } from '../../recoil/page';
-import useGetUser from '../../hooks/query/useGetUser';
-import useGetVisitorsCount from '../../hooks/query/useGetVisitorsCount';
+import { useGetUser } from '../../hooks/query/user';
+import useGetVisitorsCount from '../../hooks/query/visitorsCount';
 import * as S from '../../styles/ts/components/layouts/AppLayout';
 import logo from '../../public/Groom_Logo_No_Background.png';
 

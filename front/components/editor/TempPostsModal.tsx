@@ -3,8 +3,8 @@ import { AiFillQuestionCircle } from 'react-icons/ai';
 import { GrTrash } from 'react-icons/gr';
 import dayjs from 'dayjs';
 
-import useGetTempPosts from '../../hooks/query/useGetTempPosts';
-import useDeleteTempPost from '../../hooks/query/useDeleteTempPost';
+import useGetTempPosts from '../../hooks/query/tempPosts';
+import { useDeleteTempPost } from '../../hooks/query/tempPost';
 import { TempPostItem } from '../../types';
 import ReactModal from '../common/ReactModal';
 import * as S from '../../styles/ts/components/TempPostsModal';

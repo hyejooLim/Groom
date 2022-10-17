@@ -11,12 +11,14 @@ import Title from '../common/Title';
 import PaginationContainer from '../common/PaginationContainer';
 import CommentForm from '../comment/CommentForm';
 import CommentList from '../comment/CommentList';
-import useGetUser from '../../hooks/query/useGetUser';
-import useLikePost from '../../hooks/query/useLikePost';
-import useUnLikePost from '../../hooks/query/useUnLikePost';
-import useSubscribePost from '../../hooks/query/useSubscribePost';
-import useUnSubscribePost from '../../hooks/query/useUnSubscribePost';
-import useDeletePost from '../../hooks/query/useDeletePost';
+import { useGetUser } from '../../hooks/query/user';
+import {
+  useDeletePost,
+  useLikePost,
+  useUnLikePost,
+  useSubscribePost,
+  useUnSubscribePost,
+} from '../../hooks/query/post';
 import { mainPostsState } from '../../recoil/posts';
 import { PostItem } from '../../types';
 import * as S from '../../styles/ts/components/PostCard';
