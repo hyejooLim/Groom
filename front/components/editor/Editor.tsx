@@ -79,7 +79,7 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
 
   const tinymceEditor = useRecoilValue(tinymceEditorState);
 
-  const ShowSuccessBox = useCallback((message: string) => {
+  const showToastBox = useCallback((message: string) => {
     setShowToastMessage(true);
     setToastMessage(message);
 
@@ -135,14 +135,14 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
 
   useEffect(() => {
     if (createTempPost.isSuccess) {
-      ShowSuccessBox('작성 중인 글이 저장되었습니다.');
+      showToastBox('작성 중인 글이 저장되었습니다.');
       localStorage.setItem('isSaved', 'true');
     }
   }, [createTempPost.isSuccess]);
 
   useEffect(() => {
     if (updateTempPost.isSuccess) {
-      ShowSuccessBox('작성 중인 글이 저장되었습니다.');
+      showToastBox('작성 중인 글이 저장되었습니다.');
     }
   }, [updateTempPost.isSuccess]);
 
@@ -303,7 +303,7 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
     });
 
     setLoadTempPost(true);
-    ShowSuccessBox('글을 불러왔습니다.');
+    showToastBox('글을 불러왔습니다.');
   };
 
   const onClickCompleteButton = useCallback(() => {
