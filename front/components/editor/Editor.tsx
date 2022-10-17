@@ -70,25 +70,25 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
   const [prevPostData, setPrevPostData] = useState(null);
   const [prevSaveTime, setPrevSaveTime] = useState('');
 
-  const [toastMessage, setToastMessage] = useState('');
   const [showToastMessage, setShowToastMessage] = useState(false);
-  const [show, setShow] = useState(false);
+  const [toastHeight, setToastHeight] = useState(false);
+  const [toastMessage, setToastMessage] = useState('');
 
   const [isOpenTempPostsModal, setIsOpenTempPostsModal] = useState(false);
   const [isOpenSettingModal, setIsOpenSettingModal] = useState(false);
 
   const tinymceEditor = useRecoilValue(tinymceEditorState);
 
-  const ShowSuccessBox = useCallback(() => {
+  const ShowSuccessBox = useCallback((message: string) => {
     setShowToastMessage(true);
-    setToastMessage('작성 중인 글이 저장되었습니다.');
+    setToastMessage(message);
 
     setTimeout(() => {
-      setShow(true);
+      setToastHeight(true);
     }, 1000);
 
     setTimeout(() => {
-      setShow(false);
+      setToastHeight(false);
     }, 3000);
 
     setTimeout(() => {
@@ -135,14 +135,14 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
 
   useEffect(() => {
     if (createTempPost.isSuccess) {
-      ShowSuccessBox();
+      ShowSuccessBox('작성 중인 글이 저장되었습니다.');
       localStorage.setItem('isSaved', 'true');
     }
   }, [createTempPost.isSuccess]);
 
   useEffect(() => {
     if (updateTempPost.isSuccess) {
-      ShowSuccessBox();
+      ShowSuccessBox('작성 중인 글이 저장되었습니다.');
     }
   }, [updateTempPost.isSuccess]);
 
@@ -303,21 +303,7 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
     });
 
     setLoadTempPost(true);
-
-    setShowToastMessage(true);
-    setToastMessage('글을 불러왔습니다.');
-
-    setTimeout(() => {
-      setShow(true);
-    }, 1000);
-
-    setTimeout(() => {
-      setShow(false);
-    }, 3000);
-
-    setTimeout(() => {
-      setShowToastMessage(false);
-    }, 4000);
+    ShowSuccessBox('글을 불러왔습니다.');
   };
 
   const onClickCompleteButton = useCallback(() => {
@@ -397,7 +383,7 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
           </S.CompleteButton>
         </div>
       </S.ContentAside>
-      <ToastMessage toastMessage={toastMessage} showToastMessage={showToastMessage} show={show} />
+      <ToastMessage show={showToastMessage} height={toastHeight} message={toastMessage} />
       <TempPostsModal
         isOpen={isOpenTempPostsModal}
         setIsOpen={setIsOpenTempPostsModal}

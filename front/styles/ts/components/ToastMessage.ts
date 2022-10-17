@@ -22,7 +22,7 @@ export const ToastMessageWrapper = styled.div`
     font-weight: 300;
   }
 
-  .toast_message.show {
+  .toast_message.height {
     height: 50px;
   }
 `;
