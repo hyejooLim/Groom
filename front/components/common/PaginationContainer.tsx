@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { Pagination } from 'antd';
 import type { PaginationProps } from 'antd';
 
-import { PaginationWrapper } from '../styles/ts/components/PaginationContainer';
+import { PaginationWrapper } from '../../styles/ts/components/PaginationContainer';
 
 interface PaginationContainerProps {
   pageSize?: number;

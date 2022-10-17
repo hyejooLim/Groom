@@ -4,12 +4,12 @@ import { DownOutlined, UpOutlined } from '@ant-design/icons';
 import classNames from 'classnames';
 import dayjs from 'dayjs';
 
-import ReactModal from './ReactModal';
-import ReactDatePicker from './ReactDatePicker';
-import * as ContentMode from '../constants/ContentMode';
-import * as PublishMode from '../constants/PublishMode';
-import { ContentModeType, PostItem, ReserveDate } from '../types';
-import * as S from '../styles/ts/components/SettingModal';
+import ReactModal from '../common/ReactModal';
+import ReactDatePicker from '../common/ReactDatePicker';
+import * as ContentMode from '../../constants/ContentMode';
+import * as PublishMode from '../../constants/PublishMode';
+import { ContentModeType, PostItem, ReserveDate } from '../../types';
+import * as S from '../../styles/ts/components/SettingModal';
 
 interface SettingModalProps {
   mode: ContentModeType;

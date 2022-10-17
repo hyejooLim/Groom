@@ -1,10 +1,10 @@
 import React from 'react';
 import Link from 'next/link';
 
-import { CategoryItem } from '../types';
-import useGetCategories from '../hooks/query/useGetCategories';
-import { CategoryWrapper } from '../styles/ts/components/Category';
-import { getPublicAndPublishedPosts } from '../lib/posts';
+import { CategoryItem } from '../../types';
+import useGetCategories from '../../hooks/query/useGetCategories';
+import { CategoryWrapper } from '../../styles/ts/components/Category';
+import { getPublicAndPublishedPosts } from '../../lib/posts';
 
 const Category = () => {
   const { data: categories } = useGetCategories();

@@ -3,10 +3,10 @@ import { useRecoilState } from 'recoil';
 import Link from 'next/link';
 import dayjs from 'dayjs';
 
-import { PostItem } from '../types';
-import { currentPageState, firstIndexState, lastIndexState, PAGE_SIZE } from '../recoil/page';
-import PaginationContainer from '../components/PaginationContainer';
-import { ListWrapper, PostInfo } from '../styles/ts/components/PostList';
+import { PostItem } from '../../types';
+import { currentPageState, firstIndexState, lastIndexState, PAGE_SIZE } from '../../recoil/page';
+import PaginationContainer from '../common/PaginationContainer';
+import { ListWrapper, PostInfo } from '../../styles/ts/components/PostList';
 
 interface PostListProps {
   posts: PostItem[];

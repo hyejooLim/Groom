@@ -2,11 +2,11 @@ import React, { FC, useCallback } from 'react';
 import Router from 'next/router';
 import { Form } from 'antd';
 
-import useInput from '../hooks/common/input';
-import useGetUser from '../hooks/query/useGetUser';
-import useCreateComment from '../hooks/query/useCreateComment';
-import { PostItem } from '../types';
-import { AddCommentButton, StyledTextArea } from '../styles/ts/components/CommentForm';
+import useInput from '../../hooks/common/input';
+import useGetUser from '../../hooks/query/useGetUser';
+import useCreateComment from '../../hooks/query/useCreateComment';
+import { PostItem } from '../../types';
+import { AddCommentButton, StyledTextArea } from '../../styles/ts/components/CommentForm';
 
 interface CommentFormProps {
   post: PostItem;

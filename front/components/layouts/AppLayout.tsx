@@ -5,11 +5,11 @@ import Image from 'next/image';
 import { useSetRecoilState } from 'recoil';
 import { Layout } from 'antd';
 
-import LoginForm from '../../components/LoginForm';
-import UserProfile from '../../components/UserProfile';
-import Category from '../../components/Category';
-import Counter from '../Counter';
-import Search from '../Search';
+import LoginForm from '../main/LoginForm';
+import UserProfile from '../main/UserProfile';
+import Category from '../main/Category';
+import Counter from '../common/Counter';
+import Search from '../main/Search';
 import { currentPageState, firstIndexState, lastIndexState, PAGE_SIZE } from '../../recoil/page';
 import useGetVisitorsCount from '../../hooks/query/useGetVisitorsCount';
 import * as S from '../../styles/ts/components/layouts/AppLayout';

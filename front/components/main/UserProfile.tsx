@@ -4,8 +4,8 @@ import Link from 'next/link';
 import { Avatar } from 'antd';
 import { BsCloudFill } from 'react-icons/bs';
 
-import useGetUser from '../hooks/query/useGetUser';
-import * as S from '../styles/ts/components/UserProfile';
+import useGetUser from '../../hooks/query/useGetUser';
+import * as S from '../../styles/ts/components/UserProfile';
 
 const UserProfile = () => {
   const { data: user } = useGetUser();

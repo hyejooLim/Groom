@@ -3,12 +3,12 @@ import { BsCloudFill } from 'react-icons/bs';
 import { Comment, List, Button, Avatar } from 'antd';
 import dayjs from 'dayjs';
 
-import useGetUser from '../hooks/query/useGetUser';
-import useGetComments from '../hooks/query/useGetComments';
-import useUpdateComment from '../hooks/query/useUpdateComment';
-import useDeleteComment from '../hooks/query/useDeleteComment';
-import { CommentItem } from '../types';
-import * as S from '../styles/ts/components/CommentList';
+import useGetUser from '../../hooks/query/useGetUser';
+import useGetComments from '../../hooks/query/useGetComments';
+import useUpdateComment from '../../hooks/query/useUpdateComment';
+import useDeleteComment from '../../hooks/query/useDeleteComment';
+import { CommentItem } from '../../types';
+import * as S from '../../styles/ts/components/CommentList';
 
 interface CommentListProps {
   postId: number;

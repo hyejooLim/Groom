@@ -5,8 +5,8 @@ import { useRouter } from 'next/router';
 import { Layout } from 'antd';
 import { EditOutlined } from '@ant-design/icons';
 
-import ManageProfile from '../../components/ManageProfile';
-import ManageList from '../../components/ManageList';
+import ManageProfile from '../manage/ManageProfile';
+import ManageList from '../manage/ManageList';
 import logo from '../../public/Groom_Logo_No_Background.png';
 import * as S from '../../styles/ts/components/layouts/ManageLayout';
 

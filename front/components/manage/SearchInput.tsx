@@ -5,10 +5,10 @@ import { UpOutlined, DownOutlined } from '@ant-design/icons';
 import { GrSearch } from 'react-icons/gr';
 import classNames from 'classnames';
 
-import useInput from '../hooks/common/input';
-import useGetTags from '../hooks/query/useGetTags';
-import { PostItem, TagItem } from '../types';
-import * as S from '../styles/ts/components/SearchInput';
+import useInput from '../../hooks/common/input';
+import useGetTags from '../../hooks/query/useGetTags';
+import { PostItem, TagItem } from '../../types';
+import * as S from '../../styles/ts/components/SearchInput';
 
 interface SearchInputProps {
   posts: PostItem[];

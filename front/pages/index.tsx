@@ -2,8 +2,8 @@ import React from 'react';
 import { useRecoilValue } from 'recoil';
 
 import AppLayout from '../components/layouts/AppLayout';
-import Title from '../components/Title';
-import PostList from '../components/PostList';
+import Title from '../components/common/Title';
+import PostList from '../components/post/PostList';
 import { mainPostsState } from '../recoil/posts';
 
 const Home = () => {

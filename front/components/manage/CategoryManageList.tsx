@@ -3,17 +3,17 @@ import { useRecoilState } from 'recoil';
 import { Button, Form } from 'antd';
 import { MenuOutlined, PlusOutlined } from '@ant-design/icons';
 
-import useInput from '../hooks/common/input';
-import { categoriesState } from '../recoil/categories';
-import { CategoryItem, CategoryJson } from '../types';
+import useInput from '../../hooks/common/input';
+import { categoriesState } from '../../recoil/categories';
+import { CategoryItem, CategoryJson } from '../../types';
 import {
   changeProperty,
   changePriorityWhenDrop,
   changePriorityWhenDropExcludeNewItem,
   changePriorityWhenDelete,
   changePriorityWhenDeleteExcludeNewItem,
-} from '../lib/newList';
-import * as S from '../styles/ts/components/CategoryManageList';
+} from '../../lib/newList';
+import * as S from '../../styles/ts/components/CategoryManageList';
 
 interface CategoryManageListProps {
   categoryJson: CategoryJson;

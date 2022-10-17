@@ -7,9 +7,9 @@ import { Modal } from 'antd';
 
 import EditorToolbar from './EditorToobar';
 import EditorContent from './EditorContent';
-import TempPostsModal from '../TempPostsModal';
-import ToastMessage from '../ToastMessage';
-import SettingModal from '../SettingModal';
+import TempPostsModal from './TempPostsModal';
+import ToastMessage from '../common/ToastMessage';
+import SettingModal from './SettingModal';
 import { tinymceEditorState } from '../../recoil/tinymce';
 import useGetTempPosts from '../../hooks/query/useGetTempPosts';
 import useCreateTempPost from '../../hooks/query/useCreateTempPost';

@@ -3,11 +3,11 @@ import Router, { useRouter } from 'next/router';
 import { Input } from 'antd';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 
-import useInput from '../hooks/common/input';
-import { mainPostsState, searchPostsState } from '../recoil/posts';
-import { PostItem } from '../types';
-import useGetPosts from '../hooks/query/useGetPosts';
-import { SearchWrapper } from '../styles/ts/components/Search';
+import useInput from '../../hooks/common/input';
+import { mainPostsState, searchPostsState } from '../../recoil/posts';
+import { PostItem } from '../../types';
+import useGetPosts from '../../hooks/query/useGetPosts';
+import { SearchWrapper } from '../../styles/ts/components/Search';
 
 const Search = () => {
   const { data } = useGetPosts();

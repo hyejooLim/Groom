@@ -1,7 +1,7 @@
 import React, { FC, ReactNode } from 'react';
 import Modal from 'react-modal';
 
-import { InnerModal } from '../styles/ts/components/ReactModal';
+import { InnerModal } from '../../styles/ts/components/ReactModal';
 
 Modal.setAppElement('#__next');
 

@@ -4,7 +4,7 @@ import { useRecoilValue } from 'recoil';
 import { FiCheck } from 'react-icons/fi';
 
 import ManageLayout from '../../components/layouts/ManageLayout';
-import CategoryManageList from '../../components/CategoryManageList';
+import CategoryManageList from '../../components/manage/CategoryManageList';
 import useGetCategories from '../../hooks/query/useGetCategories';
 import useUpdateCategories from '../../hooks/query/useUpdateCategories';
 import { categoriesState } from '../../recoil/categories';

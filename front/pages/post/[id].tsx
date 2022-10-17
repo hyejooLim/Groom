@@ -3,7 +3,7 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 
 import AppLayout from '../../components/layouts/AppLayout';
-import PostCard from '../../components/PostCard';
+import PostCard from '../../components/post/PostCard';
 import useGetPost from '../../hooks/query/useGetPost';
 
 const Post = () => {

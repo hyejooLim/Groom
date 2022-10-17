@@ -7,19 +7,19 @@ import { Markup } from 'interweave';
 import { useRecoilValue } from 'recoil';
 import dayjs from 'dayjs';
 
-import Title from './Title';
-import PaginationContainer from './PaginationContainer';
-import CommentForm from './CommentForm';
-import CommentList from './CommentList';
-import useGetUser from '../hooks/query/useGetUser';
-import useLikePost from '../hooks/query/useLikePost';
-import useUnLikePost from '../hooks/query/useUnLikePost';
-import useSubscribePost from '../hooks/query/useSubscribePost';
-import useUnSubscribePost from '../hooks/query/useUnSubscribePost';
-import useDeletePost from '../hooks/query/useDeletePost';
-import { mainPostsState } from '../recoil/posts';
-import { PostItem } from '../types';
-import * as S from '../styles/ts/components/PostCard';
+import Title from '../common/Title';
+import PaginationContainer from '../common/PaginationContainer';
+import CommentForm from '../comment/CommentForm';
+import CommentList from '../comment/CommentList';
+import useGetUser from '../../hooks/query/useGetUser';
+import useLikePost from '../../hooks/query/useLikePost';
+import useUnLikePost from '../../hooks/query/useUnLikePost';
+import useSubscribePost from '../../hooks/query/useSubscribePost';
+import useUnSubscribePost from '../../hooks/query/useUnSubscribePost';
+import useDeletePost from '../../hooks/query/useDeletePost';
+import { mainPostsState } from '../../recoil/posts';
+import { PostItem } from '../../types';
+import * as S from '../../styles/ts/components/PostCard';
 
 interface PostCardProps {
   post: PostItem;
