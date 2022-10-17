@@ -1,5 +1,4 @@
 import React, { useCallback, useEffect } from 'react';
-import { useSession } from 'next-auth/react';
 import Router, { useRouter } from 'next/router';
 import Image from 'next/image';
 import { useSetRecoilState } from 'recoil';
@@ -11,15 +10,16 @@ import Category from '../main/Category';
 import Counter from '../common/Counter';
 import Search from '../main/Search';
 import { currentPageState, firstIndexState, lastIndexState, PAGE_SIZE } from '../../recoil/page';
+import useGetUser from '../../hooks/query/useGetUser';
 import useGetVisitorsCount from '../../hooks/query/useGetVisitorsCount';
 import * as S from '../../styles/ts/components/layouts/AppLayout';
 import logo from '../../public/Groom_Logo_No_Background.png';
 
 const AppLayout = ({ children }) => {
   const router = useRouter();
-  const { status } = useSession();
+  const { data: user } = useGetUser();
   useGetVisitorsCount();
-  
+
   const setCurrentPage = useSetRecoilState(currentPageState);
   const setFirstIndex = useSetRecoilState(firstIndexState);
   const setLastIndex = useSetRecoilState(lastIndexState);
@@ -42,7 +42,7 @@ const AppLayout = ({ children }) => {
     <>
       <S.Container>
         <S.StyledSider width={300}>
-          {status === 'authenticated' ? <UserProfile /> : <LoginForm />}
+          {user ? <UserProfile /> : <LoginForm />}
           <Category />
           <Counter />
           <Search />
