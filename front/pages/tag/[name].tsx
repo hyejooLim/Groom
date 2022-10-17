@@ -6,7 +6,7 @@ import AppLayout from '../../components/layouts/AppLayout';
 import Title from '../../components/common/Title';
 import PostList from '../../components/post/PostList';
 import useGetTags from '../../hooks/query/tags';
-import { getPublicAndPublishedPosts } from '../../lib/posts';
+import { getPublicAndPublishedPosts } from '../../utils/posts';
 
 const Tag = () => {
   const router = useRouter();

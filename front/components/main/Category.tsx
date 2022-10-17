@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { CategoryItem } from '../../types';
 import { useGetCategories } from '../../hooks/query/categories';
 import { CategoryWrapper } from '../../styles/ts/components/Category';
-import { getPublicAndPublishedPosts } from '../../lib/posts';
+import { getPublicAndPublishedPosts } from '../../utils/posts';
 
 const Category = () => {
   const { data: categories } = useGetCategories();

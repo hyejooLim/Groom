@@ -12,7 +12,7 @@ import {
   changePriorityWhenDropExcludeNewItem,
   changePriorityWhenDelete,
   changePriorityWhenDeleteExcludeNewItem,
-} from '../../lib/newList';
+} from '../../utils/newList';
 import * as S from '../../styles/ts/components/CategoryManageList';
 
 interface CategoryManageListProps {

@@ -1,6 +1,6 @@
 import next, { NextApiHandler, NextApiRequest, NextApiResponse } from 'next';
 import prisma from '../../lib/prisma';
-import { hashPassword } from '../../lib/auth';
+import { hashPassword } from '../../utils/auth';
 
 const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
