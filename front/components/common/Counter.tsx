@@ -10,7 +10,7 @@ const Counter = () => {
 
   return (
     <CounterWrapper>
-      <span className='today'>{todayCount}</span> / <span className='total'>{totalCount}</span>
+      <span className='today'>{todayCount ?? 0}</span> / <span className='total'>{totalCount ?? 0}</span>
     </CounterWrapper>
   );
 };
