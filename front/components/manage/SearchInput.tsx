@@ -1,4 +1,4 @@
-import React, { FC, useState, useCallback, MouseEvent } from 'react';
+import React, { FC, useState, useEffect, useCallback, MouseEvent } from 'react';
 import { SetterOrUpdater } from 'recoil';
 import { Dropdown } from 'antd';
 import { UpOutlined, DownOutlined } from '@ant-design/icons';
@@ -40,6 +40,13 @@ const SearchInput: FC<SearchInputProps> = ({ posts, setIsSearch, setPosts, setTi
   const [openMenu, setOpenMenu] = useState(false);
   const [searchType, setSearchType] = useState(searchTypeList[0]);
   const [showInput, setShowInput] = useState(false);
+
+  useEffect(() => {
+    if (!showInput) {
+      setKeyword('');
+      setSearchType(searchTypeList[0]);
+    }
+  }, [showInput]);
 
   const onClickLabel = useCallback((e: MouseEvent<HTMLButtonElement>) => {
     setSearchType({ key: e.currentTarget.dataset.key, label: e.currentTarget.dataset.label });
@@ -96,8 +103,6 @@ const SearchInput: FC<SearchInputProps> = ({ posts, setIsSearch, setPosts, setTi
   const onClickCloseButton = () => {
     setShowInput(false);
     setOpenMenu(false);
-    setKeyword('');
-    setSearchType(searchTypeList[0]);
   };
 
   return (
