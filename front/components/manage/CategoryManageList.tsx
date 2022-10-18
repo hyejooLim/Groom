@@ -13,7 +13,7 @@ import {
   changePriorityWhenDelete,
   changePriorityWhenDeleteExcludeNewItem,
 } from '../../utils/newList';
-import * as S from '../../styles/ts/components/CategoryManageList';
+import * as S from '../../styles/ts/components/manage/CategoryManageList';
 
 interface CategoryManageListProps {
   categoryJson: CategoryJson;

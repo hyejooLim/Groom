@@ -1,7 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 
-import { LoginFormWrapper, LoginButton } from '../../styles/ts/components/LoginForm';
+import { LoginFormWrapper, LoginButton } from '../../styles/ts/components/main/LoginForm';
 
 const LoginForm = () => {
   return (

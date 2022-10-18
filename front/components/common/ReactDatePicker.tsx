@@ -5,7 +5,7 @@ import dayjs from 'dayjs';
 import classNames from 'classnames';
 
 import { ReserveDate } from '../../types';
-import * as S from '../../styles/ts/components/ReactDatePicker';
+import * as S from '../../styles/ts/components/common/ReactDatePicker';
 
 interface ReactDatePickerProps {
   reserveDate: ReserveDate;

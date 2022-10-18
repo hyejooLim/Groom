@@ -8,7 +8,7 @@ import classNames from 'classnames';
 import useInput from '../../hooks/common/input';
 import useGetTags from '../../hooks/query/tags';
 import { PostItem, TagItem } from '../../types';
-import * as S from '../../styles/ts/components/SearchInput';
+import * as S from '../../styles/ts/components/manage/SearchInput';
 
 interface SearchInputProps {
   posts: PostItem[];

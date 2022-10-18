@@ -10,7 +10,7 @@ import dayjs from 'dayjs';
 import { useGetUser } from '../../hooks/query/user';
 import { useDeletePost, useUnSubscribePost, useToggleIsPublicPost } from '../../hooks/query/post';
 import { PostItem } from '../../types';
-import * as S from '../../styles/ts/components/PostManageList';
+import * as S from '../../styles/ts/components/manage/PostManageList';
 
 interface PostManageListProps {
   posts: PostItem[];

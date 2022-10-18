@@ -21,7 +21,7 @@ import {
 } from '../../hooks/query/post';
 import { mainPostsState } from '../../recoil/posts';
 import { PostItem } from '../../types';
-import * as S from '../../styles/ts/components/PostCard';
+import * as S from '../../styles/ts/components/post/PostCard';
 
 interface PostCardProps {
   post: PostItem;

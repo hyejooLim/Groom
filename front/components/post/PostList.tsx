@@ -6,7 +6,7 @@ import dayjs from 'dayjs';
 import { PostItem } from '../../types';
 import { currentPageState, firstIndexState, lastIndexState, PAGE_SIZE } from '../../recoil/page';
 import PaginationContainer from '../common/PaginationContainer';
-import { ListWrapper, PostInfo } from '../../styles/ts/components/PostList';
+import { ListWrapper, PostInfo } from '../../styles/ts/components/post/PostList';
 
 interface PostListProps {
   posts: PostItem[];

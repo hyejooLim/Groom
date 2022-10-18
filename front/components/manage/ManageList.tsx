@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { HomeOutlined, SettingOutlined } from '@ant-design/icons';
 import classNames from 'classnames';
 
-import * as S from '../../styles/ts/components/ManageList';
+import * as S from '../../styles/ts/components/manage/ManageList';
 
 const ManageList = () => {
   const router = useRouter();

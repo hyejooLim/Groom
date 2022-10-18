@@ -9,7 +9,7 @@ import classNames from 'classnames';
 import AWS from 'aws-sdk';
 
 import { useGetUser, useUpdateUser } from '../../hooks/query/user';
-import * as S from '../../styles/ts/components/ManageProfile';
+import * as S from '../../styles/ts/components/manage/ManageProfile';
 
 const s3 = new AWS.S3();
 

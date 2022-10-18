@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import classnames from 'classnames';
 
-import { ToastMessageWrapper } from '../../styles/ts/components/ToastMessage';
+import { ToastMessageWrapper } from '../../styles/ts/components/common/ToastMessage';
 
 interface ToastMessageProps {
   show: boolean;

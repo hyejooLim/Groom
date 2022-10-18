@@ -6,7 +6,7 @@ import useInput from '../../hooks/common/input';
 import { useGetUser } from '../../hooks/query/user';
 import { useCreateComment } from '../../hooks/query/comment';
 import { PostItem } from '../../types';
-import { AddCommentButton, StyledTextArea } from '../../styles/ts/components/CommentForm';
+import { AddCommentButton, StyledTextArea } from '../../styles/ts/components/comment/CommentForm';
 
 interface CommentFormProps {
   post: PostItem;

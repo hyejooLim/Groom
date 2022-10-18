@@ -5,7 +5,7 @@ import { Avatar } from 'antd';
 import { BsCloudFill } from 'react-icons/bs';
 
 import { useGetUser } from '../../hooks/query/user';
-import * as S from '../../styles/ts/components/UserProfile';
+import * as S from '../../styles/ts/components/main/UserProfile';
 
 const UserProfile = () => {
   const { data: user } = useGetUser();

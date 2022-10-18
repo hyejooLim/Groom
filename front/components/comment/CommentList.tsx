@@ -7,7 +7,7 @@ import { useGetUser } from '../../hooks/query/user';
 import useGetComments from '../../hooks/query/comments';
 import { useUpdateComment, useDeleteComment } from '../../hooks/query/comment';
 import { CommentItem } from '../../types';
-import * as S from '../../styles/ts/components/CommentList';
+import * as S from '../../styles/ts/components/comment/CommentList';
 
 interface CommentListProps {
   postId: number;

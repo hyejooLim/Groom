@@ -7,7 +7,7 @@ import useGetTempPosts from '../../hooks/query/tempPosts';
 import { useDeleteTempPost } from '../../hooks/query/tempPost';
 import { TempPostItem } from '../../types';
 import ReactModal from '../common/ReactModal';
-import * as S from '../../styles/ts/components/TempPostsModal';
+import * as S from '../../styles/ts/components/editor/TempPostsModal';
 
 interface TempPostsModalProps {
   isOpen: boolean;

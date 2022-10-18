@@ -9,7 +9,7 @@ import ReactDatePicker from '../common/ReactDatePicker';
 import * as ContentMode from '../../constants/ContentMode';
 import * as PublishMode from '../../constants/PublishMode';
 import { ContentModeType, PostItem, ReserveDate } from '../../types';
-import * as S from '../../styles/ts/components/SettingModal';
+import * as S from '../../styles/ts/components/editor/SettingModal';
 
 interface SettingModalProps {
   mode: ContentModeType;

@@ -7,7 +7,7 @@ import useInput from '../../hooks/common/input';
 import { mainPostsState, searchPostsState } from '../../recoil/posts';
 import { PostItem } from '../../types';
 import useGetPosts from '../../hooks/query/posts';
-import { SearchWrapper } from '../../styles/ts/components/Search';
+import { SearchWrapper } from '../../styles/ts/components/main/Search';
 
 const Search = () => {
   const { data } = useGetPosts();
