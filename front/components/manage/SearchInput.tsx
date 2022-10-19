@@ -47,8 +47,10 @@ const SearchInput: FC<SearchInputProps> = ({ placeholder }) => {
   const onSubmitInput = useCallback(() => {
     setShowInput(false);
 
-    Router.push(`/manage/post/${keyword}/${searchType.label}`);
-  }, [keyword, searchType]);
+    placeholder === '글'
+      ? Router.push(`/manage/post/${keyword}/${searchType.label}`)
+      : Router.push(`/manage/subscribedPost/${keyword}/${searchType.label}`);
+  }, [placeholder, keyword, searchType]);
 
   const onClickCloseButton = () => {
     setShowInput(false);
@@ -71,7 +73,7 @@ const SearchInput: FC<SearchInputProps> = ({ placeholder }) => {
       })}
     />
   );
-  
+
   return (
     <S.FormWrapper className={classNames({ on: showInput })}>
       <S.StyledForm onFinish={onSubmitInput}>
