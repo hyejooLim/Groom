@@ -3,22 +3,21 @@ import Head from 'next/head';
 import { useRecoilState } from 'recoil';
 import { CloseCircleOutlined } from '@ant-design/icons';
 
-import ManageLayout from '../../components/layouts/ManageLayout';
-import PostManageList from '../../components/manage/PostManageList';
-import PaginationContainer from '../../components/common/PaginationContainer';
-import { useGetUser } from '../../hooks/query/user';
-import SearchInput from '../../components/manage/SearchInput';
-import { isSearchManagePostsState, managePostsState, managePostsTitleState } from '../../recoil/manage';
-import { TitleWrapper, CloseButton } from '../../styles/ts/common';
-
-const pageSize = 5;
+import ManageLayout from '../../../components/layouts/ManageLayout';
+import PostManageList from '../../../components/manage/PostManageList';
+import PaginationContainer from '../../../components/common/PaginationContainer';
+import { useGetUser } from '../../../hooks/query/user';
+import SearchInput from '../../../components/manage/SearchInput';
+import { MANAGE_PAGE_SIZE } from '../../../recoil/page';
+import { isSearchManagePostsState, managePostsState, managePostsTitleState } from '../../../recoil/manage';
+import { TitleWrapper, CloseButton } from '../../../styles/ts/common';
 
 const ManagePost = () => {
   const { data: user } = useGetUser();
 
   const [currentPage, setCurrentPage] = useState(1);
   const [firstIndex, setFirstIndex] = useState(0);
-  const [lastIndex, setLastIndex] = useState(pageSize);
+  const [lastIndex, setLastIndex] = useState(MANAGE_PAGE_SIZE);
 
   const [isSearch, setIsSearch] = useRecoilState(isSearchManagePostsState);
   const [managePosts, setManagePosts] = useRecoilState(managePostsState);
@@ -36,25 +35,13 @@ const ManagePost = () => {
     }
   }, [user?.posts]);
 
-  const onLoadMainPosts = useCallback(() => {
-    setIsSearch(false);
-    setManagePostsTitle('');
-    setManagePosts(user.posts);
-
-    setCurrentPage(1);
-    setFirstIndex(0);
-    setLastIndex(pageSize);
-
-    localStorage.removeItem('managePosts');
-  }, [user, pageSize]);
-
   const onChangePostList = useCallback(
     (e: any) => {
       setIsSearch(false);
       setManagePostsTitle(e.target.dataset.name);
       setCurrentPage(1);
       setFirstIndex(0);
-      setLastIndex(pageSize);
+      setLastIndex(MANAGE_PAGE_SIZE);
 
       const newPosts = user?.posts.filter((post) => post.categoryId === Number(e.target.dataset.id));
       setManagePosts(newPosts);
@@ -62,16 +49,16 @@ const ManagePost = () => {
       const item = { posts: newPosts, title: e.target.dataset.name, isSearch: false };
       localStorage.setItem('managePosts', JSON.stringify(item));
     },
-    [pageSize, user?.posts]
+    [MANAGE_PAGE_SIZE, user?.posts]
   );
 
   const onChangePage = useCallback(
     (page: number) => {
       setCurrentPage(page);
-      setFirstIndex((page - 1) * pageSize);
-      setLastIndex(page * pageSize);
+      setFirstIndex((page - 1) * MANAGE_PAGE_SIZE);
+      setLastIndex(page * MANAGE_PAGE_SIZE);
     },
-    [pageSize]
+    [MANAGE_PAGE_SIZE]
   );
 
   return (
@@ -83,7 +70,7 @@ const ManagePost = () => {
         <TitleWrapper>
           {managePostsTitle ? (
             <div style={{ display: 'flex', alignItems: 'center' }}>
-              <CloseButton onClick={onLoadMainPosts}>
+              <CloseButton>
                 <CloseCircleOutlined />
               </CloseButton>
               <span className='title text'>{managePostsTitle}</span>
@@ -95,11 +82,10 @@ const ManagePost = () => {
           <span className='count'>{managePosts?.length}</span>
         </TitleWrapper>
         <SearchInput
-          posts={user?.posts}
-          setIsSearch={setIsSearch}
-          setPosts={setManagePosts}
-          setTitle={setManagePostsTitle}
-          pageName='managePosts'
+          // posts={user?.posts}
+          // setIsSearch={setIsSearch} // useGetFilteredPosts에서 작성
+          // setPosts={setManagePosts} // useGetFilteredPosts에서 작성
+          placeholder='글'
         />
         <PostManageList
           posts={managePosts}
@@ -109,7 +95,7 @@ const ManagePost = () => {
         />
       </div>
       <PaginationContainer
-        pageSize={pageSize}
+        pageSize={MANAGE_PAGE_SIZE}
         current={currentPage}
         total={managePosts?.length}
         onChange={onChangePage}

@@ -1,21 +1,15 @@
 import React, { FC, useState, useEffect, useCallback, MouseEvent } from 'react';
-import { SetterOrUpdater } from 'recoil';
+import Router from 'next/router';
 import { Dropdown } from 'antd';
 import { UpOutlined, DownOutlined } from '@ant-design/icons';
 import { GrSearch } from 'react-icons/gr';
 import classNames from 'classnames';
 
 import useInput from '../../hooks/common/input';
-import useGetTags from '../../hooks/query/tags';
-import { PostItem, TagItem } from '../../types';
 import * as S from '../../styles/ts/components/manage/SearchInput';
 
 interface SearchInputProps {
-  posts: PostItem[];
-  setIsSearch: SetterOrUpdater<boolean>;
-  setPosts: SetterOrUpdater<PostItem[]>;
-  setTitle: SetterOrUpdater<string>;
-  pageName: string;
+  placeholder: string;
 }
 
 const searchTypeList = [
@@ -33,9 +27,7 @@ const searchTypeList = [
   },
 ];
 
-const SearchInput: FC<SearchInputProps> = ({ posts, setIsSearch, setPosts, setTitle, pageName }) => {
-  const { data: tags } = useGetTags();
-
+const SearchInput: FC<SearchInputProps> = ({ placeholder }) => {
   const [keyword, onChangeKeyword, setKeyword] = useInput('');
   const [openMenu, setOpenMenu] = useState(false);
   const [searchType, setSearchType] = useState(searchTypeList[0]);
@@ -51,6 +43,17 @@ const SearchInput: FC<SearchInputProps> = ({ posts, setIsSearch, setPosts, setTi
   const onClickLabel = useCallback((e: MouseEvent<HTMLButtonElement>) => {
     setSearchType({ key: e.currentTarget.dataset.key, label: e.currentTarget.dataset.label });
   }, []);
+
+  const onSubmitInput = useCallback(() => {
+    setShowInput(false);
+
+    Router.push(`/manage/post/${keyword}/${searchType.label}`);
+  }, [keyword, searchType]);
+
+  const onClickCloseButton = () => {
+    setShowInput(false);
+    setOpenMenu(false);
+  };
 
   const menu = (
     <S.OverrideMenu
@@ -68,43 +71,7 @@ const SearchInput: FC<SearchInputProps> = ({ posts, setIsSearch, setPosts, setTi
       })}
     />
   );
-
-  const onSetPosts = useCallback(() => {
-    if (searchType.key === 'TITLE') {
-      const filteredPosts = posts.filter((post: PostItem) => post.title.toLowerCase().includes(keyword.toLowerCase()));
-      const item = { posts: filteredPosts, title: keyword, isSearch: true };
-
-      setPosts(filteredPosts);
-      localStorage.setItem(pageName, JSON.stringify(item));
-    } else if (searchType.key === 'CONTENT') {
-      const filteredPosts = posts.filter((post: PostItem) =>
-        post.content.toLowerCase().includes(keyword.toLowerCase())
-      );
-      const item = { posts: filteredPosts, title: keyword, isSearch: true };
-
-      setPosts(filteredPosts);
-      localStorage.setItem(pageName, JSON.stringify(item));
-    } else if (searchType.key === 'TAG') {
-      const matchedTag = tags?.find((tag: TagItem) => tag.name === keyword);
-      const item = { posts: matchedTag?.posts, title: keyword, isSearch: true };
-
-      setPosts(matchedTag?.posts);
-      localStorage.setItem(pageName, JSON.stringify(item));
-    }
-  }, [keyword, searchType, pageName]);
-
-  const onSubmitInput = useCallback(() => {
-    setTitle(`'${keyword}'`);
-    setIsSearch(true);
-    setShowInput(false);
-    onSetPosts();
-  }, [keyword]);
-
-  const onClickCloseButton = () => {
-    setShowInput(false);
-    setOpenMenu(false);
-  };
-
+  
   return (
     <S.FormWrapper className={classNames({ on: showInput })}>
       <S.StyledForm onFinish={onSubmitInput}>
@@ -132,7 +99,7 @@ const SearchInput: FC<SearchInputProps> = ({ posts, setIsSearch, setPosts, setTi
                 type='text'
                 value={keyword}
                 onChange={onChangeKeyword}
-                placeholder={(pageName === 'managePosts' ? '글' : '구독 글') + ' 관리에서 검색합니다.'}
+                placeholder={placeholder + '에서 검색합니다.'}
               />
               <S.SearchButton htmlType='submit' disabled={!keyword || !keyword.trim()}>
                 <GrSearch />
