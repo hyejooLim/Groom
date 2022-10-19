@@ -54,7 +54,8 @@ const ManagePostSearch = () => {
                 </CloseButton>
               </a>
             </Link>
-            <span className='title'>{keyword} 검색결과</span>
+            <span className='text title'>'{keyword}'</span>
+            <span className='text'>검색결과</span>
             <span className='count'>{posts?.length}</span>
           </div>
         </TitleWrapper>
