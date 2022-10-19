@@ -1,5 +1,4 @@
 import { NextApiHandler, NextApiRequest, NextApiResponse } from 'next';
-import dayjs from 'dayjs';
 import prisma from '../../lib/prisma';
 
 const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -9,7 +8,7 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
         where: {
           isPublic: true,
           createdAt: {
-            lte: new Date(dayjs().format('YYYY-MM-DD HH:mm:ss')),
+            lte: new Date(),
           },
         },
         orderBy: [
