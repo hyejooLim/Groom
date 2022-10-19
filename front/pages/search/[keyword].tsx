@@ -1,16 +1,16 @@
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import { useRecoilValue } from 'recoil';
 
 import AppLayout from '../../components/layouts/AppLayout';
 import Title from '../../components/common/Title';
 import PostList from '../../components/post/PostList';
-import { searchPostsState } from '../../recoil/posts';
+import { useGetFilteredMainPosts } from '../../hooks/query/posts';
 
 const Keyword = () => {
   const router = useRouter();
   const { keyword } = router.query;
-  const searchPosts = useRecoilValue(searchPostsState);
+
+  const { data: posts } = useGetFilteredMainPosts(keyword as string);
 
   return (
     <AppLayout>
@@ -20,7 +20,7 @@ const Keyword = () => {
       <div style={{ textAlign: 'center' }}>
         <Title title={keyword as string} />
       </div>
-      <PostList posts={searchPosts} />
+      <PostList posts={posts} />
     </AppLayout>
   );
 };
