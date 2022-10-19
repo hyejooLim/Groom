@@ -6,7 +6,7 @@ import Title from '../../components/common/Title';
 import PostList from '../../components/post/PostList';
 import { useGetFilteredMainPosts } from '../../hooks/query/posts';
 
-const Keyword = () => {
+const Search = () => {
   const router = useRouter();
   const { keyword } = router.query;
 
@@ -25,4 +25,4 @@ const Keyword = () => {
   );
 };
 
-export default Keyword;
+export default Search;
