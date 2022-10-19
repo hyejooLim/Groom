@@ -16,7 +16,7 @@ const ManagePostSearch = () => {
   const router = useRouter();
   const { keyword, searchType } = router.query;
 
-  const [currnetPage, setCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(1);
   const [firstIndex, setFirstIndex] = useState(0);
   const [lastIndex, setLastIndex] = useState(MANAGE_PAGE_SIZE);
 
@@ -69,7 +69,7 @@ const ManagePostSearch = () => {
       </div>
       <PaginationContainer
         pageSize={MANAGE_PAGE_SIZE}
-        current={currnetPage}
+        current={currentPage}
         total={posts?.length}
         onChange={onChangePage}
       />
