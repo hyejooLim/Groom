@@ -199,7 +199,7 @@ const SettingModal: FC<SettingModalProps> = ({
                 취소
               </Button>
               <Button htmlType='submit' className='submit btn'>
-                {radioValue ? '공개 발행' : '비공개 저장'}
+                {radioValue === 'public' ? '공개 발행' : '비공개 저장'}
               </Button>
             </div>
           </S.FootLayer>
