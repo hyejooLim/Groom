@@ -4,13 +4,13 @@ import { useRouter } from 'next/router';
 import AppLayout from '../../components/layouts/AppLayout';
 import Title from '../../components/common/Title';
 import PostList from '../../components/post/PostList';
-import { useGetFilteredMainPosts } from '../../hooks/query/posts';
+import { useSearchMainPosts } from '../../hooks/query/search';
 
 const Search = () => {
   const router = useRouter();
   const { keyword } = router.query;
 
-  const { data: posts } = useGetFilteredMainPosts(keyword as string);
+  const { data: posts } = useSearchMainPosts(keyword as string);
 
   return (
     <AppLayout>
