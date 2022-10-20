@@ -88,7 +88,7 @@ const PostManageList: FC<PostManageListProps> = ({ posts, firstIndex, lastIndex,
                   </Button>
                 </>
               )}
-              {router.pathname === '/manage/subscribedPosts' && (
+              {router.pathname.includes('/manage/subscribedPosts') && (
                 <Button className='subscribe_cancel btn' onClick={() => onUnSubscribe(post.id)}>
                   구독 취소
                 </Button>
