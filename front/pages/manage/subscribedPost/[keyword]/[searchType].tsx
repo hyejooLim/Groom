@@ -22,14 +22,6 @@ const ManageSubscribedPostSearch = () => {
 
   const { data: posts } = useSearchSubscribedPosts(keyword as string, searchType as string);
 
-  const onChangePostList = useCallback((e) => {
-    setCurrentPage(1);
-    setFirstIndex(0);
-    setLastIndex(MANAGE_PAGE_SIZE);
-
-    // 수정 필요
-  }, []);
-
   const onChangePage = useCallback(
     (page: number) => {
       setCurrentPage(page);
@@ -60,12 +52,7 @@ const ManageSubscribedPostSearch = () => {
           </div>
         </TitleWrapper>
         <SearchInput placeholder='구독 글' />
-        <PostManageList
-          posts={posts}
-          firstIndex={firstIndex}
-          lastIndex={lastIndex}
-          onChangePostList={onChangePostList}
-        />
+        <PostManageList posts={posts} firstIndex={firstIndex} lastIndex={lastIndex} />
       </div>
       <PaginationContainer
         pageSize={MANAGE_PAGE_SIZE}

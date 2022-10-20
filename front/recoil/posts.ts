@@ -6,9 +6,3 @@ export const mainPostsState = atom<PostItem[]>({
   default: [],
   dangerouslyAllowMutability: true,
 });
-
-export const searchPostsState = atom<PostItem[]>({
-  key: 'searchPosts',
-  default: [],
-  dangerouslyAllowMutability: true,
-});

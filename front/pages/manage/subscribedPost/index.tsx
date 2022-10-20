@@ -6,31 +6,16 @@ import ManageLayout from '../../../components/layouts/ManageLayout';
 import PostManageList from '../../../components/manage/PostManageList';
 import PaginationContainer from '../../../components/common/PaginationContainer';
 import SearchInput from '../../../components/manage/SearchInput';
-import { useGetUser } from '../../../hooks/query/user';
 import { MANAGE_PAGE_SIZE } from '../../../recoil/page';
 import { manageSubscribedPostsState } from '../../../recoil/manage';
 import { TitleWrapper } from '../../../styles/ts/common';
 
 const ManageSubscribedPost = () => {
-  const { data: user } = useGetUser();
-
   const [currentPage, setCurrentPage] = useState(1);
   const [firstIndex, setFirstIndex] = useState(0);
   const [lastIndex, setLastIndex] = useState(MANAGE_PAGE_SIZE);
 
   const [manageSubscribedPosts, setManageSubscribedPosts] = useRecoilState(manageSubscribedPostsState);
-
-  const onChangePostList = useCallback(
-    (e: any) => {
-      setCurrentPage(1);
-      setFirstIndex(0);
-      setLastIndex(MANAGE_PAGE_SIZE);
-
-      const newPosts = user?.subscribedPosts.filter((post) => post.categoryId === Number(e.target.dataset.id));
-      setManageSubscribedPosts(newPosts);
-    },
-    [MANAGE_PAGE_SIZE, user?.subscribedPosts]
-  );
 
   const onChangePage = useCallback(
     (page: number) => {
@@ -52,12 +37,7 @@ const ManageSubscribedPost = () => {
           <span className='count'>{manageSubscribedPosts?.length}</span>
         </TitleWrapper>
         <SearchInput placeholder='구독 글' />
-        <PostManageList
-          posts={manageSubscribedPosts}
-          firstIndex={firstIndex}
-          lastIndex={lastIndex}
-          onChangePostList={onChangePostList}
-        />
+        <PostManageList posts={manageSubscribedPosts} firstIndex={firstIndex} lastIndex={lastIndex} />
       </div>
       <PaginationContainer
         pageSize={MANAGE_PAGE_SIZE}
