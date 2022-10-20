@@ -27,13 +27,13 @@ const ManageList = () => {
           </div>
           <S.ListWrapper>
             <li>
-              <Link href='/manage/post'>
-                <a className={classNames('list_menu', { on: router.pathname === '/manage/post' })}>글 관리</a>
+              <Link href='/manage/posts'>
+                <a className={classNames('list_menu', { on: router.pathname === '/manage/posts' })}>글 관리</a>
               </Link>
             </li>
             <li>
-              <Link href='/manage/subscribedPost'>
-                <a className={classNames('list_menu', { on: router.pathname === '/manage/subscribedPost' })}>
+              <Link href='/manage/subscribedPosts'>
+                <a className={classNames('list_menu', { on: router.pathname === '/manage/subscribedPosts' })}>
                   구독 글 관리
                 </a>
               </Link>

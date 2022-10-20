@@ -8,11 +8,11 @@ import ManageLayout from '../../../../components/layouts/ManageLayout';
 import SearchInput from '../../../../components/manage/SearchInput';
 import PostManageList from '../../../../components/manage/PostManageList';
 import PaginationContainer from '../../../../components/common/PaginationContainer';
-import { useSearchSubscribedPosts } from '../../../../hooks/query/search';
+import { useSearchPosts } from '../../../../hooks/query/search';
 import { MANAGE_PAGE_SIZE } from '../../../../recoil/page';
 import { CloseButton, TitleWrapper } from '../../../../styles/ts/common';
 
-const ManageSubscribedPostSearch = () => {
+const SearchManagePosts = () => {
   const router = useRouter();
   const { keyword, searchType } = router.query;
 
@@ -20,7 +20,7 @@ const ManageSubscribedPostSearch = () => {
   const [firstIndex, setFirstIndex] = useState(0);
   const [lastIndex, setLastIndex] = useState(MANAGE_PAGE_SIZE);
 
-  const { data: posts } = useSearchSubscribedPosts(keyword as string, searchType as string);
+  const { data: posts } = useSearchPosts(keyword as string, searchType as string);
 
   const onChangePage = useCallback(
     (page: number) => {
@@ -34,12 +34,12 @@ const ManageSubscribedPostSearch = () => {
   return (
     <ManageLayout>
       <Head>
-        <title>Groom | 구독 글 관리 '{keyword}'의 검색결과</title>
+        <title>Groom | 글 관리 '{keyword}'의 검색결과</title>
       </Head>
       <div>
         <TitleWrapper>
           <div style={{ display: 'flex', alignItems: 'center' }}>
-            <Link href='/manage/subscribedPost'>
+            <Link href='/manage/posts'>
               <a>
                 <CloseButton>
                   <CloseCircleOutlined />
@@ -51,7 +51,7 @@ const ManageSubscribedPostSearch = () => {
             <span className='count'>{posts?.length}</span>
           </div>
         </TitleWrapper>
-        <SearchInput placeholder='구독 글' />
+        <SearchInput placeholder='글' />
         <PostManageList posts={posts} firstIndex={firstIndex} lastIndex={lastIndex} />
       </div>
       <PaginationContainer
@@ -64,4 +64,4 @@ const ManageSubscribedPostSearch = () => {
   );
 };
 
-export default ManageSubscribedPostSearch;
+export default SearchManagePosts;

@@ -10,7 +10,7 @@ import { MANAGE_PAGE_SIZE } from '../../../recoil/page';
 import { manageSubscribedPostsState } from '../../../recoil/manage';
 import { TitleWrapper } from '../../../styles/ts/common';
 
-const ManageSubscribedPost = () => {
+const ManageSubscribedPosts = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [firstIndex, setFirstIndex] = useState(0);
   const [lastIndex, setLastIndex] = useState(MANAGE_PAGE_SIZE);
@@ -49,4 +49,4 @@ const ManageSubscribedPost = () => {
   );
 };
 
-export default ManageSubscribedPost;
+export default ManageSubscribedPosts;

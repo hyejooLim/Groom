@@ -10,7 +10,7 @@ import { MANAGE_PAGE_SIZE } from '../../../recoil/page';
 import { managePostsState } from '../../../recoil/manage';
 import { TitleWrapper } from '../../../styles/ts/common';
 
-const ManagePost = () => {
+const ManagePosts = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [firstIndex, setFirstIndex] = useState(0);
   const [lastIndex, setLastIndex] = useState(MANAGE_PAGE_SIZE);
@@ -53,4 +53,4 @@ const ManagePost = () => {
   );
 };
 
-export default ManagePost;
+export default ManagePosts;

@@ -48,8 +48,8 @@ const SearchInput: FC<SearchInputProps> = ({ placeholder }) => {
     setShowInput(false);
 
     placeholder === '글'
-      ? Router.push(`/manage/post/${keyword}/${searchType.label}`)
-      : Router.push(`/manage/subscribedPost/${keyword}/${searchType.label}`);
+      ? Router.push(`/manage/posts/${keyword}/${searchType.label}`)
+      : Router.push(`/manage/subscribedPosts/${keyword}/${searchType.label}`);
   }, [placeholder, keyword, searchType]);
 
   const onClickCloseButton = () => {

@@ -64,8 +64,8 @@ const PostManageList: FC<PostManageListProps> = ({ posts, firstIndex, lastIndex 
               </div>
               <div className='post_extra_info'>
                 <Link
-                  href={{ pathname: `/manage/post/category/${post.categoryId}`, query: { name: post.category?.name } }}
-                  as={`/manage/post/category/${post.categoryId}`}
+                  href={{ pathname: `/manage/posts/category/${post.categoryId}`, query: { name: post.category?.name } }}
+                  as={`/manage/posts/category/${post.categoryId}`}
                 >
                   <a>
                     <span>{post.category?.name}</span>
@@ -92,7 +92,7 @@ const PostManageList: FC<PostManageListProps> = ({ posts, firstIndex, lastIndex 
                   </Button>
                 </>
               )}
-              {router.pathname === '/manage/subscribedPost' && (
+              {router.pathname === '/manage/subscribedPosts' && (
                 <Button className='subscribe_cancel btn' onClick={() => onUnSubscribe(post.id)}>
                   구독 취소
                 </Button>

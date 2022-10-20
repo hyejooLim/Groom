@@ -334,7 +334,7 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
         localStorage.removeItem('saveTime');
         localStorage.removeItem('postData');
 
-        Router.push('/manage/post');
+        Router.push('/manage/posts');
       }
     } catch (err) {
       console.error(err);

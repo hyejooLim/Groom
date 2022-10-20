@@ -1,26 +1,26 @@
-import { useState, useCallback } from 'react';
+import { useCallback, useState } from 'react';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 import Link from 'next/link';
 import { CloseCircleOutlined } from '@ant-design/icons';
 
-import { MANAGE_PAGE_SIZE } from '../../../../recoil/page';
 import ManageLayout from '../../../../components/layouts/ManageLayout';
 import SearchInput from '../../../../components/manage/SearchInput';
 import PostManageList from '../../../../components/manage/PostManageList';
 import PaginationContainer from '../../../../components/common/PaginationContainer';
-import { useGetPostsIncludeCategory } from '../../../../hooks/query/posts';
+import { useSearchSubscribedPosts } from '../../../../hooks/query/search';
+import { MANAGE_PAGE_SIZE } from '../../../../recoil/page';
 import { CloseButton, TitleWrapper } from '../../../../styles/ts/common';
 
-const ManagePostSearchCategory = () => {
+const SearchManageSubscribedPosts = () => {
   const router = useRouter();
-  const { id, name } = router.query;
+  const { keyword, searchType } = router.query;
 
   const [currentPage, setCurrentPage] = useState(1);
   const [firstIndex, setFirstIndex] = useState(0);
   const [lastIndex, setLastIndex] = useState(MANAGE_PAGE_SIZE);
 
-  const { data: posts } = useGetPostsIncludeCategory(Number(id));
+  const { data: posts } = useSearchSubscribedPosts(keyword as string, searchType as string);
 
   const onChangePage = useCallback(
     (page: number) => {
@@ -34,24 +34,24 @@ const ManagePostSearchCategory = () => {
   return (
     <ManageLayout>
       <Head>
-        <title>Groom | 글 관리 '{name}' 카테고리의 글 목록</title>
+        <title>Groom | 구독 글 관리 '{keyword}'의 검색결과</title>
       </Head>
       <div>
         <TitleWrapper>
-          <div>
-            <Link href='/manage/post'>
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <Link href='/manage/subscribedPosts'>
               <a>
                 <CloseButton>
                   <CloseCircleOutlined />
                 </CloseButton>
               </a>
             </Link>
-            <span className='text title'>'{name}'</span>
-            <span className='text'>글</span>
+            <span className='text title'>'{keyword}'</span>
+            <span className='text'>검색결과</span>
             <span className='count'>{posts?.length}</span>
           </div>
         </TitleWrapper>
-        <SearchInput placeholder='글' />
+        <SearchInput placeholder='구독 글' />
         <PostManageList posts={posts} firstIndex={firstIndex} lastIndex={lastIndex} />
       </div>
       <PaginationContainer
@@ -64,4 +64,4 @@ const ManagePostSearchCategory = () => {
   );
 };
 
-export default ManagePostSearchCategory;
+export default SearchManageSubscribedPosts;
