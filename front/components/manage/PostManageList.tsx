@@ -16,10 +16,9 @@ interface PostManageListProps {
   posts: PostItem[];
   firstIndex: number;
   lastIndex: number;
-  onChangePostList: (e: any) => void;
 }
 
-const PostManageList: FC<PostManageListProps> = ({ posts, firstIndex, lastIndex, onChangePostList }) => {
+const PostManageList: FC<PostManageListProps> = ({ posts, firstIndex, lastIndex }) => {
   const router = useRouter();
   const { data: user } = useGetUser();
 
@@ -64,11 +63,14 @@ const PostManageList: FC<PostManageListProps> = ({ posts, firstIndex, lastIndex,
                 <PaperClipOutlined />
               </div>
               <div className='post_extra_info'>
-                <a onClick={onChangePostList}>
-                  <span data-name={post?.category?.name} data-id={post?.categoryId}>
-                    {post.category?.name}
-                  </span>
-                </a>
+                <Link
+                  href={{ pathname: `/manage/post/category/${post.categoryId}`, query: { name: post.category?.name } }}
+                  as={`/manage/post/category/${post.categoryId}`}
+                >
+                  <a>
+                    <span>{post.category?.name}</span>
+                  </a>
+                </Link>
                 <span>{post.author?.name}</span>
                 <span>{dayjs(post.createdAt).format('YYYY.MM.DD HH:mm')}</span>
               </div>
