@@ -1,6 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import Head from 'next/head';
-import { useRecoilState } from 'recoil';
+import Router from 'next/router';
+import { useRecoilValue } from 'recoil';
 
 import ManageLayout from '../../../components/layouts/ManageLayout';
 import PostManageList from '../../../components/manage/PostManageList';
@@ -15,7 +16,7 @@ const ManageSubscribedPosts = () => {
   const [firstIndex, setFirstIndex] = useState(0);
   const [lastIndex, setLastIndex] = useState(MANAGE_PAGE_SIZE);
 
-  const [manageSubscribedPosts, setManageSubscribedPosts] = useRecoilState(manageSubscribedPostsState);
+  const manageSubscribedPosts = useRecoilValue(manageSubscribedPostsState);
 
   const onChangePage = useCallback(
     (page: number) => {
@@ -25,6 +26,17 @@ const ManageSubscribedPosts = () => {
     },
     [MANAGE_PAGE_SIZE]
   );
+
+  const onSearchInput = (keyword: string, searchType: string) => {
+    Router.push(`/manage/subscribedPosts/${keyword}/${searchType}`);
+  };
+
+  const onClickCategory = (id: number, name: string) => {
+    Router.push(
+      { pathname: `/manage/subscribedPosts/category/${id}`, query: { name } },
+      `/manage/subscribedPosts/category/${id}`
+    );
+  };
 
   return (
     <ManageLayout>
@@ -36,8 +48,13 @@ const ManageSubscribedPosts = () => {
           <span className='text'>구독 글 관리</span>
           <span className='count'>{manageSubscribedPosts?.length}</span>
         </TitleWrapper>
-        <SearchInput placeholder='구독 글' />
-        <PostManageList posts={manageSubscribedPosts} firstIndex={firstIndex} lastIndex={lastIndex} />
+        <SearchInput placeholder='구독 글' onSearch={onSearchInput} />
+        <PostManageList
+          posts={manageSubscribedPosts}
+          firstIndex={firstIndex}
+          lastIndex={lastIndex}
+          onClickCategory={onClickCategory}
+        />
       </div>
       <PaginationContainer
         pageSize={MANAGE_PAGE_SIZE}

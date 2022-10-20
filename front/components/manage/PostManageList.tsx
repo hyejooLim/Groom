@@ -16,9 +16,10 @@ interface PostManageListProps {
   posts: PostItem[];
   firstIndex: number;
   lastIndex: number;
+  onClickCategory: (id: number, name: string) => void;
 }
 
-const PostManageList: FC<PostManageListProps> = ({ posts, firstIndex, lastIndex }) => {
+const PostManageList: FC<PostManageListProps> = ({ posts, firstIndex, lastIndex, onClickCategory }) => {
   const router = useRouter();
   const { data: user } = useGetUser();
 
@@ -63,14 +64,9 @@ const PostManageList: FC<PostManageListProps> = ({ posts, firstIndex, lastIndex 
                 <PaperClipOutlined />
               </div>
               <div className='post_extra_info'>
-                <Link
-                  href={{ pathname: `/manage/posts/category/${post.categoryId}`, query: { name: post.category?.name } }}
-                  as={`/manage/posts/category/${post.categoryId}`}
-                >
-                  <a>
-                    <span>{post.category?.name}</span>
-                  </a>
-                </Link>
+                <a onClick={() => onClickCategory(post.categoryId, post.category?.name)}>
+                  <span>{post.category?.name}</span>
+                </a>
                 <span>{post.author?.name}</span>
                 <span>{dayjs(post.createdAt).format('YYYY.MM.DD HH:mm')}</span>
               </div>

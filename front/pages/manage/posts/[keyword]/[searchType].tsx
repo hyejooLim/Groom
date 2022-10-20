@@ -2,6 +2,7 @@ import { useCallback, useState } from 'react';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 import Link from 'next/link';
+import Router from 'next/router';
 import { CloseCircleOutlined } from '@ant-design/icons';
 
 import ManageLayout from '../../../../components/layouts/ManageLayout';
@@ -31,6 +32,14 @@ const SearchManagePosts = () => {
     [MANAGE_PAGE_SIZE]
   );
 
+  const onSearchInput = (keyword: string, searchType: string) => {
+    Router.push(`/manage/posts/${keyword}/${searchType}`);
+  };
+
+  const onClickCategory = (id: number, name: string) => {
+    Router.push({ pathname: `/manage/posts/category/${id}`, query: { name } }, `/manage/posts/category/${id}`);
+  };
+
   return (
     <ManageLayout>
       <Head>
@@ -51,8 +60,8 @@ const SearchManagePosts = () => {
             <span className='count'>{posts?.length}</span>
           </div>
         </TitleWrapper>
-        <SearchInput placeholder='글' />
-        <PostManageList posts={posts} firstIndex={firstIndex} lastIndex={lastIndex} />
+        <SearchInput placeholder='글' onSearch={onSearchInput} />
+        <PostManageList posts={posts} firstIndex={firstIndex} lastIndex={lastIndex} onClickCategory={onClickCategory} />
       </div>
       <PaginationContainer
         pageSize={MANAGE_PAGE_SIZE}

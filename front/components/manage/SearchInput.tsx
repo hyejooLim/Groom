@@ -1,5 +1,4 @@
 import React, { FC, useState, useEffect, useCallback, MouseEvent } from 'react';
-import Router from 'next/router';
 import { Dropdown } from 'antd';
 import { UpOutlined, DownOutlined } from '@ant-design/icons';
 import { GrSearch } from 'react-icons/gr';
@@ -10,6 +9,7 @@ import * as S from '../../styles/ts/components/manage/SearchInput';
 
 interface SearchInputProps {
   placeholder: string;
+  onSearch: (keyword: string, searchType: string) => void;
 }
 
 const searchTypeList = [
@@ -27,7 +27,7 @@ const searchTypeList = [
   },
 ];
 
-const SearchInput: FC<SearchInputProps> = ({ placeholder }) => {
+const SearchInput: FC<SearchInputProps> = ({ placeholder, onSearch }) => {
   const [keyword, onChangeKeyword, setKeyword] = useInput('');
   const [openMenu, setOpenMenu] = useState(false);
   const [searchType, setSearchType] = useState(searchTypeList[0]);
@@ -46,11 +46,8 @@ const SearchInput: FC<SearchInputProps> = ({ placeholder }) => {
 
   const onSubmitInput = useCallback(() => {
     setShowInput(false);
-
-    placeholder === '글'
-      ? Router.push(`/manage/posts/${keyword}/${searchType.label}`)
-      : Router.push(`/manage/subscribedPosts/${keyword}/${searchType.label}`);
-  }, [placeholder, keyword, searchType]);
+    onSearch(keyword, searchType.label);
+  }, [keyword, searchType]);
 
   const onClickCloseButton = () => {
     setShowInput(false);

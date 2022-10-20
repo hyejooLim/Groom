@@ -2,6 +2,7 @@ import { useCallback, useState } from 'react';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 import Link from 'next/link';
+import Router from 'next/router';
 import { CloseCircleOutlined } from '@ant-design/icons';
 
 import ManageLayout from '../../../../components/layouts/ManageLayout';
@@ -31,6 +32,17 @@ const SearchManageSubscribedPosts = () => {
     [MANAGE_PAGE_SIZE]
   );
 
+  const onSearchInput = (keyword: string, searchType: string) => {
+    Router.push(`/manage/subscribedPosts/${keyword}/${searchType}`);
+  };
+
+  const onClickCategory = (id: number, name: string) => {
+    Router.push(
+      { pathname: `/manage/subscribedPosts/category/${id}`, query: { name } },
+      `/manage/subscribedPosts/category/${id}`
+    );
+  };
+
   return (
     <ManageLayout>
       <Head>
@@ -51,8 +63,8 @@ const SearchManageSubscribedPosts = () => {
             <span className='count'>{posts?.length}</span>
           </div>
         </TitleWrapper>
-        <SearchInput placeholder='구독 글' />
-        <PostManageList posts={posts} firstIndex={firstIndex} lastIndex={lastIndex} />
+        <SearchInput placeholder='구독 글' onSearch={onSearchInput} />
+        <PostManageList posts={posts} firstIndex={firstIndex} lastIndex={lastIndex} onClickCategory={onClickCategory} />
       </div>
       <PaginationContainer
         pageSize={MANAGE_PAGE_SIZE}

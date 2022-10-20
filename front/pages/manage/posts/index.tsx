@@ -1,6 +1,7 @@
 import React, { useCallback, useState } from 'react';
 import Head from 'next/head';
-import { useRecoilState } from 'recoil';
+import Router from 'next/router';
+import { useRecoilValue } from 'recoil';
 
 import ManageLayout from '../../../components/layouts/ManageLayout';
 import PostManageList from '../../../components/manage/PostManageList';
@@ -15,7 +16,7 @@ const ManagePosts = () => {
   const [firstIndex, setFirstIndex] = useState(0);
   const [lastIndex, setLastIndex] = useState(MANAGE_PAGE_SIZE);
 
-  const [managePosts, setManagePosts] = useRecoilState(managePostsState);
+  const managePosts = useRecoilValue(managePostsState);
 
   const onChangePage = useCallback(
     (page: number) => {
@@ -25,6 +26,14 @@ const ManagePosts = () => {
     },
     [MANAGE_PAGE_SIZE]
   );
+
+  const onSearchInput = (keyword: string, searchType: string) => {
+    Router.push(`/manage/posts/${keyword}/${searchType}`);
+  };
+
+  const onClickCategory = (id: number, name: string) => {
+    Router.push({ pathname: `/manage/posts/category/${id}`, query: { name } }, `/manage/posts/category/${id}`);
+  };
 
   return (
     <ManageLayout>
@@ -36,11 +45,12 @@ const ManagePosts = () => {
           <span className='text'>글 관리</span>
           <span className='count'>{managePosts?.length}</span>
         </TitleWrapper>
-        <SearchInput placeholder='글' />
+        <SearchInput placeholder='글' onSearch={onSearchInput} />
         <PostManageList
           posts={managePosts}
           firstIndex={firstIndex}
           lastIndex={lastIndex}
+          onClickCategory={onClickCategory}
         />
       </div>
       <PaginationContainer
