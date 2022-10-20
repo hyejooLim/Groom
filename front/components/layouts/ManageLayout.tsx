@@ -1,7 +1,6 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { useRouter } from 'next/router';
 import { Layout } from 'antd';
 import { EditOutlined } from '@ant-design/icons';
 
@@ -11,18 +10,6 @@ import logo from '../../public/Groom_Logo_No_Background.png';
 import * as S from '../../styles/ts/components/layouts/ManageLayout';
 
 const ManageLayout = ({ children }) => {
-  const router = useRouter();
-
-  useEffect(() => {
-    if (router.pathname !== '/manage/post') {
-      localStorage.removeItem('managePosts');
-    }
-
-    if (router.pathname !== '/manage/subscribedPost') {
-      localStorage.removeItem('manageSubscribedPosts');
-    }
-  }, [router]);
-
   return (
     <>
       <S.Container>
