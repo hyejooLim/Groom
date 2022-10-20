@@ -1,8 +1,9 @@
 import { useSetRecoilState } from 'recoil';
 import { useQuery } from '@tanstack/react-query';
 
-import getPosts from '../../apis/posts/getPosts';
 import { mainPostsState } from '../../recoil/posts';
+import getPosts from '../../apis/posts/getPosts';
+import getPostsIncludeCategory from '../../apis/posts/getPostsIncludeCategory';
 
 const useGetPosts = () => {
   const setMainPosts = useSetRecoilState(mainPostsState);
@@ -15,4 +16,11 @@ const useGetPosts = () => {
   });
 };
 
-export { useGetPosts };
+const useGetPostsIncludeCategory = (categoryId: number) =>
+  useQuery(['posts', categoryId], () => getPostsIncludeCategory(categoryId), {
+    onSuccess: (data) => {
+      console.log('searchCategoryPosts', data);
+    },
+  });
+
+export { useGetPosts, useGetPostsIncludeCategory };

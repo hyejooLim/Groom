@@ -3,7 +3,6 @@ import { useQuery } from '@tanstack/react-query';
 import searchMainPosts from '../../apis/search/searchMainPosts';
 import searchPosts from '../../apis/search/searchPosts';
 import searchSubscribedPosts from '../../apis/search/searchSubscribedPosts';
-import searchPostsIncludeCategory from '../../apis/search/searchPostsIncludeCategory';
 
 const useSearchMainPosts = (keyword: string) => {
   return useQuery(['posts', keyword], () => searchMainPosts(keyword), {
@@ -28,11 +27,4 @@ const useSearchSubscribedPosts = (keyword: string, searchType: string) =>
     },
   });
 
-const useSearchPostsIncludeCategory = (categoryId: number) =>
-  useQuery(['posts', categoryId], () => searchPostsIncludeCategory(categoryId), {
-    onSuccess: (data) => {
-      console.log('searchCategoryPosts', data);
-    },
-  });
-
-export { useSearchMainPosts, useSearchPosts, useSearchSubscribedPosts, useSearchPostsIncludeCategory };
+export { useSearchMainPosts, useSearchPosts, useSearchSubscribedPosts };
