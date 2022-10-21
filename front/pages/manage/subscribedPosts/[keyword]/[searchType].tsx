@@ -37,10 +37,7 @@ const SearchManageSubscribedPosts = () => {
   };
 
   const onClickCategory = (id: number, name: string) => {
-    Router.push(
-      { pathname: `/manage/subscribedPosts/category/${id}`, query: { name } },
-      `/manage/subscribedPosts/category/${id}`
-    );
+    Router.push({ pathname: '/manage/subscribedPosts/category/[id]', query: { id, name } });
   };
 
   return (

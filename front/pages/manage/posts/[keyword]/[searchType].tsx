@@ -37,7 +37,7 @@ const SearchManagePosts = () => {
   };
 
   const onClickCategory = (id: number, name: string) => {
-    Router.push({ pathname: `/manage/posts/category/${id}`, query: { name } }, `/manage/posts/category/${id}`);
+    Router.push({ pathname: '/manage/posts/category/[id]', query: { id, name } });
   };
 
   return (
