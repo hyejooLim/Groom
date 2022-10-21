@@ -14,15 +14,15 @@ interface SearchInputProps {
 
 const searchTypeList = [
   {
-    key: 'TITLE',
+    key: 'title',
     label: '제목',
   },
   {
-    key: 'CONTENT',
+    key: 'content',
     label: '내용',
   },
   {
-    key: 'TAG',
+    key: 'tag',
     label: '태그',
   },
 ];
@@ -57,7 +57,7 @@ const SearchInput: FC<SearchInputProps> = ({ placeholder, onSearch }) => {
   const menu = (
     <S.OverrideMenu
       selectable
-      defaultSelectedKeys={['TITLE']}
+      defaultSelectedKeys={['title']}
       items={searchTypeList.map((item) => {
         return {
           key: item.key,

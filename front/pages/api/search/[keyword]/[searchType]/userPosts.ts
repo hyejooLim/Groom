@@ -15,7 +15,7 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
       const keyword = req.query.keyword as string;
       const searchType = req.query.searchType as string;
 
-      if (searchType === 'TITLE') {
+      if (searchType === 'title') {
         posts = await prisma.post.findMany({
           where: {
             title: {
@@ -39,7 +39,7 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
             },
           },
         });
-      } else if (searchType === 'CONTENT') {
+      } else if (searchType === 'content') {
         posts = await prisma.post.findMany({
           where: {
             content: {
@@ -63,7 +63,7 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
             },
           },
         });
-      } else if (searchType === 'TAG') {
+      } else if (searchType === 'tag') {
         posts = await prisma.post.findMany({
           where: {
             tags: {
