@@ -1,30 +1,30 @@
 import { useQuery } from '@tanstack/react-query';
 
-import searchMainPosts from '../../apis/search/searchMainPosts';
 import searchPosts from '../../apis/search/searchPosts';
-import searchSubscribedPosts from '../../apis/search/searchSubscribedPosts';
+import searchUserPosts from '../../apis/search/searchUserPosts';
+import searchUserSubscribedPosts from '../../apis/search/searchUserSubscribedPosts';
 
-const useSearchMainPosts = (keyword: string) => {
-  return useQuery(['posts', keyword], () => searchMainPosts(keyword), {
+const useSearchPosts = (keyword: string) => {
+  return useQuery(['posts', keyword], () => searchPosts(keyword), {
     onSuccess: (data) => {
-      console.log('filteredMainposts', data);
+      console.log('searchPosts', data);
     },
     staleTime: 30000, // 3분 이내로 같은 키워드 검색 시 캐싱 값이 리턴
   });
 };
 
-const useSearchPosts = (keyword: string, searchType: string) =>
-  useQuery(['posts', keyword, searchType], () => searchPosts(keyword, searchType), {
+const useSearchUserPosts = (keyword: string, searchType: string) =>
+  useQuery(['userPosts', keyword, searchType], () => searchUserPosts(keyword, searchType), {
     onSuccess: (data) => {
-      console.log('searchPosts', data);
+      console.log('searchUserPosts', data);
     },
   });
 
-const useSearchSubscribedPosts = (keyword: string, searchType: string) =>
-  useQuery(['subscribedPosts', keyword, searchType], () => searchSubscribedPosts(keyword, searchType), {
+const useSearchUserSubscribedPosts = (keyword: string, searchType: string) =>
+  useQuery(['userSubscribedPosts', keyword, searchType], () => searchUserSubscribedPosts(keyword, searchType), {
     onSuccess: (data) => {
-      console.log('searchPosts', data);
+      console.log('searchUserSubscribedPosts', data);
     },
   });
 
-export { useSearchMainPosts, useSearchPosts, useSearchSubscribedPosts };
+export { useSearchPosts, useSearchUserPosts, useSearchUserSubscribedPosts };

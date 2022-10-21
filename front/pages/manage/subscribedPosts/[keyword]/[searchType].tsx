@@ -9,7 +9,7 @@ import ManageLayout from '../../../../components/layouts/ManageLayout';
 import SearchInput from '../../../../components/manage/SearchInput';
 import PostManageList from '../../../../components/manage/PostManageList';
 import PaginationContainer from '../../../../components/common/PaginationContainer';
-import { useSearchSubscribedPosts } from '../../../../hooks/query/search';
+import { useSearchUserSubscribedPosts } from '../../../../hooks/query/search';
 import { MANAGE_PAGE_SIZE } from '../../../../recoil/page';
 import { CloseButton, TitleWrapper } from '../../../../styles/ts/common';
 
@@ -21,7 +21,7 @@ const SearchManageSubscribedPosts = () => {
   const [firstIndex, setFirstIndex] = useState(0);
   const [lastIndex, setLastIndex] = useState(MANAGE_PAGE_SIZE);
 
-  const { data: posts } = useSearchSubscribedPosts(keyword as string, searchType as string);
+  const { data: posts } = useSearchUserSubscribedPosts(keyword as string, searchType as string);
 
   const onChangePage = useCallback(
     (page: number) => {
