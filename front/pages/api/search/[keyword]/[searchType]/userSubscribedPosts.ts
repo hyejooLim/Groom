@@ -15,7 +15,7 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
       const keyword = req.query.keyword as string;
       const searchType = req.query.searchType as string;
 
-      if (searchType === '제목') {
+      if (searchType === 'TITLE') {
         posts = await prisma.post.findMany({
           where: {
             subscribers: {
@@ -41,7 +41,7 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
             },
           },
         });
-      } else if (searchType === '내용') {
+      } else if (searchType === 'CONTENT') {
         posts = await prisma.post.findMany({
           where: {
             subscribers: {
@@ -67,7 +67,7 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
             },
           },
         });
-      } else if (searchType === '태그') {
+      } else if (searchType === 'TAG') {
         posts = await prisma.post.findMany({
           where: {
             subscribers: {

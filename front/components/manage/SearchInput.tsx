@@ -46,7 +46,7 @@ const SearchInput: FC<SearchInputProps> = ({ placeholder, onSearch }) => {
 
   const onSubmitInput = useCallback(() => {
     setShowInput(false);
-    onSearch(keyword, searchType.label);
+    onSearch(keyword, searchType.key);
   }, [keyword, searchType]);
 
   const onClickCloseButton = () => {
