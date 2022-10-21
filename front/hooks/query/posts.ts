@@ -34,14 +34,14 @@ const useGetPostsIncludeCategory = (categoryId: number) =>
   });
 
 const useGetUserPostsIncludeCategory = (categoryId: number) =>
-  useQuery(['userPosts', categoryId], () => getUserPostsIncludeCategory(categoryId), {
+  useQuery(['userPosts', 'category', categoryId], () => getUserPostsIncludeCategory(categoryId), {
     onSuccess: (data) => {
       console.log('userPostsIncludeCategory', data);
     },
   });
 
 const useGetUserSubscribedPostsIncludeCategory = (categoryId: number) =>
-  useQuery(['userSubscribedPosts', categoryId], () => getUserSubscribedPostsIncludeCategory(categoryId), {
+  useQuery(['userSubscribedPosts', 'category', categoryId], () => getUserSubscribedPostsIncludeCategory(categoryId), {
     onSuccess: (data) => {
       console.log('userSubscribedPostsIncludeCategory', data);
     },
