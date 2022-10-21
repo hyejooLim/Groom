@@ -15,7 +15,7 @@ const Category = () => {
       <ul>
         {categories?.map((category: CategoryItem) => (
           <li key={category.id}>
-            <Link href={`/category/${category.name}`}>
+            <Link href={{ pathname: '/category/[name]', query: { id: category.id, name: category.name } }}>
               <a className='category_item'>
                 {category.name} ({getPublicAndPublishedPosts(category.posts).length})
               </a>

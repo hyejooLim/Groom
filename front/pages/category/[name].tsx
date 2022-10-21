@@ -5,24 +5,23 @@ import { useRouter } from 'next/router';
 import AppLayout from '../../components/layouts/AppLayout';
 import Title from '../../components/common/Title';
 import PostList from '../../components/post/PostList';
-import useGetCategory from '../../hooks/query/category';
-import { getPublicAndPublishedPosts } from '../../utils/posts';
+import { useGetPostsIncludeCategory } from '../../hooks/query/posts';
 
 const Category = () => {
   const router = useRouter();
-  const { name } = router.query;
+  const { id, name } = router.query;
 
-  const { data: category } = useGetCategory(name as string);
+  const { data: posts } = useGetPostsIncludeCategory(Number(id));
 
   return (
     <AppLayout>
       <Head>
-        <title>Groom | '{category?.name}' 카테고리의 글 목록</title>
+        <title>Groom | '{name}' 카테고리의 글 목록</title>
       </Head>
       <div style={{ textAlign: 'center' }}>
-        <Title title={category?.name} />
+        <Title title={name as string} />
       </div>
-      {category?.posts && <PostList posts={getPublicAndPublishedPosts(category.posts)} />}
+      {posts && <PostList posts={posts} />}
     </AppLayout>
   );
 };
