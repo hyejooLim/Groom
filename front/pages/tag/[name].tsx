@@ -5,15 +5,13 @@ import { useRouter } from 'next/router';
 import AppLayout from '../../components/layouts/AppLayout';
 import Title from '../../components/common/Title';
 import PostList from '../../components/post/PostList';
-import useGetTags from '../../hooks/query/tags';
-import { getPublicAndPublishedPosts } from '../../utils/posts';
+import { useGetPostsIncludeTag } from '../../hooks/query/posts';
 
 const Tag = () => {
   const router = useRouter();
-  const { name } = router.query;
+  const { id, name } = router.query;
 
-  const { data: tags } = useGetTags();
-  const posts = tags && tags?.find((tag) => tag.name === name).posts;
+  const { data: posts } = useGetPostsIncludeTag(Number(id));
 
   return (
     <AppLayout>
@@ -23,7 +21,7 @@ const Tag = () => {
       <div style={{ textAlign: 'center' }}>
         <Title title={name as string} />
       </div>
-      {posts && <PostList posts={getPublicAndPublishedPosts(posts)} />}
+      {posts && <PostList posts={posts} />}
     </AppLayout>
   );
 };

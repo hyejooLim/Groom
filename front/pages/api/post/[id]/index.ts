@@ -13,6 +13,7 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
         include: {
           tags: {
             select: {
+              id: true,
               name: true,
             },
           },
