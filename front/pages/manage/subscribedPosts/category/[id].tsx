@@ -10,7 +10,7 @@ import ManageLayout from '../../../../components/layouts/ManageLayout';
 import SearchInput from '../../../../components/manage/SearchInput';
 import PostManageList from '../../../../components/manage/PostManageList';
 import PaginationContainer from '../../../../components/common/PaginationContainer';
-import { useGetSubscribedPostsIncludeCategory } from '../../../../hooks/query/posts';
+import { useGetUserSubscribedPostsIncludeCategory } from '../../../../hooks/query/posts';
 import { CloseButton, TitleWrapper } from '../../../../styles/ts/common';
 
 const ManageSubscribedPostsIncludeCategory = () => {
@@ -21,7 +21,7 @@ const ManageSubscribedPostsIncludeCategory = () => {
   const [firstIndex, setFirstIndex] = useState(0);
   const [lastIndex, setLastIndex] = useState(MANAGE_PAGE_SIZE);
 
-  const { data: posts } = useGetSubscribedPostsIncludeCategory(Number(id));
+  const { data: posts } = useGetUserSubscribedPostsIncludeCategory(Number(id));
 
   const onChangePage = useCallback(
     (page: number) => {

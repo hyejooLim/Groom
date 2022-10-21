@@ -4,7 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import { mainPostsState } from '../../recoil/posts';
 import getPosts from '../../apis/posts/getPosts';
 import getUserPostsIncludeCategory from '../../apis/posts/getUserPostsIncludeCategory';
-import getSubscribedPostsIncludeCategory from '../../apis/posts/getSubscribedPostsIncludeCategory';
+import getUserSubscribedPostsIncludeCategory from '../../apis/posts/getUserSubscribedPostsIncludeCategory';
 
 const useGetPosts = () => {
   const setMainPosts = useSetRecoilState(mainPostsState);
@@ -18,17 +18,17 @@ const useGetPosts = () => {
 };
 
 const useGetUserPostsIncludeCategory = (categoryId: number) =>
-  useQuery(['posts', categoryId], () => getUserPostsIncludeCategory(categoryId), {
+  useQuery(['userPosts', categoryId], () => getUserPostsIncludeCategory(categoryId), {
     onSuccess: (data) => {
       console.log('userPostsIncludeCategory', data);
     },
   });
 
-const useGetSubscribedPostsIncludeCategory = (categoryId: number) =>
-  useQuery(['subscribedPosts', categoryId], () => getSubscribedPostsIncludeCategory(categoryId), {
+const useGetUserSubscribedPostsIncludeCategory = (categoryId: number) =>
+  useQuery(['userSubscribedPosts', categoryId], () => getUserSubscribedPostsIncludeCategory(categoryId), {
     onSuccess: (data) => {
-      console.log('subscribedPostsIncludeCategory', data);
+      console.log('userSubscribedPostsIncludeCategory', data);
     },
   });
 
-export { useGetPosts, useGetUserPostsIncludeCategory, useGetSubscribedPostsIncludeCategory };
+export { useGetPosts, useGetUserPostsIncludeCategory, useGetUserSubscribedPostsIncludeCategory };
