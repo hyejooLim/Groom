@@ -2,7 +2,7 @@ import clientApi from '..';
 import { PostItem } from '../../types';
 
 const getUserPostsIncludeCategory = async (categoryId: number): Promise<PostItem[]> => {
-  const response = await clientApi.get<PostItem[]>(`/posts/category/${categoryId}/userPosts`);
+  const response = await clientApi.get<PostItem[]>(`/user/posts/category/${categoryId}`);
 
   return response;
 };
