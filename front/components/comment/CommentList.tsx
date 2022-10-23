@@ -1,9 +1,10 @@
 import React, { ChangeEvent, FC, useCallback, useState } from 'react';
+import { useRecoilValue } from 'recoil';
 import { BsCloudFill } from 'react-icons/bs';
 import { Comment, List, Button, Avatar } from 'antd';
 import dayjs from 'dayjs';
 
-import { useGetUser } from '../../hooks/query/user';
+import { userState } from '../../recoil/user';
 import useGetComments from '../../hooks/query/comments';
 import { useUpdateComment, useDeleteComment } from '../../hooks/query/comment';
 import { CommentItem } from '../../types';
@@ -14,7 +15,8 @@ interface CommentListProps {
 }
 
 const CommentList: FC<CommentListProps> = ({ postId }) => {
-  const { data: user } = useGetUser();
+  const user = useRecoilValue(userState);
+
   const { data: comments } = useGetComments(postId);
   const updateComment = useUpdateComment();
   const deleteComment = useDeleteComment();

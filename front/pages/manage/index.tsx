@@ -2,14 +2,14 @@ import React from 'react';
 import Link from 'next/link';
 import { useRecoilValue } from 'recoil';
 
+import { userState } from '../../recoil/user';
 import { todayCountState, totalCountState } from '../../recoil/count';
 import ManageLayout from '../../components/layouts/ManageLayout';
-import { useGetUser } from '../../hooks/query/user';
 import useGetVisitorsCount from '../../hooks/query/visitorsCount';
 import * as S from '../../styles/ts/pages/manage';
 
 const Manage = () => {
-  const { data: user } = useGetUser();
+  const user = useRecoilValue(userState);
 
   useGetVisitorsCount();
   const todayCount = useRecoilValue(todayCountState);

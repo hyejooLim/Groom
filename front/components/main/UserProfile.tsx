@@ -1,14 +1,15 @@
 import React from 'react';
 import { signOut } from 'next-auth/react';
 import Link from 'next/link';
+import { useRecoilValue } from 'recoil';
 import { Avatar } from 'antd';
 import { BsCloudFill } from 'react-icons/bs';
 
-import { useGetUser } from '../../hooks/query/user';
+import { userState } from '../../recoil/user';
 import * as S from '../../styles/ts/components/main/UserProfile';
 
 const UserProfile = () => {
-  const { data: user } = useGetUser();
+  const user = useRecoilValue(userState);
 
   const handleLogout = () => {
     signOut();

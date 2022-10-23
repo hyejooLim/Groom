@@ -1,6 +1,7 @@
 import React, { ChangeEvent, useCallback, useEffect } from 'react';
 import { signOut, useSession } from 'next-auth/react';
 import Router from 'next/router';
+import { useRecoilValue } from 'recoil';
 import { Button, Card } from 'antd';
 import { FiCamera } from 'react-icons/fi';
 import { BsCloudFill } from 'react-icons/bs';
@@ -8,7 +9,8 @@ import { AiFillMinusSquare } from 'react-icons/ai';
 import classNames from 'classnames';
 import AWS from 'aws-sdk';
 
-import { useGetUser, useUpdateUser } from '../../hooks/query/user';
+import { userState } from '../../recoil/user';
+import { useUpdateUser } from '../../hooks/query/user';
 import * as S from '../../styles/ts/components/manage/ManageProfile';
 
 const s3 = new AWS.S3();
@@ -27,8 +29,9 @@ AWS.config.update({
 
 const ManageProfile = () => {
   const { status } = useSession();
-  const { data: user } = useGetUser();
   const updateUser = useUpdateUser();
+
+  const user = useRecoilValue(userState);
 
   useEffect(() => {
     if (status === 'unauthenticated') {

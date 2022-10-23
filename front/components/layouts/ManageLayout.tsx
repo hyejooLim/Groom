@@ -8,8 +8,11 @@ import ManageProfile from '../manage/ManageProfile';
 import ManageList from '../manage/ManageList';
 import logo from '../../public/Groom_Logo_No_Background.png';
 import * as S from '../../styles/ts/components/layouts/ManageLayout';
+import { useGetUser } from '../../hooks/query/user';
 
 const ManageLayout = ({ children }) => {
+  useGetUser();
+  
   return (
     <>
       <S.Container>

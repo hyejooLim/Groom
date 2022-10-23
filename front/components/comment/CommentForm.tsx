@@ -1,9 +1,10 @@
 import React, { FC, useCallback } from 'react';
 import Router from 'next/router';
+import { useRecoilValue } from 'recoil';
 import { Form } from 'antd';
 
+import { userState } from '../../recoil/user';
 import useInput from '../../hooks/common/input';
-import { useGetUser } from '../../hooks/query/user';
 import { useCreateComment } from '../../hooks/query/comment';
 import { PostItem } from '../../types';
 import { AddCommentButton, StyledTextArea } from '../../styles/ts/components/comment/CommentForm';
@@ -13,7 +14,8 @@ interface CommentFormProps {
 }
 
 const CommentForm: FC<CommentFormProps> = ({ post }) => {
-  const { data: user } = useGetUser();
+  const user = useRecoilValue(userState);
+
   const createComment = useCreateComment();
   const [commentText, onChangeCommentText, setCommentText] = useInput('');
 

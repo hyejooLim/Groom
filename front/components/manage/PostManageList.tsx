@@ -1,13 +1,14 @@
 import React, { FC, useCallback } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
+import { useRecoilValue } from 'recoil';
 import { Button } from 'antd';
 import { PaperClipOutlined } from '@ant-design/icons';
 import { FiSearch } from 'react-icons/fi';
 import { AiOutlineEyeInvisible } from 'react-icons/ai';
 import dayjs from 'dayjs';
 
-import { useGetUser } from '../../hooks/query/user';
+import { userState } from '../../recoil/user';
 import { useDeletePost, useUnSubscribePost, useToggleIsPublicPost } from '../../hooks/query/post';
 import { PostItem } from '../../types';
 import * as S from '../../styles/ts/components/manage/PostManageList';
@@ -21,7 +22,7 @@ interface PostManageListProps {
 
 const PostManageList: FC<PostManageListProps> = ({ posts, firstIndex, lastIndex, onClickCategory }) => {
   const router = useRouter();
-  const { data: user } = useGetUser();
+  const user = useRecoilValue(userState);
 
   const deletePost = useDeletePost();
   const toggleIsPublicPost = useToggleIsPublicPost();
