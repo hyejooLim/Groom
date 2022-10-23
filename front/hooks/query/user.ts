@@ -15,7 +15,7 @@ const useGetUser = () => {
   return useQuery(['user'], getUser, {
     onSuccess: (data) => {
       setUser(data);
-      setManagePosts(data?.posts);
+      // setManagePosts(data?.posts);
       setManageSubscribedPosts(data?.subscribedPosts);
 
       console.log('user', data);

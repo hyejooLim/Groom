@@ -9,6 +9,7 @@ import PaginationContainer from '../../../components/common/PaginationContainer'
 import SearchInput from '../../../components/manage/SearchInput';
 import { MANAGE_PAGE_SIZE } from '../../../recoil/page';
 import { managePostsState } from '../../../recoil/manage';
+import { useGetUserPosts } from '../../../hooks/query/posts';
 import { TitleWrapper } from '../../../styles/ts/common';
 
 const ManagePosts = () => {
@@ -16,6 +17,7 @@ const ManagePosts = () => {
   const [firstIndex, setFirstIndex] = useState(0);
   const [lastIndex, setLastIndex] = useState(MANAGE_PAGE_SIZE);
 
+  const { data: posts } = useGetUserPosts();
   const managePosts = useRecoilValue(managePostsState);
 
   const onChangePage = useCallback(
