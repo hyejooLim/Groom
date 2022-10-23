@@ -1,4 +1,4 @@
-import { managePostsState } from './../../recoil/manage';
+import { managePostsState, manageSubscribedPostsState } from './../../recoil/manage';
 import { useSetRecoilState } from 'recoil';
 import { useQuery } from '@tanstack/react-query';
 
@@ -7,6 +7,7 @@ import getPosts from '../../apis/posts/getPosts';
 import getPostsIncludeTag from '../../apis/posts/getPostsIncludeTag';
 import getPostsIncludeCategory from '../../apis/posts/getPostsIncludeCategory';
 import getUserPosts from '../../apis/posts/getUserPosts';
+import getUserSubscribedPosts from '../../apis/posts/getUserSubscribedPosts';
 import getUserPostsIncludeCategory from '../../apis/posts/getUserPostsIncludeCategory';
 import getUserSubscribedPostsIncludeCategory from '../../apis/posts/getUserSubscribedPostsIncludeCategory';
 
@@ -46,6 +47,17 @@ const useGetUserPosts = () => {
   });
 };
 
+const useGetUserSubscribedPosts = () => {
+  const setManageSubscribedPosts = useSetRecoilState(manageSubscribedPostsState);
+
+  return useQuery(['userSubscribedPosts'], getUserSubscribedPosts, {
+    onSuccess: (data) => {
+      setManageSubscribedPosts(data);
+      console.log('userSubscribedPosts', data);
+    },
+  });
+};
+
 const useGetUserPostsIncludeCategory = (categoryId: number) =>
   useQuery(['userPosts', 'category', categoryId], () => getUserPostsIncludeCategory(categoryId), {
     onSuccess: (data) => {
@@ -65,6 +77,7 @@ export {
   useGetPostsIncludeTag,
   useGetPostsIncludeCategory,
   useGetUserPosts,
+  useGetUserSubscribedPosts,
   useGetUserPostsIncludeCategory,
   useGetUserSubscribedPostsIncludeCategory,
 };

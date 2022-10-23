@@ -9,6 +9,7 @@ import PaginationContainer from '../../../components/common/PaginationContainer'
 import SearchInput from '../../../components/manage/SearchInput';
 import { MANAGE_PAGE_SIZE } from '../../../recoil/page';
 import { manageSubscribedPostsState } from '../../../recoil/manage';
+import { useGetUserSubscribedPosts } from '../../../hooks/query/posts';
 import { TitleWrapper } from '../../../styles/ts/common';
 
 const ManageSubscribedPosts = () => {
@@ -16,6 +17,7 @@ const ManageSubscribedPosts = () => {
   const [firstIndex, setFirstIndex] = useState(0);
   const [lastIndex, setLastIndex] = useState(MANAGE_PAGE_SIZE);
 
+  const { data: posts } = useGetUserSubscribedPosts();
   const manageSubscribedPosts = useRecoilValue(manageSubscribedPostsState);
 
   const onChangePage = useCallback(

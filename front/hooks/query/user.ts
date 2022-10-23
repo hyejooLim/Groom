@@ -16,7 +16,7 @@ const useGetUser = () => {
     onSuccess: (data) => {
       setUser(data);
       // setManagePosts(data?.posts);
-      setManageSubscribedPosts(data?.subscribedPosts);
+      // setManageSubscribedPosts(data?.subscribedPosts);
 
       console.log('user', data);
     },
