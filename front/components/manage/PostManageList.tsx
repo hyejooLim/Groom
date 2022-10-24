@@ -17,7 +17,7 @@ interface PostManageListProps {
   posts: PostItem[];
   firstIndex: number;
   lastIndex: number;
-  onClickCategory: (id: number, name: string) => void;
+  onClickCategory: (id: number) => void;
 }
 
 const PostManageList: FC<PostManageListProps> = ({ posts, firstIndex, lastIndex, onClickCategory }) => {
@@ -65,7 +65,7 @@ const PostManageList: FC<PostManageListProps> = ({ posts, firstIndex, lastIndex,
                 <PaperClipOutlined />
               </div>
               <div className='post_extra_info'>
-                <a onClick={() => onClickCategory(post.categoryId, post.category?.name)}>
+                <a onClick={() => onClickCategory(post.categoryId)}>
                   <span>{post.category?.name}</span>
                 </a>
                 <span>{post.author?.name}</span>
