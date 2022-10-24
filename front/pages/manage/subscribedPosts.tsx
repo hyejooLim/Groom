@@ -2,7 +2,7 @@ import React, { useState, useCallback, useEffect } from 'react';
 import Head from 'next/head';
 import Router, { useRouter } from 'next/router';
 import Link from 'next/link';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRecoilValue } from 'recoil';
 import { CloseCircleOutlined } from '@ant-design/icons';
 
 import ManageLayout from '../../components/layouts/ManageLayout';
@@ -14,8 +14,6 @@ import { manageSubscribedPostsState } from '../../recoil/manage';
 import { useGetUserSubscribedPosts } from '../../hooks/query/posts';
 import { useSearchCategoryOnUserSubscribedPosts, useSearchUserSubscribedPosts } from '../../hooks/query/search';
 import { TitleWrapper, CloseButton } from '../../styles/ts/common';
-import { useGetUser } from '../../hooks/query/user';
-import { userState } from '../../recoil/user';
 
 const ManageSubscribedPosts = () => {
   const router = useRouter();
