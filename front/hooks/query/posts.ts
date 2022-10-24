@@ -1,15 +1,13 @@
-import { managePostsState, manageSubscribedPostsState } from './../../recoil/manage';
-import { useSetRecoilState } from 'recoil';
 import { useQuery } from '@tanstack/react-query';
+import { useSetRecoilState } from 'recoil';
 
-import { mainPostsState } from '../../recoil/posts';
 import getPosts from '../../apis/posts/getPosts';
 import getPostsIncludeTag from '../../apis/posts/getPostsIncludeTag';
 import getPostsIncludeCategory from '../../apis/posts/getPostsIncludeCategory';
 import getUserPosts from '../../apis/posts/getUserPosts';
 import getUserSubscribedPosts from '../../apis/posts/getUserSubscribedPosts';
-import getUserPostsIncludeCategory from '../../apis/posts/getUserPostsIncludeCategory';
-import getUserSubscribedPostsIncludeCategory from '../../apis/posts/getUserSubscribedPostsIncludeCategory';
+import { mainPostsState } from '../../recoil/posts';
+import { managePostsState, manageSubscribedPostsState } from './../../recoil/manage';
 
 const useGetPosts = () => {
   const setMainPosts = useSetRecoilState(mainPostsState);
@@ -44,6 +42,7 @@ const useGetUserPosts = () => {
       setManagePosts(data);
       console.log('userPosts', data);
     },
+    refetchOnWindowFocus: false,
   });
 };
 
@@ -55,29 +54,8 @@ const useGetUserSubscribedPosts = () => {
       setManageSubscribedPosts(data);
       console.log('userSubscribedPosts', data);
     },
+    refetchOnWindowFocus: false,
   });
 };
 
-const useGetUserPostsIncludeCategory = (categoryId: number) =>
-  useQuery(['userPosts', 'category', categoryId], () => getUserPostsIncludeCategory(categoryId), {
-    onSuccess: (data) => {
-      console.log('userPostsIncludeCategory', data);
-    },
-  });
-
-const useGetUserSubscribedPostsIncludeCategory = (categoryId: number) =>
-  useQuery(['userSubscribedPosts', 'category', categoryId], () => getUserSubscribedPostsIncludeCategory(categoryId), {
-    onSuccess: (data) => {
-      console.log('userSubscribedPostsIncludeCategory', data);
-    },
-  });
-
-export {
-  useGetPosts,
-  useGetPostsIncludeTag,
-  useGetPostsIncludeCategory,
-  useGetUserPosts,
-  useGetUserSubscribedPosts,
-  useGetUserPostsIncludeCategory,
-  useGetUserSubscribedPostsIncludeCategory,
-};
+export { useGetPosts, useGetPostsIncludeTag, useGetPostsIncludeCategory, useGetUserPosts, useGetUserSubscribedPosts };

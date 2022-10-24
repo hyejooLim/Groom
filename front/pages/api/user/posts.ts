@@ -1,6 +1,6 @@
 import { NextApiHandler, NextApiRequest, NextApiResponse } from 'next';
 import { getSession } from 'next-auth/react';
-import prisma from '../../../../../lib/prisma';
+import prisma from '../../../lib/prisma';
 
 const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
@@ -12,12 +12,9 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
 
       const posts = await prisma.post.findMany({
         where: {
-          subscribers: {
-            some: {
-              email: session.user?.email,
-            },
+          author: {
+            email: session.user?.email,
           },
-          categoryId: Number(req.query.id),
         },
         orderBy: [
           {
@@ -34,7 +31,7 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
         },
       });
 
-      res.status(200).json(posts);
+      return res.status(200).json(posts);
     }
   } catch (err) {
     console.error(err);

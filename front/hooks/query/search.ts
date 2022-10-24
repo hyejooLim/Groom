@@ -1,8 +1,12 @@
 import { useQuery } from '@tanstack/react-query';
+import { useSetRecoilState } from 'recoil';
 
 import searchPosts from '../../apis/search/searchPosts';
 import searchUserPosts from '../../apis/search/searchUserPosts';
 import searchUserSubscribedPosts from '../../apis/search/searchUserSubscribedPosts';
+import searchCategoryOnUserPosts from '../../apis/search/searchCategoryOnUserPosts';
+import searchCategoryOnUserSubscribedPosts from '../../apis/search/searchCategoryOnUserSubscribedPosts';
+import { managePostsState, manageSubscribedPostsState } from './../../recoil/manage';
 
 const useSearchPosts = (keyword: string) => {
   return useQuery(['posts', keyword], () => searchPosts(keyword), {
@@ -13,18 +17,62 @@ const useSearchPosts = (keyword: string) => {
   });
 };
 
-const useSearchUserPosts = (keyword: string, searchType: string) =>
-  useQuery(['userPosts', keyword, searchType], () => searchUserPosts(keyword, searchType), {
+const useSearchUserPosts = (keyword: string, searchType: string) => {
+  const setManagePosts = useSetRecoilState(managePostsState);
+
+  return useQuery(['userPosts', keyword, searchType], () => searchUserPosts(keyword, searchType), {
     onSuccess: (data) => {
+      setManagePosts(data);
       console.log('searchUserPosts', data);
     },
+    refetchOnWindowFocus: false,
   });
+};
 
-const useSearchUserSubscribedPosts = (keyword: string, searchType: string) =>
-  useQuery(['userSubscribedPosts', keyword, searchType], () => searchUserSubscribedPosts(keyword, searchType), {
+const useSearchUserSubscribedPosts = (keyword: string, searchType: string) => {
+  const setManageSubscribedPosts = useSetRecoilState(manageSubscribedPostsState);
+
+  return useQuery(['userSubscribedPosts', keyword, searchType], () => searchUserSubscribedPosts(keyword, searchType), {
     onSuccess: (data) => {
+      setManageSubscribedPosts(data);
       console.log('searchUserSubscribedPosts', data);
     },
+    refetchOnWindowFocus: false,
   });
+};
 
-export { useSearchPosts, useSearchUserPosts, useSearchUserSubscribedPosts };
+const useSearchCategoryOnUserPosts = (categoryId: number) => {
+  const setManagePosts = useSetRecoilState(managePostsState);
+
+  return useQuery(['userPosts', 'category', categoryId], () => searchCategoryOnUserPosts(categoryId), {
+    onSuccess: (data) => {
+      setManagePosts(data.posts);
+      console.log('searchCategoryOnUserPosts', data);
+    },
+    refetchOnWindowFocus: false,
+  });
+};
+
+const useSearchCategoryOnUserSubscribedPosts = (categoryId: number) => {
+  const setManageSubscribedPosts = useSetRecoilState(manageSubscribedPostsState);
+
+  return useQuery(
+    ['userSubscribedPosts', 'category', categoryId],
+    () => searchCategoryOnUserSubscribedPosts(categoryId),
+    {
+      onSuccess: (data) => {
+        setManageSubscribedPosts(data.posts);
+        console.log('searchCategoryOnUserSubscribedPosts', data);
+      },
+      refetchOnWindowFocus: false,
+    }
+  );
+};
+
+export {
+  useSearchPosts,
+  useSearchUserPosts,
+  useSearchUserSubscribedPosts,
+  useSearchCategoryOnUserPosts,
+  useSearchCategoryOnUserSubscribedPosts,
+};
