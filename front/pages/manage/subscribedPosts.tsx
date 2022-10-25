@@ -24,7 +24,7 @@ const ManageSubscribedPosts = () => {
   const [lastIndex, setLastIndex] = useState(MANAGE_PAGE_SIZE);
 
   const { refetch } = useGetUserSubscribedPosts();
-  const { data: category } = useSearchCategoryOnUserSubscribedPosts(Number(categoryId));
+  const { data: category } = useSearchCategoryOnUserSubscribedPosts(categoryId ? Number(categoryId) : undefined);
   useSearchUserSubscribedPosts(String(searchKeyword), String(searchType));
 
   const manageSubscribedPosts = useRecoilValue(manageSubscribedPostsState);

@@ -53,7 +53,7 @@ const useSearchCategoryOnUserPosts = (categoryId: number | undefined) => {
   });
 };
 
-const useSearchCategoryOnUserSubscribedPosts = (categoryId: number) => {
+const useSearchCategoryOnUserSubscribedPosts = (categoryId: number | undefined) => {
   const setManageSubscribedPosts = useSetRecoilState(manageSubscribedPostsState);
 
   return useQuery(
