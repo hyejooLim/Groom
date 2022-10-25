@@ -12,9 +12,10 @@ const useGetVisitorsCount = () => {
     onSuccess: (data) => {
       setTodayCount(data?.todayCount);
       setTotalCount(data?.totalCount);
-
       console.log('visitorsCount', data);
     },
+    refetchInterval: 10000,
+    refetchOnWindowFocus: false,
   });
 };
 
