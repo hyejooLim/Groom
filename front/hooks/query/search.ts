@@ -41,7 +41,7 @@ const useSearchUserSubscribedPosts = (keyword: string, searchType: string) => {
   });
 };
 
-const useSearchCategoryOnUserPosts = (categoryId: number) => {
+const useSearchCategoryOnUserPosts = (categoryId: number | undefined) => {
   const setManagePosts = useSetRecoilState(managePostsState);
 
   return useQuery(['userPosts', 'category', categoryId], () => searchCategoryOnUserPosts(categoryId), {

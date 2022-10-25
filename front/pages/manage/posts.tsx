@@ -24,7 +24,7 @@ const ManagePosts = () => {
   const [lastIndex, setLastIndex] = useState(MANAGE_PAGE_SIZE);
 
   const { refetch } = useGetUserPosts();
-  const { data: category } = useSearchCategoryOnUserPosts(Number(categoryId));
+  const { data: category } = useSearchCategoryOnUserPosts(categoryId ? Number(categoryId) : undefined);
   useSearchUserPosts(String(searchKeyword), String(searchType));
 
   const managePosts = useRecoilValue(managePostsState);
