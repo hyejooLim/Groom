@@ -52,9 +52,9 @@ const ManagePosts = () => {
     [MANAGE_PAGE_SIZE]
   );
 
-  const onSearchInput = (keyword: string, searchType: string) => {
+  const onSearchInput = (searchKeyword: string, searchType: string) => {
     onInitPage();
-    Router.push({ pathname: '/manage/posts', query: { searchKeyword: keyword, searchType } });
+    Router.push({ pathname: '/manage/posts', query: { searchKeyword, searchType } });
   };
 
   const onClickCategory = (id: number) => {

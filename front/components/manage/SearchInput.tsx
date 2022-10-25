@@ -9,7 +9,7 @@ import * as S from '../../styles/ts/components/manage/SearchInput';
 
 interface SearchInputProps {
   placeholder: string;
-  onSearch: (keyword: string, searchType: string) => void;
+  onSearch: (searchKeyword: string, searchType: string) => void;
 }
 
 const searchTypeList = [
@@ -28,14 +28,14 @@ const searchTypeList = [
 ];
 
 const SearchInput: FC<SearchInputProps> = ({ placeholder, onSearch }) => {
-  const [keyword, onChangeKeyword, setKeyword] = useInput('');
   const [openMenu, setOpenMenu] = useState(false);
-  const [searchType, setSearchType] = useState(searchTypeList[0]);
   const [showInput, setShowInput] = useState(false);
+  const [searchType, setSearchType] = useState(searchTypeList[0]);
+  const [searchKeyword, onChangeSearchKeyword, setSearchKeyword] = useInput('');
 
   useEffect(() => {
     if (!showInput) {
-      setKeyword('');
+      setSearchKeyword('');
       setSearchType(searchTypeList[0]);
     }
   }, [showInput]);
@@ -46,8 +46,8 @@ const SearchInput: FC<SearchInputProps> = ({ placeholder, onSearch }) => {
 
   const onSubmitInput = useCallback(() => {
     setShowInput(false);
-    onSearch(keyword, searchType.key);
-  }, [keyword, searchType]);
+    onSearch(searchKeyword, searchType.key);
+  }, [searchKeyword, searchType]);
 
   const onClickCloseButton = () => {
     setShowInput(false);
@@ -96,11 +96,11 @@ const SearchInput: FC<SearchInputProps> = ({ placeholder, onSearch }) => {
               </S.DropdownWrapper>
               <S.StyledInput
                 type='text'
-                value={keyword}
-                onChange={onChangeKeyword}
+                value={searchKeyword}
+                onChange={onChangeSearchKeyword}
                 placeholder={placeholder + '에서 검색합니다.'}
               />
-              <S.SearchButton htmlType='submit' disabled={!keyword || !keyword.trim()}>
+              <S.SearchButton htmlType='submit' disabled={!searchKeyword || !searchKeyword.trim()}>
                 <GrSearch />
               </S.SearchButton>
               <S.CloseButton onClick={onClickCloseButton}>닫기</S.CloseButton>
