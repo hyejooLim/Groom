@@ -17,6 +17,7 @@ const useGetPosts = () => {
       setMainPosts(data);
       console.log('posts', data);
     },
+    refetchInterval: 10000, // 10초마다 로드
   });
 };
 
