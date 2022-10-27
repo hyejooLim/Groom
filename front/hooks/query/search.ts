@@ -9,7 +9,7 @@ import searchCategoryOnUserSubscribedPosts from '../../apis/search/searchCategor
 import { managePostsState, manageSubscribedPostsState } from './../../recoil/manage';
 
 const useSearchPosts = (keyword: string) => {
-  return useQuery(['posts', keyword], () => searchPosts(keyword), {
+  return useQuery(['posts', 'keyword', keyword], () => searchPosts(keyword), {
     onSuccess: (data) => {
       console.log('searchPosts', data);
     },

@@ -2,7 +2,9 @@ import React, { useCallback, useEffect, useState } from 'react';
 import Head from 'next/head';
 import Router, { useRouter } from 'next/router';
 import Link from 'next/link';
-import { useRecoilValue } from 'recoil';
+import { GetServerSideProps } from 'next';
+import { dehydrate, QueryClient } from '@tanstack/react-query';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { CloseCircleOutlined } from '@ant-design/icons';
 
 import ManageLayout from '../../components/layouts/ManageLayout';
@@ -13,6 +15,10 @@ import { MANAGE_PAGE_SIZE } from '../../recoil/page';
 import { managePostsState } from '../../recoil/manage';
 import { useGetUserPosts } from '../../hooks/query/posts';
 import { useSearchUserPosts, useSearchCategoryOnUserPosts } from '../../hooks/query/search';
+import getUser from '../../apis/user/getUser';
+import getUserPosts from '../../apis/posts/getUserPosts';
+import searchCategoryOnUserPosts from '../../apis/search/searchCategoryOnUserPosts';
+import searchUserPosts from '../../apis/search/searchUserPosts';
 import { TitleWrapper, CloseButton } from '../../styles/ts/common';
 
 const ManagePosts = () => {
@@ -23,11 +29,12 @@ const ManagePosts = () => {
   const [firstIndex, setFirstIndex] = useState(0);
   const [lastIndex, setLastIndex] = useState(MANAGE_PAGE_SIZE);
 
-  const { refetch } = useGetUserPosts();
+  const { data: userPosts, refetch } = useGetUserPosts();
   const { data: category } = useSearchCategoryOnUserPosts(categoryId ? Number(categoryId) : undefined);
   useSearchUserPosts(String(searchKeyword), String(searchType));
 
   const managePosts = useRecoilValue(managePostsState);
+  const setManagePosts = useSetRecoilState(managePostsState);
 
   const onInitPage = () => {
     setCurrentPage(1);
@@ -40,6 +47,7 @@ const ManagePosts = () => {
 
     if (Object.keys(router.query).length === 0) {
       refetch();
+      setManagePosts(null);
     }
   }, [router.query]);
 
@@ -74,7 +82,7 @@ const ManagePosts = () => {
           {Object.keys(router.query).length === 0 ? (
             <>
               <span className='text'>글 관리</span>
-              <span className='count'>{managePosts?.length}</span>
+              <span className='count'>{managePosts?.length ?? userPosts?.length}</span>
             </>
           ) : (
             <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -97,13 +105,13 @@ const ManagePosts = () => {
                   <span className='text'>글</span>
                 </>
               )}
-              <span className='count'>{managePosts?.length}</span>
+              <span className='count'>{managePosts?.length ?? userPosts?.length}</span>
             </div>
           )}
         </TitleWrapper>
         <SearchInput placeholder='글' onSearch={onSearchInput} />
         <PostManageList
-          posts={managePosts}
+          posts={managePosts ?? userPosts}
           firstIndex={firstIndex}
           lastIndex={lastIndex}
           onClickCategory={onClickCategory}
@@ -112,11 +120,35 @@ const ManagePosts = () => {
       <PaginationContainer
         pageSize={MANAGE_PAGE_SIZE}
         current={currentPage}
-        total={managePosts?.length}
+        total={managePosts?.length ?? userPosts?.length}
         onChange={onChangePage}
       />
     </ManageLayout>
   );
+};
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const { category: categoryId, searchKeyword, searchType } = context.query;
+  const queryClient = new QueryClient();
+
+  await Promise.all([
+    queryClient.prefetchQuery(['user'], getUser),
+    queryClient.prefetchQuery(['userPosts'], getUserPosts),
+    categoryId &&
+      queryClient.prefetchQuery(['userPosts', 'category', Number(categoryId)], () =>
+        searchCategoryOnUserPosts(Number(categoryId))
+      ),
+    searchKeyword &&
+      queryClient.prefetchQuery(['userPosts', searchKeyword, searchType], () =>
+        searchUserPosts(String(searchKeyword), String(searchType))
+      ),
+  ]);
+
+  return {
+    props: {
+      dehydratedState: dehydrate(queryClient),
+    },
+  };
 };
 
 export default ManagePosts;

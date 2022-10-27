@@ -1,10 +1,8 @@
 import React, { FC, useState, useCallback, useEffect, ChangeEvent, FormEvent, DragEvent } from 'react';
-import { useRecoilState } from 'recoil';
 import { Button, Form } from 'antd';
 import { MenuOutlined, PlusOutlined } from '@ant-design/icons';
 
 import useInput from '../../hooks/common/input';
-import { categoriesState } from '../../recoil/categories';
 import { CategoryItem, CategoryJson } from '../../types';
 import {
   changeProperty,
@@ -16,11 +14,12 @@ import {
 import * as S from '../../styles/ts/components/manage/CategoryManageList';
 
 interface CategoryManageListProps {
+  categories: CategoryItem[];
   categoryJson: CategoryJson;
   setCategoryJson: React.Dispatch<React.SetStateAction<CategoryJson>>;
 }
 
-const CategoryManageList: FC<CategoryManageListProps> = ({ categoryJson, setCategoryJson }) => {
+const CategoryManageList: FC<CategoryManageListProps> = ({ categories, categoryJson, setCategoryJson }) => {
   const [category, onChangeCategory, setCategory] = useInput('');
   const [showInput, setShowInput] = useState(false);
   const [currentCategory, setCurrentCategory] = useState<CategoryItem>({
@@ -28,8 +27,7 @@ const CategoryManageList: FC<CategoryManageListProps> = ({ categoryJson, setCate
     name: '',
     priority: null,
   });
-
-  const [categories, setCategories] = useRecoilState(categoriesState);
+  const [newCategories, setNewCategories] = useState<CategoryItem[]>(categories);
 
   const [draggedItemIdx, setDraggedItemIdx] = useState(0);
   const [targetItemIdx, setTargetItemIdx] = useState(0);
@@ -51,7 +49,7 @@ const CategoryManageList: FC<CategoryManageListProps> = ({ categoryJson, setCate
   }, []);
 
   const onUpdateCategory = useCallback(() => {
-    setCategories(changeProperty({ array: categories, state: currentCategory }));
+    setNewCategories(changeProperty({ array: newCategories, state: currentCategory }));
 
     if (currentCategory.id < 0) {
       setCategoryJson((prevState) => {
@@ -82,8 +80,8 @@ const CategoryManageList: FC<CategoryManageListProps> = ({ categoryJson, setCate
 
   const onDeleteCategory = useCallback(
     (categoryId: number) => {
-      const _categories = [...categories];
-      setCategories(_categories.filter((item) => item.id !== categoryId));
+      const _categories = [...newCategories];
+      setNewCategories(_categories.filter((item) => item.id !== categoryId));
 
       const deletedItemIdx = _categories.findIndex((item) => item.id === categoryId);
 
@@ -105,7 +103,7 @@ const CategoryManageList: FC<CategoryManageListProps> = ({ categoryJson, setCate
           return {
             ...prevState,
             update: changePriorityWhenDeleteExcludeNewItem({
-              array: { main: categories, update: newUpdaeList },
+              array: { main: newCategories, update: newUpdaeList },
               state: { deletedItemIdx },
             }),
             delete: [
@@ -118,7 +116,7 @@ const CategoryManageList: FC<CategoryManageListProps> = ({ categoryJson, setCate
         });
       }
     },
-    [categories]
+    [newCategories]
   );
 
   const onClickAddCategoryField = useCallback(() => {
@@ -132,19 +130,19 @@ const CategoryManageList: FC<CategoryManageListProps> = ({ categoryJson, setCate
 
   const onAddCategory = useCallback(
     (e: FormEvent<HTMLButtonElement>) => {
-      const lastCategoryId = categories[categories.length - 1]?.id;
+      const lastCategoryId = newCategories[newCategories.length - 1]?.id;
 
-      if (categories.length === 100) {
+      if (newCategories.length === 100) {
         alert('최대 100개의 카테고리를 추가할 수 있습니다.');
         return;
       }
 
-      setCategories([
-        ...categories,
+      setNewCategories([
+        ...newCategories,
         {
           id: lastCategoryId < 0 ? lastCategoryId - 1 : -1,
           name: category,
-          priority: categories.length,
+          priority: newCategories.length,
         },
       ]);
 
@@ -156,7 +154,7 @@ const CategoryManageList: FC<CategoryManageListProps> = ({ categoryJson, setCate
             {
               id: lastCategoryId < 0 ? lastCategoryId - 1 : -1,
               name: category,
-              priority: categories.length,
+              priority: newCategories.length,
             },
           ],
         };
@@ -190,17 +188,17 @@ const CategoryManageList: FC<CategoryManageListProps> = ({ categoryJson, setCate
   const onDrop = (e: DragEvent<HTMLDivElement>) => {
     e.currentTarget.classList.remove('drop_zone');
 
-    let _categories = [...categories];
+    let _categories = [...newCategories];
     const draggedItemContent = _categories.splice(draggedItemIdx, 1)[0];
     _categories.splice(targetItemIdx, 0, draggedItemContent);
-    setCategories(_categories);
+    setNewCategories(_categories);
 
     setCategoryJson((prevState) => {
       return {
         ...prevState,
         append: changePriorityWhenDrop({ array: categoryJson.append, state: { draggedItemIdx, targetItemIdx } }),
         update: changePriorityWhenDropExcludeNewItem({
-          array: { main: categories, update: categoryJson.update },
+          array: { main: newCategories, update: categoryJson.update },
           state: { draggedItemIdx, targetItemIdx },
         }),
       };
@@ -213,7 +211,7 @@ const CategoryManageList: FC<CategoryManageListProps> = ({ categoryJson, setCate
         <div className='wrap_order'>
           <div className='list_order'>
             {categories &&
-              categories.map((item, idx) =>
+              newCategories.map((item, idx) =>
                 item.id === currentCategory.id ? (
                   <S.ItemWrapper key={item.id} style={{ background: '#fbfbfb' }}>
                     <Form
@@ -308,7 +306,7 @@ const CategoryManageList: FC<CategoryManageListProps> = ({ categoryJson, setCate
               <span className='add_category_text'>카테고리 추가</span>
             </div>
             <S.TotalCount>
-              <span style={{ color: '#333' }}>{categories?.length}</span> / 100
+              <span style={{ color: '#333' }}>{newCategories?.length}</span> / 100
             </S.TotalCount>
           </S.AddCategoryWrapper>
         </div>

@@ -2,7 +2,9 @@ import React, { useState, useCallback, useEffect } from 'react';
 import Head from 'next/head';
 import Router, { useRouter } from 'next/router';
 import Link from 'next/link';
-import { useRecoilValue } from 'recoil';
+import { GetServerSideProps } from 'next';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { dehydrate, QueryClient } from '@tanstack/react-query';
 import { CloseCircleOutlined } from '@ant-design/icons';
 
 import ManageLayout from '../../components/layouts/ManageLayout';
@@ -13,6 +15,10 @@ import { MANAGE_PAGE_SIZE } from '../../recoil/page';
 import { manageSubscribedPostsState } from '../../recoil/manage';
 import { useGetUserSubscribedPosts } from '../../hooks/query/posts';
 import { useSearchCategoryOnUserSubscribedPosts, useSearchUserSubscribedPosts } from '../../hooks/query/search';
+import getUser from '../../apis/user/getUser';
+import getUserSubscribedPosts from '../../apis/posts/getUserSubscribedPosts';
+import searchCategoryOnUserSubscribedPosts from '../../apis/search/searchCategoryOnUserSubscribedPosts';
+import searchUserSubscribedPosts from '../../apis/search/searchUserSubscribedPosts';
 import { TitleWrapper, CloseButton } from '../../styles/ts/common';
 
 const ManageSubscribedPosts = () => {
@@ -23,11 +29,12 @@ const ManageSubscribedPosts = () => {
   const [firstIndex, setFirstIndex] = useState(0);
   const [lastIndex, setLastIndex] = useState(MANAGE_PAGE_SIZE);
 
-  const { refetch } = useGetUserSubscribedPosts();
+  const { data: userSubscribedPosts, refetch } = useGetUserSubscribedPosts();
   const { data: category } = useSearchCategoryOnUserSubscribedPosts(categoryId ? Number(categoryId) : undefined);
   useSearchUserSubscribedPosts(String(searchKeyword), String(searchType));
 
   const manageSubscribedPosts = useRecoilValue(manageSubscribedPostsState);
+  const setManageSubscribedPosts = useSetRecoilState(manageSubscribedPostsState);
 
   const onInitPage = () => {
     setCurrentPage(1);
@@ -40,6 +47,7 @@ const ManageSubscribedPosts = () => {
 
     if (Object.keys(router.query).length === 0) {
       refetch();
+      setManageSubscribedPosts(null);
     }
   }, [router.query]);
 
@@ -74,7 +82,7 @@ const ManageSubscribedPosts = () => {
           {Object.keys(router.query).length === 0 ? (
             <>
               <span className='text'>구독 글 관리</span>
-              <span className='count'>{manageSubscribedPosts?.length}</span>
+              <span className='count'>{manageSubscribedPosts?.length ?? userSubscribedPosts?.length}</span>
             </>
           ) : (
             <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -97,13 +105,13 @@ const ManageSubscribedPosts = () => {
                   <span className='text'>글</span>
                 </>
               )}
-              <span className='count'>{manageSubscribedPosts?.length}</span>
+              <span className='count'>{manageSubscribedPosts?.length ?? userSubscribedPosts?.length}</span>
             </div>
           )}
         </TitleWrapper>
         <SearchInput placeholder='구독 글' onSearch={onSearchInput} />
         <PostManageList
-          posts={manageSubscribedPosts}
+          posts={manageSubscribedPosts ?? userSubscribedPosts}
           firstIndex={firstIndex}
           lastIndex={lastIndex}
           onClickCategory={onClickCategory}
@@ -112,11 +120,35 @@ const ManageSubscribedPosts = () => {
       <PaginationContainer
         pageSize={MANAGE_PAGE_SIZE}
         current={currentPage}
-        total={manageSubscribedPosts?.length}
+        total={manageSubscribedPosts?.length ?? userSubscribedPosts?.length}
         onChange={onChangePage}
       />
     </ManageLayout>
   );
+};
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const { category: categoryId, searchKeyword, searchType } = context.query;
+  const queryClient = new QueryClient();
+
+  await Promise.all([
+    queryClient.prefetchQuery(['user'], getUser),
+    queryClient.prefetchQuery(['userSubscribedPosts'], getUserSubscribedPosts),
+    categoryId &&
+      queryClient.prefetchQuery(['userSubscribedPosts', 'category', Number(categoryId)], () =>
+        searchCategoryOnUserSubscribedPosts(Number(categoryId))
+      ),
+    searchKeyword &&
+      queryClient.prefetchQuery(['userPosts', searchKeyword, searchType], () =>
+        searchUserSubscribedPosts(String(searchKeyword), String(searchType))
+      ),
+  ]);
+
+  return {
+    props: {
+      dehydratedState: dehydrate(queryClient),
+    },
+  };
 };
 
 export default ManageSubscribedPosts;

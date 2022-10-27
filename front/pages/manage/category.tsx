@@ -1,18 +1,19 @@
 import React, { useCallback, useState, useEffect } from 'react';
 import Head from 'next/head';
-import { useRecoilValue } from 'recoil';
+import { GetServerSideProps } from 'next';
+import { dehydrate, QueryClient } from '@tanstack/react-query';
 import { FiCheck } from 'react-icons/fi';
 
 import ManageLayout from '../../components/layouts/ManageLayout';
 import CategoryManageList from '../../components/manage/CategoryManageList';
 import { useGetCategories, useUpdateCategories } from '../../hooks/query/categories';
-import { categoriesState } from '../../recoil/categories';
+import getUser from '../../apis/user/getUser';
+import getCategories from '../../apis/categories/getCategories';
 import { CategoryJson } from '../../types';
 import * as S from '../../styles/ts/pages/manage/category';
 
 const ManageCategory = () => {
-  useGetCategories();
-  const categories = useRecoilValue(categoriesState);
+  const { data: categories } = useGetCategories();
   const updateCategories = useUpdateCategories();
 
   const [isSave, setIsSave] = useState(false);
@@ -55,7 +56,7 @@ const ManageCategory = () => {
             <span>{categories?.length}</span> / 100
           </S.TotalCount>
         </S.Description>
-        <CategoryManageList categoryJson={categoryJson} setCategoryJson={setCategoryJson} />
+        <CategoryManageList categories={categories} categoryJson={categoryJson} setCategoryJson={setCategoryJson} />
         <div className='set_btn'>
           <S.SaveDiffButton onClick={onUpdateCategories} disabled={isDisabled}>
             {isSave ? (
@@ -71,6 +72,21 @@ const ManageCategory = () => {
       </S.ManageCategoryWrapper>
     </ManageLayout>
   );
+};
+
+export const getServerSideProps: GetServerSideProps = async () => {
+  const queryClient = new QueryClient();
+
+  await Promise.all([
+    queryClient.prefetchQuery(['user'], getUser),
+    queryClient.prefetchQuery(['categories'], getCategories),
+  ]);
+
+  return {
+    props: {
+      dehydratedState: dehydrate(queryClient),
+    },
+  };
 };
 
 export default ManageCategory;

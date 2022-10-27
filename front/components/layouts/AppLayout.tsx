@@ -11,14 +11,12 @@ import Counter from '../common/Counter';
 import Search from '../main/Search';
 import { currentPageState, firstIndexState, lastIndexState, PAGE_SIZE } from '../../recoil/page';
 import { useGetUser } from '../../hooks/query/user';
-import useGetVisitorsCount from '../../hooks/query/visitorsCount';
 import * as S from '../../styles/ts/components/layouts/AppLayout';
 import logo from '../../public/Groom_Logo_No_Background.png';
 
 const AppLayout = ({ children }) => {
   const router = useRouter();
   const { data: user } = useGetUser();
-  useGetVisitorsCount();
 
   const setCurrentPage = useSetRecoilState(currentPageState);
   const setFirstIndex = useSetRecoilState(firstIndexState);
@@ -42,7 +40,7 @@ const AppLayout = ({ children }) => {
     <>
       <S.Container>
         <S.StyledSider width={300}>
-          {user ? <UserProfile /> : <LoginForm />}
+          {user ? <UserProfile user={user} /> : <LoginForm />}
           <Category />
           <Counter />
           <Search />

@@ -1,40 +1,39 @@
 import React from 'react';
 import Link from 'next/link';
-import { useRecoilValue } from 'recoil';
+import { GetServerSideProps } from 'next';
+import { dehydrate, QueryClient } from '@tanstack/react-query';
 
-import { userState } from '../../recoil/user';
-import { todayCountState, totalCountState } from '../../recoil/count';
 import ManageLayout from '../../components/layouts/ManageLayout';
+import getUser from '../../apis/user/getUser';
+import getVisitorsCount from '../../apis/count';
 import useGetVisitorsCount from '../../hooks/query/visitorsCount';
+import { useGetUser } from '../../hooks/query/user';
 import * as S from '../../styles/ts/pages/manage';
 
+const renderEmptyBox = (length: number) => {
+  let emptyBoxes = [];
+
+  for (let i = 0; i < 4 - length; i++) {
+    emptyBoxes.push(<S.EmptyBox>No Post</S.EmptyBox>);
+  }
+
+  return emptyBoxes;
+};
+
 const Manage = () => {
-  const user = useRecoilValue(userState);
-
-  useGetVisitorsCount();
-  const todayCount = useRecoilValue(todayCountState);
-  const totalCount = useRecoilValue(totalCountState);
-
-  const renderEmptyBox = (length: number) => {
-    let emptyBoxes = [];
-
-    for (let i = 0; i < 4 - length; i++) {
-      emptyBoxes.push(<S.EmptyBox>No Post</S.EmptyBox>);
-    }
-
-    return emptyBoxes;
-  };
+  const { data: user } = useGetUser();
+  const { data: visitors } = useGetVisitorsCount();
 
   return (
     <ManageLayout>
       <S.CountVisitorWrapper>
         <S.CountVisitor style={{ marginRight: '50px' }}>
           <div className='title'>오늘 방문 수</div>
-          <div className='number'>{todayCount}</div>
+          <div className='number'>{visitors.todayCount}</div>
         </S.CountVisitor>
         <S.CountVisitor>
           <div className='title'>누적 방문 수</div>
-          <div className='number'>{totalCount}</div>
+          <div className='number'>{visitors.totalCount}</div>
         </S.CountVisitor>
       </S.CountVisitorWrapper>
       <S.LastPosts>
@@ -61,6 +60,21 @@ const Manage = () => {
       </S.LastPosts>
     </ManageLayout>
   );
+};
+
+export const getServerSideProps: GetServerSideProps = async () => {
+  const queryClient = new QueryClient();
+
+  await Promise.all([
+    queryClient.prefetchQuery(['user'], getUser),
+    queryClient.prefetchQuery(['visitorsCount'], getVisitorsCount),
+  ]);
+
+  return {
+    props: {
+      dehydratedState: dehydrate(queryClient),
+    },
+  };
 };
 
 export default Manage;

@@ -7,7 +7,6 @@ import getPostsIncludeCategory from '../../apis/posts/getPostsIncludeCategory';
 import getUserPosts from '../../apis/posts/getUserPosts';
 import getUserSubscribedPosts from '../../apis/posts/getUserSubscribedPosts';
 import { mainPostsState } from '../../recoil/posts';
-import { managePostsState, manageSubscribedPostsState } from './../../recoil/manage';
 
 const useGetPosts = () => {
   const setMainPosts = useSetRecoilState(mainPostsState);
@@ -36,28 +35,20 @@ const useGetPostsIncludeCategory = (categoryId: number) =>
     },
   });
 
-const useGetUserPosts = () => {
-  const setManagePosts = useSetRecoilState(managePostsState);
-
-  return useQuery(['userPosts'], getUserPosts, {
+const useGetUserPosts = () =>
+  useQuery(['userPosts'], getUserPosts, {
     onSuccess: (data) => {
-      setManagePosts(data);
       console.log('userPosts', data);
     },
     refetchOnWindowFocus: false,
   });
-};
 
-const useGetUserSubscribedPosts = () => {
-  const setManageSubscribedPosts = useSetRecoilState(manageSubscribedPostsState);
-
-  return useQuery(['userSubscribedPosts'], getUserSubscribedPosts, {
+const useGetUserSubscribedPosts = () =>
+  useQuery(['userSubscribedPosts'], getUserSubscribedPosts, {
     onSuccess: (data) => {
-      setManageSubscribedPosts(data);
       console.log('userSubscribedPosts', data);
     },
     refetchOnWindowFocus: false,
   });
-};
 
 export { useGetPosts, useGetPostsIncludeTag, useGetPostsIncludeCategory, useGetUserPosts, useGetUserSubscribedPosts };
