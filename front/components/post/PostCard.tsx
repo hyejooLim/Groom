@@ -4,6 +4,7 @@ import Router from 'next/router';
 import { Button } from 'antd';
 import { HeartOutlined, HeartTwoTone } from '@ant-design/icons';
 import { Markup } from 'interweave';
+import { polyfill } from 'interweave-ssr';
 import { useRecoilValue } from 'recoil';
 import dayjs from 'dayjs';
 
@@ -22,6 +23,8 @@ import {
 import { mainPostsState } from '../../recoil/posts';
 import { PostItem } from '../../types';
 import * as S from '../../styles/ts/components/post/PostCard';
+
+polyfill();
 
 interface PostCardProps {
   post: PostItem;
