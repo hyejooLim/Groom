@@ -29,9 +29,16 @@ const ManagePosts = () => {
   const [firstIndex, setFirstIndex] = useState(0);
   const [lastIndex, setLastIndex] = useState(MANAGE_PAGE_SIZE);
 
-  const { data: userPosts, refetch } = useGetUserPosts();
-  const { data: category } = useSearchCategoryOnUserPosts(categoryId ? Number(categoryId) : undefined);
-  useSearchUserPosts(String(searchKeyword), String(searchType));
+  const { data: userPosts, refetch, isLoading: isLoadingPosts, isFetching: isFetchingPosts } = useGetUserPosts();
+  const { isLoading: isLoadingSearch, isFetching: isFetchingSearch } = useSearchUserPosts(
+    String(searchKeyword),
+    String(searchType)
+  );
+  const {
+    data: category,
+    isLoading: isLoadingSearchCategory,
+    isFetching: isFetchingSearchCategory,
+  } = useSearchCategoryOnUserPosts(categoryId ? Number(categoryId) : undefined);
 
   const managePosts = useRecoilValue(managePostsState);
   const setManagePosts = useSetRecoilState(managePostsState);
@@ -112,6 +119,8 @@ const ManagePosts = () => {
         <SearchInput placeholder='글' onSearch={onSearchInput} />
         <PostManageList
           posts={managePosts ?? userPosts}
+          isLoading={isLoadingSearch || isLoadingSearchCategory || isLoadingPosts}
+          isFetching={isFetchingSearch || isFetchingSearchCategory || isFetchingPosts}
           firstIndex={firstIndex}
           lastIndex={lastIndex}
           onClickCategory={onClickCategory}

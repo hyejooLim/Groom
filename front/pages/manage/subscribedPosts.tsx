@@ -29,9 +29,21 @@ const ManageSubscribedPosts = () => {
   const [firstIndex, setFirstIndex] = useState(0);
   const [lastIndex, setLastIndex] = useState(MANAGE_PAGE_SIZE);
 
-  const { data: userSubscribedPosts, refetch } = useGetUserSubscribedPosts();
-  const { data: category } = useSearchCategoryOnUserSubscribedPosts(categoryId ? Number(categoryId) : undefined);
-  useSearchUserSubscribedPosts(String(searchKeyword), String(searchType));
+  const {
+    data: userSubscribedPosts,
+    refetch,
+    isLoading: isLoadingPosts,
+    isFetching: isFetchingPosts,
+  } = useGetUserSubscribedPosts();
+  const { isLoading: isLoadingSearch, isFetching: isFetchingSearch } = useSearchUserSubscribedPosts(
+    String(searchKeyword),
+    String(searchType)
+  );
+  const {
+    data: category,
+    isLoading: isLoadingSearchCategory,
+    isFetching: isFetchingSearchCategory,
+  } = useSearchCategoryOnUserSubscribedPosts(categoryId ? Number(categoryId) : undefined);
 
   const manageSubscribedPosts = useRecoilValue(manageSubscribedPostsState);
   const setManageSubscribedPosts = useSetRecoilState(manageSubscribedPostsState);
@@ -112,6 +124,8 @@ const ManageSubscribedPosts = () => {
         <SearchInput placeholder='구독 글' onSearch={onSearchInput} />
         <PostManageList
           posts={manageSubscribedPosts ?? userSubscribedPosts}
+          isLoading={isLoadingSearch || isLoadingSearchCategory || isLoadingPosts}
+          isFetching={isFetchingSearch || isFetchingSearchCategory || isFetchingPosts}
           firstIndex={firstIndex}
           lastIndex={lastIndex}
           onClickCategory={onClickCategory}

@@ -36,6 +36,11 @@ export const ListWrapper = styled.div`
   word-break: break-all; // ?
   height: 383px;
   border: 1px solid #e0e5ee;
+
+  & .loader {
+    line-height: 383px;
+    text-align: center;
+  }
 `;
 
 export const PostInfo = styled.div`
