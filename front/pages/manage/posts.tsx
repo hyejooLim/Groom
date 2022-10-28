@@ -4,7 +4,7 @@ import Router, { useRouter } from 'next/router';
 import Link from 'next/link';
 import { GetServerSideProps } from 'next';
 import { dehydrate, QueryClient } from '@tanstack/react-query';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRecoilState } from 'recoil';
 import { CloseCircleOutlined } from '@ant-design/icons';
 
 import ManageLayout from '../../components/layouts/ManageLayout';
@@ -40,8 +40,7 @@ const ManagePosts = () => {
     isFetching: isFetchingSearchCategory,
   } = useSearchCategoryOnUserPosts(categoryId ? Number(categoryId) : undefined);
 
-  const managePosts = useRecoilValue(managePostsState);
-  const setManagePosts = useSetRecoilState(managePostsState);
+  const [managePosts, setManagePosts] = useRecoilState(managePostsState);
 
   const onInitPage = () => {
     setCurrentPage(1);

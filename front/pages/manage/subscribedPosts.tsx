@@ -3,7 +3,7 @@ import Head from 'next/head';
 import Router, { useRouter } from 'next/router';
 import Link from 'next/link';
 import { GetServerSideProps } from 'next';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRecoilState } from 'recoil';
 import { dehydrate, QueryClient } from '@tanstack/react-query';
 import { CloseCircleOutlined } from '@ant-design/icons';
 
@@ -45,8 +45,7 @@ const ManageSubscribedPosts = () => {
     isFetching: isFetchingSearchCategory,
   } = useSearchCategoryOnUserSubscribedPosts(categoryId ? Number(categoryId) : undefined);
 
-  const manageSubscribedPosts = useRecoilValue(manageSubscribedPostsState);
-  const setManageSubscribedPosts = useSetRecoilState(manageSubscribedPostsState);
+  const [manageSubscribedPosts, setManageSubscribedPosts] = useRecoilState(manageSubscribedPostsState);
 
   const onInitPage = () => {
     setCurrentPage(1);
