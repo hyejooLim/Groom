@@ -90,6 +90,15 @@
   animation: isLoading 2s infinite linear;
 }
 
+.skeleton.box {
+  float: left;
+  position: relative;
+  width: 217px;
+  height: 246px;
+  margin: 6px 7px 0 0;
+  border: 1px solid #e0e5ee;
+}
+
 @keyframes isLoading {
   0% {
     transform: translateX(0);

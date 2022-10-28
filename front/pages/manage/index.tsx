@@ -2,8 +2,10 @@ import React from 'react';
 import Link from 'next/link';
 import { GetServerSideProps } from 'next';
 import { dehydrate, QueryClient } from '@tanstack/react-query';
+import axios, { HeadersDefaults } from 'axios';
 
 import ManageLayout from '../../components/layouts/ManageLayout';
+import SkeletonLastPosts from '../../components/skeleton/SkeletonLastPosts';
 import getUser from '../../apis/user/getUser';
 import getVisitorsCount from '../../apis/count';
 import useGetVisitorsCount from '../../hooks/query/visitorsCount';
@@ -21,7 +23,7 @@ const renderEmptyBox = (length: number) => {
 };
 
 const Manage = () => {
-  const { data: user } = useGetUser();
+  const { data: user, isLoading } = useGetUser();
   const { data: visitors } = useGetVisitorsCount();
 
   return (
@@ -38,31 +40,47 @@ const Manage = () => {
       </S.CountVisitorWrapper>
       <S.LastPosts>
         <span style={{ fontSize: '20px' }}>최근 작성 글</span>
-        <ul>
-          <>
-            {user?.posts?.slice(0, 4).map((post) => (
-              <li key={post.id}>
-                <Link href={`/post/${post.id}`}>
-                  <a>
-                    <S.PostTitle>{`[${post.category?.name}] ${post.title}`}</S.PostTitle>
-                    <S.PostContent>{post.content.slice(0, 60)}</S.PostContent>
-                  </a>
-                </Link>
-                <S.InfoWrapper>
-                  <span>댓글 {post.comments?.length}</span>
-                  <span>공감 {post.likers?.length}</span>
-                </S.InfoWrapper>
-              </li>
-            ))}
-            {user?.posts?.length < 4 && renderEmptyBox(user?.posts.length)}
-          </>
-        </ul>
+        {isLoading ? (
+          <SkeletonLastPosts />
+        ) : (
+          <ul>
+            <>
+              {user?.posts?.slice(0, 4).map((post) => (
+                <li key={post.id}>
+                  <Link href={`/post/${post.id}`}>
+                    <a>
+                      <S.PostTitle>{`[${post.category?.name}] ${post.title}`}</S.PostTitle>
+                      <S.PostContent>{post.content.slice(0, 60)}</S.PostContent>
+                    </a>
+                  </Link>
+                  <S.InfoWrapper>
+                    <span>댓글 {post.comments?.length}</span>
+                    <span>공감 {post.likers?.length}</span>
+                  </S.InfoWrapper>
+                </li>
+              ))}
+              {user?.posts?.length < 4 && renderEmptyBox(user?.posts.length)}
+            </>
+          </ul>
+        )}
       </S.LastPosts>
     </ManageLayout>
   );
 };
 
-export const getServerSideProps: GetServerSideProps = async () => {
+interface HeadersDefaultsWithCookie extends HeadersDefaults {
+  Cookie: string;
+}
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const cookie = context.req ? context.req.headers.cookie : '';
+
+  if (context.req && cookie) {
+    axios.defaults.headers = {
+      Cookie: cookie,
+    } as HeadersDefaultsWithCookie;
+  }
+
   const queryClient = new QueryClient();
 
   await Promise.all([

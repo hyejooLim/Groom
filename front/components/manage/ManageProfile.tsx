@@ -9,6 +9,7 @@ import classNames from 'classnames';
 import AWS from 'aws-sdk';
 
 import { useGetUser, useUpdateUser } from '../../hooks/query/user';
+import SkeletonManageProfile from '../skeleton/SkeletonManageProfile';
 import * as S from '../../styles/ts/components/manage/ManageProfile';
 
 const s3 = new AWS.S3();
@@ -27,7 +28,7 @@ AWS.config.update({
 
 const ManageProfile = () => {
   const { status } = useSession();
-  const { data: user } = useGetUser();
+  const { data: user, isLoading } = useGetUser();
 
   const updateUser = useUpdateUser();
 
@@ -104,10 +105,16 @@ const ManageProfile = () => {
       }
     >
       <div className='card_meta'>
-        <Card.Meta title={`${user?.name}님`} description={user?.email} />
-        <Button className='logout_btn' onClick={handleLogout}>
-          로그아웃
-        </Button>
+        {isLoading ? (
+          <SkeletonManageProfile />
+        ) : (
+          <>
+            <Card.Meta title={`${user?.name}님`} description={user?.email} />
+            <Button className='logout_btn' onClick={handleLogout}>
+              로그아웃
+            </Button>
+          </>
+        )}
       </div>
     </S.StyledCard>
   );
