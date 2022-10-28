@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect } from 'react';
 import Router, { useRouter } from 'next/router';
 import Image from 'next/image';
+import { useSession } from 'next-auth/react';
 import { useSetRecoilState } from 'recoil';
 import { Layout } from 'antd';
 
@@ -10,13 +11,12 @@ import Category from '../main/Category';
 import Counter from '../common/Counter';
 import Search from '../main/Search';
 import { currentPageState, firstIndexState, lastIndexState, PAGE_SIZE } from '../../recoil/page';
-import { useGetUser } from '../../hooks/query/user';
 import * as S from '../../styles/ts/components/layouts/AppLayout';
 import logo from '../../public/Groom_Logo_No_Background.png';
 
 const AppLayout = ({ children }) => {
   const router = useRouter();
-  const { data: user } = useGetUser();
+  const { status } = useSession();
 
   const setCurrentPage = useSetRecoilState(currentPageState);
   const setFirstIndex = useSetRecoilState(firstIndexState);
@@ -40,7 +40,7 @@ const AppLayout = ({ children }) => {
     <>
       <S.Container>
         <S.StyledSider width={300}>
-          {user ? <UserProfile user={user} /> : <LoginForm />}
+          {status !== 'unauthenticated' ? <UserProfile /> : <LoginForm />}
           <Category />
           <Counter />
           <Search />
