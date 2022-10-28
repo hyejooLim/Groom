@@ -15,9 +15,9 @@ import { useGetPostsIncludeTag } from '../../hooks/query/posts';
 
 const Tag = () => {
   const router = useRouter();
-  const { id, name } = router.query;
+  const { name } = router.query;
 
-  const { data: posts, isLoading } = useGetPostsIncludeTag(Number(id));
+  const { data: posts, isLoading } = useGetPostsIncludeTag(String(name));
 
   return (
     <AppLayout>
@@ -33,14 +33,14 @@ const Tag = () => {
 };
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const { id } = context.query;
+  const { name } = context.params;
   const queryClient = new QueryClient();
 
   await Promise.all([
     queryClient.prefetchQuery(['user'], getUser),
     queryClient.prefetchQuery(['categories'], getCategories),
     queryClient.prefetchQuery(['visitorsCount'], getVisitorsCount),
-    queryClient.prefetchQuery(['posts', 'tag', Number(id)], () => getPostsIncludeTag(Number(id))),
+    queryClient.prefetchQuery(['posts', 'tag', String(name)], () => getPostsIncludeTag(String(name))),
   ]);
 
   return {

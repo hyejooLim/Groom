@@ -8,7 +8,7 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
         where: {
           tags: {
             some: {
-              id: Number(req.query.id),
+              name: String(req.query.name),
             },
           },
           isPublic: true,

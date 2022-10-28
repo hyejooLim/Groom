@@ -21,8 +21,8 @@ const useGetPosts = () => {
   });
 };
 
-const useGetPostsIncludeTag = (tagId: number) =>
-  useQuery(['posts', 'tag', tagId], () => getPostsIncludeTag(tagId), {
+const useGetPostsIncludeTag = (name: string) =>
+  useQuery(['posts', 'tag', name], () => getPostsIncludeTag(name), {
     onSuccess: (data) => {
       console.log('postsIncludeTag', data);
     },

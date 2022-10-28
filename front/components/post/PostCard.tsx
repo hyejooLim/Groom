@@ -118,7 +118,7 @@ const PostCard: FC<PostCardProps> = ({ post }) => {
       <S.ContentWrapper>
         <div className='tag_label'>
           {currentPost.tags?.map((tag) => (
-            <Link key={tag.id} href={{ pathname: '/tag/[name]', query: { id: tag.id, name: tag.name } }}>
+            <Link key={tag.id} href={`/tag/${tag.name}`}>
               <a>#{tag.name}</a>
             </Link>
           ))}
