@@ -17,7 +17,7 @@ const Tag = () => {
   const router = useRouter();
   const { id, name } = router.query;
 
-  const { data: posts } = useGetPostsIncludeTag(Number(id));
+  const { data: posts, isLoading } = useGetPostsIncludeTag(Number(id));
 
   return (
     <AppLayout>
@@ -27,7 +27,7 @@ const Tag = () => {
       <div style={{ textAlign: 'center' }}>
         <Title title={name as string} />
       </div>
-      {posts && <PostList posts={posts} />}
+      <PostList posts={posts} isLoading={isLoading} />
     </AppLayout>
   );
 };

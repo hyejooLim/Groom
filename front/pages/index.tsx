@@ -13,14 +13,14 @@ import getVisitorsCount from '../apis/count';
 import { useGetPosts } from '../hooks/query/posts';
 
 const Home = () => {
-  const { data: posts } = useGetPosts();
+  const { data: posts, isLoading } = useGetPosts();
 
   return (
     <AppLayout>
       <div style={{ textAlign: 'center' }}>
         <Title title='전체 글' />
       </div>
-      <PostList posts={posts} />
+      <PostList posts={posts} isLoading={isLoading} />
     </AppLayout>
   );
 };
@@ -29,7 +29,6 @@ interface HeadersDefaultWithCookie extends HeadersDefaults {
   Cookie: string;
 }
 
-// useGetUser: isLoading -> 스켈레톤 UI
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const cookie = context.req ? context.req.headers.cookie : '';
 

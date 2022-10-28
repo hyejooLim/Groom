@@ -21,6 +21,11 @@ export const ListWrapper = styled.div`
       }
     }
   }
+
+  & .loader {
+    line-height: 432px;
+    text-align: center;
+  }
 `;
 
 export const PostInfo = styled.div`

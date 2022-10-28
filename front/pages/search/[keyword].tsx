@@ -16,7 +16,7 @@ const Search = () => {
   const router = useRouter();
   const { keyword } = router.query;
 
-  const { data: posts } = useSearchPosts(keyword as string);
+  const { data: posts, isLoading } = useSearchPosts(keyword as string);
 
   return (
     <AppLayout>
@@ -26,7 +26,7 @@ const Search = () => {
       <div style={{ textAlign: 'center' }}>
         <Title title={keyword as string} />
       </div>
-      <PostList posts={posts} />
+      <PostList posts={posts} isLoading={isLoading} />
     </AppLayout>
   );
 };

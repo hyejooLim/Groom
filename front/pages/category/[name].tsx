@@ -17,7 +17,7 @@ const Category = () => {
   const router = useRouter();
   const { id, name } = router.query;
 
-  const { data: posts } = useGetPostsIncludeCategory(Number(id));
+  const { data: posts, isLoading } = useGetPostsIncludeCategory(Number(id));
 
   return (
     <AppLayout>
@@ -27,7 +27,7 @@ const Category = () => {
       <div style={{ textAlign: 'center' }}>
         <Title title={name as string} />
       </div>
-      {posts && <PostList posts={posts} />}
+      <PostList posts={posts} isLoading={isLoading} />
     </AppLayout>
   );
 };
