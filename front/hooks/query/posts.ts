@@ -28,8 +28,8 @@ const useGetPostsIncludeTag = (tagId: number) =>
     },
   });
 
-const useGetPostsIncludeCategory = (categoryId: number) =>
-  useQuery(['posts', 'category', categoryId], () => getPostsIncludeCategory(categoryId), {
+const useGetPostsIncludeCategory = (name: string) =>
+  useQuery(['posts', 'category', name], () => getPostsIncludeCategory(name), {
     onSuccess: (data) => {
       console.log('postsIncludeCategory', data);
     },

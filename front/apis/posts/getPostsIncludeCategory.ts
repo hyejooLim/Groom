@@ -1,8 +1,8 @@
 import clientApi from '..';
 import { PostItem } from '../../types';
 
-const getPostsIncludeCategory = async (categoryId: number): Promise<PostItem[]> => {
-  const response = await clientApi.get<PostItem[]>(`/posts/category/${categoryId}`);
+const getPostsIncludeCategory = async (name: string): Promise<PostItem[]> => {
+  const response = await clientApi.get<PostItem[]>(`/posts/category/${name}`);
 
   return response;
 };

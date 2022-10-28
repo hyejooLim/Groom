@@ -15,9 +15,9 @@ import { useGetPostsIncludeCategory } from '../../hooks/query/posts';
 
 const Category = () => {
   const router = useRouter();
-  const { id, name } = router.query;
+  const { name } = router.query;
 
-  const { data: posts, isLoading } = useGetPostsIncludeCategory(Number(id));
+  const { data: posts, isLoading } = useGetPostsIncludeCategory(String(name));
 
   return (
     <AppLayout>
@@ -33,14 +33,14 @@ const Category = () => {
 };
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const { id } = context.query;
+  const { name } = context.params;
   const queryClient = new QueryClient();
 
   await Promise.all([
     queryClient.prefetchQuery(['user'], getUser),
     queryClient.prefetchQuery(['categories'], getCategories),
     queryClient.prefetchQuery(['visitorsCount'], getVisitorsCount),
-    queryClient.prefetchQuery(['posts', 'category', Number(id)], () => getPostsIncludeCategory(Number(id))),
+    queryClient.prefetchQuery(['posts', 'category', String(name)], () => getPostsIncludeCategory(String(name))),
   ]);
 
   return {

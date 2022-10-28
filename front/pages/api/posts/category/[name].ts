@@ -6,7 +6,9 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
     if (req.method === 'GET') {
       const posts = await prisma.post.findMany({
         where: {
-          categoryId: Number(req.query.id),
+          category: {
+            name: String(req.query.name),
+          },
           isPublic: true,
           createdAt: {
             lte: new Date(),
