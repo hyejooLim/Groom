@@ -70,6 +70,7 @@ const ManageCategory = () => {
           </S.SaveDiffButton>
         </div>
       </S.ManageCategoryWrapper>
+      <div style={{ height: '100px' }} />
     </ManageLayout>
   );
 };
