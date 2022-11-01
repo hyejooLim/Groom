@@ -17,7 +17,7 @@ const ManageLayout = ({ children }) => {
           <ManageProfile />
           <ManageList />
         </S.StyledSider>
-        <Layout style={{ width: '100%' }}>
+        <Layout style={{ width: '100%', height: '100%' }}>
           <S.StyledHeader>
             <S.HomeButton>
               <Link href='/'>
