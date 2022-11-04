@@ -13,6 +13,7 @@ import PaginationContainer from '../common/PaginationContainer';
 import CommentForm from '../comment/CommentForm';
 import CommentList from '../comment/CommentList';
 import { useGetUser } from '../../hooks/query/user';
+import { useGetPosts } from '../../hooks/query/posts';
 import {
   useDeletePost,
   useLikePost,
@@ -39,6 +40,7 @@ const PostCard: FC<PostCardProps> = ({ post }) => {
   const unSubscribePost = useUnSubscribePost();
   const deletePost = useDeletePost();
 
+  useGetPosts();
   const mainPosts = useRecoilValue(mainPostsState);
   const [currentPost, setCurrentPost] = useState<PostItem>(post);
 
@@ -49,6 +51,10 @@ const PostCard: FC<PostCardProps> = ({ post }) => {
     setCurrentPost(post);
   }, [post]);
 
+  useEffect(() => {
+    setCurrentPage(mainPosts.findIndex(findPostIndex) + 1);
+  }, [mainPosts]);
+  
   useEffect(() => {
     if (deletePost.isSuccess) {
       setTimeout(() => {
