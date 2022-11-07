@@ -18,21 +18,21 @@ const AppLayout = ({ children }) => {
   const router = useRouter();
   const { status } = useSession();
 
-  const setCurrentPage = useSetRecoilState(currentPageState);
   const setFirstIndex = useSetRecoilState(firstIndexState);
   const setLastIndex = useSetRecoilState(lastIndexState);
+  const setCurrentPage = useSetRecoilState(currentPageState);
+
+  const onInitPage = () => {
+    setFirstIndex(0);
+    setLastIndex(PAGE_SIZE);
+    setCurrentPage(1);
+  };
 
   useEffect(() => {
-    setCurrentPage(1);
-    setFirstIndex(0);
-    setLastIndex(PAGE_SIZE);
-  }, [router.pathname]);
+    onInitPage();
+  }, [router.asPath]);
 
   const onClickLogo = useCallback(() => {
-    setCurrentPage(1);
-    setFirstIndex(0);
-    setLastIndex(PAGE_SIZE);
-
     Router.push('/');
   }, []);
 

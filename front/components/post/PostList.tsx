@@ -1,10 +1,11 @@
-import React, { FC, useCallback } from 'react';
+import React, { FC, useCallback, useEffect } from 'react';
 import { useRecoilState } from 'recoil';
 import Link from 'next/link';
 import dayjs from 'dayjs';
 import BeatLoader from 'react-spinners/BeatLoader';
 
 import { PostItem } from '../../types';
+import { useSsrAllowedState } from '../../recoil/persist';
 import { currentPageState, firstIndexState, lastIndexState, PAGE_SIZE } from '../../recoil/page';
 import PaginationContainer from '../common/PaginationContainer';
 import { ListWrapper, PostInfo } from '../../styles/ts/components/post/PostList';
@@ -18,6 +19,9 @@ const PostList: FC<PostListProps> = ({ posts, isLoading }) => {
   const [firstIndex, setFirstIndex] = useRecoilState(firstIndexState);
   const [lastIndex, setLastIndex] = useRecoilState(lastIndexState);
   const [currentPage, setCurrentPage] = useRecoilState(currentPageState);
+
+  const setSsrAllowed = useSsrAllowedState();
+  useEffect(setSsrAllowed, [setSsrAllowed]);
 
   const onChangePage = useCallback(
     (page: number) => {
