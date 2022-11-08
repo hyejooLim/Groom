@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import Head from 'next/head';
 import Router, { useRouter } from 'next/router';
 import Link from 'next/link';
@@ -9,9 +9,7 @@ import { CloseCircleOutlined } from '@ant-design/icons';
 
 import ManageLayout from '../../components/layouts/ManageLayout';
 import PostManageList from '../../components/manage/PostManageList';
-import PaginationContainer from '../../components/common/PaginationContainer';
 import SearchInput from '../../components/manage/SearchInput';
-import { MANAGE_PAGE_SIZE } from '../../recoil/page';
 import { managePostsState } from '../../recoil/manage';
 import { useGetUserPosts } from '../../hooks/query/posts';
 import { useSearchUserPosts, useSearchCategoryOnUserPosts } from '../../hooks/query/search';
@@ -24,10 +22,6 @@ import { TitleWrapper, CloseButton } from '../../styles/ts/common';
 const ManagePosts = () => {
   const router = useRouter();
   const { category: categoryId, searchKeyword, searchType } = router.query;
-
-  const [currentPage, setCurrentPage] = useState(1);
-  const [firstIndex, setFirstIndex] = useState(0);
-  const [lastIndex, setLastIndex] = useState(MANAGE_PAGE_SIZE);
 
   const { data: userPosts, refetch, isLoading: isLoadingPosts, isFetching: isFetchingPosts } = useGetUserPosts();
   const { isLoading: isLoadingSearch, isFetching: isFetchingSearch } = useSearchUserPosts(
@@ -42,37 +36,18 @@ const ManagePosts = () => {
 
   const [managePosts, setManagePosts] = useRecoilState(managePostsState);
 
-  const onInitPage = () => {
-    setCurrentPage(1);
-    setFirstIndex(0);
-    setLastIndex(MANAGE_PAGE_SIZE);
-  };
-
   useEffect(() => {
-    onInitPage();
-
     if (Object.keys(router.query).length === 0) {
       refetch();
       setManagePosts(null);
     }
   }, [router.query]);
 
-  const onChangePage = useCallback(
-    (page: number) => {
-      setCurrentPage(page);
-      setFirstIndex((page - 1) * MANAGE_PAGE_SIZE);
-      setLastIndex(page * MANAGE_PAGE_SIZE);
-    },
-    [MANAGE_PAGE_SIZE]
-  );
-
   const onSearchInput = (searchKeyword: string, searchType: string) => {
-    onInitPage();
     Router.push({ pathname: '/manage/posts', query: { searchKeyword, searchType } });
   };
 
   const onClickCategory = (id: number) => {
-    onInitPage();
     Router.push({ pathname: '/manage/posts', query: { category: id } });
   };
 
@@ -120,17 +95,9 @@ const ManagePosts = () => {
           posts={managePosts ?? userPosts}
           isLoading={isLoadingSearch || isLoadingSearchCategory || isLoadingPosts}
           isFetching={isFetchingSearch || isFetchingSearchCategory || isFetchingPosts}
-          firstIndex={firstIndex}
-          lastIndex={lastIndex}
           onClickCategory={onClickCategory}
         />
       </div>
-      <PaginationContainer
-        pageSize={MANAGE_PAGE_SIZE}
-        current={currentPage}
-        total={managePosts?.length ?? userPosts?.length}
-        onChange={onChangePage}
-      />
     </ManageLayout>
   );
 };

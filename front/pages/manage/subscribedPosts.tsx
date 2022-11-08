@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import Head from 'next/head';
 import Router, { useRouter } from 'next/router';
 import Link from 'next/link';
@@ -9,9 +9,7 @@ import { CloseCircleOutlined } from '@ant-design/icons';
 
 import ManageLayout from '../../components/layouts/ManageLayout';
 import PostManageList from '../../components/manage/PostManageList';
-import PaginationContainer from '../../components/common/PaginationContainer';
 import SearchInput from '../../components/manage/SearchInput';
-import { MANAGE_PAGE_SIZE } from '../../recoil/page';
 import { manageSubscribedPostsState } from '../../recoil/manage';
 import { useGetUserSubscribedPosts } from '../../hooks/query/posts';
 import { useSearchCategoryOnUserSubscribedPosts, useSearchUserSubscribedPosts } from '../../hooks/query/search';
@@ -24,10 +22,6 @@ import { TitleWrapper, CloseButton } from '../../styles/ts/common';
 const ManageSubscribedPosts = () => {
   const router = useRouter();
   const { category: categoryId, searchKeyword, searchType } = router.query;
-
-  const [currentPage, setCurrentPage] = useState(1);
-  const [firstIndex, setFirstIndex] = useState(0);
-  const [lastIndex, setLastIndex] = useState(MANAGE_PAGE_SIZE);
 
   const {
     data: userSubscribedPosts,
@@ -47,37 +41,18 @@ const ManageSubscribedPosts = () => {
 
   const [manageSubscribedPosts, setManageSubscribedPosts] = useRecoilState(manageSubscribedPostsState);
 
-  const onInitPage = () => {
-    setCurrentPage(1);
-    setFirstIndex(0);
-    setLastIndex(MANAGE_PAGE_SIZE);
-  };
-
   useEffect(() => {
-    onInitPage();
-
     if (Object.keys(router.query).length === 0) {
       refetch();
       setManageSubscribedPosts(null);
     }
   }, [router.query]);
 
-  const onChangePage = useCallback(
-    (page: number) => {
-      setCurrentPage(page);
-      setFirstIndex((page - 1) * MANAGE_PAGE_SIZE);
-      setLastIndex(page * MANAGE_PAGE_SIZE);
-    },
-    [MANAGE_PAGE_SIZE]
-  );
-
   const onSearchInput = (searchKeyword: string, searchType: string) => {
-    onInitPage();
     Router.push({ pathname: '/manage/subscribedPosts', query: { searchKeyword, searchType } });
   };
 
   const onClickCategory = (id: number) => {
-    onInitPage();
     Router.push({ pathname: '/manage/subscribedPosts', query: { category: id } });
   };
 
@@ -125,17 +100,9 @@ const ManageSubscribedPosts = () => {
           posts={manageSubscribedPosts ?? userSubscribedPosts}
           isLoading={isLoadingSearch || isLoadingSearchCategory || isLoadingPosts}
           isFetching={isFetchingSearch || isFetchingSearchCategory || isFetchingPosts}
-          firstIndex={firstIndex}
-          lastIndex={lastIndex}
           onClickCategory={onClickCategory}
         />
       </div>
-      <PaginationContainer
-        pageSize={MANAGE_PAGE_SIZE}
-        current={currentPage}
-        total={manageSubscribedPosts?.length ?? userSubscribedPosts?.length}
-        onChange={onChangePage}
-      />
     </ManageLayout>
   );
 };
