@@ -10,7 +10,7 @@ import UserProfile from '../main/UserProfile';
 import Category from '../main/Category';
 import Counter from '../common/Counter';
 import Search from '../main/Search';
-import { currentPageState, firstIndexState, lastIndexState, PAGE_SIZE } from '../../recoil/page';
+import { currentPageState, firstIndexState, lastIndexState, PAGE_SIZE } from '../../recoil/main';
 import * as S from '../../styles/ts/components/layouts/AppLayout';
 import logo from '../../public/Groom_Logo_No_Background.png';
 

@@ -6,7 +6,7 @@ import BeatLoader from 'react-spinners/BeatLoader';
 
 import { PostItem } from '../../types';
 import { useSsrAllowedState } from '../../recoil/persist';
-import { currentPageState, firstIndexState, lastIndexState, PAGE_SIZE } from '../../recoil/page';
+import { currentPageState, firstIndexState, lastIndexState, PAGE_SIZE } from '../../recoil/main';
 import PaginationContainer from '../common/PaginationContainer';
 import { ListWrapper, PostInfo } from '../../styles/ts/components/post/PostList';
 
