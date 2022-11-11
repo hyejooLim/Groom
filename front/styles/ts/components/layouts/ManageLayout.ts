@@ -38,6 +38,11 @@ export const AddPostButton = styled(Button)`
     background-color: #13a085;
     color: #fff;
   }
+
+  :focus {
+    background-color: #13a085;
+    color: #fff;
+  }
 `;
 
 export const StyledSider = styled(Sider)`
