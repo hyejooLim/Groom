@@ -8,6 +8,7 @@ import AppLayout from '../../components/layouts/AppLayout';
 import PostCard from '../../components/post/PostCard';
 import getUser from '../../apis/user/getUser';
 import getPost from '../../apis/post/getPost';
+import getComments from '../../apis/comments/getComments';
 import getCategories from '../../apis/categories/getCategories';
 import getVisitorsCount from '../../apis/count';
 import { useGetPost } from '../../hooks/query/post';
@@ -37,6 +38,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     queryClient.prefetchQuery(['categories'], getCategories),
     queryClient.prefetchQuery(['visitorsCount'], getVisitorsCount),
     queryClient.prefetchQuery(['post', Number(id)], () => getPost(Number(id))),
+    queryClient.prefetchQuery(['comments', Number(id)], () => getComments(Number(id))),
   ]);
 
   return {
