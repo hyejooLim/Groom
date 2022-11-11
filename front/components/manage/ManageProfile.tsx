@@ -28,7 +28,7 @@ AWS.config.update({
 
 const ManageProfile = () => {
   const { status } = useSession();
-  const { data: user, isLoading } = useGetUser();
+  const { data: user, isLoading, isFetching } = useGetUser();
 
   const updateUser = useUpdateUser();
 
@@ -105,7 +105,7 @@ const ManageProfile = () => {
       }
     >
       <div className='card_meta'>
-        {isLoading ? (
+        {isLoading || isFetching ? (
           <SkeletonManageProfile />
         ) : (
           <>

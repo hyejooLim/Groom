@@ -9,7 +9,7 @@ import SkeletonUserProfile from '../skeleton/SkeletonUserProfile';
 import * as S from '../../styles/ts/components/main/UserProfile';
 
 const UserProfile = () => {
-  const { data: user, isLoading } = useGetUser();
+  const { data: user, isLoading, isFetching } = useGetUser();
 
   const handleLogout = () => {
     signOut();
@@ -17,7 +17,7 @@ const UserProfile = () => {
 
   return (
     <S.UserProfileWrapper>
-      {isLoading ? (
+      {isLoading || isFetching ? (
         <SkeletonUserProfile />
       ) : (
         <>
