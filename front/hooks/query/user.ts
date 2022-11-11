@@ -14,6 +14,7 @@ const useGetUser = () => {
       console.log('user', data);
     },
     refetchOnWindowFocus: false,
+    staleTime: Infinity,
   });
 };
 
