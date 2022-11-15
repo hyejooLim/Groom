@@ -34,6 +34,20 @@ const SearchInput: FC<SearchInputProps> = ({ placeholder, onSearch }) => {
   const [searchKeyword, onChangeSearchKeyword, setSearchKeyword] = useInput('');
 
   useEffect(() => {
+    function onClick() {
+      if (showInput) {
+        setOpenMenu(false);
+      }
+    }
+
+    window.addEventListener('click', onClick);
+
+    return () => {
+      window.removeEventListener('click', onClick);
+    };
+  }, [showInput]);
+
+  useEffect(() => {
     if (!showInput) {
       setSearchKeyword('');
       setSearchType(searchTypeList[0]);
@@ -81,7 +95,7 @@ const SearchInput: FC<SearchInputProps> = ({ placeholder, onSearch }) => {
                 <Dropdown overlay={menu} trigger={['click']} overlayStyle={{ width: '100px' }}>
                   <span
                     onClick={(e) => {
-                      e.preventDefault();
+                      e.stopPropagation();
                       setOpenMenu((prev) => !prev);
                     }}
                   >
