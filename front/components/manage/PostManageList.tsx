@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilState } from 'recoil';
 import { Button } from 'antd';
 import { PaperClipOutlined } from '@ant-design/icons';
 import { FiSearch } from 'react-icons/fi';
@@ -9,10 +9,10 @@ import { AiOutlineEyeInvisible } from 'react-icons/ai';
 import BeatLoader from 'react-spinners/BeatLoader';
 import dayjs from 'dayjs';
 
-import { userState } from '../../recoil/user';
 import { currentPageState, firstIndexState, lastIndexState, MANAGE_PAGE_SIZE } from '../../recoil/manage';
 import { useSsrAllowedState } from '../../recoil/persist';
 import PaginationContainer from '../common/PaginationContainer';
+import { useGetUser } from '../../hooks/query/user';
 import { useDeletePost, useUnSubscribePost, useToggleIsPublicPost } from '../../hooks/query/post';
 import { PostItem } from '../../types';
 import * as S from '../../styles/ts/components/manage/PostManageList';
@@ -26,7 +26,7 @@ interface PostManageListProps {
 
 const PostManageList: FC<PostManageListProps> = ({ posts, isLoading, isFetching, onClickCategory }) => {
   const router = useRouter();
-  const user = useRecoilValue(userState);
+  const { data: user } = useGetUser();
 
   const deletePost = useDeletePost();
   const toggleIsPublicPost = useToggleIsPublicPost();
