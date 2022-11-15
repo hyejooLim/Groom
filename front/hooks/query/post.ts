@@ -24,8 +24,9 @@ const useDeletePost = () => {
 
   return useMutation(deletePost, {
     onSuccess: () => {
-      queryClient.invalidateQueries(['posts']);
       queryClient.invalidateQueries(['user']);
+      queryClient.invalidateQueries(['posts']);
+      queryClient.invalidateQueries(['userPosts']);
     },
   });
 };
@@ -76,7 +77,7 @@ const useToggleIsPublicPost = () => {
 
   return useMutation(toggleIsPublicPost, {
     onSuccess: () => {
-      queryClient.invalidateQueries(['user']);
+      queryClient.invalidateQueries(['userPosts']);
     },
   });
 };
