@@ -17,7 +17,7 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
       },
     });
     if (exUser) {
-      return res.status(403).json({ message: '이미 가입한 이메일입니다.' });
+      return res.status(403).send({ message: '이미 가입한 이메일입니다.' });
     }
 
     const hashedPassword = await hashPassword(password);

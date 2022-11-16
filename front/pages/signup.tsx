@@ -43,12 +43,7 @@ const Signup = () => {
 
   const onSubmitForm = useCallback(async () => {
     try {
-      const result = await signup({ data: { email, password, name } });
-
-      if (result !== 'ok') {
-        alert(result || '문제가 발생했습니다.');
-        return;
-      }
+      await signup({ data: { email, password, name } });
 
       toast.success('회원가입이 완료되었습니다.', {
         autoClose: 2000,
@@ -60,6 +55,7 @@ const Signup = () => {
         Router.push({ pathname: '/login', query: { prevPathname: 'signup' } }, '/login');
       }, 3000);
     } catch (error) {
+      alert(error.response.data.message);
       console.error(error);
     }
   }, [email, password, passwordCheck, name]);
