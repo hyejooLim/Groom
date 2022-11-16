@@ -26,7 +26,7 @@ const Login = () => {
     });
 
     if (result.error) {
-      alert('로그인 실패하였습니다.');
+      alert(result.error);
       return;
     }
 

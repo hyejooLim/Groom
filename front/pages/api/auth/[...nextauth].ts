@@ -26,12 +26,12 @@ export default NextAuth({
         });
 
         if (!user) {
-          throw new Error('User not found.');
+          throw new Error('가입되지 않은 이메일입니다.');
         }
 
         const isValid = await verifyPassword(credentials.password, user.password);
         if (!isValid) {
-          throw new Error('Password not correct.');
+          throw new Error('비밀번호가 틀렸습니다.');
         }
 
         const userWithoutPassword = {
