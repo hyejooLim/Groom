@@ -81,8 +81,9 @@ const SettingModal: FC<SettingModalProps> = ({
   };
 
   const onClickLabel = (e: MouseEvent<HTMLSpanElement>) => {
-    setDropdownItem({ key: e.currentTarget.dataset.key, label: e.currentTarget.dataset.label });
+    setShowDropdown(false);
 
+    setDropdownItem({ key: e.currentTarget.dataset.key, label: e.currentTarget.dataset.label });
     setPostData({ ...postData, allowComments: e.currentTarget.dataset.key === 'ALLOW' ? true : false });
   };
 
@@ -112,7 +113,6 @@ const SettingModal: FC<SettingModalProps> = ({
           <S.HeadLayer>
             <strong className='head_layer_title'>발행</strong>
           </S.HeadLayer>
-
           <S.BodyLayer>
             <div className='publish_editor'>
               <strong className='post_title'>{postData.title}</strong>
@@ -129,12 +129,11 @@ const SettingModal: FC<SettingModalProps> = ({
                       <S.PrivateInfoBox>작성자만 글을 읽을 수 있습니다</S.PrivateInfoBox>
                     </Radio>
                   </Radio.Group>
-
                   <S.DropdownWrapper>
                     <Dropdown overlay={menu} trigger={['click']}>
                       <button
                         onClick={(e) => {
-                          e.preventDefault();
+                          e.stopPropagation();
                           setShowDropdown((prev) => !prev);
                         }}
                       >
@@ -192,7 +191,6 @@ const SettingModal: FC<SettingModalProps> = ({
               </dl>
             </div>
           </S.BodyLayer>
-
           <S.FootLayer>
             <div className='btn_wrapper'>
               <Button className='cancel btn' onClick={onCloseModal}>
