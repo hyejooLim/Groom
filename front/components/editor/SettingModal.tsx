@@ -55,6 +55,20 @@ const SettingModal: FC<SettingModalProps> = ({
   });
 
   useEffect(() => {
+    function onClick() {
+      if (showDropdown) {
+        setShowDropdown(false);
+      }
+    }
+
+    window.addEventListener('click', onClick);
+
+    return () => {
+      window.removeEventListener('click', onClick);
+    };
+  }, [showDropdown]);
+
+  useEffect(() => {
     updateCreatedAt();
   }, [publishedAt, reserveDate]);
 
