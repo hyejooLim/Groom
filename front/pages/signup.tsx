@@ -55,7 +55,7 @@ const Signup = () => {
         Router.push({ pathname: '/login', query: { prevPathname: 'signup' } }, '/login');
       }, 3000);
     } catch (error) {
-      alert(error.response.data.message);
+      alert(error?.response?.data?.message);
       console.error(error);
     }
   }, [email, password, passwordCheck, name]);
