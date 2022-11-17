@@ -55,6 +55,11 @@ export const SubmitButton = styled(Button)`
     transform: scale(1.02);
   }
 
+  :focus {
+    color: #fff;
+    background-color: #13a085;
+  }
+
   &:disabled {
     background-color: #fff;
 

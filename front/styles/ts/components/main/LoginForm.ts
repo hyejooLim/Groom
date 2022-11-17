@@ -28,6 +28,11 @@ export const LoginButton = styled(Button)`
     background-color: #13a085;
   }
 
+  &:focus {
+    color: #fff;
+    background-color: #13a085;
+  }
+
   .text {
     font-size: 20px;
     font-weight: 800;

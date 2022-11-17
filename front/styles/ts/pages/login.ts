@@ -67,6 +67,11 @@ export const LoginButton = styled(Button)`
     background-color: #0fc19e;
     transform: scale(1.02);
   }
+
+  :focus {
+    color: #fff;
+    background-color: #13a085;
+  }
 `;
 
 export const SignupButton = styled(Button)`
@@ -79,8 +84,13 @@ export const SignupButton = styled(Button)`
   transition: all 0.2s ease-in;
 
   :hover {
-    background-color: #c4c4c4;
     color: #fff;
+    background-color: #c4c4c4;
     transform: scale(1.02);
+  }
+
+  :focus {
+    color: #fff;
+    background-color: #b0b0b0;
   }
 `;
