@@ -49,11 +49,19 @@ export const LogoutButton = styled(Button)`
   padding-left: 10px;
   font-size: 12px;
   line-height: 1.5;
-  color: #909090;
+  color: #13a085;
   text-align: left;
   box-shadow: none;
 
   &:hover {
+    color: #13a085;
+  }
+
+  & :hover {
+    text-decoration: underline;
+  }
+
+  &:focus {
     color: #13a085;
   }
 `;
