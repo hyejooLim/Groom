@@ -59,7 +59,6 @@ const ManageProfile = () => {
         if (err) throw err;
 
         localStorage.removeItem('imageKey');
-        console.log('deleted', data);
       }
     );
 

@@ -11,7 +11,6 @@ const useGetUser = () => {
   return useQuery(['user'], getUser, {
     onSuccess: (data) => {
       setUser(data);
-      console.log('user', data);
     },
     refetchOnWindowFocus: false,
     staleTime: Infinity,

@@ -6,8 +6,6 @@ import prisma from '../../../lib/prisma';
 const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     if (req.method === 'POST') {
-      console.log('req.body', req.body);
-
       const session = await getSession({ req });
       if (!session) {
         return res.status(403).send('세션이 만료되었습니다.');

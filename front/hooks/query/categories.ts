@@ -11,7 +11,6 @@ const useGetCategories = () => {
   return useQuery(['categories'], getCategories, {
     onSuccess: (data) => {
       setCategories(data);
-      console.log('categories', data);
     },
     refetchOnWindowFocus: false,
   });

@@ -2,12 +2,10 @@ import { NextApiHandler, NextApiRequest, NextApiResponse } from 'next';
 import { getSession } from 'next-auth/react';
 
 import prisma from '../../../lib/prisma';
-import { PostItem, TagItem } from '../../../types';
+import { TagItem } from '../../../types';
 
 const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
-    console.log('postData', req.body);
-
     if (req.method === 'POST') {
       const session = await getSession({ req });
       if (!session) {

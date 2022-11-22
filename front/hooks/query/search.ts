@@ -10,9 +10,6 @@ import { managePostsState, manageSubscribedPostsState } from './../../recoil/man
 
 const useSearchPosts = (keyword: string) => {
   return useQuery(['posts', 'keyword', keyword], () => searchPosts(keyword), {
-    onSuccess: (data) => {
-      console.log('searchPosts', data);
-    },
     staleTime: 30000, // 3분 이내로 같은 키워드 검색 시 캐싱 값이 리턴
   });
 };
@@ -23,7 +20,6 @@ const useSearchUserPosts = (keyword: string, searchType: string) => {
   return useQuery(['userPosts', keyword, searchType], () => searchUserPosts(keyword, searchType), {
     onSuccess: (data) => {
       setManagePosts(data);
-      console.log('searchUserPosts', data);
     },
     refetchOnWindowFocus: false,
   });
@@ -35,7 +31,6 @@ const useSearchUserSubscribedPosts = (keyword: string, searchType: string) => {
   return useQuery(['userSubscribedPosts', keyword, searchType], () => searchUserSubscribedPosts(keyword, searchType), {
     onSuccess: (data) => {
       setManageSubscribedPosts(data);
-      console.log('searchUserSubscribedPosts', data);
     },
     refetchOnWindowFocus: false,
   });
@@ -47,7 +42,6 @@ const useSearchCategoryOnUserPosts = (categoryId: number | undefined) => {
   return useQuery(['userPosts', 'category', categoryId], () => searchCategoryOnUserPosts(categoryId), {
     onSuccess: (data) => {
       setManagePosts(data.posts);
-      console.log('searchCategoryOnUserPosts', data);
     },
     refetchOnWindowFocus: false,
   });
@@ -62,7 +56,6 @@ const useSearchCategoryOnUserSubscribedPosts = (categoryId: number | undefined) 
     {
       onSuccess: (data) => {
         setManageSubscribedPosts(data.posts);
-        console.log('searchCategoryOnUserSubscribedPosts', data);
       },
       refetchOnWindowFocus: false,
     }

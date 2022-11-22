@@ -14,40 +14,24 @@ const useGetPosts = () => {
   return useQuery(['posts'], getPosts, {
     onSuccess: (data) => {
       setMainPosts(data);
-      console.log('posts', data);
     },
     refetchInterval: 10000, // 10초마다 로드
     refetchOnWindowFocus: false,
   });
 };
 
-const useGetPostsIncludeTag = (name: string) =>
-  useQuery(['posts', 'tag', name], () => getPostsIncludeTag(name), {
-    onSuccess: (data) => {
-      console.log('postsIncludeTag', data);
-    },
-  });
+const useGetPostsIncludeTag = (name: string) => useQuery(['posts', 'tag', name], () => getPostsIncludeTag(name));
 
 const useGetPostsIncludeCategory = (name: string) =>
-  useQuery(['posts', 'category', name], () => getPostsIncludeCategory(name), {
-    onSuccess: (data) => {
-      console.log('postsIncludeCategory', data);
-    },
-  });
+  useQuery(['posts', 'category', name], () => getPostsIncludeCategory(name));
 
 const useGetUserPosts = () =>
   useQuery(['userPosts'], getUserPosts, {
-    onSuccess: (data) => {
-      console.log('userPosts', data);
-    },
     refetchOnWindowFocus: false,
   });
 
 const useGetUserSubscribedPosts = () =>
   useQuery(['userSubscribedPosts'], getUserSubscribedPosts, {
-    onSuccess: (data) => {
-      console.log('userSubscribedPosts', data);
-    },
     refetchOnWindowFocus: false,
   });
 

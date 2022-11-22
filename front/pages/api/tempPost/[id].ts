@@ -5,8 +5,6 @@ import { TagItem } from './../../../types';
 
 const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
-    console.log('handler', req.body);
-
     if (req.method === 'PUT') {
       await Promise.all(
         req.body.tags?.map((tag: TagItem) =>

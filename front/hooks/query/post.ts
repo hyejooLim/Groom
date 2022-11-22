@@ -10,9 +10,6 @@ import toggleIsPublicPost from '../../apis/post/toggleIsPublicPost';
 
 const useGetPost = (id: number) => {
   return useQuery(['post', id], () => getPost(id), {
-    onSuccess: (data) => {
-      console.log('useGetPost', data);
-    },
     onError: (err) => {
       throw new Error('Request failed.', err);
     },

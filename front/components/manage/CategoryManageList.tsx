@@ -32,11 +32,6 @@ const CategoryManageList: FC<CategoryManageListProps> = ({ categories, categoryJ
   const [draggedItemIdx, setDraggedItemIdx] = useState(0);
   const [targetItemIdx, setTargetItemIdx] = useState(0);
 
-  // delete
-  useEffect(() => {
-    console.log(categoryJson);
-  }, [categoryJson]);
-
   const onChangeCategoryName = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
       setCurrentCategory({ ...currentCategory, name: e.target.value });

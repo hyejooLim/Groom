@@ -29,8 +29,6 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
 
       // 사이트의 첫 방문인 경우
       if (!visitorsCountModel) {
-        console.log('사이트에 처음 접속함');
-
         await prisma.visitor.create({
           data: {
             id: user.id,
@@ -47,8 +45,6 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
       } else {
         // 날짜가 1일 이상 지나서 만료 날짜를 새로 세팅
         if (dayjs().diff(visitorsCountModel.expireDate) > 0) {
-          console.log('하루가 지남');
-
           await prisma.visitor.deleteMany({
             where: {
               NOT: {
@@ -68,8 +64,6 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
             },
           });
         } else {
-          console.log('하루가 지나지 않음');
-
           const visitor = await prisma.visitor.findUnique({
             where: {
               id: user.id,
