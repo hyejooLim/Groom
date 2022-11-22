@@ -62,8 +62,7 @@ export const LogoutButton = styled(Button)`
 
   :hover {
     cursor: pointer;
-    transform: scale(1.03);
-    background-color: #13a085;
+    background-color: #20b79a;
     color: #fff;
   }
 
