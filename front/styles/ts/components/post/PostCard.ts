@@ -48,6 +48,25 @@ export const Date = styled.div`
   }
 `;
 
+export const Author = styled.div`
+  position: absolute;
+  bottom: 10px;
+  right: 18px;
+
+  & .icon {
+    color: #fff;
+    font-size: 20px;
+    margin-right: 8px;
+    position: relative;
+    bottom: -5px;
+  }
+
+  & span {
+    font-size: 16px;
+    font-family: 'Courier New', Courier, monospace;
+  }
+`;
+
 export const ContentWrapper = styled.div`
   padding: 50px 15px;
   background-color: #fff;

@@ -6,6 +6,7 @@ import { HeartOutlined, HeartTwoTone } from '@ant-design/icons';
 import { Markup } from 'interweave';
 import { polyfill } from 'interweave-ssr';
 import { useRecoilValue } from 'recoil';
+import { BsCloudFill } from 'react-icons/bs';
 import dayjs from 'dayjs';
 
 import Title from '../common/Title';
@@ -54,7 +55,7 @@ const PostCard: FC<PostCardProps> = ({ post }) => {
   useEffect(() => {
     setCurrentPage(mainPosts.findIndex(findPostIndex) + 1);
   }, [mainPosts]);
-  
+
   useEffect(() => {
     if (deletePost.isSuccess) {
       setTimeout(() => {
@@ -119,6 +120,10 @@ const PostCard: FC<PostCardProps> = ({ post }) => {
     <>
       <S.HeadWrapper>
         <Title title={`[${currentPost.category?.name}] ${currentPost.title}`} />
+        <S.Author>
+          <BsCloudFill className='icon' />
+          <span>{currentPost.author?.name}의 글</span>
+        </S.Author>
         <S.Date>{dayjs(currentPost.createdAt).format('YYYY.MM.DD HH:mm')}</S.Date>
       </S.HeadWrapper>
       <S.ContentWrapper>
