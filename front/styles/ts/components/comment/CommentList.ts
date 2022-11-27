@@ -13,7 +13,7 @@ export const CommentBox = styled.li`
 `;
 
 export const ButtonWrapper = styled(Button)`
-  .btn {
+  * {
     font-size: 12px;
   }
 
