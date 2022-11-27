@@ -69,21 +69,16 @@ const Login = () => {
               required
             />
           </div>
-          <S.LoginButton htmlType='submit'>로그인</S.LoginButton>
-          <div
-            style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              margin: '0 -32px',
-            }}
-          >
-            <span style={{ color: '#888' }}>아직 계정이 없으신가요?</span>
-            <Link href='/signup'>
-              <a>
-                <S.SignupButton>회원가입</S.SignupButton>
-              </a>
-            </Link>
+          <div className='buttons'>
+            <S.LoginButton htmlType='submit'>로그인</S.LoginButton>
+            <S.SignupButton>
+              <Link href='/signup'>
+                <a style={{ color: '#888' }}>
+                  <span>아직 계정이 없으신가요?</span>
+                  <span className='go_to_signup'>회원가입</span>
+                </a>
+              </Link>
+            </S.SignupButton>
           </div>
         </S.StyledForm>
       </S.LoginWrapper>

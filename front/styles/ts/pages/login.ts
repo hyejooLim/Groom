@@ -38,6 +38,11 @@ export const StyledForm = styled(Form)`
   .email {
     margin-bottom: 20px;
   }
+
+  .buttons {
+    display: flex;
+    flex-direction: column;
+  }
 `;
 
 export const StyledInput = styled(Input)`
@@ -58,7 +63,7 @@ export const LoginButton = styled(Button)`
   width: 70px;
   height: 36px;
   font-size: 15px;
-  margin: 40px 0;
+  margin: 40px auto;
   border-radius: 8px;
   transition: all 0.2s ease-in;
 
@@ -75,22 +80,13 @@ export const LoginButton = styled(Button)`
 `;
 
 export const SignupButton = styled(Button)`
-  color: #fff;
-  background-color: #b0b0b0;
-  width: 60px;
-  height: 30px;
-  font-size: 12px;
-  border-radius: 8px;
-  transition: all 0.2s ease-in;
-
-  :hover {
-    color: #fff;
-    background-color: #c4c4c4;
-    transform: scale(1.02);
+  & .go_to_signup {
+    margin-left: 6px;
   }
 
-  :focus {
-    color: #fff;
-    background-color: #b0b0b0;
+  &:hover {
+    .go_to_signup {
+      text-decoration: underline;
+    }
   }
 `;
