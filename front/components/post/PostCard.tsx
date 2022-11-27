@@ -64,7 +64,7 @@ const PostCard: FC<PostCardProps> = ({ post }) => {
     }
   }, [deletePost]);
 
-  const onLikePost = useCallback(() => {
+  const onToggleLikePost = useCallback(() => {
     if (!user) {
       if (confirm('로그인이 필요합니다. 로그인 페이지로 이동하시겠습니까?')) {
         Router.push('/login');
@@ -73,12 +73,10 @@ const PostCard: FC<PostCardProps> = ({ post }) => {
       return;
     }
 
-    likePost.mutate(currentPost.id);
+    currentPost.likers?.find((liker) => liker.id === user?.id)
+      ? unLikePost.mutate(currentPost.id)
+      : likePost.mutate(currentPost.id);
   }, [user, currentPost]);
-
-  const onUnLikePost = useCallback(() => {
-    unLikePost.mutate(currentPost.id);
-  }, [currentPost]);
 
   const onSubscribePost = useCallback(() => {
     if (!user) {
@@ -138,12 +136,12 @@ const PostCard: FC<PostCardProps> = ({ post }) => {
           <Markup content={currentPost.htmlContent} />
         </div>
         <div style={{ display: 'flex' }}>
-          <S.PostButton>
+          <S.PostButton onClick={onToggleLikePost}>
             <span>
               {currentPost.likers?.find((liker) => liker.id === user?.id) ? (
-                <HeartTwoTone key='heart' twoToneColor='red' onClick={onUnLikePost} />
+                <HeartTwoTone key='heart' twoToneColor='red' />
               ) : (
-                <HeartOutlined key='heart' onClick={onLikePost} />
+                <HeartOutlined key='heart' />
               )}
             </span>
             <span style={{ marginLeft: 7 }}>공감</span>
