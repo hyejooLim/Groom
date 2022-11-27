@@ -3,6 +3,7 @@ import { signOut } from 'next-auth/react';
 import Link from 'next/link';
 import { Avatar } from 'antd';
 import { BsCloudFill } from 'react-icons/bs';
+import { HiOutlinePencilAlt } from 'react-icons/hi';
 
 import { useGetUser } from '../../hooks/query/user';
 import SkeletonUserProfile from '../skeleton/SkeletonUserProfile';
@@ -38,6 +39,11 @@ const UserProfile = () => {
                 <Link href='/manage'>
                   <a className='go_to_profile'>
                     <span>{user?.name}님</span>
+                  </a>
+                </Link>
+                <Link href='/write'>
+                  <a className='go_to_write'>
+                    <HiOutlinePencilAlt />
                   </a>
                 </Link>
                 <div style={{ marginTop: 5, color: '#888' }}>{user?.email}</div>

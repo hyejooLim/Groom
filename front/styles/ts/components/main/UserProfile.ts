@@ -29,6 +29,17 @@ export const InfoBox = styled.div`
     font-size: 18px;
     font-weight: 600;
   }
+
+  & .go_to_write {
+    margin-left: 10px;
+    font-size: 22px;
+
+    * {
+      color: red;
+      position: relative;
+      top: 3.4px;
+    }
+  }
 `;
 
 export const NewBox = styled.div`
