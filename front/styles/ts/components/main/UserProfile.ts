@@ -35,9 +35,14 @@ export const InfoBox = styled.div`
     font-size: 22px;
 
     * {
-      color: red;
+      color: #f75037;
       position: relative;
       top: 3.4px;
+      transition: all 0.2s ease-in;
+    }
+
+    &:hover * {
+      color: #f78a7a;
     }
   }
 `;
