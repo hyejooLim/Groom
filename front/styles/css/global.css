@@ -84,6 +84,10 @@ button {
   background: var(--bg-color);
 }
 
+[ant-click-animating-without-extra-node='true']::after {
+  display: none;
+}
+
 .ant-btn {
   padding: 0;
   border: 0;
