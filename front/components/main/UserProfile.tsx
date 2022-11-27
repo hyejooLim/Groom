@@ -45,7 +45,11 @@ const UserProfile = () => {
               <S.NewBox>
                 <div className='posts'>
                   <span>게시글</span>
-                  <span className='count'>{user?.posts?.length}</span>
+                  <Link href='/manage/posts'>
+                    <a>
+                      <span className='count'>{user?.posts?.length}</span>
+                    </a>
+                  </Link>
                 </div>
               </S.NewBox>
             </S.UserInfo>
