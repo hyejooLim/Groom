@@ -13,6 +13,7 @@ import SettingModal from './SettingModal';
 import { tinymceEditorState } from '../../recoil/tinymce';
 import useGetTempPosts from '../../hooks/query/tempPosts';
 import { useCreateTempPost, useUpdateTempPost } from '../../hooks/query/tempPost';
+import useDebounce from '../../hooks/common/debounce';
 import useCreateAutoSave from '../../hooks/query/autosave';
 import getAutoSave from '../../apis/autosave/getAutoSave';
 import createPost from '../../apis/post/createPost';
@@ -64,6 +65,8 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
   const [loadContent, setLoadContent] = useState(false);
 
   const createAutoSave = useCreateAutoSave();
+  const debouncedPostData = useDebounce(postData, 1000);
+
   const { data: tempPosts } = useGetTempPosts();
   const createTempPost = useCreateTempPost();
   const updateTempPost = useUpdateTempPost();
@@ -136,11 +139,14 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
   }, []);
 
   useEffect(() => {
-    const { title, content, htmlContent, category, tags } = postData;
+    if (mode === ContentMode.ADD) {
+      if (debouncedPostData) {
+        const { title, content, htmlContent, categoryId, tags } = postData;
 
-    // 마지막 요청만 실행되도록 수정
-    createAutoSave.mutate({ title, content, htmlContent, categoryId: category?.id, tags });
-  }, [postData]);
+        createAutoSave.mutate({ title, content, htmlContent, categoryId, tags });
+      }
+    }
+  }, [debouncedPostData]);
 
   useEffect(() => {
     if (createTempPost.isSuccess) {
