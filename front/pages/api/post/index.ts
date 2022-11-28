@@ -73,6 +73,14 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
         });
       }
 
+      await prisma.autoSave.deleteMany({
+        where: {
+          author: {
+            email: session?.user?.email,
+          },
+        },
+      });
+
       res.status(201).json('ok');
     }
   } catch (err) {
