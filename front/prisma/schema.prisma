@@ -21,6 +21,7 @@ model User {
   comments Comment[]
   posts Post[] @relation("OwnPosts")
   tempPosts TempPost[]
+  autoSaves AutoSave[]
   subscribedPosts Post[] @relation("OwnSubscribedPosts")
   likedPosts Post[] @relation("LikedPosts")
   createdAt DateTime @default(now()) @map(name: "created_at")
@@ -64,6 +65,7 @@ model Tag {
   name String @unique
   posts Post[] @relation("PostsAndTags")
   tempPosts TempPost[] @relation("TempPostsAndTags")
+  autoSaves AutoSave[]
 }
 
 model Category {
@@ -72,6 +74,7 @@ model Category {
   priority Int
   posts Post[]
   tempPosts TempPost[]
+  autoSaves AutoSave[]
 }
 
 model Comment {
@@ -93,4 +96,17 @@ model VisitorsCount {
   todayCount Int 
   totalCount Int
   expireDate String
+}
+
+model AutoSave {
+  id Int @id @default(autoincrement())
+  title String
+  content String @db.LongText
+  htmlContent String @db.LongText
+  category Category? @relation(fields: [categoryId], references: [id])
+  categoryId Int?
+  tags Tag[]
+  author User? @relation(fields: [authorId], references: [id])
+  authorId Int?
+  createdAt DateTime @default(now())
 }

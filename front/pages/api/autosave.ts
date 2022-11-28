@@ -1,0 +1,97 @@
+import { NextApiHandler, NextApiRequest, NextApiResponse } from 'next';
+import { getSession } from 'next-auth/react';
+
+import prisma from '../../lib/prisma';
+import { TagItem } from '../../types';
+
+const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
+  try {
+    if (req.method === 'GET') {
+      const session = await getSession({ req });
+      if (!session) {
+        return res.status(403).send('세션이 만료되었습니다.');
+      }
+
+      const autoSave = await prisma.autoSave.findFirst({
+        where: {
+          author: {
+            email: session?.user?.email,
+          },
+        },
+        orderBy: {
+          createdAt: 'desc',
+        },
+        include: {
+          tags: true,
+          category: true,
+        },
+      });
+
+      res.status(200).json(autoSave);
+    } else if (req.method === 'POST') {
+      const session = await getSession({ req });
+      if (!session) {
+        return res.status(403).send('세션이 만료되었습니다.');
+      }
+
+      const { title, content, htmlContent, categoryId, tags } = req.body;
+
+      await Promise.all(
+        tags?.map((tag: TagItem) =>
+          prisma.tag.upsert({
+            where: { name: tag.name },
+            update: {},
+            create: {
+              name: tag.name,
+            },
+          })
+        )
+      );
+
+      if (categoryId) {
+        await prisma.autoSave.create({
+          data: {
+            title,
+            content,
+            htmlContent,
+            category: {
+              connect: {
+                id: categoryId,
+              },
+            },
+            tags: {
+              connect: tags,
+            },
+            author: {
+              connect: {
+                email: session?.user?.email,
+              },
+            },
+          },
+        });
+      } else {
+        await prisma.autoSave.create({
+          data: {
+            title,
+            content,
+            htmlContent,
+            tags: {
+              connect: tags,
+            },
+            author: {
+              connect: {
+                email: session?.user?.email,
+              },
+            },
+          },
+        });
+      }
+
+      res.status(201).send('ok');
+    }
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+export default handler;

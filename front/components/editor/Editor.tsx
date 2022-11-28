@@ -2,8 +2,8 @@ import React, { FC, ChangeEvent, useState, useEffect, useCallback } from 'react'
 import { useRecoilValue } from 'recoil';
 import Router from 'next/router';
 import AWS from 'aws-sdk';
-import dayjs from 'dayjs';
 import { Modal } from 'antd';
+import dayjs from 'dayjs';
 
 import EditorToolbar from './EditorToobar';
 import EditorContent from './EditorContent';
@@ -13,6 +13,8 @@ import SettingModal from './SettingModal';
 import { tinymceEditorState } from '../../recoil/tinymce';
 import useGetTempPosts from '../../hooks/query/tempPosts';
 import { useCreateTempPost, useUpdateTempPost } from '../../hooks/query/tempPost';
+import useCreateAutoSave from '../../hooks/query/autosave';
+import getAutoSave from '../../apis/autosave/getAutoSave';
 import createPost from '../../apis/post/createPost';
 import updatePost from '../../apis/post/updatePost';
 import * as ContentMode from '../../constants/ContentMode';
@@ -61,14 +63,12 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
   const [postData, setPostData] = useState<PostItem>(makePostState());
   const [loadContent, setLoadContent] = useState(false);
 
+  const createAutoSave = useCreateAutoSave();
   const { data: tempPosts } = useGetTempPosts();
   const createTempPost = useCreateTempPost();
   const updateTempPost = useUpdateTempPost();
 
   const [loadTempPost, setLoadTempPost] = useState(false);
-  const [prevPostData, setPrevPostData] = useState(null);
-  const [prevSaveTime, setPrevSaveTime] = useState('');
-
   const [showToastMessage, setShowToastMessage] = useState(false);
   const [toastHeight, setToastHeight] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
@@ -95,42 +95,52 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
     }, 4000);
   }, []);
 
-  const askContinueWrite = () => {
-    const saveTime = localStorage.getItem('saveTime');
-    const data = JSON.parse(localStorage.getItem('postData'));
+  const askContinueWrite = async () => {
+    try {
+      const result = await getAutoSave();
 
-    Modal.confirm({
-      content: `${saveTime}에 저장된 글이 있습니다. 이어서 작성하시겠습니까?`,
-      cancelText: '취소',
-      okText: '확인',
-      onCancel: () => {
-        localStorage.removeItem('isSaved'); // 글을 이어서 작성하지 않는 경우 임시저장글을 새로 저장할 수 있음
+      if (result === null) {
+        return;
+      }
 
-        setPrevPostData(data);
-        setPrevSaveTime(saveTime);
-      },
-      onOk: () => {
-        setPostData(data);
-        setLoadContent(true);
-      },
-    });
+      const { title, content, htmlContent, category, tags, createdAt } = result;
+
+      Modal.confirm({
+        content: `${dayjs(createdAt).format('YYYY-MM-DD HH:mm:ss')}에 저장된 글이 있습니다. 이어서 작성하시겠습니까?`,
+        cancelText: '취소',
+        okText: '확인',
+        onCancel: () => {
+          localStorage.removeItem('isSaved'); // 글을 이어서 작성하지 않는 경우 임시저장글을 새로 저장할 수 있음
+        },
+        onOk: () => {
+          setPostData({
+            ...postData,
+            title,
+            content,
+            htmlContent,
+            category,
+            tags,
+          });
+          setLoadContent(true);
+        },
+      });
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   useEffect(() => {
-    if (mode === ContentMode.ADD && localStorage.getItem('postData') && localStorage.getItem('postData') !== 'null') {
+    if (mode === ContentMode.ADD) {
       askContinueWrite();
     }
   }, []);
 
   useEffect(() => {
-    if (postData.title || (postData.content && postData.content !== '\n')) {
-      localStorage.setItem('postData', JSON.stringify(postData));
-      localStorage.setItem('saveTime', dayjs().format('YYYY.MM.DD HH:mm'));
-    } else {
-      localStorage.setItem('postData', JSON.stringify(prevPostData));
-      localStorage.setItem('saveTime', prevSaveTime);
-    }
-  }, [postData, prevPostData && prevSaveTime]);
+    const { title, content, htmlContent, category, tags } = postData;
+
+    // 마지막 요청만 실행되도록 수정
+    createAutoSave.mutate({ title, content, htmlContent, categoryId: category?.id, tags });
+  }, [postData]);
 
   useEffect(() => {
     if (createTempPost.isSuccess) {
@@ -175,6 +185,7 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
       return;
     }
 
+    // 수정 필요
     if (!localStorage.getItem('postData') || localStorage.getItem('postData') === 'null') {
       history.back();
       return;
@@ -331,9 +342,6 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
       }
 
       if (result === 'ok') {
-        localStorage.removeItem('saveTime');
-        localStorage.removeItem('postData');
-
         Router.push('/manage/posts');
       }
     } catch (err) {

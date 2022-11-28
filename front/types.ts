@@ -92,3 +92,16 @@ export type CategoryJson = {
   update: CategoryItem[];
   delete: CategoryItem[];
 };
+
+export type AutoSaveItem = {
+  id?: number;
+  title: string;
+  content: string;
+  htmlContent: string;
+  category: CategoryItem;
+  categoryId: number;
+  tags: TagItem[];
+  author?: UserType;
+  authorId: number;
+  createdAt: string;
+};
