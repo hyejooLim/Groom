@@ -330,13 +330,8 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
       return;
     }
 
-    if (!postData.category?.id) {
-      alert('카테고리를 설정하세요.');
-      return;
-    }
-
     setIsOpenSettingModal(true);
-  }, [postData.title, postData.content, postData.category]);
+  }, [postData.title, postData.content]);
 
   const onPublishPost = async () => {
     try {

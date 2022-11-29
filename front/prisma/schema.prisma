@@ -69,7 +69,7 @@ model Tag {
 }
 
 model Category {
-  id Int @id @default(autoincrement())
+  id Int @id
   name String @unique
   priority Int
   posts Post[]
