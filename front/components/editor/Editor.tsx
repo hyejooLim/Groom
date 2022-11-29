@@ -65,7 +65,7 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
   const [loadContent, setLoadContent] = useState(false);
 
   const createAutoSave = useCreateAutoSave();
-  const debouncedPostData = useDebounce(postData, 1000);
+  let debouncedPostData = useDebounce(postData, 5000);
 
   const { data: tempPosts } = useGetTempPosts();
   const createTempPost = useCreateTempPost();
@@ -113,6 +113,7 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
         cancelText: '취소',
         okText: '확인',
         onCancel: () => {
+          setPostData(makePostState());
           localStorage.removeItem('isSaved'); // 글을 이어서 작성하지 않는 경우 임시저장글을 새로 저장할 수 있음
         },
         onOk: () => {
@@ -135,6 +136,7 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
   useEffect(() => {
     if (mode === ContentMode.ADD) {
       askContinueWrite();
+      debouncedPostData = null;
     }
   }, []);
 
