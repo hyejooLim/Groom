@@ -23,7 +23,9 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
         },
         include: {
           tags: true,
-          category: true,
+          category: {
+            select: { id: true, name: true },
+          },
         },
       });
 

@@ -143,9 +143,9 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
   useEffect(() => {
     if (mode === ContentMode.ADD) {
       if (debouncedPostData) {
-        const { title, content, htmlContent, categoryId, tags } = postData;
+        const { title, content, htmlContent, category, tags } = postData;
 
-        createAutoSave.mutate({ title, content, htmlContent, categoryId, tags });
+        createAutoSave.mutate({ title, content, htmlContent, categoryId: category?.id, tags });
       }
     }
   }, [debouncedPostData]);
@@ -330,7 +330,7 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
       return;
     }
 
-    if (!postData.category.id) {
+    if (!postData.category?.id) {
       alert('카테고리를 설정하세요.');
       return;
     }
