@@ -125,7 +125,7 @@ const CategoryManageList: FC<CategoryManageListProps> = ({ categories, categoryJ
 
   const onAddCategory = useCallback(
     (e: FormEvent<HTMLButtonElement>) => {
-      const lastCategoryId = newCategories[newCategories.length - 1]?.id;
+      const minCategoryId = Math.min(...newCategories.map((item) => item.id));
 
       if (newCategories.length === 100) {
         alert('최대 100개의 카테고리를 추가할 수 있습니다.');
@@ -135,7 +135,7 @@ const CategoryManageList: FC<CategoryManageListProps> = ({ categories, categoryJ
       setNewCategories([
         ...newCategories,
         {
-          id: lastCategoryId < 0 ? lastCategoryId - 1 : -1,
+          id: minCategoryId < 0 ? minCategoryId - 1 : -1,
           name: category,
           priority: newCategories.length,
         },
@@ -147,7 +147,7 @@ const CategoryManageList: FC<CategoryManageListProps> = ({ categories, categoryJ
           append: [
             ...prevState.append,
             {
-              id: lastCategoryId < 0 ? lastCategoryId - 1 : -1,
+              id: minCategoryId < 0 ? minCategoryId - 1 : -1,
               name: category,
               priority: newCategories.length,
             },
@@ -238,42 +238,44 @@ const CategoryManageList: FC<CategoryManageListProps> = ({ categories, categoryJ
                     </Form>
                   </S.ItemWrapper>
                 ) : (
-                  <S.ItemWrapper
-                    key={item.id}
-                    data-key={item.id}
-                    data-index={idx}
-                    draggable
-                    onDragStart={onDragStart}
-                    onDragEnd={onDragEnd}
-                    onDragEnter={onDragEnter}
-                    onDragLeave={onDragLeave}
-                    onDragOver={(e) => e.preventDefault()}
-                    onDrop={onDrop}
-                  >
-                    <S.DragIconWrapper>
-                      <MenuOutlined />
-                    </S.DragIconWrapper>
-                    <S.TextArea>
-                      <div className='category_name'>
-                        <span>{item.name}</span>
-                        <span style={{ fontSize: '13px', marginLeft: '4px', color: '#808080' }}>
-                          ({item.posts?.length || 0})
-                        </span>
-                      </div>
-                      <S.EditButton>
-                        <Button className='modify btn' onClick={() => onClickUpdateButton(item.id, item.name, idx)}>
-                          수정
-                        </Button>
-                        <Button
-                          className='delete btn'
-                          onClick={() => onDeleteCategory(item.id)}
-                          disabled={item.posts?.length > 0}
-                        >
-                          삭제
-                        </Button>
-                      </S.EditButton>
-                    </S.TextArea>
-                  </S.ItemWrapper>
+                  item.id !== 0 && (
+                    <S.ItemWrapper
+                      key={item.id}
+                      data-key={item.id}
+                      data-index={idx}
+                      draggable
+                      onDragStart={onDragStart}
+                      onDragEnd={onDragEnd}
+                      onDragEnter={onDragEnter}
+                      onDragLeave={onDragLeave}
+                      onDragOver={(e) => e.preventDefault()}
+                      onDrop={onDrop}
+                    >
+                      <S.DragIconWrapper>
+                        <MenuOutlined />
+                      </S.DragIconWrapper>
+                      <S.TextArea>
+                        <div className='category_name'>
+                          <span>{item.name}</span>
+                          <span style={{ fontSize: '13px', marginLeft: '4px', color: '#808080' }}>
+                            ({item.posts?.length || 0})
+                          </span>
+                        </div>
+                        <S.EditButton>
+                          <Button className='modify btn' onClick={() => onClickUpdateButton(item.id, item.name, idx)}>
+                            수정
+                          </Button>
+                          <Button
+                            className='delete btn'
+                            onClick={() => onDeleteCategory(item.id)}
+                            disabled={item.posts?.length > 0}
+                          >
+                            삭제
+                          </Button>
+                        </S.EditButton>
+                      </S.TextArea>
+                    </S.ItemWrapper>
+                  )
                 )
               )}
             {showInput && (
