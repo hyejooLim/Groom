@@ -24,7 +24,7 @@ export const PostTitle = styled.div`
   width: 860px;
   margin: 18px auto 17px;
 
-  .title_input {
+  .title {
     padding: 0;
     border: 0;
     outline: none;
@@ -32,6 +32,10 @@ export const PostTitle = styled.div`
     font-size: 30px;
     padding-bottom: 20px;
     border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  }
+
+  .title.empty::placeholder {
+    color: #f75037;
   }
 `;
 

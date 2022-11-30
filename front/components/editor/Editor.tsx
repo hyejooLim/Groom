@@ -67,6 +67,9 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
   const createAutoSave = useCreateAutoSave();
   let debouncedPostData = useDebounce(postData, 5000);
 
+  const [isClickedPage, setIsClickedPage] = useState(false);
+  const [chooseKeepAutoSave, setChooseKeepAutoSave] = useState(false);
+
   const { data: tempPosts } = useGetTempPosts();
   const createTempPost = useCreateTempPost();
   const updateTempPost = useUpdateTempPost();
@@ -76,6 +79,7 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
   const [toastHeight, setToastHeight] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
 
+  const [isTitleEmpty, setIsTitleEmpty] = useState(false);
   const [isOpenTempPostsModal, setIsOpenTempPostsModal] = useState(false);
   const [isOpenSettingModal, setIsOpenSettingModal] = useState(false);
 
@@ -212,6 +216,8 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
       ...postData,
       title: e.target.value,
     });
+
+    setIsTitleEmpty(false);
   };
 
   const handleChangeContent = (htmlValue: string, textValue: string) => {
@@ -325,13 +331,13 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
   };
 
   const onClickCompleteButton = useCallback(() => {
-    if (!postData.title && !postData.content) {
-      alert('글을 작성해 주세요.');
+    if (!postData.title) {
+      setIsTitleEmpty(true);
       return;
     }
 
     setIsOpenSettingModal(true);
-  }, [postData.title, postData.content]);
+  }, [postData.title]);
 
   const onPublishPost = async () => {
     try {
@@ -357,6 +363,7 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
       <EditorToolbar />
       <EditorContent
         title={postData.title}
+        isTitleEmpty={isTitleEmpty}
         onChangeTitle={handleChangeTitle}
         htmlContent={postData.htmlContent}
         onChangeContent={handleChangeContent}

@@ -2,6 +2,7 @@ import React, { FC, ChangeEvent, KeyboardEvent, useRef, useCallback } from 'reac
 import Dropzone from 'react-dropzone';
 import { Input, Select } from 'antd';
 import { CloseOutlined } from '@ant-design/icons';
+import classNames from 'classnames';
 
 import TinymceEditor from './TinymceEditor';
 import useInput from '../../hooks/common/input';
@@ -11,6 +12,7 @@ import * as S from '../../styles/ts/components/editor/EditorContent';
 
 interface EditorContentProps {
   title: string;
+  isTitleEmpty: boolean;
   onChangeTitle: (e: ChangeEvent<HTMLInputElement>) => void;
   htmlContent: string;
   onChangeContent: (HTMLvalue: string, textValue: string) => void;
@@ -28,6 +30,7 @@ interface EditorContentProps {
 
 const EditorContent: FC<EditorContentProps> = ({
   title,
+  isTitleEmpty,
   onChangeTitle,
   htmlContent,
   onChangeContent,
@@ -81,7 +84,7 @@ const EditorContent: FC<EditorContentProps> = ({
         </S.SelectCategory>
         <S.PostTitle>
           <Input
-            className='title_input'
+            className={classNames('title', { empty: isTitleEmpty })}
             value={title}
             onChange={onChangeTitle}
             placeholder='제목을 입력하세요'
