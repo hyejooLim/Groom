@@ -32,6 +32,10 @@ const CategoryManageList: FC<CategoryManageListProps> = ({ categories, categoryJ
   const [draggedItemIdx, setDraggedItemIdx] = useState(0);
   const [targetItemIdx, setTargetItemIdx] = useState(0);
 
+  useEffect(() => {
+    setNewCategories(categories);
+  }, [categories]);
+
   const onChangeCategoryName = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
       setCurrentCategory({ ...currentCategory, name: e.target.value });
@@ -46,7 +50,7 @@ const CategoryManageList: FC<CategoryManageListProps> = ({ categories, categoryJ
   const onUpdateCategory = useCallback(() => {
     setNewCategories(changeProperty({ array: newCategories, state: currentCategory }));
 
-    if (currentCategory.id < 0) {
+    if (categoryJson.append.find((item) => item.id === currentCategory.id)) {
       setCategoryJson((prevState) => {
         return {
           ...prevState,
@@ -80,7 +84,7 @@ const CategoryManageList: FC<CategoryManageListProps> = ({ categories, categoryJ
 
       const deletedItemIdx = _categories.findIndex((item) => item.id === categoryId);
 
-      if (categoryId < 0) {
+      if (categoryJson.append.find((item) => item.id === categoryId)) {
         const _newAppendList = [...categoryJson.append];
         const newAppendList = _newAppendList.filter((item) => item.id !== categoryId);
 
@@ -88,6 +92,7 @@ const CategoryManageList: FC<CategoryManageListProps> = ({ categories, categoryJ
           return {
             ...prevState,
             append: changePriorityWhenDelete({ array: newAppendList, state: { deletedItemIdx } }),
+            update: changePriorityWhenDelete({ array: categoryJson.update, state: { deletedItemIdx } }),
           };
         });
       } else {
@@ -97,8 +102,9 @@ const CategoryManageList: FC<CategoryManageListProps> = ({ categories, categoryJ
 
           return {
             ...prevState,
+            append: changePriorityWhenDelete({ array: categoryJson.append, state: { deletedItemIdx } }),
             update: changePriorityWhenDeleteExcludeNewItem({
-              array: { main: newCategories, update: newUpdaeList },
+              array: { main: newCategories, append: categoryJson.append, update: newUpdaeList },
               state: { deletedItemIdx },
             }),
             delete: [
@@ -125,7 +131,7 @@ const CategoryManageList: FC<CategoryManageListProps> = ({ categories, categoryJ
 
   const onAddCategory = useCallback(
     (e: FormEvent<HTMLButtonElement>) => {
-      const minCategoryId = Math.min(...newCategories.map((item) => item.id));
+      const maxCategoryId = Math.max(...newCategories.map((item) => item.id));
 
       if (newCategories.length === 100) {
         alert('최대 100개의 카테고리를 추가할 수 있습니다.');
@@ -135,7 +141,7 @@ const CategoryManageList: FC<CategoryManageListProps> = ({ categories, categoryJ
       setNewCategories([
         ...newCategories,
         {
-          id: minCategoryId < 0 ? minCategoryId - 1 : -1,
+          id: maxCategoryId + 1,
           name: category,
           priority: newCategories.length,
         },
@@ -147,7 +153,7 @@ const CategoryManageList: FC<CategoryManageListProps> = ({ categories, categoryJ
           append: [
             ...prevState.append,
             {
-              id: minCategoryId < 0 ? minCategoryId - 1 : -1,
+              id: maxCategoryId + 1,
               name: category,
               priority: newCategories.length,
             },
@@ -193,7 +199,7 @@ const CategoryManageList: FC<CategoryManageListProps> = ({ categories, categoryJ
         ...prevState,
         append: changePriorityWhenDrop({ array: categoryJson.append, state: { draggedItemIdx, targetItemIdx } }),
         update: changePriorityWhenDropExcludeNewItem({
-          array: { main: newCategories, update: categoryJson.update },
+          array: { main: newCategories, append: categoryJson.append, update: categoryJson.update },
           state: { draggedItemIdx, targetItemIdx },
         }),
       };

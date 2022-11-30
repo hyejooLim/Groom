@@ -16,6 +16,7 @@ interface ChangePriorityWhenDropProps<T> {
 interface ChangePriorityWhenDropExcludeNewItemProps<T> {
   array: {
     main: T[];
+    append: T[];
     update: T[];
   };
   state: {
@@ -32,6 +33,7 @@ interface ChangePriorityWhenDeleteProps<T> {
 interface ChangePriorityWhenDeleteExcludeNewItemProps<T> {
   array: {
     main: T[];
+    append: T[];
     update: T[];
   };
   state: { deletedItemIdx: number };
@@ -76,7 +78,7 @@ export const changePriorityWhenDropExcludeNewItem = <T extends CategoryItem>({
   array.main.forEach((item, idx) => {
     let newObj = item;
 
-    if (item.id < 0) return;
+    if (array.append.find((appendEntry) => appendEntry.id === item.id)) return;
 
     // 드래그 아이템 priority: targetItemIdx
     if (idx === state.draggedItemIdx) {
@@ -142,7 +144,7 @@ export const changePriorityWhenDeleteExcludeNewItem = <T extends CategoryItem>({
   array.main.forEach((item, idx) => {
     let newObj = item;
 
-    if (item.id < 0) return;
+    if (array.append.find((appendEntry) => appendEntry.id === item.id)) return;
 
     if (state.deletedItemIdx < idx) {
       newObj = { ...newObj, priority: idx - 1 };

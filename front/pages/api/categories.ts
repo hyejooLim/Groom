@@ -26,6 +26,7 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
           req.body.append?.map((item: CategoryItem) =>
             prisma.category.create({
               data: {
+                id: item.id,
                 name: item.name,
                 priority: item.priority,
               },
