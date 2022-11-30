@@ -3,13 +3,13 @@
 
 generator client {
   provider = "prisma-client-js"
-  previewFeatures = ["referentialIntegrity", "fullTextSearch", "fullTextIndex"]
+  previewFeatures = ["fullTextSearch", "fullTextIndex"]
 }
 
 datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
-  referentialIntegrity = "prisma"
+  relationMode = "prisma"
 }
 
 model User {
@@ -45,6 +45,9 @@ model Post {
   likers User[] @relation("LikedPosts")
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@index([categoryId])
+  @@index([authorId])
 }
 
 model TempPost {
@@ -58,6 +61,9 @@ model TempPost {
   author User? @relation(fields: [authorId], references: [id])
   authorId Int?
   createdAt DateTime @default(now())
+
+  @@index([categoryId])
+  @@index([authorId])
 }
 
 model Tag {
@@ -85,6 +91,9 @@ model Comment {
   authorId Int
   content String @db.LongText
   datetime DateTime @default(now())
+
+  @@index([postId])
+  @@index([authorId])
 }
 
 model Visitor {
@@ -109,4 +118,7 @@ model AutoSave {
   author User? @relation(fields: [authorId], references: [id])
   authorId Int?
   createdAt DateTime @default(now())
+
+  @@index([categoryId])
+  @@index([authorId])
 }
