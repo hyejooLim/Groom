@@ -92,7 +92,7 @@ const EditorContent: FC<EditorContentProps> = ({
           />
         </S.PostTitle>
       </div>
-      <Dropzone ref={dropzoneRef} accept={{ 'image/*': ['.gif', '.jpg', 'jpeg', '.png'] }} onDrop={onGetImageUrl}>
+      <Dropzone ref={dropzoneRef} accept={{ 'image/*': ['.gif', '.jpg', '.jpeg', '.png'] }} onDrop={onGetImageUrl}>
         {({ getRootProps, getInputProps, isDragActive }) => (
           <div
             className='editor_inner'
