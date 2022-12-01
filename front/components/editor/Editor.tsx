@@ -52,7 +52,7 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
         content: '',
         htmlContent: '',
         tags: [],
-        category: { id: null, name: '' },
+        category: { id: 0, name: '카테고리 없음' },
         isPublic: true,
         allowComments: true,
       };
