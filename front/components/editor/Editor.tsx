@@ -67,9 +67,6 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
   const createAutoSave = useCreateAutoSave();
   let debouncedPostData = useDebounce(postData, 5000);
 
-  const [isClickedPage, setIsClickedPage] = useState(false);
-  const [chooseKeepAutoSave, setChooseKeepAutoSave] = useState(false);
-
   const { data: tempPosts } = useGetTempPosts();
   const createTempPost = useCreateTempPost();
   const updateTempPost = useUpdateTempPost();
@@ -80,6 +77,7 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
   const [toastMessage, setToastMessage] = useState('');
 
   const [isTitleEmpty, setIsTitleEmpty] = useState(false);
+  const [isClickedPage, setIsClickedPage] = useState(false);
   const [isOpenTempPostsModal, setIsOpenTempPostsModal] = useState(false);
   const [isOpenSettingModal, setIsOpenSettingModal] = useState(false);
 
@@ -168,6 +166,16 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
   }, [updateTempPost.isSuccess]);
 
   useEffect(() => {
+    document.querySelector('.groom_wrapper').addEventListener('click', clickPage);
+    tinymceEditor?.on('click', clickPage);
+
+    return () => {
+      document.querySelector('.groom_wrapper')?.removeEventListener('click', clickPage);
+      tinymceEditor?.off('click', clickPage);
+    };
+  }, [tinymceEditor]);
+
+  useEffect(() => {
     window.addEventListener('beforeunload', preventUnload);
 
     return () => {
@@ -183,7 +191,11 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
     return () => {
       window.removeEventListener('popstate', preventGoBack);
     };
-  }, []);
+  }, [isClickedPage]);
+
+  const clickPage = () => {
+    setIsClickedPage(true);
+  };
 
   // 새로고침 및 창 닫기 방지
   const preventUnload = (e: BeforeUnloadEvent) => {
@@ -197,9 +209,8 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
       return;
     }
 
-    // 수정 필요
-    if (!localStorage.getItem('postData') || localStorage.getItem('postData') === 'null') {
-      history.back();
+    if (!isClickedPage) {
+      history.back(); // 페이지에 변화가 없으면 뒤로가기
       return;
     }
 
