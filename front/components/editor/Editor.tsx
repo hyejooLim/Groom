@@ -11,13 +11,12 @@ import TempPostsModal from './TempPostsModal';
 import ToastMessage from '../common/ToastMessage';
 import SettingModal from './SettingModal';
 import { tinymceEditorState } from '../../recoil/tinymce';
+import { useCreatePost, useUpdatePost } from '../../hooks/query/post';
 import useGetTempPosts from '../../hooks/query/tempPosts';
 import { useCreateTempPost, useUpdateTempPost } from '../../hooks/query/tempPost';
 import useDebounce from '../../hooks/common/debounce';
 import useCreateAutoSave from '../../hooks/query/autosave';
 import getAutoSave from '../../apis/autosave/getAutoSave';
-import createPost from '../../apis/post/createPost';
-import updatePost from '../../apis/post/updatePost';
 import * as ContentMode from '../../constants/ContentMode';
 import { ContentModeType, PostItem, CategoryItem, TempPostItem } from '../../types';
 import * as S from '../../styles/ts/components/editor/Editor';
@@ -66,6 +65,9 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
 
   const createAutoSave = useCreateAutoSave();
   let debouncedPostData = useDebounce(postData, 5000);
+
+  const createPost = useCreatePost();
+  const updatePost = useUpdatePost();
 
   const { data: tempPosts } = useGetTempPosts();
   const createTempPost = useCreateTempPost();
@@ -151,6 +153,12 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
       }
     }
   }, [debouncedPostData]);
+
+  useEffect(() => {
+    if (createPost.isSuccess || updatePost.isSuccess) {
+      Router.push('/manage/posts');
+    }
+  }, [createPost.isSuccess, updatePost.isSuccess]);
 
   useEffect(() => {
     if (createTempPost.isSuccess) {
@@ -350,22 +358,11 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
     setIsOpenSettingModal(true);
   }, [postData.title]);
 
-  const onPublishPost = async () => {
-    try {
-      // 글쓰기 모드에 따라 api 호출
-      let result: Response | string = null;
-
-      if (mode === ContentMode.ADD) {
-        result = await createPost({ data: postData });
-      } else if (mode === ContentMode.EDIT) {
-        result = await updatePost({ data: postData });
-      }
-
-      if (result === 'ok') {
-        Router.push('/manage/posts');
-      }
-    } catch (err) {
-      console.error(err);
+  const onPublishPost = () => {
+    if (mode === ContentMode.ADD) {
+      createPost.mutate({ data: postData });
+    } else if (mode === ContentMode.EDIT) {
+      updatePost.mutate({ data: postData });
     }
   };
 
@@ -426,6 +423,7 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
         isOpen={isOpenSettingModal}
         setIsOpen={setIsOpenSettingModal}
         onPublishPost={onPublishPost}
+        isLoading={createPost.isLoading || updatePost.isLoading}
       />
     </S.EditorWrapper>
   );

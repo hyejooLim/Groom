@@ -19,6 +19,7 @@ interface SettingModalProps {
   isOpen: boolean;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
   onPublishPost: () => void;
+  isLoading: boolean;
 }
 
 const dropdownList = [
@@ -40,7 +41,9 @@ const SettingModal: FC<SettingModalProps> = ({
   isOpen,
   setIsOpen,
   onPublishPost,
+  isLoading,
 }) => {
+  const [isSaving, setIsSaving] = useState(isLoading);
   const [showDropdown, setShowDropdown] = useState(false);
   const [dropdownItem, setDropdownItem] = useState(dropdownList[postData.allowComments ? 0 : 1]);
 
@@ -53,6 +56,12 @@ const SettingModal: FC<SettingModalProps> = ({
     hour: dayjs().format('HH'),
     minute: dayjs().format('mm'),
   });
+
+  useEffect(() => {
+    if (isLoading) {
+      setIsSaving(true);
+    }
+  }, [isLoading]);
 
   useEffect(() => {
     function onClick() {
@@ -211,7 +220,7 @@ const SettingModal: FC<SettingModalProps> = ({
                 취소
               </Button>
               <Button htmlType='submit' className='submit btn'>
-                {radioValue === 'public' ? '공개 발행' : '비공개 저장'}
+                {isSaving ? '저장 중' : radioValue === 'public' ? '공개 발행' : '비공개 저장'}
               </Button>
             </div>
           </S.FootLayer>
