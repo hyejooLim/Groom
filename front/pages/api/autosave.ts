@@ -50,44 +50,26 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
         )
       );
 
-      if (categoryId) {
-        await prisma.autoSave.create({
-          data: {
-            title,
-            content,
-            htmlContent,
-            category: {
-              connect: {
-                id: categoryId,
-              },
-            },
-            tags: {
-              connect: tags,
-            },
-            author: {
-              connect: {
-                email: session?.user?.email,
-              },
+      await prisma.autoSave.create({
+        data: {
+          title,
+          content,
+          htmlContent,
+          category: {
+            connect: {
+              id: categoryId,
             },
           },
-        });
-      } else {
-        await prisma.autoSave.create({
-          data: {
-            title,
-            content,
-            htmlContent,
-            tags: {
-              connect: tags,
-            },
-            author: {
-              connect: {
-                email: session?.user?.email,
-              },
+          tags: {
+            connect: tags,
+          },
+          author: {
+            connect: {
+              email: session?.user?.email,
             },
           },
-        });
-      }
+        },
+      });
 
       res.status(201).send('ok');
     }
