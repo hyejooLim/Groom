@@ -1,4 +1,4 @@
-import React, { FC, ChangeEvent, useState, useEffect, useCallback } from 'react';
+import React, { FC, ChangeEvent, useRef, useState, useEffect, useCallback } from 'react';
 import { useRecoilValue } from 'recoil';
 import Router from 'next/router';
 import AWS from 'aws-sdk';
@@ -60,6 +60,7 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
   };
 
   let editorUrl = '';
+  const titleRef = useRef(null);
   const [postData, setPostData] = useState<PostItem>(makePostState());
   const [loadContent, setLoadContent] = useState(false);
 
@@ -117,6 +118,7 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
         cancelText: '취소',
         okText: '확인',
         onCancel: () => {
+          titleRef.current?.focus();
           setPostData(makePostState());
           localStorage.removeItem('isSaved'); // 글을 이어서 작성하지 않는 경우 임시저장글을 새로 저장할 수 있음
         },
@@ -130,6 +132,7 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
             tags,
           });
           setLoadContent(true);
+          titleRef.current?.focus();
         },
       });
     } catch (err) {
@@ -352,6 +355,8 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
   const onClickCompleteButton = useCallback(() => {
     if (!postData.title) {
       setIsTitleEmpty(true);
+      titleRef.current?.focus();
+
       return;
     }
 
@@ -371,6 +376,7 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
       <EditorToolbar />
       <EditorContent
         title={postData.title}
+        titleRef={titleRef}
         isTitleEmpty={isTitleEmpty}
         onChangeTitle={handleChangeTitle}
         htmlContent={postData.htmlContent}

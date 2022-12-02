@@ -1,4 +1,4 @@
-import React, { FC, ChangeEvent, KeyboardEvent, useRef, useCallback } from 'react';
+import React, { FC, ChangeEvent, KeyboardEvent, useRef, useCallback, useEffect } from 'react';
 import Dropzone from 'react-dropzone';
 import { Input, Select } from 'antd';
 import { CloseOutlined } from '@ant-design/icons';
@@ -12,6 +12,7 @@ import * as S from '../../styles/ts/components/editor/EditorContent';
 
 interface EditorContentProps {
   title: string;
+  titleRef: React.MutableRefObject<any>;
   isTitleEmpty: boolean;
   onChangeTitle: (e: ChangeEvent<HTMLInputElement>) => void;
   htmlContent: string;
@@ -30,6 +31,7 @@ interface EditorContentProps {
 
 const EditorContent: FC<EditorContentProps> = ({
   title,
+  titleRef,
   isTitleEmpty,
   onChangeTitle,
   htmlContent,
@@ -49,6 +51,10 @@ const EditorContent: FC<EditorContentProps> = ({
 
   const [tag, onChangeTag, setTag] = useInput('');
   const dropzoneRef = useRef(null);
+
+  useEffect(() => {
+    titleRef.current?.focus();
+  }, []);
 
   const handleKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
     if (!tag || !tag.trim()) {
@@ -84,6 +90,7 @@ const EditorContent: FC<EditorContentProps> = ({
         </S.SelectCategory>
         <S.PostTitle>
           <Input
+            ref={titleRef}
             className={classNames('title', { empty: isTitleEmpty })}
             value={title}
             onChange={onChangeTitle}
