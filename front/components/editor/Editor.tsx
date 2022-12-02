@@ -176,9 +176,12 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
   }, []);
 
   useEffect(() => {
-    editorUrl = location.href;
-    history.pushState(null, '', location.href);
-    window.addEventListener('popstate', preventGoBack); // 사용자의 세션 기록 탐색으로 인해 현재 활성화된 기록 항목이 바뀔 때 발생
+    if (isClickedPage) {
+      editorUrl = location.href;
+
+      history.pushState(null, '', location.href);
+      window.addEventListener('popstate', preventGoBack); // 사용자의 세션 기록 탐색으로 인해 현재 활성화된 기록 항목이 바뀔 때 발생
+    }
 
     return () => {
       window.removeEventListener('popstate', preventGoBack);
@@ -198,11 +201,6 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
   // 뒤로가기 방지
   const preventGoBack = (e: PopStateEvent) => {
     if (editorUrl !== location.href) {
-      return;
-    }
-
-    if (!isClickedPage) {
-      history.back(); // 페이지에 변화가 없으면 뒤로가기
       return;
     }
 
