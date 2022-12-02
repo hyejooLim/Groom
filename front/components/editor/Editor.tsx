@@ -61,23 +61,21 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
 
   let editorUrl = '';
   const titleRef = useRef(null);
+
   const [postData, setPostData] = useState<PostItem>(makePostState());
+  const createPost = useCreatePost();
+  const updatePost = useUpdatePost();
+
+  const [toastMessage, setToastMessage] = useState('');
   const [loadContent, setLoadContent] = useState(false);
 
   const createAutoSave = useCreateAutoSave();
   let debouncedPostData = useDebounce(postData, 5000);
 
-  const createPost = useCreatePost();
-  const updatePost = useUpdatePost();
-
   const { data: tempPosts } = useGetTempPosts();
   const createTempPost = useCreateTempPost();
   const updateTempPost = useUpdateTempPost();
-
   const [loadTempPost, setLoadTempPost] = useState(false);
-  const [showToastMessage, setShowToastMessage] = useState(false);
-  const [toastHeight, setToastHeight] = useState(false);
-  const [toastMessage, setToastMessage] = useState('');
 
   const [isTitleEmpty, setIsTitleEmpty] = useState(false);
   const [isClickedPage, setIsClickedPage] = useState(false);
@@ -85,23 +83,6 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
   const [isOpenSettingModal, setIsOpenSettingModal] = useState(false);
 
   const tinymceEditor = useRecoilValue(tinymceEditorState);
-
-  const showToastBox = useCallback((message: string) => {
-    setShowToastMessage(true);
-    setToastMessage(message);
-
-    setTimeout(() => {
-      setToastHeight(true);
-    }, 1000);
-
-    setTimeout(() => {
-      setToastHeight(false);
-    }, 3000);
-
-    setTimeout(() => {
-      setShowToastMessage(false);
-    }, 4000);
-  }, []);
 
   const askContinueWrite = async () => {
     try {
@@ -165,14 +146,14 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
 
   useEffect(() => {
     if (createTempPost.isSuccess) {
-      showToastBox('작성 중인 글이 저장되었습니다.');
+      setToastMessage('작성 중인 글이 저장되었습니다.');
       localStorage.setItem('isSaved', 'true');
     }
   }, [createTempPost.isSuccess]);
 
   useEffect(() => {
     if (updateTempPost.isSuccess) {
-      showToastBox('작성 중인 글이 저장되었습니다.');
+      setToastMessage('작성 중인 글이 저장되었습니다.');
     }
   }, [updateTempPost.isSuccess]);
 
@@ -347,9 +328,9 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
       tags: post.tags,
       category: post.category,
     });
-
     setLoadTempPost(true);
-    showToastBox('글을 불러왔습니다.');
+
+    setToastMessage('글을 불러왔습니다.');
   };
 
   const onClickCompleteButton = useCallback(() => {
@@ -414,7 +395,7 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
           </S.CompleteButton>
         </div>
       </S.ContentAside>
-      <ToastMessage show={showToastMessage} height={toastHeight} message={toastMessage} />
+      <ToastMessage message={toastMessage} setMessage={setToastMessage} />
       <TempPostsModal
         isOpen={isOpenTempPostsModal}
         setIsOpen={setIsOpenTempPostsModal}
