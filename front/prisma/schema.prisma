@@ -98,7 +98,7 @@ model Comment {
 
 model Visitor {
   id Int @id @default(autoincrement())
-  csrfToken String
+  csrfToken String @default("")
 }
 
 model VisitorsCount {
