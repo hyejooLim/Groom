@@ -8,9 +8,8 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
   try {
     if (req.method === 'GET') {
       const csrfToken = req.cookies['next-auth.csrf-token'];
-
       if (!csrfToken) {
-        return;
+        return res.status(401).send('토큰이 존재하지 않습니다.');
       }
 
       const exVisitorsCount = await prisma.visitorsCount.findFirst();
