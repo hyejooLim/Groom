@@ -1,5 +1,4 @@
 import { NextApiHandler, NextApiRequest, NextApiResponse } from 'next';
-import { getSession } from 'next-auth/react';
 import dayjs from 'dayjs';
 
 import prisma from '../../lib/prisma';
@@ -8,30 +7,20 @@ import { VisitorsCount } from '../../types';
 const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     if (req.method === 'GET') {
-      const visitorsCountModel = await prisma.visitorsCount.findFirst();
+      const csrfToken = req.cookies['next-auth.csrf-token'];
 
-      const session = await getSession({ req });
-      if (!session) {
-        return res.status(200).json(visitorsCountModel);
+      if (!csrfToken) {
+        return;
       }
 
-      const user = await prisma.user.findUnique({
-        where: {
-          email: session?.user.email,
-        },
-      });
-
-      if (!user) {
-        return res.status(200).json(visitorsCountModel);
-      }
-
+      const exVisitorsCount = await prisma.visitorsCount.findFirst();
       let visitorsCount: VisitorsCount = null;
 
       // 사이트의 첫 방문인 경우
-      if (!visitorsCountModel) {
+      if (!exVisitorsCount) {
         await prisma.visitor.create({
           data: {
-            id: user.id,
+            csrfToken,
           },
         });
 
@@ -44,29 +33,29 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
         });
       } else {
         // 날짜가 1일 이상 지나서 만료 날짜를 새로 세팅
-        if (dayjs().diff(visitorsCountModel.expireDate) > 0) {
+        if (dayjs().diff(exVisitorsCount.expireDate) > 0) {
           await prisma.visitor.deleteMany({
             where: {
               NOT: {
-                id: user.id,
+                csrfToken,
               },
             },
           });
 
           visitorsCount = await prisma.visitorsCount.update({
             where: {
-              id: visitorsCountModel.id,
+              id: exVisitorsCount.id,
             },
             data: {
               todayCount: 1,
-              totalCount: visitorsCountModel.totalCount + 1,
+              totalCount: exVisitorsCount.totalCount + 1,
               expireDate: dayjs().format('YYYY-MM-DD 23:59:59'),
             },
           });
         } else {
-          const visitor = await prisma.visitor.findUnique({
+          const visitor = await prisma.visitor.findFirst({
             where: {
-              id: user.id,
+              csrfToken,
             },
           });
 
@@ -74,21 +63,21 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
           if (!visitor) {
             await prisma.visitor.create({
               data: {
-                id: user.id,
+                csrfToken,
               },
             });
 
             visitorsCount = await prisma.visitorsCount.update({
               where: {
-                id: visitorsCountModel.id,
+                id: exVisitorsCount.id,
               },
               data: {
-                todayCount: visitorsCountModel.todayCount + 1,
-                totalCount: visitorsCountModel.totalCount + 1,
+                todayCount: exVisitorsCount.todayCount + 1,
+                totalCount: exVisitorsCount.totalCount + 1,
               },
             });
           } else {
-            visitorsCount = visitorsCountModel;
+            visitorsCount = exVisitorsCount;
           }
         }
       }
