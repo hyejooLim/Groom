@@ -7,7 +7,11 @@ import { VisitorsCount } from '../../types';
 const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     if (req.method === 'GET') {
-      const csrfToken = req.cookies['next-auth.csrf-token'];
+      const csrfToken =
+        process.env.NODE_ENV === 'development'
+          ? req.cookies['next-auth.csrf-token']
+          : req.cookies['__Host-next-auth.csrf-token'];
+
       if (!csrfToken) {
         return res.status(401).send('토큰이 존재하지 않습니다.');
       }
