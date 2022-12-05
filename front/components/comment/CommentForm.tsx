@@ -35,7 +35,7 @@ const CommentForm: FC<CommentFormProps> = ({ post }) => {
 
     createComment.mutate({ data: { content: commentText, postId: post.id } });
     setCommentText('');
-  }, [commentText, post]);
+  }, [user, commentText, post]);
 
   return (
     <Form onFinish={onSubmitForm} style={{ marginTop: 50 }}>
