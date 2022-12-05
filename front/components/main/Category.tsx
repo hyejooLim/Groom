@@ -13,15 +13,18 @@ const Category = () => {
     <CategoryWrapper>
       <span>카테고리</span>
       <ul>
-        {categories?.map((category: CategoryItem) => (
-          <li key={category.id}>
-            <Link href={`/category/${category.name}`}>
-              <a className='category_item'>
-                {category.name} ({getPublicAndPublishedPosts(category.posts).length})
-              </a>
-            </Link>
-          </li>
-        ))}
+        {categories?.map(
+          (category: CategoryItem) =>
+            category.id !== 0 && (
+              <li key={category.id}>
+                <Link href={`/category/${category.name}`}>
+                  <a className='category_item'>
+                    {category.name} ({getPublicAndPublishedPosts(category.posts).length})
+                  </a>
+                </Link>
+              </li>
+            )
+        )}
       </ul>
     </CategoryWrapper>
   );
