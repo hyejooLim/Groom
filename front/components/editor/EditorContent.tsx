@@ -1,4 +1,4 @@
-import React, { FC, ChangeEvent, KeyboardEvent, useRef, useCallback, useEffect } from 'react';
+import React, { FC, ChangeEvent, KeyboardEvent, useRef, useCallback } from 'react';
 import Dropzone from 'react-dropzone';
 import { Input, Select } from 'antd';
 import { CloseOutlined } from '@ant-design/icons';
@@ -52,10 +52,6 @@ const EditorContent: FC<EditorContentProps> = ({
   const [tag, onChangeTag, setTag] = useInput('');
   const dropzoneRef = useRef(null);
 
-  useEffect(() => {
-    titleRef.current?.focus();
-  }, []);
-
   const handleKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
     if (!tag || !tag.trim()) {
       return;
@@ -108,6 +104,7 @@ const EditorContent: FC<EditorContentProps> = ({
             })}
           >
             <TinymceEditor
+              titleRef={titleRef}
               htmlContent={htmlContent}
               onChangeContent={onChangeContent}
               onOpenFile={handleOpenFile}

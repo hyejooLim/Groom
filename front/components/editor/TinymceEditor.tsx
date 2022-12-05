@@ -6,6 +6,7 @@ import { tinymceEditorState } from '../../recoil/tinymce';
 import * as S from '../../styles/ts/components/editor/TinymceEditor';
 
 interface TinymceEditorProps {
+  titleRef: React.MutableRefObject<any>;
   htmlContent: string;
   onChangeContent: (HTMLvalue: string, textValue: string) => void;
   onOpenFile: () => void;
@@ -17,6 +18,7 @@ interface TinymceEditorProps {
 }
 
 const TinymceEditor: FC<TinymceEditorProps> = ({
+  titleRef,
   htmlContent,
   onChangeContent,
   onOpenFile,
@@ -92,6 +94,7 @@ const TinymceEditor: FC<TinymceEditorProps> = ({
             editor.on('drop', handleDrop);
             editor.setContent(htmlContent);
             editor.execCommand('mceAutoResize');
+            titleRef.current?.focus();
           },
         }}
       />
