@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { signOut } from 'next-auth/react';
 import Link from 'next/link';
 import { Avatar } from 'antd';
@@ -10,7 +10,16 @@ import SkeletonUserProfile from '../skeleton/SkeletonUserProfile';
 import * as S from '../../styles/ts/components/main/UserProfile';
 
 const UserProfile = () => {
-  const { data: user, isLoading, isFetching } = useGetUser();
+  const { data: user, error, isLoading, isFetching, isError } = useGetUser();
+
+  useEffect(() => {
+    if (isError) {
+      const err = error as any;
+
+      alert(err?.response?.data?.message);
+      signOut();
+    }
+  }, [isError]);
 
   const handleLogout = () => {
     if (!confirm('로그아웃 하시겠습니까?')) return;
