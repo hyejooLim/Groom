@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useCallback, useState } from 'react';
+import React, { ChangeEvent, KeyboardEvent, useCallback, useState } from 'react';
 import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -20,6 +20,8 @@ const Signup = () => {
   const [emailError, setEmailError] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
   const [passwordCheckError, setPasswordCheckError] = useState(false);
+  const [isCapsLockPassword, setIsCapsLockPassword] = useState(false);
+  const [isCapsLockPasswordCheck, setIsCapsLockPasswordCheck] = useState(false);
 
   const onChangeEmail = useCallback((e: ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
@@ -40,6 +42,14 @@ const Signup = () => {
     },
     [password]
   );
+
+  const onKeyUpPassword = (e: KeyboardEvent<HTMLInputElement>) => {
+    e.getModifierState('CapsLock') ? setIsCapsLockPassword(true) : setIsCapsLockPassword(false);
+  };
+
+  const onKeyUpPasswordCheck = (e: KeyboardEvent<HTMLInputElement>) => {
+    e.getModifierState('CapsLock') ? setIsCapsLockPasswordCheck(true) : setIsCapsLockPasswordCheck(false);
+  };
 
   const onSubmitForm = useCallback(async () => {
     try {
@@ -101,9 +111,13 @@ const Signup = () => {
               type='password'
               placeholder='비밀번호를 입력하세요.'
               onChange={onChangePassword}
+              onKeyUp={onKeyUpPassword}
               required
             />
-            <S.ErrorMessage className={classNames({ error: passwordError })}>
+            <S.ErrorMessage className={classNames({ error: isCapsLockPassword })}>
+              CapsLock이 켜져 있습니다.
+            </S.ErrorMessage>
+            <S.ErrorMessage className={classNames({ error: passwordError && !isCapsLockPassword })}>
               비밀번호는 8자리 이상이어야 합니다.
             </S.ErrorMessage>
           </div>
@@ -116,9 +130,13 @@ const Signup = () => {
               type='password'
               placeholder='비밀번호를 입력하세요.'
               onChange={onChangePasswordCheck}
+              onKeyUp={onKeyUpPasswordCheck}
               required
             />
-            <S.ErrorMessage className={classNames({ error: passwordCheckError })}>
+            <S.ErrorMessage className={classNames({ error: isCapsLockPasswordCheck })}>
+              CapsLock이 켜져 있습니다.
+            </S.ErrorMessage>
+            <S.ErrorMessage className={classNames({ error: passwordCheckError && !isCapsLockPasswordCheck })}>
               비밀번호가 일치하지 않습니다.
             </S.ErrorMessage>
           </div>
