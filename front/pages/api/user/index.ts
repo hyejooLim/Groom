@@ -14,57 +14,6 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
         where: {
           email: session.user.email,
         },
-        include: {
-          posts: {
-            orderBy: [
-              {
-                createdAt: 'desc',
-              },
-            ],
-            include: {
-              comments: {
-                select: {
-                  id: true,
-                },
-              },
-              category: {
-                select: {
-                  name: true,
-                },
-              },
-              author: {
-                select: {
-                  name: true,
-                },
-              },
-              likers: {
-                select: {
-                  id: true,
-                },
-              },
-            },
-          },
-          subscribedPosts: {
-            orderBy: [
-              {
-                createdAt: 'desc',
-              },
-            ],
-            include: {
-              category: {
-                select: {
-                  name: true,
-                },
-              },
-              author: {
-                select: {
-                  name: true,
-                },
-              },
-            },
-          },
-          tempPosts: true,
-        },
       });
 
       if (!user) {
