@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Button, Form, Input } from 'antd';
+import { Form, Input } from 'antd';
 
 export const CommentBox = styled.li`
   padding: 5px 20px;
@@ -12,7 +12,7 @@ export const CommentBox = styled.li`
   justify-content: space-between;
 `;
 
-export const ButtonWrapper = styled(Button)`
+export const ButtonWrapper = styled.div`
   * {
     font-size: 12px;
   }
