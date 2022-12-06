@@ -8,8 +8,8 @@ import ManageLayout from '../../components/layouts/ManageLayout';
 import SkeletonLastPosts from '../../components/skeleton/SkeletonLastPosts';
 import getUser from '../../apis/user/getUser';
 import getVisitorsCount from '../../apis/count';
+import { useGetUserPosts } from '../../hooks/query/posts';
 import useGetVisitorsCount from '../../hooks/query/visitorsCount';
-import { useGetUser } from '../../hooks/query/user';
 import * as S from '../../styles/ts/pages/manage';
 
 const renderEmptyBox = (length: number) => {
@@ -23,7 +23,7 @@ const renderEmptyBox = (length: number) => {
 };
 
 const Manage = () => {
-  const { data: user, isLoading } = useGetUser();
+  const { data: userPosts, isLoading } = useGetUserPosts();
   const { data: visitors } = useGetVisitorsCount();
 
   return (
@@ -45,7 +45,7 @@ const Manage = () => {
         ) : (
           <ul>
             <>
-              {user?.posts?.slice(0, 4).map((post) => (
+              {userPosts?.slice(0, 4).map((post) => (
                 <li key={post.id}>
                   <Link href={`/post/${post.id}`}>
                     <a>
@@ -59,7 +59,7 @@ const Manage = () => {
                   </S.InfoWrapper>
                 </li>
               ))}
-              {user?.posts?.length < 4 && renderEmptyBox(user?.posts.length)}
+              {userPosts?.length < 4 && renderEmptyBox(userPosts.length)}
             </>
           </ul>
         )}

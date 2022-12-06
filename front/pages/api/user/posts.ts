@@ -23,6 +23,16 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
         ],
         include: {
           category: true,
+          comments: {
+            select: {
+              id: true,
+            },
+          },
+          likers: {
+            select: {
+              id: true,
+            },
+          },
           author: {
             select: {
               name: true,
