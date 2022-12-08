@@ -106,7 +106,7 @@ export const InfoWrapper = styled.div`
     display: block;
     position: absolute;
     top: 11px;
-    left: 61.4px;
+    left: 58px;
     width: 2px;
     height: 2px;
     background-color: #c5c5c5;
