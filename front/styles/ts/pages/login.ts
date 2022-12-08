@@ -65,15 +65,26 @@ export const LoginButton = styled(Button)`
   font-size: 15px;
   margin: 40px auto;
   border-radius: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   transition: all 0.2s ease-in;
 
-  :hover {
+  &.isLoading {
+    background-color: #a7dbd1;
+
+    &:hover {
+      background-color: #a7dbd1;
+    }
+  }
+
+  &:not(.isLoading):hover {
     color: #fff;
     background-color: #0fc19e;
     transform: scale(1.02);
   }
 
-  :focus {
+  &:not(.isLoading):focus {
     color: #fff;
     background-color: #13a085;
   }

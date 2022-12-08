@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
 import { signIn } from 'next-auth/react';
 import Head from 'next/head';
 import Link from 'next/link';
@@ -6,6 +6,8 @@ import Image from 'next/image';
 import Router, { useRouter } from 'next/router';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import { toast, ToastContainer } from 'react-toastify';
+import { Oval } from 'react-loader-spinner';
+import classNames from 'classnames';
 
 import useInput from '../hooks/common/input';
 import * as S from '../styles/ts/pages/login';
@@ -17,8 +19,11 @@ const Login = () => {
 
   const [email, onChangeEmail] = useInput('');
   const [password, onChangePassword] = useInput('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const onSubmitForm = useCallback(async () => {
+    setIsLoading(true);
+
     const result = await signIn('credentials', {
       redirect: false, // 로그인 중 에러 발생 시 현재 화면 유지
       email,
@@ -27,6 +32,7 @@ const Login = () => {
 
     if (result.error) {
       alert(result.error);
+      setIsLoading(false);
       return;
     }
 
@@ -57,7 +63,14 @@ const Login = () => {
           </div>
           <div className='email input_form'>
             <UserOutlined className='icon' />
-            <S.StyledInput type='email' value={email} onChange={onChangeEmail} placeholder='email' required />
+            <S.StyledInput
+              type='email'
+              value={email}
+              onChange={onChangeEmail}
+              placeholder='email'
+              disabled={isLoading}
+              required
+            />
           </div>
           <div className='password input_form'>
             <LockOutlined className='icon' />
@@ -66,11 +79,18 @@ const Login = () => {
               value={password}
               onChange={onChangePassword}
               placeholder='password'
+              disabled={isLoading}
               required
             />
           </div>
           <div className='buttons'>
-            <S.LoginButton htmlType='submit'>로그인</S.LoginButton>
+            <S.LoginButton htmlType='submit' className={classNames({ isLoading })} disabled={isLoading}>
+              {isLoading ? (
+                <Oval height={20} width={20} color='#fff' secondaryColor='#eee' strokeWidth={6} />
+              ) : (
+                '로그인'
+              )}
+            </S.LoginButton>
             <S.SignupButton>
               <Link href='/signup'>
                 <a style={{ color: '#888' }}>
