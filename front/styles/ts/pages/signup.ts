@@ -47,6 +47,9 @@ export const SubmitButton = styled(Button)`
   border-radius: 10px;
   color: #fff;
   background-color: #13a085;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   transition: all 0.2s ease-in;
 
   :hover {

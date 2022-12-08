@@ -10,12 +10,14 @@ import useInput from '../hooks/common/input';
 import signup from '../apis/signup';
 import * as S from '../styles/ts/pages/signup';
 import logo from '../public/Groom_Logo_No_Background.png';
+import { Oval } from 'react-loader-spinner';
 
 const Signup = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [passwordCheck, setPasswordCheck] = useState('');
   const [name, onChangeName] = useInput('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const [emailError, setEmailError] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
@@ -53,6 +55,8 @@ const Signup = () => {
 
   const onSubmitForm = useCallback(async () => {
     try {
+      setIsLoading(true);
+
       await signup({ data: { email, password, name } });
 
       toast.success('회원가입이 완료되었습니다.', {
@@ -66,6 +70,7 @@ const Signup = () => {
       }, 3000);
     } catch (error) {
       alert(error?.response?.data?.message);
+      setIsLoading(false);
       console.error(error);
     }
   }, [email, password, passwordCheck, name]);
@@ -96,6 +101,7 @@ const Signup = () => {
               type='email'
               placeholder='이메일을 입력하세요.'
               onChange={onChangeEmail}
+              disabled={isLoading}
               required
             />
             <S.ErrorMessage className={classNames({ error: emailError })}>
@@ -112,6 +118,7 @@ const Signup = () => {
               placeholder='비밀번호를 입력하세요.'
               onChange={onChangePassword}
               onKeyUp={onKeyUpPassword}
+              disabled={isLoading}
               required
             />
             <S.ErrorMessage className={classNames({ error: isCapsLockPassword })}>
@@ -131,6 +138,7 @@ const Signup = () => {
               placeholder='비밀번호를 입력하세요.'
               onChange={onChangePasswordCheck}
               onKeyUp={onKeyUpPasswordCheck}
+              disabled={isLoading}
               required
             />
             <S.ErrorMessage className={classNames({ error: isCapsLockPasswordCheck })}>
@@ -148,16 +156,28 @@ const Signup = () => {
               value={name}
               placeholder='이름을 입력하세요.'
               onChange={onChangeName}
+              disabled={isLoading}
               required
             />
           </div>
           <S.SubmitButton
             htmlType='submit'
             disabled={
-              !email || !password || !passwordCheck || !name || emailError || passwordError || passwordCheckError
+              !email ||
+              !password ||
+              !passwordCheck ||
+              !name ||
+              emailError ||
+              passwordError ||
+              passwordCheckError ||
+              isLoading
             }
           >
-            가입하기
+            {isLoading ? (
+              <Oval height={20} width={20} color='#d0d0d0' secondaryColor='#ddd' strokeWidth={6} />
+            ) : (
+              '가입하기'
+            )}
           </S.SubmitButton>
         </S.StyledForm>
       </S.SignupWrapper>
