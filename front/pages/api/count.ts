@@ -1,5 +1,4 @@
 import { NextApiHandler, NextApiRequest, NextApiResponse } from 'next';
-import { getCsrfToken } from 'next-auth/react';
 import dayjs from 'dayjs';
 
 import prisma from '../../lib/prisma';
@@ -8,8 +7,10 @@ import { VisitorsCount } from '../../types';
 const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     if (req.method === 'GET') {
-      const csrfToken = await getCsrfToken({ req });
-      console.log('csrfToken', csrfToken);
+      const csrfToken =
+        process.env.NODE_ENV === 'development'
+          ? req.cookies['next-auth.csrf-token']
+          : req.cookies['__Host-next-auth.csrf-token'];
 
       if (!csrfToken) {
         return res.status(401).send({ message: '토큰이 존재하지 않습니다.' });
