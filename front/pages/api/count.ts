@@ -9,6 +9,8 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
   try {
     if (req.method === 'GET') {
       const csrfToken = await getCsrfToken({ req });
+      console.log('csrfToken', csrfToken);
+
       if (!csrfToken) {
         return res.status(401).send({ message: '토큰이 존재하지 않습니다.' });
       }
