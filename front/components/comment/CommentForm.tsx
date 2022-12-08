@@ -1,9 +1,9 @@
 import React, { FC, useCallback } from 'react';
+import { useSession } from 'next-auth/react';
 import Router from 'next/router';
 import { Form } from 'antd';
 
 import useInput from '../../hooks/common/input';
-import { useGetUser } from '../../hooks/query/user';
 import { useCreateComment } from '../../hooks/query/comment';
 import { PostItem } from '../../types';
 import { AddCommentButton, StyledTextArea } from '../../styles/ts/components/comment/CommentForm';
@@ -13,13 +13,13 @@ interface CommentFormProps {
 }
 
 const CommentForm: FC<CommentFormProps> = ({ post }) => {
-  const { data: user } = useGetUser();
+  const { status } = useSession();
 
   const createComment = useCreateComment();
   const [commentText, onChangeCommentText, setCommentText] = useInput('');
 
   const onSubmitForm = useCallback(() => {
-    if (!user) {
+    if (status === 'unauthenticated') {
       if (confirm('로그인이 필요합니다. 로그인 페이지로 이동하시겠습니까?')) {
         Router.push('/login');
       }
@@ -35,7 +35,7 @@ const CommentForm: FC<CommentFormProps> = ({ post }) => {
 
     createComment.mutate({ data: { content: commentText, postId: post.id } });
     setCommentText('');
-  }, [user, commentText, post]);
+  }, [status, commentText, post]);
 
   return (
     <Form onFinish={onSubmitForm} style={{ marginTop: 50 }}>
