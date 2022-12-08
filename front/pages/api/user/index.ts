@@ -14,13 +14,22 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
         where: {
           email: session.user.email,
         },
+        include: {
+          posts: {
+            select: {
+              id: true,
+            },
+          },
+        },
       });
 
       if (!user) {
         return res.status(403).send({ message: '다시 로그인 해주세요.' });
       }
 
-      res.status(200).json(user);
+      const { id, email, name, imageUrl, posts } = user;
+
+      res.status(200).json({ id, email, name, imageUrl, posts });
     }
 
     if (req.method === 'PUT') {

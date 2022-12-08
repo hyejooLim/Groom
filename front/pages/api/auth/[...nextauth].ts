@@ -21,7 +21,6 @@ export default NextAuth({
             email: true,
             password: true,
             name: true,
-            posts: true,
           },
         });
 
@@ -37,7 +36,6 @@ export default NextAuth({
         const userWithoutPassword = {
           email: user.email,
           name: user.name,
-          posts: user.posts,
         };
         return userWithoutPassword;
       },
