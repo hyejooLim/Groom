@@ -37,7 +37,7 @@ const Login = () => {
 
     toast.success('로그인 되었습니다.', {
       autoClose: 2000,
-      position: toast.POSITION.BOTTOM_LEFT,
+      position: toast.POSITION.TOP_RIGHT,
       hideProgressBar: true,
     });
 

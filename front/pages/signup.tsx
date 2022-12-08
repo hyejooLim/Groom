@@ -61,7 +61,7 @@ const Signup = () => {
 
       toast.success('회원가입이 완료되었습니다.', {
         autoClose: 2000,
-        position: toast.POSITION.BOTTOM_LEFT,
+        position: toast.POSITION.TOP_RIGHT,
         hideProgressBar: true,
       });
 
