@@ -17,14 +17,14 @@ const UserProfile = () => {
       const err = error as any;
 
       alert(err?.response?.data?.message);
-      signOut();
+      signOut({ redirect: false });
     }
   }, [isError]);
 
   const handleLogout = () => {
     if (!confirm('로그아웃 하시겠습니까?')) return;
 
-    signOut();
+    signOut({ redirect: false });
   };
 
   return (
