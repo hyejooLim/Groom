@@ -25,7 +25,7 @@ export const LoginButton = styled(Button)`
 
   &:hover {
     color: #fff;
-    background-color: #13a085;
+    background-color: #0fc19e;
   }
 
   &:focus {
