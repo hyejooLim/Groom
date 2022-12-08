@@ -70,23 +70,24 @@ export const LoginButton = styled(Button)`
   align-items: center;
   transition: all 0.2s ease-in;
 
-  &.isLoading {
-    background-color: #a7dbd1;
-
-    &:hover {
-      background-color: #a7dbd1;
-    }
-  }
-
-  &:not(.isLoading):hover {
+  &:hover {
     color: #fff;
     background-color: #0fc19e;
     transform: scale(1.02);
   }
 
-  &:not(.isLoading):focus {
+  &:focus {
     color: #fff;
     background-color: #13a085;
+  }
+
+  &:disabled {
+    background-color: #a7dbd1;
+
+    :hover {
+      background-color: #a7dbd1;
+      transform: none;
+    }
   }
 `;
 

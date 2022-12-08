@@ -7,7 +7,6 @@ import Router, { useRouter } from 'next/router';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import { toast, ToastContainer } from 'react-toastify';
 import { Oval } from 'react-loader-spinner';
-import classNames from 'classnames';
 
 import useInput from '../hooks/common/input';
 import * as S from '../styles/ts/pages/login';
@@ -84,7 +83,7 @@ const Login = () => {
             />
           </div>
           <div className='buttons'>
-            <S.LoginButton htmlType='submit' className={classNames({ isLoading })} disabled={isLoading}>
+            <S.LoginButton htmlType='submit' disabled={isLoading}>
               {isLoading ? (
                 <Oval height={20} width={20} color='#fff' secondaryColor='#eee' strokeWidth={6} />
               ) : (
