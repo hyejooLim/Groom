@@ -1,6 +1,7 @@
 import React, { FC, useCallback, useEffect, useState } from 'react';
 import Link from 'next/link';
 import Router from 'next/router';
+import { useSession } from 'next-auth/react';
 import { Button } from 'antd';
 import { HeartOutlined, HeartTwoTone } from '@ant-design/icons';
 import { Markup } from 'interweave';
@@ -33,6 +34,7 @@ interface PostCardProps {
 }
 
 const PostCard: FC<PostCardProps> = ({ post }) => {
+  const { status } = useSession();
   const { data: user } = useGetUser();
 
   const likePost = useLikePost();
@@ -65,7 +67,7 @@ const PostCard: FC<PostCardProps> = ({ post }) => {
   }, [deletePost]);
 
   const onToggleLikePost = useCallback(() => {
-    if (!user) {
+    if (status === 'unauthenticated') {
       if (confirm('로그인이 필요합니다. 로그인 페이지로 이동하시겠습니까?')) {
         Router.push('/login');
       }
@@ -76,10 +78,10 @@ const PostCard: FC<PostCardProps> = ({ post }) => {
     currentPost.likers?.find((liker) => liker.id === user?.id)
       ? unLikePost.mutate(currentPost.id)
       : likePost.mutate(currentPost.id);
-  }, [user, currentPost]);
+  }, [status, user, currentPost]);
 
   const onSubscribePost = useCallback(() => {
-    if (!user) {
+    if (status === 'unauthenticated') {
       if (confirm('로그인이 필요합니다. 로그인 페이지로 이동하시겠습니까?')) {
         Router.push('/login');
       }
@@ -88,7 +90,7 @@ const PostCard: FC<PostCardProps> = ({ post }) => {
     }
 
     subscribePost.mutate(currentPost.id);
-  }, [user, currentPost]);
+  }, [status, currentPost]);
 
   const onUnSubscribePost = useCallback(() => {
     unSubscribePost.mutate(currentPost.id);
@@ -138,7 +140,7 @@ const PostCard: FC<PostCardProps> = ({ post }) => {
         <div style={{ display: 'flex' }}>
           <S.PostButton onClick={onToggleLikePost}>
             <span>
-              {currentPost.likers?.find((liker) => liker.id === user?.id) ? (
+              {status === 'authenticated' && currentPost.likers?.find((liker) => liker.id === user?.id) ? (
                 <HeartTwoTone key='heart' twoToneColor='red' />
               ) : (
                 <HeartOutlined key='heart' />
@@ -146,7 +148,7 @@ const PostCard: FC<PostCardProps> = ({ post }) => {
             </span>
             <span style={{ marginLeft: 7 }}>공감</span>
           </S.PostButton>
-          {currentPost.subscribers?.find((subscriber) => subscriber.id === user?.id) ? (
+          {status === 'authenticated' && currentPost.subscribers?.find((subscriber) => subscriber.id === user?.id) ? (
             <S.PostButton style={{ marginLeft: 10 }} onClick={onUnSubscribePost}>
               구독취소
             </S.PostButton>
@@ -156,7 +158,7 @@ const PostCard: FC<PostCardProps> = ({ post }) => {
             </S.PostButton>
           )}
         </div>
-        {user?.id === currentPost.authorId && (
+        {status === 'authenticated' && user?.id === currentPost.authorId && (
           <S.EditButton>
             <Link href={`/write/${post.id}`}>
               <a>
