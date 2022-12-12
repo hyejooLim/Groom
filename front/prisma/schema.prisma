@@ -39,7 +39,7 @@ model Post {
   comments Comment[]
   category Category? @relation(fields: [categoryId], references: [id])
   categoryId Int?
-  author User? @relation("OwnPosts", fields: [authorId], references: [id])
+  author User? @relation("OwnPosts", fields: [authorId], references: [id], onDelete: Cascade)
   authorId Int?
   subscribers User[] @relation("OwnSubscribedPosts")
   likers User[] @relation("LikedPosts")
@@ -58,7 +58,7 @@ model TempPost {
   tags Tag[] @relation("TempPostsAndTags")
   category Category? @relation(fields: [categoryId], references: [id])
   categoryId Int?
-  author User? @relation(fields: [authorId], references: [id])
+  author User? @relation(fields: [authorId], references: [id], onDelete: Cascade)
   authorId Int?
   createdAt DateTime @default(now())
 
@@ -87,7 +87,7 @@ model Comment {
   id Int @id @default(autoincrement())
   post Post @relation(fields: [postId], references: [id])
   postId Int
-  author User @relation(fields: [authorId], references: [id])
+  author User @relation(fields: [authorId], references: [id], onDelete: Cascade)
   authorId Int
   content String @db.LongText
   datetime DateTime @default(now())
@@ -116,7 +116,7 @@ model AutoSave {
   category Category? @relation(fields: [categoryId], references: [id])
   categoryId Int?
   tags Tag[]
-  author User? @relation(fields: [authorId], references: [id])
+  author User? @relation(fields: [authorId], references: [id], onDelete: Cascade)
   authorId Int?
   createdAt DateTime @default(now())
 
