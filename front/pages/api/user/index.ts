@@ -24,7 +24,7 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
       });
 
       if (!user) {
-        return res.status(403).send({ message: '다시 로그인 해주세요.' });
+        return res.status(403).send({ message: '사용자를 찾을 수 없습니다.' });
       }
 
       const { id, email, name, imageUrl, posts } = user;
