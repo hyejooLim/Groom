@@ -1,5 +1,5 @@
 import React, { ChangeEvent, useCallback, useEffect } from 'react';
-import { signOut, useSession } from 'next-auth/react';
+import { signOut } from 'next-auth/react';
 import Router from 'next/router';
 import { Button, Card } from 'antd';
 import { FiCamera } from 'react-icons/fi';
@@ -27,16 +27,17 @@ AWS.config.update({
 });
 
 const ManageProfile = () => {
-  const { status } = useSession();
-  const { data: user, isLoading, isFetching } = useGetUser();
-
+  const { data: user, error, isLoading, isFetching, isError } = useGetUser();
   const updateUser = useUpdateUser();
 
   useEffect(() => {
-    if (status === 'unauthenticated') {
-      Router.push('/login');
+    if (isError) {
+      const err = error as any;
+
+      alert(err?.response?.data?.message);
+      signOut({ redirect: false });
     }
-  }, [status]);
+  }, [isError]);
 
   const handleLogout = () => {
     if (confirm('로그아웃 하시겠습니까?')) {
