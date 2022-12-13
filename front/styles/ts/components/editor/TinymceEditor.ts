@@ -1,6 +1,10 @@
 import styled from 'styled-components';
 
 export const EditorWrapper = styled.div`
+  &:focus-visible {
+    outline: none;
+  }
+
   .tox-tinymce {
     border: 0;
     margin: 0 auto;

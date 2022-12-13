@@ -12,6 +12,10 @@ export const Container = styled.div`
   .post_header {
     padding: 0 40px;
   }
+
+  .editor_inner:focus-visible {
+    outline: none;
+  }
 `;
 
 export const SelectCategory = styled.div`
