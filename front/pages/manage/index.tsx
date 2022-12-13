@@ -31,11 +31,11 @@ const Manage = () => {
       <S.CountVisitorWrapper>
         <S.CountVisitor style={{ marginRight: '50px' }}>
           <div className='title'>오늘 방문 수</div>
-          <div className='number'>{visitors.todayCount}</div>
+          <div className='number'>{visitors.todayCount.toLocaleString()}</div>
         </S.CountVisitor>
         <S.CountVisitor>
           <div className='title'>누적 방문 수</div>
-          <div className='number'>{visitors.totalCount}</div>
+          <div className='number'>{visitors.totalCount.toLocaleString()}</div>
         </S.CountVisitor>
       </S.CountVisitorWrapper>
       <S.LastPosts>
