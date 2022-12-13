@@ -102,6 +102,7 @@ const EditorContent: FC<EditorContentProps> = ({
             {...getRootProps({
               onClick: (e) => e.stopPropagation(),
             })}
+            tabIndex={1}
           >
             <TinymceEditor
               titleRef={titleRef}
