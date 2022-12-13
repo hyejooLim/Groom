@@ -13,6 +13,8 @@ export const CommentBox = styled.li`
 `;
 
 export const ButtonWrapper = styled.div`
+  height: 30px;
+
   * {
     font-size: 12px;
   }
@@ -46,4 +48,5 @@ export const StyledForm = styled(Form)`
 export const StyledTextArea = styled(Input.TextArea)`
   border: none;
   padding: 12px 0;
+  width: 770px;
 `;
