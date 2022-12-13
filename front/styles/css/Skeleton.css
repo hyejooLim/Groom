@@ -99,6 +99,18 @@
   border: 1px solid #e0e5ee;
 }
 
+.skeleton.box::before {
+  content: '';
+  position: absolute;
+  top: 1;
+  left: 1;
+  width: 100px;
+  height: 100%;
+  background: linear-gradient(to right, #ddd, rgb(204, 204, 204), #ddd);
+  animation: isLoading 2s infinite linear;
+  z-index: 100;
+}
+
 @keyframes isLoading {
   0% {
     transform: translateX(0);
