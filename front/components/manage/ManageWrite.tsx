@@ -5,11 +5,11 @@ const ManageWriteWrapper = styled.div`
   margin: 6px 0;
   font-size: 15px;
   border-radius: 2px;
-  background: #444;
+  background: #555;
   padding: 14px 20px;
 
   &:hover {
-    background: #666;
+    background: #777;
   }
 
   & span {
