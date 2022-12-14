@@ -7,6 +7,7 @@ import { Layout } from 'antd';
 import { EditOutlined } from '@ant-design/icons';
 
 import ManageProfile from '../manage/ManageProfile';
+import ManageWrite from '../manage/ManageWrite';
 import ManageList from '../manage/ManageList';
 import logo from '../../public/Groom_Logo_No_Background.png';
 import * as S from '../../styles/ts/components/layouts/ManageLayout';
@@ -26,6 +27,7 @@ const ManageLayout = ({ children }) => {
       <S.Container>
         <S.StyledSider width={240}>
           <ManageProfile />
+          <ManageWrite />
           <ManageList />
         </S.StyledSider>
         <Layout style={{ width: '100%', height: '100%' }}>
