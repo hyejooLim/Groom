@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { GetServerSideProps } from 'next';
@@ -18,6 +18,26 @@ const Post = () => {
   const { id } = router.query;
 
   const { data: post } = useGetPost(Number(id));
+
+  const computePopoverTop = () => {
+    const popover = document.querySelector('.popover') as HTMLDivElement;
+    const shareButton = document.querySelector('.share') as HTMLButtonElement;
+
+    const popoverHeightPx = getComputedStyle(popover).height;
+    const popoverHeight = Number(popoverHeightPx.slice(0, -2)) + 10;
+    const shareButtonClientY = shareButton.getBoundingClientRect().y;
+
+    popover.style.top = shareButtonClientY - popoverHeight + 'px';
+  };
+
+  useEffect(() => {
+    computePopoverTop();
+    window.addEventListener('scroll', computePopoverTop, true);
+
+    return () => {
+      window.removeEventListener('scroll', computePopoverTop, true);
+    };
+  }, []);
 
   return (
     <AppLayout>
