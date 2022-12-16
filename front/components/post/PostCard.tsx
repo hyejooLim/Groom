@@ -8,12 +8,14 @@ import { Markup } from 'interweave';
 import { polyfill } from 'interweave-ssr';
 import { useRecoilValue } from 'recoil';
 import { BsCloudFill } from 'react-icons/bs';
+import { FiShare } from 'react-icons/fi';
 import dayjs from 'dayjs';
 
 import Title from '../common/Title';
 import PaginationContainer from '../common/PaginationContainer';
 import CommentForm from '../comment/CommentForm';
 import CommentList from '../comment/CommentList';
+import PostShare from './PostShare';
 import { useGetUser } from '../../hooks/query/user';
 import { useGetPosts } from '../../hooks/query/posts';
 import {
@@ -46,6 +48,7 @@ const PostCard: FC<PostCardProps> = ({ post }) => {
   useGetPosts();
   const mainPosts = useRecoilValue(mainPostsState);
   const [currentPost, setCurrentPost] = useState<PostItem>(post);
+  const [isShowPopover, setIsShowPopover] = useState(false);
 
   const findPostIndex = (element: PostItem) => element.id === post.id;
   const [currentPage, setCurrentPage] = useState(mainPosts.findIndex(findPostIndex) + 1);
@@ -138,6 +141,10 @@ const PostCard: FC<PostCardProps> = ({ post }) => {
           <Markup content={currentPost.htmlContent} />
         </div>
         <div style={{ display: 'flex' }}>
+          <S.PostButton className='share' onClick={() => setIsShowPopover(true)}>
+            <FiShare />
+          </S.PostButton>
+          <PostShare isShow={isShowPopover} onClose={() => setIsShowPopover(false)} />
           <S.PostButton onClick={onToggleLikePost}>
             <span>
               {status === 'authenticated' && currentPost.likers?.find((liker) => liker.id === user?.id) ? (
@@ -149,13 +156,9 @@ const PostCard: FC<PostCardProps> = ({ post }) => {
             <span style={{ marginLeft: 7 }}>공감</span>
           </S.PostButton>
           {status === 'authenticated' && currentPost.subscribers?.find((subscriber) => subscriber.id === user?.id) ? (
-            <S.PostButton style={{ marginLeft: 10 }} onClick={onUnSubscribePost}>
-              구독취소
-            </S.PostButton>
+            <S.PostButton onClick={onUnSubscribePost}>구독취소</S.PostButton>
           ) : (
-            <S.PostButton style={{ marginLeft: 10 }} onClick={onSubscribePost}>
-              구독하기
-            </S.PostButton>
+            <S.PostButton onClick={onSubscribePost}>구독하기</S.PostButton>
           )}
         </div>
         {status === 'authenticated' && user?.id === currentPost.authorId && (

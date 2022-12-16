@@ -109,6 +109,15 @@ export const PostButton = styled(Button)`
   cursor: pointer;
   outline: none;
 
+  &.share {
+    width: 40px;
+    font-size: 15px;
+  }
+
+  &:not(:last-child) {
+    margin-right: 8px;
+  }
+
   :hover {
     border-color: rgba(185, 185, 185, 0.5);
     color: inherit;
