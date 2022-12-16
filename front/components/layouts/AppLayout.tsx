@@ -10,7 +10,7 @@ import UserProfile from '../main/UserProfile';
 import Category from '../main/Category';
 import Counter from '../common/Counter';
 import Search from '../main/Search';
-import { currentPageState, firstIndexState, lastIndexState, PAGE_SIZE } from '../../recoil/main';
+import { currentPageState, firstIndexState, keywordState, lastIndexState, PAGE_SIZE } from '../../recoil/main';
 import * as S from '../../styles/ts/components/layouts/AppLayout';
 import logo from '../../public/Groom_Logo_No_Background.png';
 
@@ -18,6 +18,7 @@ const AppLayout = ({ children }) => {
   const router = useRouter();
   const { status } = useSession();
 
+  const setKeyword = useSetRecoilState(keywordState);
   const setFirstIndex = useSetRecoilState(firstIndexState);
   const setLastIndex = useSetRecoilState(lastIndexState);
   const setCurrentPage = useSetRecoilState(currentPageState);
@@ -30,6 +31,10 @@ const AppLayout = ({ children }) => {
 
   useEffect(() => {
     onInitPage();
+    
+    if (!router.asPath.includes('/search')) {
+      setKeyword('');
+    }
   }, [router.asPath]);
 
   const onClickLogo = useCallback(() => {
