@@ -1,6 +1,8 @@
+import React, { useEffect } from 'react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { GetServerSideProps } from 'next';
+import { useSetRecoilState } from 'recoil';
 import { dehydrate, QueryClient } from '@tanstack/react-query';
 
 import AppLayout from '../../components/layouts/AppLayout';
@@ -11,12 +13,18 @@ import getUser from '../../apis/user/getUser';
 import getCategories from '../../apis/categories/getCategories';
 import getVisitorsCount from '../../apis/count';
 import { useSearchPosts } from '../../hooks/query/search';
+import { keywordState } from '../../recoil/main';
 
 const Search = () => {
   const router = useRouter();
   const { keyword } = router.query;
+  const setKeyword = useSetRecoilState(keywordState);
 
   const { data: posts, isLoading } = useSearchPosts(keyword as string);
+
+  useEffect(() => {
+    setKeyword(keyword as string);
+  }, []);
 
   return (
     <AppLayout>

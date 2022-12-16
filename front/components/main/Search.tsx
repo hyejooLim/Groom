@@ -1,12 +1,17 @@
-import React, { KeyboardEvent } from 'react';
+import React, { ChangeEvent, KeyboardEvent } from 'react';
 import Router from 'next/router';
+import { useRecoilState } from 'recoil';
 import { Input } from 'antd';
 
-import useInput from '../../hooks/common/input';
+import { keywordState } from '../../recoil/main';
 import { SearchWrapper } from '../../styles/ts/components/main/Search';
 
 const Search = () => {
-  const [keyword, onChangeKeyword] = useInput('');
+  const [keyword, setKeyword] = useRecoilState(keywordState);
+
+  const onChangeKeyword = (e: ChangeEvent<HTMLInputElement>) => {
+    setKeyword(e.target.value);
+  };
 
   const handleKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key !== 'Enter') {

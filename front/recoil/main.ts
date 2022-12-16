@@ -3,6 +3,11 @@ import { persistAtomEffect } from './persist';
 
 export const PAGE_SIZE = 8;
 
+export const keywordState = atom<string>({
+  key: 'keyword',
+  default: '',
+});
+
 export const firstIndexState = atom<number>({
   key: 'main_firstIndex',
   default: 0,
