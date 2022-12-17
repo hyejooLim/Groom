@@ -16,8 +16,9 @@ const Popover: FC<PopoverProps> = ({ isShow, onClose, children }) => {
     (e: MouseEvent) => {
       const target = e.target as HTMLElement;
       const shareButton = document.querySelector('.share') as HTMLButtonElement;
+      const antModalWrap = document.querySelector('.ant-modal-wrap') as HTMLDivElement;
 
-      if (!popoverRef.current.contains(target) && !shareButton.contains(target)) {
+      if (!popoverRef.current.contains(target) && !shareButton.contains(target) && !antModalWrap.contains(target)) {
         onClose();
       }
     },
