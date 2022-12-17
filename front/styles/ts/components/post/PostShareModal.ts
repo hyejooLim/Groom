@@ -19,7 +19,7 @@ export const ErrorMessage = styled.div`
 
 export const ShareButtonWrapper = styled.div`
   width: 100%;
-  margin-top: 60px;
+  margin-top: 50px;
 
   & .share_btn {
     width: 100px;

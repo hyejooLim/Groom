@@ -55,7 +55,7 @@
 .ant-modal-wrap .ant-modal .ant-modal-content .ant-modal-header {
   text-align: center;
   border-bottom: none;
-  padding: 24px;
+  padding: 40px 24px 16px;
 }
 
 .ant-modal-wrap .ant-modal .ant-modal-content .ant-modal-header .ant-modal-title {

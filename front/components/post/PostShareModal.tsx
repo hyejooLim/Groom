@@ -32,7 +32,7 @@ const PostShareModal: FC<PostShareModalProps> = ({ isOpen, onClose, onSharePost 
         autoFocus
       />
       <S.ErrorMessage className={classNames({ error: emailError })}>이메일 형식이 올바르지 않습니다.</S.ErrorMessage>
-      <S.ShareButtonWrapper style={{ width: '100%', marginTop: '60px' }}>
+      <S.ShareButtonWrapper>
         <Button className='share_btn' onClick={() => onSharePost(email)} disabled={!email || emailError}>
           공유하기
         </Button>
