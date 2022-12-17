@@ -11,6 +11,15 @@ interface PostShareProps {
 }
 
 const PostShare: FC<PostShareProps> = ({ isShow, onClose }) => {
+  const handleCopyURL = async () => {
+    try {
+      await navigator.clipboard.writeText(window.location.href);
+      alert('복사 되었습니다.');
+    } catch (err) {
+      alert('복사 실패했습니다.');
+    }
+  };
+
   return (
     <Popover isShow={isShow} onClose={onClose}>
       <div>
@@ -21,7 +30,7 @@ const PostShare: FC<PostShareProps> = ({ isShow, onClose }) => {
         <BsCloudFill className='icon' />
         구름 유저에게 공유
       </div>
-      <div>
+      <div onClick={handleCopyURL}>
         <FiLink className='icon' />
         URL 복사
       </div>
