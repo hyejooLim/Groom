@@ -33,5 +33,9 @@ export const ShareButtonWrapper = styled.div`
       color: #fff;
       background-color: #0fc19e;
     }
+
+    &:disabled {
+      background-color: #ddd;
+    }
   }
 `;
