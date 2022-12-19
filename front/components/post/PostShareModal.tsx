@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FC, useState } from 'react';
+import React, { ChangeEvent, FC, useCallback, useState } from 'react';
 import classNames from 'classnames';
 import { Button } from 'antd';
 
@@ -22,8 +22,15 @@ const PostShareModal: FC<PostShareModalProps> = ({ isOpen, onClose, onSharePost 
     setEmailError(e.target.value.length > 0 && !regex.test(e.target.value));
   };
 
+  const handleClose = useCallback(() => {
+    onClose();
+
+    setEmail('');
+    setEmailError(false);
+  }, [onClose]);
+
   return (
-    <BasicModal title='공유하고 싶은 유저의 이메일을 입력하세요!' isOpen={isOpen} onClose={onClose}>
+    <BasicModal title='공유하고 싶은 유저의 이메일을 입력하세요!' isOpen={isOpen} onClose={handleClose}>
       <S.InputWrapper
         value={email}
         onChange={onChangeEmail}
