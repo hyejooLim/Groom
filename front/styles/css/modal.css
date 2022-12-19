@@ -33,7 +33,7 @@
 
 /* ant-modal */
 .ant-modal-wrap {
-  width: 125%;
+  width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -43,13 +43,13 @@
 .ant-modal-wrap .ant-modal {
   padding: 0;
   margin: 0 auto;
+  width: 480px !important;
 }
 
 .ant-modal-wrap .ant-modal .ant-modal-content {
   width: 480px;
   height: 320px;
   padding: 40px;
-  margin: 0;
 }
 
 .ant-modal-wrap .ant-modal .ant-modal-content .ant-modal-header {
