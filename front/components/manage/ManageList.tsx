@@ -32,6 +32,13 @@ const ManageList = () => {
               </Link>
             </li>
             <li>
+              <Link href='/manage/neighbors'>
+                <a className={classNames('list_menu', { on: router.pathname.includes('/manage/neighbors') })}>
+                  이웃 관리
+                </a>
+              </Link>
+            </li>
+            <li>
               <Link href='/manage/subscribedPosts'>
                 <a className={classNames('list_menu', { on: router.pathname.includes('/manage/subscribedPosts') })}>
                   구독 글 관리

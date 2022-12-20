@@ -3,6 +3,7 @@ import { useSetRecoilState } from 'recoil';
 
 import searchPosts from '../../apis/search/searchPosts';
 import searchUserPosts from '../../apis/search/searchUserPosts';
+import searchNeighbors from '../../apis/search/searchNeighbors';
 import searchUserSubscribedPosts from '../../apis/search/searchUserSubscribedPosts';
 import searchCategoryOnUserPosts from '../../apis/search/searchCategoryOnUserPosts';
 import searchCategoryOnUserSubscribedPosts from '../../apis/search/searchCategoryOnUserSubscribedPosts';
@@ -24,6 +25,11 @@ const useSearchUserPosts = (keyword: string, searchType: string) => {
     refetchOnWindowFocus: false,
   });
 };
+
+const useSearchNeighbors = (keyword: string) =>
+  useQuery(['neighbors', keyword], () => searchNeighbors(keyword), {
+    staleTime: 30000,
+  });
 
 const useSearchUserSubscribedPosts = (keyword: string, searchType: string) => {
   const setManageSubscribedPosts = useSetRecoilState(manageSubscribedPostsState);
@@ -65,6 +71,7 @@ const useSearchCategoryOnUserSubscribedPosts = (categoryId: number | undefined) 
 export {
   useSearchPosts,
   useSearchUserPosts,
+  useSearchNeighbors,
   useSearchUserSubscribedPosts,
   useSearchCategoryOnUserPosts,
   useSearchCategoryOnUserSubscribedPosts,

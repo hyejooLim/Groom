@@ -19,6 +19,7 @@ const useCancelNeighbor = () => {
   return useMutation(cancelNeighbor, {
     onSuccess: () => {
       queryClient.invalidateQueries(['user']);
+      queryClient.invalidateQueries(['neighbors']);
     },
   });
 };
