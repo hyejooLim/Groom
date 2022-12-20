@@ -27,7 +27,7 @@ const clientApi = {
   get: <T>(url: string): Promise<T> => createApi.get(url),
   post: <T>(url: string, body: object): Promise<T> => createApi.post(url, body),
   put: <T>(url: string, body?: object): Promise<T> => createApi.put(url, body),
-  delete: <T>(url: string): Promise<T> => createApi.delete(url),
+  delete: <T>(url: string, body?: object): Promise<T> => createApi.delete(url, body),
 };
 
 export default clientApi;

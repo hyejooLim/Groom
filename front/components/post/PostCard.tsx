@@ -26,7 +26,7 @@ import {
   useSubscribePost,
   useUnSubscribePost,
 } from '../../hooks/query/post';
-import { useAddNeighbor } from '../../hooks/query/neighbor';
+import { useAddNeighbor, useCancelNeighbor } from '../../hooks/query/neighbor';
 import { mainPostsState } from '../../recoil/posts';
 import { PostItem } from '../../types';
 import * as S from '../../styles/ts/components/post/PostCard';
@@ -47,7 +47,7 @@ const PostCard: FC<PostCardProps> = ({ post }) => {
   const unSubscribePost = useUnSubscribePost();
   const deletePost = useDeletePost();
   const addNeighbor = useAddNeighbor();
-  // const cancelNeighbor = useCancelNeighbor();
+  const cancelNeighbor = useCancelNeighbor();
 
   useGetPosts();
   const mainPosts = useRecoilValue(mainPostsState);
@@ -103,6 +103,30 @@ const PostCard: FC<PostCardProps> = ({ post }) => {
     unSubscribePost.mutate(currentPost.id);
   }, [currentPost]);
 
+  const onAddNeighbor = useCallback(() => {
+    if (status === 'unauthenticated') {
+      if (confirm('로그인이 필요합니다. 로그인 페이지로 이동하시겠습니까?')) {
+        Router.push('/login');
+      }
+
+      return;
+    }
+
+    if (!confirm(`${currentPost.author?.name}님을 이웃 추가하시겠습니까?`)) {
+      return;
+    }
+
+    addNeighbor.mutate(currentPost.authorId);
+  }, [status, currentPost]);
+
+  const onCancelNeighbor = useCallback(() => {
+    if (!confirm(`${currentPost.author?.name}님을 이웃 취소하시겠습니까?`)) {
+      return;
+    }
+
+    cancelNeighbor.mutate(currentPost.authorId);
+  }, [currentPost]);
+
   const onDeletePost = useCallback(() => {
     const confirm = window.confirm('선택한 글을 삭제하시겠습니까?');
     if (!confirm) {
@@ -122,30 +146,6 @@ const PostCard: FC<PostCardProps> = ({ post }) => {
     },
     [mainPosts]
   );
-
-  const onAddNeighbor = () => {
-    if (status === 'unauthenticated') {
-      if (confirm('로그인이 필요합니다. 로그인 페이지로 이동하시겠습니까?')) {
-        Router.push('/login');
-      }
-
-      return;
-    }
-
-    if (!confirm(`${currentPost.author?.name}님을 이웃 추가하시겠습니까?`)) {
-      return;
-    }
-
-    addNeighbor.mutate(currentPost.authorId);
-  };
-
-  const onCancelNeighbor = () => {
-    if (!confirm(`${currentPost.author?.name}님을 이웃 취소하시겠습니까?`)) {
-      return;
-    }
-
-    // cancelNeighbor.mutate(currentPost.authorId);
-  };
 
   return (
     <>
