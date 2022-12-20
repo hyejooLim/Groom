@@ -22,6 +22,8 @@ model User {
   posts Post[] @relation("OwnPosts")
   tempPosts TempPost[]
   autoSaves AutoSave[]
+  neighbors User[] @relation("OwnNeighbors")
+  neighborsAddUser User[] @relation("OwnNeighbors")
   subscribedPosts Post[] @relation("OwnSubscribedPosts")
   likedPosts Post[] @relation("LikedPosts")
   createdAt DateTime @default(now()) @map(name: "created_at")

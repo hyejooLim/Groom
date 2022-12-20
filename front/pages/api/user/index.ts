@@ -20,6 +20,11 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
               id: true,
             },
           },
+          neighbors: {
+            select: {
+              id: true,
+            },
+          },
         },
       });
 
@@ -27,9 +32,9 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
         return res.status(403).send({ message: '사용자를 찾을 수 없습니다.' });
       }
 
-      const { id, email, name, imageUrl, posts } = user;
+      const { id, email, name, imageUrl, posts, neighbors } = user;
 
-      res.status(200).json({ id, email, name, imageUrl, posts });
+      res.status(200).json({ id, email, name, imageUrl, posts, neighbors });
     }
 
     if (req.method === 'PUT') {

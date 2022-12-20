@@ -8,6 +8,7 @@ import { Markup } from 'interweave';
 import { polyfill } from 'interweave-ssr';
 import { useRecoilValue } from 'recoil';
 import { BsCloudFill } from 'react-icons/bs';
+import { RiUserFollowLine, RiUserUnfollowLine } from 'react-icons/ri';
 import { FiShare } from 'react-icons/fi';
 import dayjs from 'dayjs';
 
@@ -25,6 +26,7 @@ import {
   useSubscribePost,
   useUnSubscribePost,
 } from '../../hooks/query/post';
+import { useAddNeighbor } from '../../hooks/query/neighbor';
 import { mainPostsState } from '../../recoil/posts';
 import { PostItem } from '../../types';
 import * as S from '../../styles/ts/components/post/PostCard';
@@ -44,6 +46,8 @@ const PostCard: FC<PostCardProps> = ({ post }) => {
   const subscribePost = useSubscribePost();
   const unSubscribePost = useUnSubscribePost();
   const deletePost = useDeletePost();
+  const addNeighbor = useAddNeighbor();
+  // const cancelNeighbor = useCancelNeighbor();
 
   useGetPosts();
   const mainPosts = useRecoilValue(mainPostsState);
@@ -119,12 +123,47 @@ const PostCard: FC<PostCardProps> = ({ post }) => {
     [mainPosts]
   );
 
+  const onAddNeighbor = () => {
+    if (status === 'unauthenticated') {
+      if (confirm('로그인이 필요합니다. 로그인 페이지로 이동하시겠습니까?')) {
+        Router.push('/login');
+      }
+
+      return;
+    }
+
+    if (!confirm(`${currentPost.author?.name}님을 이웃 추가하시겠습니까?`)) {
+      return;
+    }
+
+    addNeighbor.mutate(currentPost.authorId);
+  };
+
+  const onCancelNeighbor = () => {
+    if (!confirm(`${currentPost.author?.name}님을 이웃 취소하시겠습니까?`)) {
+      return;
+    }
+
+    // cancelNeighbor.mutate(currentPost.authorId);
+  };
+
   return (
     <>
       <S.HeadWrapper>
         <Title title={`[${currentPost.category?.name}] ${currentPost.title}`} />
         <S.Author>
-          <BsCloudFill className='icon' />
+          {status === 'authenticated' && user.id === currentPost.authorId && <BsCloudFill className='icon groom' />}
+          {status === 'authenticated' &&
+            user.id !== currentPost.authorId &&
+            user.neighbors.find((neighbor) => neighbor.id === currentPost.authorId) && (
+              <RiUserFollowLine className='icon' onClick={onCancelNeighbor} />
+            )}
+          {status === 'authenticated' &&
+            user.id !== currentPost.authorId &&
+            !user.neighbors.find((neighbor) => neighbor.id === currentPost.authorId) && (
+              <RiUserUnfollowLine className='icon' onClick={onAddNeighbor} />
+            )}
+          {status === 'unauthenticated' && <RiUserUnfollowLine className='icon' onClick={onAddNeighbor} />}
           <span>{currentPost.author?.name}의 글</span>
         </S.Author>
         <S.Date>{dayjs(currentPost.createdAt).format('YYYY.MM.DD HH:mm')}</S.Date>

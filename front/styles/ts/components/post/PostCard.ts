@@ -54,11 +54,16 @@ export const Author = styled.div`
   right: 18px;
 
   & .icon {
-    color: #fff;
     font-size: 20px;
     margin-right: 8px;
     position: relative;
     bottom: -5px;
+    cursor: pointer;
+  }
+
+  & .groom {
+    color: #fff;
+    cursor: default;
   }
 
   & span {

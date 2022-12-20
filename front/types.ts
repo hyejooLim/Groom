@@ -24,6 +24,8 @@ export type UserType = {
   comments: CommentItem[];
   posts?: PostItem[]; // 작성한 게시글
   tempPosts?: TempPostItem[];
+  neighbors: UserType[]; // 유저의 이웃들
+  neighborsAddUser: UserType[]; // 유저를 이웃으로 추가한 유저들
   subscribedPosts?: PostItem[]; // 유저가 구독한 게시글
   likedPosts?: PostItem[]; // 유저가 좋아요한 게시글
   createdAt?: string;
