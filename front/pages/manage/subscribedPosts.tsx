@@ -119,7 +119,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         searchCategoryOnUserSubscribedPosts(Number(categoryId))
       ),
     searchKeyword &&
-      queryClient.prefetchQuery(['userPosts', searchKeyword, searchType], () =>
+      queryClient.prefetchQuery(['userSubscribedPosts', searchKeyword, searchType], () =>
         searchUserSubscribedPosts(String(searchKeyword), String(searchType))
       ),
   ]);
