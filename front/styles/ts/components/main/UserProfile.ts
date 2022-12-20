@@ -48,12 +48,17 @@ export const InfoBox = styled.div`
 `;
 
 export const NewBox = styled.div`
+  color: #000;
   display: flex;
-  font-size: 14px;
+
+  .posts,
+  .neighbors {
+    display: flex;
+    align-items: center;
+  }
 
   .posts {
     margin-right: 12px;
-    color: #000;
   }
 
   .count:before {
@@ -62,7 +67,7 @@ export const NewBox = styled.div`
     height: 12px;
     background-color: rgba(0, 0, 0, 0.16);
     display: inline-block;
-    margin: 0 8px -1px 8px;
+    margin: 0 6px -1px 6px;
   }
 `;
 

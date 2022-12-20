@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { Avatar } from 'antd';
 import { BsCloudFill } from 'react-icons/bs';
 import { HiOutlinePencilAlt } from 'react-icons/hi';
+import { BsFillPersonFill } from 'react-icons/bs';
 
 import { useGetUser } from '../../hooks/query/user';
 import SkeletonUserProfile from '../skeleton/SkeletonUserProfile';
@@ -63,6 +64,14 @@ const UserProfile = () => {
                   <Link href='/manage/posts'>
                     <a>
                       <span className='count'>{user?.posts?.length}</span>
+                    </a>
+                  </Link>
+                </div>
+                <div className='neighbors'>
+                  <BsFillPersonFill />
+                  <Link href='/manage/neighbors'>
+                    <a>
+                      <span className='count'>{user?.neighbors?.length}</span>
                     </a>
                   </Link>
                 </div>
