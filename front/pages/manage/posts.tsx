@@ -9,7 +9,7 @@ import { CloseCircleOutlined } from '@ant-design/icons';
 
 import ManageLayout from '../../components/layouts/ManageLayout';
 import PostManageList from '../../components/manage/PostManageList';
-import SearchInput from '../../components/manage/SearchInput';
+import WrapSearchInput from '../../components/manage/WrapSearchInput';
 import { managePostsState } from '../../recoil/manage';
 import { useGetUserPosts } from '../../hooks/query/posts';
 import { useSearchUserPosts, useSearchCategoryOnUserPosts } from '../../hooks/query/search';
@@ -90,7 +90,7 @@ const ManagePosts = () => {
             </div>
           )}
         </TitleWrapper>
-        <SearchInput placeholder='글' onSearch={onSearchInput} />
+        <WrapSearchInput placeholder='글' onSearch={onSearchInput} />
         <PostManageList
           posts={managePosts ?? userPosts}
           isLoading={isLoadingSearch || isLoadingSearchCategory || isLoadingPosts}

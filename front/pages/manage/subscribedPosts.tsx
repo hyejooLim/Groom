@@ -9,7 +9,7 @@ import { CloseCircleOutlined } from '@ant-design/icons';
 
 import ManageLayout from '../../components/layouts/ManageLayout';
 import PostManageList from '../../components/manage/PostManageList';
-import SearchInput from '../../components/manage/SearchInput';
+import WrapSearchInput from '../../components/manage/WrapSearchInput';
 import { manageSubscribedPostsState } from '../../recoil/manage';
 import { useGetUserSubscribedPosts } from '../../hooks/query/posts';
 import { useSearchCategoryOnUserSubscribedPosts, useSearchUserSubscribedPosts } from '../../hooks/query/search';
@@ -95,7 +95,7 @@ const ManageSubscribedPosts = () => {
             </div>
           )}
         </TitleWrapper>
-        <SearchInput placeholder='구독 글' onSearch={onSearchInput} />
+        <WrapSearchInput placeholder='구독 글' onSearch={onSearchInput} />
         <PostManageList
           posts={manageSubscribedPosts ?? userSubscribedPosts}
           isLoading={isLoadingSearch || isLoadingSearchCategory || isLoadingPosts}
