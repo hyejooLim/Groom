@@ -6,6 +6,10 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
   try {
     if (req.method === 'GET') {
       const session = await getSession({ req });
+      if (!session) {
+        return res.status(403).send({ message: '세션이 만료되었습니다.' });
+      }
+
       const keyword = req.query.keyword as string;
 
       const user = await prisma.user.findUnique({
