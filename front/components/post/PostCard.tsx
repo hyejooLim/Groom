@@ -152,15 +152,15 @@ const PostCard: FC<PostCardProps> = ({ post }) => {
       <S.HeadWrapper>
         <Title title={`[${currentPost.category?.name}] ${currentPost.title}`} />
         <S.Author>
-          {status === 'authenticated' && user.id === currentPost.authorId && <BsCloudFill className='icon groom' />}
+          {status === 'authenticated' && user?.id === currentPost.authorId && <BsCloudFill className='icon groom' />}
           {status === 'authenticated' &&
-            user.id !== currentPost.authorId &&
-            user.neighbors.find((neighbor) => neighbor.id === currentPost.authorId) && (
+            user?.id !== currentPost.authorId &&
+            user?.neighbors.find((neighbor) => neighbor.id === currentPost.authorId) && (
               <RiUserFollowLine className='icon' onClick={onCancelNeighbor} />
             )}
           {status === 'authenticated' &&
-            user.id !== currentPost.authorId &&
-            !user.neighbors.find((neighbor) => neighbor.id === currentPost.authorId) && (
+            user?.id !== currentPost.authorId &&
+            !user?.neighbors.find((neighbor) => neighbor.id === currentPost.authorId) && (
               <RiUserUnfollowLine className='icon' onClick={onAddNeighbor} />
             )}
           {status === 'unauthenticated' && <RiUserUnfollowLine className='icon' onClick={onAddNeighbor} />}
@@ -183,7 +183,7 @@ const PostCard: FC<PostCardProps> = ({ post }) => {
           <S.PostButton className='share' onClick={() => setIsShowPopover(true)}>
             <FiShare />
           </S.PostButton>
-          <PostShare isShow={isShowPopover} onClose={() => setIsShowPopover(false)} />
+          <PostShare postId={currentPost.id} isShow={isShowPopover} onClose={() => setIsShowPopover(false)} />
           <S.PostButton onClick={onToggleLikePost}>
             <span>
               {status === 'authenticated' && currentPost.likers?.find((liker) => liker.id === user?.id) ? (

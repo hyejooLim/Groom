@@ -28,6 +28,8 @@ export type UserType = {
   imageUrl?: string; // 프로필 이미지 주소
   comments: CommentItem[];
   posts?: PostItem[]; // 작성한 게시글
+  sentPosts?: SharedPost[]; // 유저가 공유한 게시글
+  receivedPosts?: SharedPost[]; // 유저가 공유받은 게시글
   tempPosts?: TempPostItem[];
   neighbors: UserType[]; // 유저의 이웃들
   neighborsAddUser: UserType[]; // 유저를 이웃으로 추가한 유저들
@@ -50,10 +52,22 @@ export type PostItem = {
   categoryId?: number;
   author?: UserType;
   authorId?: number;
+  sharedInfo?: SharedPost[];
   subscribers?: UserType[];
   likers?: UserType[];
   createdAt?: string;
   updatedAt?: string;
+};
+
+export type SharedPost = {
+  id: number;
+  post: PostItem;
+  postId: number;
+  sender: UserType;
+  senderId: number;
+  receiver: UserType;
+  receiverId: number;
+  sharedAt: string;
 };
 
 export type TempPostItem = {

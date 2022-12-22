@@ -22,6 +22,8 @@ model User {
   posts Post[] @relation("OwnPosts")
   tempPosts TempPost[]
   autoSaves AutoSave[]
+  sentPosts SharedPost[] @relation("sentPosts")
+  receivedPosts SharedPost[] @relation("receivedPosts")
   neighbors User[] @relation("OwnNeighbors")
   neighborsAddUser User[] @relation("OwnNeighbors")
   subscribedPosts Post[] @relation("OwnSubscribedPosts")
@@ -43,6 +45,7 @@ model Post {
   categoryId Int?
   author User? @relation("OwnPosts", fields: [authorId], references: [id], onDelete: Cascade)
   authorId Int?
+  sharedInfo SharedPost[]
   subscribers User[] @relation("OwnSubscribedPosts")
   likers User[] @relation("LikedPosts")
   createdAt DateTime @default(now())
@@ -50,6 +53,21 @@ model Post {
 
   @@index([categoryId])
   @@index([authorId])
+}
+
+model SharedPost {
+  id Int @id @default(autoincrement())
+  post Post? @relation(fields: [postId], references: [id])
+  postId Int?
+  sender User? @relation("sentPosts", fields: [senderId], references: [id])
+  senderId Int?
+  receiver User? @relation("receivedPosts", fields: [receiverId], references: [id])
+  receiverId Int?
+  sharedAt DateTime @default(now())
+
+  @@index([postId])
+  @@index([senderId])
+  @@index([receiverId])
 }
 
 model TempPost {

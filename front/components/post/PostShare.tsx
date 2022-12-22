@@ -1,18 +1,28 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { RiKakaoTalkFill } from 'react-icons/ri';
 import { BsCloudFill } from 'react-icons/bs';
 import { FiLink } from 'react-icons/fi';
 
 import Popover from '../common/Popover';
 import PostShareModal from './PostShareModal';
+import { useSharePost } from '../../hooks/query/share';
+import { Sharer } from '../../types';
 
 interface PostShareProps {
+  postId: number;
   isShow: boolean;
   onClose: () => void;
 }
 
-const PostShare: FC<PostShareProps> = ({ isShow, onClose }) => {
+const PostShare: FC<PostShareProps> = ({ postId, isShow, onClose }) => {
+  const sharePost = useSharePost();
   const [isOpenModal, setIsOpenModal] = useState(false);
+
+  useEffect(() => {
+    if (sharePost.isSuccess) {
+      setIsOpenModal(false);
+    }
+  }, [sharePost.isSuccess]);
 
   const handleCopyURL = async () => {
     try {
@@ -23,8 +33,8 @@ const PostShare: FC<PostShareProps> = ({ isShow, onClose }) => {
     }
   };
 
-  const handleSharePost = (email: string) => {
-    console.log('공유하기', email);
+  const handleSharePost = (sharers: Sharer[]) => {
+    sharePost.mutate({ postId, sharers });
   };
 
   return (
@@ -37,7 +47,12 @@ const PostShare: FC<PostShareProps> = ({ isShow, onClose }) => {
         <BsCloudFill className='icon' />
         구름 유저에게 공유
       </div>
-      <PostShareModal isOpen={isOpenModal} onClose={() => setIsOpenModal(false)} onSharePost={handleSharePost} />
+      <PostShareModal
+        isOpen={isOpenModal}
+        isLoading={sharePost?.isLoading}
+        onClose={() => setIsOpenModal(false)}
+        onSharePost={handleSharePost}
+      />
       <div onClick={handleCopyURL}>
         <FiLink className='icon' />
         URL 복사

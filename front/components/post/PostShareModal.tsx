@@ -2,6 +2,7 @@ import React, { FC, useCallback, MouseEvent, useState, useEffect } from 'react';
 import { Avatar, Button } from 'antd';
 import { BsCloudFill, BsPersonPlusFill, BsCheck2 } from 'react-icons/bs';
 import { MdArrowDropDown, MdOutlineClose } from 'react-icons/md';
+import { Oval } from 'react-loader-spinner';
 import classNames from 'classnames';
 
 import { Sharer } from '../../types';
@@ -11,15 +12,25 @@ import * as S from '../../styles/ts/components/post/PostShareModal';
 
 interface PostShareModalProps {
   isOpen: boolean;
+  isLoading: boolean;
   onClose: () => void;
   onSharePost: (sharers: Sharer[]) => void;
 }
 
-const PostShareModal: FC<PostShareModalProps> = ({ isOpen, onClose, onSharePost }) => {
+const PostShareModal: FC<PostShareModalProps> = ({ isOpen, isLoading, onClose, onSharePost }) => {
   const { data: neighbors } = useGetNeighbors();
 
   const [sharers, setSharers] = useState<Sharer[]>([]);
   const [isShowDropdown, setIsShowDropdown] = useState(false);
+  const [isLoadingShare, setIsLoadingShare] = useState(false);
+
+  useEffect(() => {
+    if (isLoading) {
+      setIsLoadingShare(true);
+    }
+
+    setIsLoadingShare(false);
+  }, [isLoading]);
 
   const handleClick = useCallback((e: any) => {
     const dropdown = document.querySelector('.dropdown') as HTMLDivElement;
@@ -137,7 +148,11 @@ const PostShareModal: FC<PostShareModalProps> = ({ isOpen, onClose, onSharePost 
       </S.DropdownWrapper>
       <S.ShareButtonWrapper>
         <Button className='share_btn' onClick={() => onSharePost(sharers)} disabled={sharers.length === 0}>
-          공유하기
+          {isLoadingShare ? (
+            <Oval height={20} width={20} color='#fff' secondaryColor='#eee' strokeWidth={6} />
+          ) : (
+            '공유하기'
+          )}
         </Button>
       </S.ShareButtonWrapper>
     </BasicModal>

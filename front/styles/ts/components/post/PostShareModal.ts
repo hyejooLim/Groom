@@ -109,6 +109,9 @@ export const DropdownWrapper = styled.div`
 export const ShareButtonWrapper = styled.div`
   width: 100%;
   margin-top: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
   & .share_btn {
     width: 100px;
@@ -116,6 +119,9 @@ export const ShareButtonWrapper = styled.div`
     color: #fff;
     background-color: #13a085;
     border-radius: 6px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
     &:hover,
     &:focus {
