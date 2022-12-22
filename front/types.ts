@@ -15,6 +15,11 @@ export type VisitorsCount = {
   expireDate: string;
 };
 
+export type Sharer = {
+  id: number;
+  name: string;
+};
+
 export type UserType = {
   id?: number;
   email: string;

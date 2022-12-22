@@ -1,19 +1,108 @@
 import styled from 'styled-components';
-import { Input } from 'antd';
 
-export const InputWrapper = styled(Input)`
-  font-size: 18px;
-  font-family: 'Nanum Godic';
+export const LabelContainer = styled.div`
+  width: 352px;
+  height: 46px;
+  overflow-x: auto;
+  background-color: #eee;
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  border-radius: 30px;
+  padding: 0 8px;
+  border: 1px solid #333;
+
+  & .icon_wrapper {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+
+    & .icon {
+      font-size: 24px;
+    }
+  }
+
+  & .label {
+    min-width: 80px;
+    max-width: 160px;
+    height: 30px;
+    border-radius: 30px;
+    margin-right: 4px;
+    color: #fff;
+    background-color: #13a085;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    & .icon {
+      font-size: 16px;
+      margin-left: 8px;
+      cursor: pointer;
+    }
+  }
 `;
 
-export const ErrorMessage = styled.div`
-  color: red;
-  font-size: 13px;
-  display: none;
+export const DropdownWrapper = styled.div`
+  width: 125px;
+  height: 23px;
+  font-family: 'Nanum Godic';
 
-  &.error {
-    float: left;
+  & .list_title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+
+    & .icon {
+      font-size: 24px;
+      margin-left: 5px;
+    }
+  }
+
+  & .dropdown {
+    display: none;
+  }
+
+  & .dropdown.isShow {
     display: block;
+    width: 125px;
+    max-width: 125px;
+    color: #333;
+    border-radius: 3px;
+    background-color: #fff;
+    box-shadow: 0 3px 6px -4px rgb(0 0 0 / 12%), 0 6px 16px 0 rgb(0 0 0 / 8%), 0 9px 28px 8px rgb(0 0 0 / 5%);
+
+    & .all_share {
+      padding: 6px 4px 4px 4px;
+      border-bottom: 1px solid #ddd;
+      cursor: pointer;
+    }
+
+    & .item_list {
+      max-height: 224px;
+      overflow-y: auto;
+
+      & .item_wrapper {
+        padding: 8px;
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+
+        & .name {
+          width: 65px;
+          margin-left: 8px;
+          text-align: left;
+          display: block;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+          overflow: hidden;
+        }
+
+        &:hover {
+          background-color: #f5f5f5;
+        }
+      }
+    }
   }
 `;
 
