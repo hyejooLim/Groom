@@ -67,7 +67,7 @@ const SharedPostManageList: FC<SharedPostManageListProps> = ({
             {sharedPosts?.length > 0 ? (
               sharedPosts?.slice(firstIndex, lastIndex).map((sharedPost) => (
                 <S.PostInfo key={sharedPost.id}>
-                  <div>
+                  <div className='info_area'>
                     <div className='post_title'>
                       <Link href={`/post/${sharedPost.post?.id}`}>
                         <a>

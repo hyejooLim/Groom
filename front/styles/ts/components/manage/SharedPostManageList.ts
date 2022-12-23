@@ -30,6 +30,10 @@ export const PostInfo = styled.div`
   font-size: 14px;
   border-bottom: 1px solid #f1f3f6;
 
+  & .info_area {
+    width: 480px;
+  }
+
   &:hover {
     background-color: #fafbfd;
 
@@ -76,7 +80,7 @@ export const PostInfo = styled.div`
 export const SharerNames = styled.div`
   display: flex;
   align-items: center;
-  margin-left: 218px;
+  /* margin-left: 218px; */
 
   & .name {
     margin-left: 4px;
