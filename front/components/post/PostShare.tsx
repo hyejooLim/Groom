@@ -5,7 +5,7 @@ import { FiLink } from 'react-icons/fi';
 
 import Popover from '../common/Popover';
 import PostShareModal from './PostShareModal';
-import { useSharePost } from '../../hooks/query/share';
+import { useSharePost } from '../../hooks/query/post';
 import { Sharer } from '../../types';
 
 interface PostShareProps {
@@ -34,7 +34,7 @@ const PostShare: FC<PostShareProps> = ({ postId, isShow, onClose }) => {
   };
 
   const handleSharePost = (sharers: Sharer[]) => {
-    sharePost.mutate({ postId, sharers });
+    sharePost.mutate({ id: postId, sharers });
   };
 
   return (

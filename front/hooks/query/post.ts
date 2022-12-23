@@ -8,6 +8,7 @@ import likePost from '../../apis/post/likePost';
 import unLikePost from '../../apis/post/unLikePost';
 import subscribePost from '../../apis/post/subscribePost';
 import unSubscribePost from '../../apis/post/unSubscribePost';
+import sharePost from '../../apis/post/sharePost';
 import toggleIsPublicPost from '../../apis/post/toggleIsPublicPost';
 
 const useGetPost = (id: number) => {
@@ -95,6 +96,10 @@ const useUnSubscribePost = () => {
   });
 };
 
+const useSharePost = () => {
+  return useMutation(sharePost);
+};
+
 const useToggleIsPublicPost = () => {
   const queryClient = useQueryClient();
 
@@ -114,5 +119,6 @@ export {
   useUnLikePost,
   useSubscribePost,
   useUnSubscribePost,
+  useSharePost,
   useToggleIsPublicPost,
 };

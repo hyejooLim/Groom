@@ -23,7 +23,7 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
           data: {
             senderId: user.id,
             receiverId: sharer.id,
-            postId: req.body.postId,
+            postId: Number(req.query.id),
           },
         });
       });
