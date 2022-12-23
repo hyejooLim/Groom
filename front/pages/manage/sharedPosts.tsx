@@ -9,6 +9,7 @@ import ManageLayout from '../../components/layouts/ManageLayout';
 import SearchInput from '../../components/manage/WrapSearchInput';
 import SharedPostManageList from '../../components/manage/SharedPostManageList';
 import { useGetUserSharedPosts } from '../../hooks/query/posts';
+import { useSearchCategoryOnUserSharedPosts } from '../../hooks/query/search';
 import { manageSharedPostsState } from '../../recoil/manage';
 import { CloseButton, TitleWrapper } from '../../styles/ts/common';
 
@@ -22,15 +23,12 @@ const ManageSharedPosts = () => {
     isLoading: isLoadingSharedPosts,
     isFetching: isFetchingSharedPosts,
   } = useGetUserSharedPosts();
-  // const { isLoading: isLoadingSearch, isFetching: isFetchingSearch } = useSearchSharedPosts(
+  // const { isLoading: isLoadingSearch, isFetching: isFetchingSearch } = useSearchUserSharedPosts(
   //   String(searchKeyword),
   //   String(searchType)
   // );
-  // const {
-  //   data: category,
-  //   isLoading: isLoadingSearchCategory,
-  //   isFetching: isFetchingSearchCategory,
-  // } = useSearchCategoryOnSharedPosts(categoryId ? Number(categoryId) : undefined);
+  const { isLoading: isLoadingSearchCategory, isFetching: isFetchingSearchCategory } =
+    useSearchCategoryOnUserSharedPosts(categoryId ? Number(categoryId) : undefined);
 
   const [manageSharedPosts, setManageSharedPosts] = useRecoilState(manageSharedPostsState);
 
@@ -75,13 +73,13 @@ const ManageSharedPosts = () => {
                   <span className='text title'>'{searchKeyword}'</span>
                   <span className='text'>검색결과</span>
                 </>
-              )}
-              {categoryId && (
+              )} */}
+              {categoryId && manageSharedPosts?.length > 0 && (
                 <>
-                  <span className='text title'>'{category?.name}'</span>
+                  <span className='text title'>'{manageSharedPosts[0]?.post?.category?.name}'</span>
                   <span className='text'>글</span>
                 </>
-              )} */}
+              )}
               <span className='count'>{manageSharedPosts?.length}</span>
             </div>
           )}
@@ -89,8 +87,8 @@ const ManageSharedPosts = () => {
         <SearchInput placeholder='공유 글' onSearch={onSearchInput} />
         <SharedPostManageList
           sharedPosts={manageSharedPosts ?? userSharedPosts}
-          isLoading={isLoadingSharedPosts}
-          isFetching={isFetchingSharedPosts}
+          isLoading={isLoadingSearchCategory || isLoadingSharedPosts}
+          isFetching={isFetchingSearchCategory || isFetchingSharedPosts}
           onClickCategory={onClickCategory}
         />
       </div>

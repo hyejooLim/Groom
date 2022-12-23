@@ -7,7 +7,8 @@ import searchNeighbors from '../../apis/search/searchNeighbors';
 import searchUserSubscribedPosts from '../../apis/search/searchUserSubscribedPosts';
 import searchCategoryOnUserPosts from '../../apis/search/searchCategoryOnUserPosts';
 import searchCategoryOnUserSubscribedPosts from '../../apis/search/searchCategoryOnUserSubscribedPosts';
-import { managePostsState, manageSubscribedPostsState } from './../../recoil/manage';
+import searchCategoryOnUserSharedPosts from '../../apis/search/searchCategoryOnUserSharedPosts';
+import { managePostsState, manageSubscribedPostsState, manageSharedPostsState } from './../../recoil/manage';
 
 const useSearchPosts = (keyword: string) => {
   return useQuery(['posts', 'keyword', keyword], () => searchPosts(keyword), {
@@ -68,6 +69,16 @@ const useSearchCategoryOnUserSubscribedPosts = (categoryId: number | undefined) 
   );
 };
 
+const useSearchCategoryOnUserSharedPosts = (categoryId: number | undefined) => {
+  const setManageSharedPosts = useSetRecoilState(manageSharedPostsState);
+
+  return useQuery(['userSharedPosts', 'category', categoryId], () => searchCategoryOnUserSharedPosts(categoryId), {
+    onSuccess: (data) => {
+      setManageSharedPosts(data);
+    },
+  });
+};
+
 export {
   useSearchPosts,
   useSearchUserPosts,
@@ -75,4 +86,5 @@ export {
   useSearchUserSubscribedPosts,
   useSearchCategoryOnUserPosts,
   useSearchCategoryOnUserSubscribedPosts,
+  useSearchCategoryOnUserSharedPosts,
 };
