@@ -6,6 +6,7 @@ import getPostsIncludeTag from '../../apis/posts/getPostsIncludeTag';
 import getPostsIncludeCategory from '../../apis/posts/getPostsIncludeCategory';
 import getUserPosts from '../../apis/posts/getUserPosts';
 import getUserSubscribedPosts from '../../apis/posts/getUserSubscribedPosts';
+import getUserSharedPosts from '../../apis/posts/getUserSharedPosts';
 import { mainPostsState } from '../../recoil/posts';
 
 const useGetPosts = () => {
@@ -35,4 +36,18 @@ const useGetUserSubscribedPosts = () =>
     refetchOnWindowFocus: false,
   });
 
-export { useGetPosts, useGetPostsIncludeTag, useGetPostsIncludeCategory, useGetUserPosts, useGetUserSubscribedPosts };
+const useGetUserSharedPosts = () =>
+  useQuery(['userSharedPosts'], getUserSharedPosts, {
+    onSuccess: (data) => {
+      console.log('userSharedPosts', data);
+    },
+  });
+
+export {
+  useGetPosts,
+  useGetPostsIncludeTag,
+  useGetPostsIncludeCategory,
+  useGetUserPosts,
+  useGetUserSubscribedPosts,
+  useGetUserSharedPosts,
+};

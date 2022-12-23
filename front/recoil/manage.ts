@@ -1,6 +1,6 @@
 import { atom } from 'recoil';
-import { PostItem } from '../types';
 import { persistAtomEffect } from './persist';
+import { PostItem, SharedPost } from '../types';
 
 export const MANAGE_PAGE_SIZE = 5;
 
@@ -12,6 +12,12 @@ export const managePostsState = atom<PostItem[]>({
 
 export const manageSubscribedPostsState = atom<PostItem[]>({
   key: 'manageSubscribedPosts',
+  default: [],
+  dangerouslyAllowMutability: true,
+});
+
+export const manageSharedPostsState = atom<SharedPost[]>({
+  key: 'manageSharedPosts',
   default: [],
   dangerouslyAllowMutability: true,
 });

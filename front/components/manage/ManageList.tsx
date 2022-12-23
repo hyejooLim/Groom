@@ -46,6 +46,13 @@ const ManageList = () => {
               </Link>
             </li>
             <li>
+              <Link href='/manage/sharedPosts'>
+                <a className={classNames('list_menu', { on: router.pathname.includes('/manage/sharedPosts') })}>
+                  공유 글 관리
+                </a>
+              </Link>
+            </li>
+            <li>
               <Link href='/manage/category'>
                 <a className={classNames('list_menu', { on: router.pathname.includes('/manage/category') })}>
                   카테고리 관리
