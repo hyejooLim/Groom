@@ -9,7 +9,7 @@ import ManageLayout from '../../components/layouts/ManageLayout';
 import SearchInput from '../../components/manage/WrapSearchInput';
 import SharedPostManageList from '../../components/manage/SharedPostManageList';
 import { useGetUserSharedPosts } from '../../hooks/query/posts';
-import { useSearchCategoryOnUserSharedPosts } from '../../hooks/query/search';
+import { useSearchUserSharedPosts, useSearchCategoryOnUserSharedPosts } from '../../hooks/query/search';
 import { manageSharedPostsState } from '../../recoil/manage';
 import { CloseButton, TitleWrapper } from '../../styles/ts/common';
 
@@ -23,10 +23,10 @@ const ManageSharedPosts = () => {
     isLoading: isLoadingSharedPosts,
     isFetching: isFetchingSharedPosts,
   } = useGetUserSharedPosts();
-  // const { isLoading: isLoadingSearch, isFetching: isFetchingSearch } = useSearchUserSharedPosts(
-  //   String(searchKeyword),
-  //   String(searchType)
-  // );
+  const { isLoading: isLoadingSearch, isFetching: isFetchingSearch } = useSearchUserSharedPosts(
+    String(searchKeyword),
+    String(searchType)
+  );
   const { isLoading: isLoadingSearchCategory, isFetching: isFetchingSearchCategory } =
     useSearchCategoryOnUserSharedPosts(categoryId ? Number(categoryId) : undefined);
 
@@ -68,12 +68,12 @@ const ManageSharedPosts = () => {
                   </CloseButton>
                 </a>
               </Link>
-              {/* {searchKeyword && (
+              {searchKeyword && (
                 <>
                   <span className='text title'>'{searchKeyword}'</span>
                   <span className='text'>검색결과</span>
                 </>
-              )} */}
+              )}
               {categoryId && manageSharedPosts?.length > 0 && (
                 <>
                   <span className='text title'>'{manageSharedPosts[0]?.post?.category?.name}'</span>
@@ -84,11 +84,15 @@ const ManageSharedPosts = () => {
             </div>
           )}
         </TitleWrapper>
-        <SearchInput placeholder='공유 글' onSearch={onSearchInput} />
+        <SearchInput
+          placeholder='공유 글'
+          newSearchTypes={[{ key: 'sender', label: '공유자' }]}
+          onSearch={onSearchInput}
+        />
         <SharedPostManageList
           sharedPosts={manageSharedPosts ?? userSharedPosts}
-          isLoading={isLoadingSearchCategory || isLoadingSharedPosts}
-          isFetching={isFetchingSearchCategory || isFetchingSharedPosts}
+          isLoading={isLoadingSearch || isLoadingSearchCategory || isLoadingSharedPosts}
+          isFetching={isFetchingSearch || isFetchingSearchCategory || isFetchingSharedPosts}
           onClickCategory={onClickCategory}
         />
       </div>

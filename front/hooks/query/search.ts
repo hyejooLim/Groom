@@ -5,6 +5,7 @@ import searchPosts from '../../apis/search/searchPosts';
 import searchUserPosts from '../../apis/search/searchUserPosts';
 import searchNeighbors from '../../apis/search/searchNeighbors';
 import searchUserSubscribedPosts from '../../apis/search/searchUserSubscribedPosts';
+import searchUserSharedPosts from '../../apis/search/searchUserSharedPosts';
 import searchCategoryOnUserPosts from '../../apis/search/searchCategoryOnUserPosts';
 import searchCategoryOnUserSubscribedPosts from '../../apis/search/searchCategoryOnUserSubscribedPosts';
 import searchCategoryOnUserSharedPosts from '../../apis/search/searchCategoryOnUserSharedPosts';
@@ -40,6 +41,16 @@ const useSearchUserSubscribedPosts = (keyword: string, searchType: string) => {
       setManageSubscribedPosts(data);
     },
     refetchOnWindowFocus: false,
+  });
+};
+
+const useSearchUserSharedPosts = (keyword: string, searchType: string) => {
+  const setManageSharedPosts = useSetRecoilState(manageSharedPostsState);
+
+  return useQuery(['userSharedPosts', keyword, searchType], () => searchUserSharedPosts(keyword, searchType), {
+    onSuccess: (data) => {
+      setManageSharedPosts(data.receivedPosts);
+    },
   });
 };
 
@@ -84,6 +95,7 @@ export {
   useSearchUserPosts,
   useSearchNeighbors,
   useSearchUserSubscribedPosts,
+  useSearchUserSharedPosts,
   useSearchCategoryOnUserPosts,
   useSearchCategoryOnUserSubscribedPosts,
   useSearchCategoryOnUserSharedPosts,

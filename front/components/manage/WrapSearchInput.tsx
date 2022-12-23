@@ -9,6 +9,7 @@ import * as S from '../../styles/ts/components/manage/WrapSearchInput';
 
 interface WrapSearchInputProps {
   placeholder: string;
+  newSearchTypes?: [{ key: string; label: string }];
   onSearch: (searchKeyword: string, searchType: string) => void;
 }
 
@@ -27,11 +28,13 @@ const searchTypeList = [
   },
 ];
 
-const WrapSearchInput: FC<WrapSearchInputProps> = ({ placeholder, onSearch }) => {
+const WrapSearchInput: FC<WrapSearchInputProps> = ({ placeholder, newSearchTypes, onSearch }) => {
   const [openMenu, setOpenMenu] = useState(false);
   const [showInput, setShowInput] = useState(false);
   const [searchType, setSearchType] = useState(searchTypeList[0]);
   const [searchKeyword, onChangeSearchKeyword, setSearchKeyword] = useInput('');
+
+  const totalSearchType = newSearchTypes ? searchTypeList.concat(newSearchTypes) : searchTypeList;
 
   useEffect(() => {
     function onClick() {
@@ -72,7 +75,7 @@ const WrapSearchInput: FC<WrapSearchInputProps> = ({ placeholder, onSearch }) =>
     <S.OverrideMenu
       selectable
       defaultSelectedKeys={['title']}
-      items={searchTypeList.map((item) => {
+      items={totalSearchType.map((item) => {
         return {
           key: item.key,
           label: (
