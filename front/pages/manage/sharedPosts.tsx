@@ -1,7 +1,9 @@
 import React, { useEffect } from 'react';
+import { GetServerSideProps } from 'next';
 import Head from 'next/head';
 import Router, { useRouter } from 'next/router';
 import Link from 'next/link';
+import { dehydrate, QueryClient } from '@tanstack/react-query';
 import { useRecoilState } from 'recoil';
 import { CloseCircleOutlined } from '@ant-design/icons';
 
@@ -11,6 +13,10 @@ import SharedPostManageList from '../../components/manage/SharedPostManageList';
 import { useGetUserSharedPosts } from '../../hooks/query/posts';
 import { useSearchUserSharedPosts, useSearchCategoryOnUserSharedPosts } from '../../hooks/query/search';
 import { manageSharedPostsState } from '../../recoil/manage';
+import getUser from '../../apis/user/getUser';
+import getUserSharedPosts from '../../apis/posts/getUserSharedPosts';
+import searchCategoryOnUserSharedPosts from '../../apis/search/searchCategoryOnUserSharedPosts';
+import searchUserSharedPosts from '../../apis/search/searchUserSharedPosts';
 import { CloseButton, TitleWrapper } from '../../styles/ts/common';
 
 const ManageSharedPosts = () => {
@@ -98,6 +104,30 @@ const ManageSharedPosts = () => {
       </div>
     </ManageLayout>
   );
+};
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const { category: categoryId, searchKeyword, searchType } = context.query;
+  const queryClient = new QueryClient();
+
+  await Promise.all([
+    queryClient.prefetchQuery(['user'], getUser),
+    queryClient.prefetchQuery(['userSharedPosts'], getUserSharedPosts),
+    categoryId &&
+      queryClient.prefetchQuery(['userSharedPosts', 'category', Number(categoryId)], () =>
+        searchCategoryOnUserSharedPosts(Number(categoryId))
+      ),
+    searchKeyword &&
+      queryClient.prefetchQuery(['userSharedPosts', searchKeyword, searchType], () =>
+        searchUserSharedPosts(String(searchKeyword), String(searchType))
+      ),
+  ]);
+
+  return {
+    props: {
+      dehydratedState: dehydrate(queryClient),
+    },
+  };
 };
 
 export default ManageSharedPosts;
