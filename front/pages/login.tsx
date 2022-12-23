@@ -8,10 +8,10 @@ import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import { toast, ToastContainer } from 'react-toastify';
 import { Oval } from 'react-loader-spinner';
 
+import { useGetUser } from '../hooks/query/user';
 import useInput from '../hooks/common/input';
 import * as S from '../styles/ts/pages/login';
 import logo from '../public/Groom_Logo_No_Background.png';
-import { useGetUser } from '../hooks/query/user';
 
 const Login = () => {
   const router = useRouter();

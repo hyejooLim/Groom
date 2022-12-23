@@ -68,7 +68,7 @@ const ManageSubscribedPosts = () => {
           {Object.keys(router.query).length === 0 ? (
             <>
               <span className='text'>구독 글 관리</span>
-              <span className='count'>{manageSubscribedPosts?.length ?? userSubscribedPosts?.length}</span>
+              <span className='count'>{userSubscribedPosts?.length}</span>
             </>
           ) : (
             <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -91,7 +91,7 @@ const ManageSubscribedPosts = () => {
                   <span className='text'>글</span>
                 </>
               )}
-              <span className='count'>{manageSubscribedPosts?.length ?? userSubscribedPosts?.length}</span>
+              <span className='count'>{manageSubscribedPosts?.length}</span>
             </div>
           )}
         </TitleWrapper>
