@@ -25,7 +25,6 @@ const ManageSubscribedPosts = () => {
 
   const {
     data: userSubscribedPosts,
-    refetch,
     isLoading: isLoadingPosts,
     isFetching: isFetchingPosts,
   } = useGetUserSubscribedPosts();
@@ -43,7 +42,6 @@ const ManageSubscribedPosts = () => {
 
   useEffect(() => {
     if (Object.keys(router.query).length === 0) {
-      refetch();
       setManageSubscribedPosts(null);
     }
   }, [router.query]);

@@ -23,7 +23,7 @@ const ManagePosts = () => {
   const router = useRouter();
   const { category: categoryId, searchKeyword, searchType } = router.query;
 
-  const { data: userPosts, refetch, isLoading: isLoadingPosts, isFetching: isFetchingPosts } = useGetUserPosts();
+  const { data: userPosts, isLoading: isLoadingPosts, isFetching: isFetchingPosts } = useGetUserPosts();
   const { isLoading: isLoadingSearch, isFetching: isFetchingSearch } = useSearchUserPosts(
     String(searchKeyword),
     String(searchType)
@@ -38,7 +38,6 @@ const ManagePosts = () => {
 
   useEffect(() => {
     if (Object.keys(router.query).length === 0) {
-      refetch();
       setManagePosts(null);
     }
   }, [router.query]);

@@ -25,7 +25,6 @@ const ManageSharedPosts = () => {
 
   const {
     data: userSharedPosts,
-    refetch,
     isLoading: isLoadingSharedPosts,
     isFetching: isFetchingSharedPosts,
   } = useGetUserSharedPosts();
@@ -40,7 +39,6 @@ const ManageSharedPosts = () => {
 
   useEffect(() => {
     if (Object.keys(router.query).length === 0) {
-      refetch();
       setManageSharedPosts(null);
     }
   }, [router.query]);
