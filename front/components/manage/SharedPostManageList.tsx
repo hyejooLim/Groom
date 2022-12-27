@@ -47,7 +47,6 @@ const SharedPostManageList: FC<SharedPostManageListProps> = ({
   }, [router.query]);
 
   const onDeleteSharedPost = useCallback((sharedPostId: number) => {
-    console.log('sharedPostId', sharedPostId);
     if (!confirm('해당 게시글을 공유 리스트에서 제거하시겠습니까?')) {
       return;
     }

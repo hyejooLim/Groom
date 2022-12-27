@@ -36,12 +36,7 @@ const useGetUserSubscribedPosts = () =>
     refetchOnWindowFocus: false,
   });
 
-const useGetUserSharedPosts = () =>
-  useQuery(['userSharedPosts'], getUserSharedPosts, {
-    onSuccess: (data) => {
-      console.log('userSharedPosts', data);
-    },
-  });
+const useGetUserSharedPosts = () => useQuery(['userSharedPosts'], getUserSharedPosts);
 
 export {
   useGetPosts,
