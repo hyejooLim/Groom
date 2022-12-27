@@ -26,39 +26,39 @@ const ManageList = () => {
             <span>관리</span>
           </div>
           <S.ListWrapper>
-            <li>
-              <Link href='/manage/posts'>
+            <Link href='/manage/posts'>
+              <li>
                 <a className={classNames('list_menu', { on: router.pathname.includes('/manage/posts') })}>글 관리</a>
-              </Link>
-            </li>
-            <li>
-              <Link href='/manage/neighbors'>
+              </li>
+            </Link>
+            <Link href='/manage/neighbors'>
+              <li>
                 <a className={classNames('list_menu', { on: router.pathname.includes('/manage/neighbors') })}>
                   이웃 관리
                 </a>
-              </Link>
-            </li>
-            <li>
-              <Link href='/manage/subscribedPosts'>
+              </li>
+            </Link>
+            <Link href='/manage/subscribedPosts'>
+              <li>
                 <a className={classNames('list_menu', { on: router.pathname.includes('/manage/subscribedPosts') })}>
                   구독 글 관리
                 </a>
-              </Link>
-            </li>
-            <li>
-              <Link href='/manage/sharedPosts'>
+              </li>
+            </Link>
+            <Link href='/manage/sharedPosts'>
+              <li>
                 <a className={classNames('list_menu', { on: router.pathname.includes('/manage/sharedPosts') })}>
                   공유 글 관리
                 </a>
-              </Link>
-            </li>
-            <li>
-              <Link href='/manage/category'>
+              </li>
+            </Link>
+            <Link href='/manage/category'>
+              <li>
                 <a className={classNames('list_menu', { on: router.pathname.includes('/manage/category') })}>
                   카테고리 관리
                 </a>
-              </Link>
-            </li>
+              </li>
+            </Link>
           </S.ListWrapper>
         </S.WrapMenu>
       </S.Container>

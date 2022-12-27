@@ -47,6 +47,7 @@ export const ListWrapper = styled.ul`
     font-size: 15px;
     color: #555;
     text-decoration: none;
+    cursor: pointer;
 
     :hover {
       background: #f3f5f7;
