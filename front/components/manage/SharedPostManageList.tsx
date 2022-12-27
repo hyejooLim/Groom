@@ -11,6 +11,7 @@ import { BeatLoader } from 'react-spinners';
 
 import { SharedPost } from '../../types';
 import PaginationContainer from '../common/PaginationContainer';
+import { useDeleteSharedPost } from '../../hooks/query/sharedPost';
 import { firstIndexState, lastIndexState, currentPageState, MANAGE_PAGE_SIZE } from '../../recoil/manage';
 import { EmptySearchBox, ListWrapper } from '../../styles/ts/components/manage/PostManageList';
 import * as S from '../../styles/ts/components/manage/SharedPostManageList';
@@ -29,6 +30,7 @@ const SharedPostManageList: FC<SharedPostManageListProps> = ({
   onClickCategory,
 }) => {
   const router = useRouter();
+  const deleteSharedPost = useDeleteSharedPost();
 
   const [firstIndex, setFirstIndex] = useRecoilState(firstIndexState);
   const [lastIndex, setLastIndex] = useRecoilState(lastIndexState);
@@ -44,8 +46,13 @@ const SharedPostManageList: FC<SharedPostManageListProps> = ({
     onInitPage();
   }, [router.query]);
 
-  const onRemoveSharedPost = useCallback((sharedPostId: number) => {
+  const onDeleteSharedPost = useCallback((sharedPostId: number) => {
     console.log('sharedPostId', sharedPostId);
+    if (!confirm('해당 게시글을 공유 리스트에서 제거하시겠습니까?')) {
+      return;
+    }
+
+    deleteSharedPost.mutate(sharedPostId);
   }, []);
 
   const onChangePage = useCallback(
@@ -104,7 +111,7 @@ const SharedPostManageList: FC<SharedPostManageListProps> = ({
                     </div>
                   </S.SharerNames>
                   <S.ButtonWrapper>
-                    <Button className='delete btn' onClick={() => onRemoveSharedPost(sharedPost.id)}>
+                    <Button className='delete btn' onClick={() => onDeleteSharedPost(sharedPost.id)}>
                       공유 리스트에서 제거
                     </Button>
                   </S.ButtonWrapper>
