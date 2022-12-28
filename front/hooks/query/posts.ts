@@ -36,7 +36,11 @@ const useGetUserSubscribedPosts = () =>
     refetchOnWindowFocus: false,
   });
 
-const useGetUserSharedPosts = () => useQuery(['userSharedPosts'], getUserSharedPosts);
+const useGetUserSharedPosts = () =>
+  useQuery(['userSharedPosts'], getUserSharedPosts, {
+    refetchInterval: 180000,
+    refetchOnWindowFocus: false,
+  });
 
 export {
   useGetPosts,
