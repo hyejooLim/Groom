@@ -4,10 +4,13 @@ import Link from 'next/link';
 import { HomeOutlined, SettingOutlined } from '@ant-design/icons';
 import classNames from 'classnames';
 
+import { useGetUserSharedPosts } from '../../hooks/query/posts';
+import { NewIcon } from '../../styles/ts/common';
 import * as S from '../../styles/ts/components/manage/ManageList';
 
 const ManageList = () => {
   const router = useRouter();
+  const { data: sharedPosts } = useGetUserSharedPosts();
 
   return (
     <>
@@ -50,6 +53,7 @@ const ManageList = () => {
                 <a className={classNames('list_menu', { on: router.pathname.includes('/manage/sharedPosts') })}>
                   공유 글 관리
                 </a>
+                {sharedPosts?.find((post) => !post.isVisited) && <NewIcon>N</NewIcon>}
               </li>
             </Link>
             <Link href='/manage/category'>

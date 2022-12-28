@@ -1,5 +1,8 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import visitSharedPost from '../../apis/sharedPost/visitSharedPost';
 import deleteSharedPost from '../../apis/sharedPost/deleteSharedPost';
+
+const useVisitSharedPost = () => useMutation(visitSharedPost);
 
 const useDeleteSharedPost = () => {
   const queryClient = useQueryClient();
@@ -11,4 +14,4 @@ const useDeleteSharedPost = () => {
   });
 };
 
-export { useDeleteSharedPost };
+export { useVisitSharedPost, useDeleteSharedPost };

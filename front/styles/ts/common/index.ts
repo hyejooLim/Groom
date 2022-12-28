@@ -28,3 +28,12 @@ export const CloseButton = styled(Button)`
   outline: none;
   box-shadow: none;
 `;
+
+export const NewIcon = styled.span`
+  color: #fff;
+  background-color: #ff3434;
+  padding: 1px 4px;
+  margin-left: 16px;
+  border-radius: 50%;
+  font-family: 'Courier New';
+`;

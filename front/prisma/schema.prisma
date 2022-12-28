@@ -63,6 +63,7 @@ model SharedPost {
   senderId Int?
   receiver User? @relation("receivedPosts", fields: [receiverId], references: [id])
   receiverId Int?
+  isVisited Boolean @default(false)
   sharedAt DateTime @default(now())
 
   @@index([postId])

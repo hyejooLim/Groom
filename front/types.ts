@@ -67,6 +67,7 @@ export type SharedPost = {
   senderId: number;
   receiver: UserType;
   receiverId: number;
+  isVisited: boolean; // 해당 게시글 방문 여부
   sharedAt: string;
 };
 

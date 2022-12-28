@@ -11,9 +11,10 @@ import { BeatLoader } from 'react-spinners';
 
 import { SharedPost } from '../../types';
 import PaginationContainer from '../common/PaginationContainer';
-import { useDeleteSharedPost } from '../../hooks/query/sharedPost';
+import { useVisitSharedPost, useDeleteSharedPost } from '../../hooks/query/sharedPost';
 import { firstIndexState, lastIndexState, currentPageState, MANAGE_PAGE_SIZE } from '../../recoil/manage';
 import { EmptySearchBox, ListWrapper } from '../../styles/ts/components/manage/PostManageList';
+import { NewIcon } from '../../styles/ts/common';
 import * as S from '../../styles/ts/components/manage/SharedPostManageList';
 
 interface SharedPostManageListProps {
@@ -30,6 +31,7 @@ const SharedPostManageList: FC<SharedPostManageListProps> = ({
   onClickCategory,
 }) => {
   const router = useRouter();
+  const visitSharedPost = useVisitSharedPost();
   const deleteSharedPost = useDeleteSharedPost();
 
   const [firstIndex, setFirstIndex] = useRecoilState(firstIndexState);
@@ -45,6 +47,14 @@ const SharedPostManageList: FC<SharedPostManageListProps> = ({
   useEffect(() => {
     onInitPage();
   }, [router.query]);
+
+  const onClickTitle = useCallback((sharedPostId: number, isVisited: boolean) => {
+    if (isVisited) {
+      return;
+    }
+
+    visitSharedPost.mutate(sharedPostId);
+  }, []);
 
   const onDeleteSharedPost = useCallback((sharedPostId: number) => {
     if (!confirm('해당 게시글을 공유 리스트에서 제거하시겠습니까?')) {
@@ -76,11 +86,12 @@ const SharedPostManageList: FC<SharedPostManageListProps> = ({
                   <div className='info_area'>
                     <div className='post_title'>
                       <Link href={`/post/${sharedPost.post?.id}`}>
-                        <a>
+                        <a onClick={() => onClickTitle(sharedPost.id, sharedPost.isVisited)}>
                           <span>{sharedPost.post?.title}</span>
                         </a>
                       </Link>
                       <PaperClipOutlined />
+                      {!sharedPost.isVisited && <NewIcon>N</NewIcon>}
                     </div>
                     <div className='post_extra_info'>
                       <a onClick={() => onClickCategory(sharedPost.post?.categoryId)}>
