@@ -58,6 +58,11 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
                   },
                 },
               },
+              orderBy: [
+                {
+                  sharedAt: 'desc',
+                },
+              ],
             },
           },
         });
@@ -105,6 +110,11 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
                   },
                 },
               },
+              orderBy: [
+                {
+                  sharedAt: 'desc',
+                },
+              ],
             },
           },
         });
@@ -154,6 +164,11 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
                   },
                 },
               },
+              orderBy: [
+                {
+                  sharedAt: 'desc',
+                },
+              ],
             },
           },
         });
@@ -201,6 +216,11 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
                   },
                 },
               },
+              orderBy: [
+                {
+                  sharedAt: 'desc',
+                },
+              ],
             },
           },
         });

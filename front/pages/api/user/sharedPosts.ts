@@ -46,6 +46,11 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
                 },
               },
             },
+            orderBy: [
+              {
+                sharedAt: 'desc',
+              },
+            ],
           },
         },
       });
