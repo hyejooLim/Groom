@@ -6,7 +6,7 @@ import { FiLink } from 'react-icons/fi';
 import Popover from '../common/Popover';
 import PostShareModal from './PostShareModal';
 import { useGetPost, useSharePost } from '../../hooks/query/post';
-import { developmentURL, productionURL } from '../../constants/Url';
+import { developmentURL, productionURL } from '../../constants/URL';
 import { Sharer } from '../../types';
 
 interface PostShareProps {

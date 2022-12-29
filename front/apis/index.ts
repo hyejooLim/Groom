@@ -1,7 +1,8 @@
 import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
+import { developmentURL, productionURL } from '../constants/URL';
 
 export const createApi = axios.create({
-  baseURL: process.env.NODE_ENV === 'development' ? 'http://localhost:3000/api' : 'https://groom.vercel.app/api',
+  baseURL: process.env.NODE_ENV === 'development' ? `${developmentURL}/api` : `${productionURL}/api`,
 });
 
 createApi.interceptors.request.use(
