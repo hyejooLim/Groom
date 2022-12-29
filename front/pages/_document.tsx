@@ -29,6 +29,11 @@ class MyDocument extends Document {
       <Html>
         <Head>
           <script src='https://cdn.tiny.cloud/1/hu5eem0b07vxvzo5h452m3d4trqog4b5azwga5p9j7b49gb5/tinymce/6/tinymce.min.js'></script>
+          <script
+            src='https://t1.kakaocdn.net/kakao_js_sdk/2.1.0/kakao.min.js'
+            integrity='sha384-dpu02ieKC6NUeKFoGMOKz6102CLEWi9+5RQjWSV0ikYSFFd8M3Wp2reIcquJOemx'
+            crossOrigin='anonymous'
+          ></script>
         </Head>
         <body>
           <Main />

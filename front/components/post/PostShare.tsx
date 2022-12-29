@@ -5,7 +5,8 @@ import { FiLink } from 'react-icons/fi';
 
 import Popover from '../common/Popover';
 import PostShareModal from './PostShareModal';
-import { useSharePost } from '../../hooks/query/post';
+import { useGetPost, useSharePost } from '../../hooks/query/post';
+import { developmentURL, productionURL } from '../../constants/Url';
 import { Sharer } from '../../types';
 
 interface PostShareProps {
@@ -14,15 +15,52 @@ interface PostShareProps {
   onClose: () => void;
 }
 
+interface WindowWithKakao extends Window {
+  Kakao?: any;
+}
+
 const PostShare: FC<PostShareProps> = ({ postId, isShow, onClose }) => {
   const sharePost = useSharePost();
   const [isOpenModal, setIsOpenModal] = useState(false);
+  const { data: post } = useGetPost(postId);
 
   useEffect(() => {
     if (sharePost.isSuccess) {
       setIsOpenModal(false);
     }
   }, [sharePost.isSuccess]);
+
+  const handleSharePostByKakao = () => {
+    const windowWithKakao = window as WindowWithKakao;
+
+    if (windowWithKakao.Kakao) {
+      const kakao = windowWithKakao.Kakao;
+
+      if (!kakao.isInitialized()) {
+        kakao.init(process.env.NEXT_PUBLIC_KAKAO_JAVASCRIPT_KEY);
+      }
+
+      kakao.Share.sendDefault({
+        objectType: 'feed',
+        content: {
+          title: `${post.title}`,
+          description: `${post.content}`,
+          imageUrl: 'https://groom-project.s3.ap-northeast-2.amazonaws.com/Groom_Logo_Circle.png',
+          link: {
+            webUrl:
+              process.env.NODE_ENV === 'development'
+                ? `${developmentURL}/post/${postId}`
+                : `${productionURL}/post/${postId}`,
+            mobileWebUrl:
+              process.env.NODE_ENV === 'development'
+                ? `${developmentURL}/post/${postId}`
+                : `${productionURL}/post/${postId}`,
+          },
+        },
+        buttonTitle: 'Groom 웹에서 보기',
+      });
+    }
+  };
 
   const handleCopyURL = async () => {
     try {
@@ -39,7 +77,7 @@ const PostShare: FC<PostShareProps> = ({ postId, isShow, onClose }) => {
 
   return (
     <Popover isShow={isShow} onClose={onClose}>
-      <div>
+      <div onClick={handleSharePostByKakao}>
         <RiKakaoTalkFill className='icon' />
         카카오톡으로 공유
       </div>
