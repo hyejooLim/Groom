@@ -66,7 +66,7 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
               set: [], // disconnect
               connect: req.body.tags?.map((tag: TagItem) => {
                 return {
-                  id: tag.id,
+                  name: tag.name,
                 };
               }),
             },
@@ -93,7 +93,7 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
               set: [], // disconnect
               connect: req.body.tags?.map((tag: TagItem) => {
                 return {
-                  id: tag.id,
+                  name: tag.name,
                 };
               }),
             },
