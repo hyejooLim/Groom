@@ -43,7 +43,7 @@ const SettingModal: FC<SettingModalProps> = ({
   onPublishPost,
   isLoading,
 }) => {
-  const [isSaving, setIsSaving] = useState(isLoading);
+  const [isSaving, setIsSaving] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
   const [dropdownItem, setDropdownItem] = useState(dropdownList[postData.allowComments ? 0 : 1]);
 
@@ -112,6 +112,7 @@ const SettingModal: FC<SettingModalProps> = ({
 
   const onCloseModal = () => {
     setIsOpen(false);
+    setIsSaving(false);
   };
 
   const menu = (
