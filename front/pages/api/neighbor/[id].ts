@@ -17,7 +17,7 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
         data: {
           neighbors: {
             connect: {
-              id: req.body.neighborId,
+              id: Number(req.query.id),
             },
           },
         },
@@ -39,7 +39,7 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
         data: {
           neighbors: {
             disconnect: {
-              id: req.body.neighborId,
+              id: Number(req.query.id),
             },
           },
         },

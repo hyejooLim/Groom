@@ -1,7 +1,7 @@
 import clientApi from '..';
 
-const cancelNeighbor = async (neighborId: number): Promise<Response> => {
-  return await clientApi.delete('/user/neighbor', { data: { neighborId } });
+const cancelNeighbor = async (id: number): Promise<Response> => {
+  return await clientApi.delete(`/neighbor/${id}`);
 };
 
 export default cancelNeighbor;
