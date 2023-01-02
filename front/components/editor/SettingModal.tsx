@@ -143,7 +143,7 @@ const SettingModal: FC<SettingModalProps> = ({
               <dl className='editor_info default'>
                 <dt>기본</dt>
                 <dd>
-                  <Radio.Group value={radioValue} onChange={onChangeRadioValue}>
+                  <Radio.Group value={radioValue} onChange={onChangeRadioValue} disabled={isSaving}>
                     <Radio className='radio_public' value='public'>
                       공개
                       <S.PublicInfoBox>누구나 글을 읽을 수 있습니다</S.PublicInfoBox>
@@ -154,7 +154,7 @@ const SettingModal: FC<SettingModalProps> = ({
                     </Radio>
                   </Radio.Group>
                   <S.DropdownWrapper>
-                    <Dropdown overlay={menu} trigger={['click']}>
+                    <Dropdown overlay={menu} trigger={['click']} disabled={isSaving}>
                       <button
                         onClick={(e) => {
                           e.stopPropagation();
@@ -182,6 +182,7 @@ const SettingModal: FC<SettingModalProps> = ({
                         disabled: radioValue === 'private',
                       })}
                       onClick={() => setPublishedAt(PublishMode.CREATEDAT)}
+                      disabled={isSaving}
                     >
                       {dayjs(createdAt).format('YYYY-MM-DD HH:mm')}
                     </Button>
@@ -191,12 +192,14 @@ const SettingModal: FC<SettingModalProps> = ({
                       <Button
                         className={classNames('date_btn current', { on: publishedAt === PublishMode.CURRENT })}
                         onClick={() => setPublishedAt(PublishMode.CURRENT)}
+                        disabled={isSaving}
                       >
                         현재
                       </Button>
                       <Button
                         className={classNames('date_btn reserve', { on: publishedAt === PublishMode.RESERVE })}
                         onClick={() => setPublishedAt(PublishMode.RESERVE)}
+                        disabled={isSaving}
                       >
                         예약
                       </Button>

@@ -176,6 +176,7 @@ export const BodyLayer = styled.div`
         overflow: visible;
         float: left;
         padding: 0 0 0 2px;
+        background-color: #fff;
         color: #909090;
       }
 
