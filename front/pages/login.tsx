@@ -4,23 +4,25 @@ import Head from 'next/head';
 import Link from 'next/link';
 import Image from 'next/image';
 import Router, { useRouter } from 'next/router';
+import { useSetRecoilState } from 'recoil';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import { toast, ToastContainer } from 'react-toastify';
 import { Oval } from 'react-loader-spinner';
 
-import { useGetUser } from '../hooks/query/user';
 import useInput from '../hooks/common/input';
+import { isLogInState } from '../recoil/auth';
 import * as S from '../styles/ts/pages/login';
 import logo from '../public/Groom_Logo_No_Background.png';
 
 const Login = () => {
   const router = useRouter();
   const { prevPathname } = router.query;
-  const { refetch } = useGetUser();
 
   const [email, onChangeEmail] = useInput('');
   const [password, onChangePassword] = useInput('');
   const [isLoading, setIsLoading] = useState(false);
+
+  const setIsLogIn = useSetRecoilState(isLogInState);
 
   const onSubmitForm = useCallback(async () => {
     setIsLoading(true);
@@ -37,6 +39,8 @@ const Login = () => {
       return;
     }
 
+    setIsLogIn(result.ok);
+
     toast.success('로그인 되었습니다.', {
       autoClose: 2000,
       position: toast.POSITION.TOP_RIGHT,
@@ -46,10 +50,6 @@ const Login = () => {
     setTimeout(() => {
       prevPathname === 'signup' ? Router.push('/') : Router.back();
     }, 3000);
-
-    setTimeout(() => {
-      refetch(); // 로그인 유저 정보 fetch
-    }, 3500);
   }, [email, password]);
 
   return (

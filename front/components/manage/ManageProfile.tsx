@@ -1,6 +1,6 @@
 import React, { ChangeEvent, useCallback, useEffect } from 'react';
 import { signOut } from 'next-auth/react';
-import Router from 'next/router';
+import { useRecoilState } from 'recoil';
 import { Button, Card } from 'antd';
 import { FiCamera } from 'react-icons/fi';
 import { BsCloudFill } from 'react-icons/bs';
@@ -8,6 +8,7 @@ import { AiFillMinusSquare } from 'react-icons/ai';
 import classNames from 'classnames';
 import AWS from 'aws-sdk';
 
+import { isLogInState } from '../../recoil/auth';
 import { useGetUser, useUpdateUser } from '../../hooks/query/user';
 import SkeletonManageProfile from '../skeleton/SkeletonManageProfile';
 import * as S from '../../styles/ts/components/manage/ManageProfile';
@@ -27,8 +28,17 @@ AWS.config.update({
 });
 
 const ManageProfile = () => {
-  const { data: user, error, isLoading, isFetching, isError } = useGetUser();
+  const { data: user, error, refetch, isLoading, isFetching, isError } = useGetUser();
+  const [isLogIn, setIsLogIn] = useRecoilState(isLogInState);
+
   const updateUser = useUpdateUser();
+
+  useEffect(() => {
+    if (isLogIn) {
+      refetch();
+      setIsLogIn(false);
+    }
+  }, [isLogIn]);
 
   useEffect(() => {
     if (isError) {

@@ -1,17 +1,27 @@
 import React, { useEffect } from 'react';
 import { signOut } from 'next-auth/react';
 import Link from 'next/link';
+import { useRecoilState } from 'recoil';
 import { Avatar } from 'antd';
 import { BsCloudFill } from 'react-icons/bs';
 import { HiOutlinePencilAlt } from 'react-icons/hi';
 import { BsFillPersonFill } from 'react-icons/bs';
 
 import { useGetUser } from '../../hooks/query/user';
+import { isLogInState } from '../../recoil/auth';
 import SkeletonUserProfile from '../skeleton/SkeletonUserProfile';
 import * as S from '../../styles/ts/components/main/UserProfile';
 
 const UserProfile = () => {
-  const { data: user, error, isLoading, isFetching, isError } = useGetUser();
+  const { data: user, error, refetch, isLoading, isFetching, isError } = useGetUser();
+  const [isLogIn, setIsLogIn] = useRecoilState(isLogInState);
+
+  useEffect(() => {
+    if (isLogIn) {
+      refetch();
+      setIsLogIn(false);
+    }
+  }, [isLogIn]);
 
   useEffect(() => {
     if (isError) {
