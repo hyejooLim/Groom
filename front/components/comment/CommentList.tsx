@@ -96,12 +96,13 @@ const CommentList: FC<CommentListProps> = ({ postId }) => {
             <Comment
               avatar={
                 <Avatar
-                  size={40}
-                  icon={<BsCloudFill style={{ height: '40px', lineHeight: '40px' }} />}
-                  src={user?.imageUrl}
+                  size={32}
+                  icon={<BsCloudFill style={{ height: '32px' }} />}
+                  src={item.author.imageUrl}
+                  style={{ cursor: 'default' }}
                 />
               }
-              author={<span style={{ fontSize: '14px' }}>{item.author?.name}</span>}
+              author={<span style={{ fontSize: '14px' }}>{item.author.name}</span>}
               content={<p style={{ whiteSpace: 'pre-wrap' }}>{item.content}</p>}
               datetime={
                 <span style={{ marginLeft: '10px', fontSize: '13px', color: '#b5b5b5' }}>

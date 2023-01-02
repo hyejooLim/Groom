@@ -12,6 +12,7 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
           author: {
             select: {
               name: true,
+              imageUrl: true,
             },
           },
         },

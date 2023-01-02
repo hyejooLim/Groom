@@ -184,6 +184,15 @@ button {
   background: var(--light-blue-color);
 }
 
+.ant-comment .ant-comment-inner {
+  display: flex;
+  align-items: center;
+}
+
+.ant-comment .ant-comment-inner .ant-comment-content .ant-comment-content-author {
+  margin: 0;
+}
+
 /* tinymce editor */
 .tox .tox-toolbar__group {
   margin-left: 20px !important;
