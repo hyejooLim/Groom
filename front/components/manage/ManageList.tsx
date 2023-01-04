@@ -15,14 +15,14 @@ const ManageList = () => {
   return (
     <>
       <S.Container>
-        <S.LinkWrapper>
-          <Link href='/manage'>
+        <Link href='/manage'>
+          <S.LinkWrapper>
             <a className='link_menu'>
               <HomeOutlined />
               <span>블로그 관리 홈</span>
             </a>
-          </Link>
-        </S.LinkWrapper>
+          </S.LinkWrapper>
+        </Link>
         <S.WrapMenu>
           <div>
             <SettingOutlined />
