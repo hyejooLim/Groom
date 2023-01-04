@@ -36,6 +36,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const { name } = context.params;
   const queryClient = new QueryClient();
 
+  context.res.setHeader('Cache-Control', 'public, s-maxage=31536000, max-age=59');
+
   await Promise.all([
     queryClient.prefetchQuery(['user'], getUser),
     queryClient.prefetchQuery(['categories'], getCategories),
