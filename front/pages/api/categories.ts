@@ -1,6 +1,6 @@
 import { NextApiHandler, NextApiRequest, NextApiResponse } from 'next';
 
-import { CategoryItem } from './../../types';
+import { CategoryItem } from '../../types';
 import prisma from '../../lib/prisma';
 
 const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {

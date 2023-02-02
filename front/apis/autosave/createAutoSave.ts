@@ -1,5 +1,5 @@
 import clientApi from '..';
-import { TagItem } from './../../types';
+import { TagItem } from '../../types';
 
 interface CreateAutoSaveProps {
   title: string;

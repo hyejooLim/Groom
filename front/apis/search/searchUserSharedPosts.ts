@@ -1,5 +1,5 @@
 import clientApi from '..';
-import { UserType } from './../../types';
+import { UserType } from '../../types';
 
 const searchUserSharedPosts = async (keyword: string, searchType: string): Promise<UserType> => {
   if (keyword === 'undefined') {

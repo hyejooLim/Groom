@@ -1,5 +1,5 @@
 import clientApi from '..';
-import { SharedPost } from './../../types';
+import { SharedPost } from '../../types';
 
 const searchCategoryOnUserSharedPosts = async (categoryId: number | undefined): Promise<SharedPost[]> => {
   if (categoryId === undefined) {

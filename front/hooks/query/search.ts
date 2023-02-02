@@ -9,7 +9,7 @@ import searchUserSharedPosts from '../../apis/search/searchUserSharedPosts';
 import searchCategoryOnUserPosts from '../../apis/search/searchCategoryOnUserPosts';
 import searchCategoryOnUserSubscribedPosts from '../../apis/search/searchCategoryOnUserSubscribedPosts';
 import searchCategoryOnUserSharedPosts from '../../apis/search/searchCategoryOnUserSharedPosts';
-import { managePostsState, manageSubscribedPostsState, manageSharedPostsState } from './../../recoil/manage';
+import { managePostsState, manageSubscribedPostsState, manageSharedPostsState } from '../../recoil/manage';
 
 const useSearchPosts = (keyword: string) => {
   return useQuery(['posts', 'keyword', keyword], () => searchPosts(keyword), {

@@ -1,5 +1,5 @@
 import clientApi from '..';
-import { CategoryItem } from './../../types';
+import { CategoryItem } from '../../types';
 
 const searchCategoryOnUserPosts = async (categoryId: number | undefined): Promise<CategoryItem> => {
   if (categoryId === undefined) {
