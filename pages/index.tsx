@@ -1,5 +1,5 @@
 import React from 'react';
-import { GetStaticProps } from 'next';
+import { GetServerSideProps } from 'next';
 import { dehydrate, QueryClient } from '@tanstack/react-query';
 import axios, { HeadersDefaults } from 'axios';
 
@@ -29,7 +29,7 @@ interface HeadersDefaultWithCookie extends HeadersDefaults {
   Cookie: string;
 }
 
-export const getStaticProps: GetStaticProps = async (context) => {
+export const getServerSideProps: GetServerSideProps = async (context) => {
   // const cookie = context.req ? context.req.headers.cookie : '';
 
   // if (context.req && cookie) {
@@ -37,7 +37,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
   //     Cookie: cookie,
   //   } as HeadersDefaultWithCookie;
   // }
-
+  
   const queryClient = new QueryClient();
   // context.res.setHeader('Cache-Control', 'public, s-maxage=31536000, max-age=59');
 
