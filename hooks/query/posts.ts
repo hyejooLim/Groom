@@ -16,7 +16,8 @@ const useGetPosts = () => {
     onSuccess: (data) => {
       setMainPosts(data);
     },
-    refetchInterval: 10000, // 10초마다 로드
+
+    refetchInterval: 180000,
     refetchOnWindowFocus: false,
   });
 };

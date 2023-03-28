@@ -3,7 +3,7 @@ import getVisitorsCount from '../../apis/count';
 
 const useGetVisitorsCount = () =>
   useQuery(['visitorsCount'], getVisitorsCount, {
-    refetchInterval: 10000,
+    refetchInterval: 60000,
     refetchOnWindowFocus: false,
   });
 
