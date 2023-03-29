@@ -1,5 +1,5 @@
 import React from 'react';
-import { GetServerSideProps } from 'next';
+import { GetStaticProps } from 'next';
 import { dehydrate, QueryClient } from '@tanstack/react-query';
 import axios, { HeadersDefaults } from 'axios';
 
@@ -29,7 +29,7 @@ interface HeadersDefaultWithCookie extends HeadersDefaults {
   Cookie: string;
 }
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
+export const getStaticProps: GetStaticProps = async () => {
   // const cookie = context.req ? context.req.headers.cookie : '';
 
   // if (context.req && cookie) {
