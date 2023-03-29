@@ -37,7 +37,7 @@ export const getStaticProps: GetStaticProps = async () => {
   //     Cookie: cookie,
   //   } as HeadersDefaultWithCookie;
   // }
-  
+
   const queryClient = new QueryClient();
   // context.res.setHeader('Cache-Control', 'public, s-maxage=31536000, max-age=59');
 
@@ -52,6 +52,7 @@ export const getStaticProps: GetStaticProps = async () => {
     props: {
       dehydratedState: dehydrate(queryClient),
     },
+    revalidate: 10,
   };
 };
 
