@@ -1,7 +1,6 @@
 import React from 'react';
 import { GetStaticProps } from 'next';
 import { dehydrate, QueryClient } from '@tanstack/react-query';
-import axios, { HeadersDefaults } from 'axios';
 
 import AppLayout from '../components/layouts/AppLayout';
 import Title from '../components/common/Title';
@@ -25,21 +24,8 @@ const Home = () => {
   );
 };
 
-interface HeadersDefaultWithCookie extends HeadersDefaults {
-  Cookie: string;
-}
-
 export const getStaticProps: GetStaticProps = async () => {
-  // const cookie = context.req ? context.req.headers.cookie : '';
-
-  // if (context.req && cookie) {
-  //   axios.defaults.headers = {
-  //     Cookie: cookie,
-  //   } as HeadersDefaultWithCookie;
-  // }
-
   const queryClient = new QueryClient();
-  // context.res.setHeader('Cache-Control', 'public, s-maxage=31536000, max-age=59');
 
   await Promise.all([
     queryClient.prefetchQuery(['user'], getUser),
@@ -52,7 +38,7 @@ export const getStaticProps: GetStaticProps = async () => {
     props: {
       dehydratedState: dehydrate(queryClient),
     },
-    // revalidate: 60,
+    revalidate: 60, 
   };
 };
 

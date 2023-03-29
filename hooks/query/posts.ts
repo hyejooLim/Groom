@@ -17,7 +17,7 @@ const useGetPosts = () => {
       setMainPosts(data);
     },
 
-    refetchInterval: 10000,
+    refetchInterval: 60000,
     refetchOnWindowFocus: false,
   });
 };
