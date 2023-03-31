@@ -129,6 +129,7 @@ const PostShareModal: FC<PostShareModalProps> = ({ isOpen, isLoading, onClose, o
           <div className='item_list'>
             {neighbors?.map((neighbor) => (
               <div
+                key={neighbor.id}
                 className='item_wrapper'
                 data-neighbor-id={neighbor.id}
                 data-neighbor-name={neighbor.name}
