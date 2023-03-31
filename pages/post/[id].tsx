@@ -1,13 +1,14 @@
 import React, { useEffect } from 'react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import { GetServerSideProps } from 'next';
+import { GetStaticPaths, GetStaticProps } from 'next';
 import { dehydrate, QueryClient } from '@tanstack/react-query';
 
 import AppLayout from '../../components/layouts/AppLayout';
 import PostCard from '../../components/post/PostCard';
 import getUser from '../../apis/user/getUser';
 import getPost from '../../apis/post/getPost';
+import getPosts from '../../apis/posts/getPosts';
 import getComments from '../../apis/comments/getComments';
 import getCategories from '../../apis/categories/getCategories';
 import getVisitorsCount from '../../apis/count';
@@ -49,11 +50,19 @@ const Post = () => {
   );
 };
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
+export const getStaticPaths: GetStaticPaths = async () => {
+  const posts = await getPosts();
+  const paths = posts.map(({ id }) => ({ params: { id: String(id) } }));
+
+  return {
+    paths,
+    fallback: 'blocking',
+  };
+};
+
+export const getStaticProps: GetStaticProps = async (context) => {
   const { id } = context.params;
   const queryClient = new QueryClient();
-
-  context.res.setHeader('Cache-Control', 'public, s-maxage=31536000, max-age=59');
 
   await Promise.all([
     queryClient.prefetchQuery(['user'], getUser),
@@ -67,6 +76,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     props: {
       dehydratedState: dehydrate(queryClient),
     },
+    revalidate: 1800,
   };
 };
 
