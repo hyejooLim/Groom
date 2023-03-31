@@ -74,7 +74,7 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
         });
       }
 
-      await clientApi.post(`/revalidate/${process.env.NEXT_PUBLIC_MY_SECRET_TOKEN}`, { path: '/' });
+      await clientApi.post('/revalidate', { token: process.env.NEXT_PUBLIC_MY_SECRET_TOKEN, path: '/' });
 
       await prisma.autoSave.deleteMany({
         where: {
