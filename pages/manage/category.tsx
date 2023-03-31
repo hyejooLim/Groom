@@ -1,6 +1,6 @@
 import React, { useCallback, useState, useEffect } from 'react';
 import Head from 'next/head';
-import { GetServerSideProps } from 'next';
+import { GetStaticProps } from 'next';
 import { dehydrate, QueryClient } from '@tanstack/react-query';
 import { FiCheck } from 'react-icons/fi';
 
@@ -75,9 +75,8 @@ const ManageCategory = () => {
   );
 };
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
+export const getStaticProps: GetStaticProps = async () => {
   const queryClient = new QueryClient();
-  context.res.setHeader('Cache-Control', 'public, s-maxage=31536000, max-age=59');
 
   await Promise.all([
     queryClient.prefetchQuery(['user'], getUser),

@@ -1,8 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
-import { GetServerSideProps } from 'next';
+import { GetStaticProps } from 'next';
 import { dehydrate, QueryClient } from '@tanstack/react-query';
-import axios, { HeadersDefaults } from 'axios';
 
 import ManageLayout from '../../components/layouts/ManageLayout';
 import SkeletonLastPosts from '../../components/skeleton/SkeletonLastPosts';
@@ -68,21 +67,8 @@ const Manage = () => {
   );
 };
 
-interface HeadersDefaultsWithCookie extends HeadersDefaults {
-  Cookie: string;
-}
-
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const cookie = context.req ? context.req.headers.cookie : '';
-
-  if (context.req && cookie) {
-    axios.defaults.headers = {
-      Cookie: cookie,
-    } as HeadersDefaultsWithCookie;
-  }
-
+export const getStaticProps: GetStaticProps = async () => {
   const queryClient = new QueryClient();
-  context.res.setHeader('Cache-Control', 'public, s-maxage=31536000, max-age=59');
 
   await Promise.all([
     queryClient.prefetchQuery(['user'], getUser),
