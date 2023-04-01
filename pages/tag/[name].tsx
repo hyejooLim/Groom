@@ -34,8 +34,8 @@ const Tag = () => {
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const categories = await getTags();
-  const paths = categories.map(({ name }) => ({ params: { name } }));
+  const tags = await getTags();
+  const paths = tags.map(({ name }) => ({ params: { name } }));
 
   return {
     paths,
