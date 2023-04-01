@@ -24,8 +24,10 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
         )
       );
 
+      let post = {};
+
       if (req.body.isPublic && req.body.createdAt) {
-        await prisma.post.create({
+        post = await prisma.post.create({
           data: {
             title: req.body.title,
             content: req.body.content,
@@ -47,9 +49,21 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
               },
             },
           },
+          include: {
+            category: {
+              select: {
+                name: true,
+              },
+            },
+            tags: {
+              select: {
+                name: true,
+              },
+            },
+          },
         });
       } else {
-        await prisma.post.create({
+        post = await prisma.post.create({
           data: {
             title: req.body.title,
             content: req.body.content,
@@ -70,6 +84,18 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
               },
             },
           },
+          include: {
+            category: {
+              select: {
+                name: true,
+              },
+            },
+            tags: {
+              select: {
+                name: true,
+              },
+            },
+          },
         });
       }
 
@@ -81,7 +107,7 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
         },
       });
 
-      res.status(201).json('ok');
+      res.status(201).json(post);
     }
   } catch (err) {
     console.error(err);
