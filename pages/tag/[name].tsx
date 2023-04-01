@@ -35,34 +35,34 @@ const Tag = () => {
   );
 };
 
-export const getStaticPaths: GetStaticPaths = async () => {
-  const result = await axios.get(`${productionURL}/api/tags`);
-  const tags = result.data as TagItem[];
+// export const getStaticPaths: GetStaticPaths = async () => {
+//   const result = await axios.get(`${productionURL}/api/tags`);
+//   const tags = result.data as TagItem[];
 
-  const paths = tags.map(({ name }) => ({ params: { name } }));
+//   const paths = tags.map(({ name }) => ({ params: { name } }));
 
-  return {
-    paths,
-    fallback: 'blocking',
-  };
-};
+//   return {
+//     paths,
+//     fallback: 'blocking',
+//   };
+// };
 
-export const getStaticProps: GetStaticProps = async (context) => {
-  const { name } = context.params;
-  const queryClient = new QueryClient();
+// export const getStaticProps: GetStaticProps = async (context) => {
+//   const { name } = context.params;
+//   const queryClient = new QueryClient();
 
-  await Promise.all([
-    queryClient.prefetchQuery(['user'], getUser),
-    queryClient.prefetchQuery(['categories'], getCategories),
-    queryClient.prefetchQuery(['visitorsCount'], getVisitorsCount),
-    queryClient.prefetchQuery(['posts', 'tag', String(name)], () => getPostsIncludeTag(String(name))),
-  ]);
+//   await Promise.all([
+//     queryClient.prefetchQuery(['user'], getUser),
+//     queryClient.prefetchQuery(['categories'], getCategories),
+//     queryClient.prefetchQuery(['visitorsCount'], getVisitorsCount),
+//     queryClient.prefetchQuery(['posts', 'tag', String(name)], () => getPostsIncludeTag(String(name))),
+//   ]);
 
-  return {
-    props: {
-      dehydratedState: dehydrate(queryClient),
-    },
-  };
-};
+//   return {
+//     props: {
+//       dehydratedState: dehydrate(queryClient),
+//     },
+//   };
+// };
 
 export default Tag;
