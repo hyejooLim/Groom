@@ -3,16 +3,18 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { GetStaticPaths, GetStaticProps } from 'next';
 import { dehydrate, QueryClient } from '@tanstack/react-query';
+import axios from 'axios';
 
 import AppLayout from '../../components/layouts/AppLayout';
 import PostCard from '../../components/post/PostCard';
 import getUser from '../../apis/user/getUser';
 import getPost from '../../apis/post/getPost';
-import getPosts from '../../apis/posts/getPosts';
 import getComments from '../../apis/comments/getComments';
 import getCategories from '../../apis/categories/getCategories';
 import getVisitorsCount from '../../apis/count';
 import { useGetPost } from '../../hooks/query/post';
+import { productionURL } from '../../constants/URL';
+import { PostItem } from '../../types';
 
 const Post = () => {
   const router = useRouter();
@@ -51,7 +53,9 @@ const Post = () => {
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const posts = await getPosts();
+  const result = await axios.get(`${productionURL}/api/posts`);
+  const posts = result.data as PostItem[];
+
   const paths = posts.map(({ id }) => ({ params: { id: String(id) } }));
 
   return {

@@ -3,6 +3,7 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { GetStaticPaths, GetStaticProps } from 'next';
 import { dehydrate, QueryClient } from '@tanstack/react-query';
+import axios from 'axios';
 
 import AppLayout from '../../components/layouts/AppLayout';
 import Title from '../../components/common/Title';
@@ -12,6 +13,8 @@ import getCategories from '../../apis/categories/getCategories';
 import getVisitorsCount from '../../apis/count';
 import getPostsIncludeCategory from '../../apis/posts/getPostsIncludeCategory';
 import { useGetPostsIncludeCategory } from '../../hooks/query/posts';
+import { productionURL } from '../../constants/URL';
+import { CategoryItem } from '../../types';
 
 const Category = () => {
   const router = useRouter();
@@ -33,7 +36,9 @@ const Category = () => {
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const categories = await getCategories();
+  const result = await axios.get(`${productionURL}/api/categories`);
+  const categories = result.data as CategoryItem[];
+
   const paths = categories.map(({ name }) => ({ params: { name } }));
 
   return {

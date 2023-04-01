@@ -3,6 +3,7 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { GetStaticPaths, GetStaticProps } from 'next';
 import { dehydrate, QueryClient } from '@tanstack/react-query';
+import axios from 'axios';
 
 import AppLayout from '../../components/layouts/AppLayout';
 import Title from '../../components/common/Title';
@@ -11,8 +12,9 @@ import getPostsIncludeTag from '../../apis/posts/getPostsIncludeTag';
 import getUser from '../../apis/user/getUser';
 import getCategories from '../../apis/categories/getCategories';
 import getVisitorsCount from '../../apis/count';
-import getTags from '../../apis/tags/getTags';
 import { useGetPostsIncludeTag } from '../../hooks/query/posts';
+import { productionURL } from '../../constants/URL';
+import { TagItem } from '../../types';
 
 const Tag = () => {
   const router = useRouter();
@@ -34,7 +36,9 @@ const Tag = () => {
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const tags = await getTags();
+  const result = await axios.get(`${productionURL}/api/tags`);
+  const tags = result.data as TagItem[];
+
   const paths = tags.map(({ name }) => ({ params: { name } }));
 
   return {
