@@ -1,6 +1,5 @@
 import { NextApiHandler, NextApiRequest, NextApiResponse } from 'next';
 import { getSession } from 'next-auth/react';
-import clientApi from '../../../apis';
 
 import prisma from '../../../lib/prisma';
 import { TagItem } from '../../../types';
@@ -73,8 +72,6 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
           },
         });
       }
-
-      await clientApi.post('/revalidate', { token: process.env.NEXT_PUBLIC_MY_SECRET_TOKEN, path: '/' });
 
       await prisma.autoSave.deleteMany({
         where: {
