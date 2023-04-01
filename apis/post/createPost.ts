@@ -1,5 +1,6 @@
 import clientApi from '..';
 import { TagItem, CategoryItem } from '../../types';
+import { revalidateMainPage } from '../revalidate';
 
 interface CreatePostProps {
   title: string;
@@ -12,8 +13,11 @@ interface CreatePostProps {
   createdAt?: string;
 }
 
-const createPost = async ({ data }: { data: CreatePostProps }): Promise<Response | string> => {
-  return await clientApi.post('/post', data);
+//: Promise<Response | string>
+const createPost = async ({ data }: { data: CreatePostProps }) => {
+  await clientApi.post('/post', data).then((res) => {
+    res === 'ok' && revalidateMainPage();
+  });
 };
 
 export default createPost;
