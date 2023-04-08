@@ -10,6 +10,7 @@
 * React
 * Recoil
 * React Query
+* TypeScript
 * Ant Design
 * Styled Components
 * TinyMCE (Editor)
