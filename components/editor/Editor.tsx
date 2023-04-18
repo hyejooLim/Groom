@@ -1,6 +1,6 @@
 import React, { FC, ChangeEvent, useRef, useState, useEffect, useCallback } from 'react';
 import { useRecoilValue } from 'recoil';
-import Router from 'next/router';
+import Router, { useRouter } from 'next/router';
 import AWS from 'aws-sdk';
 import { Modal } from 'antd';
 import dayjs from 'dayjs';
@@ -61,6 +61,9 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
 
   let editorUrl = '';
   const titleRef = useRef(null);
+  
+  const router = useRouter();
+  const { id, prevPathname } = router.query;
 
   const [postData, setPostData] = useState<PostItem>(makePostState());
   const createPost = useCreatePost();
@@ -140,6 +143,11 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
 
   useEffect(() => {
     if (createPost.isSuccess || updatePost.isSuccess) {
+      if (prevPathname === 'postcard') {
+        Router.push({ pathname: `/post/${id}` });
+        return;
+      }
+
       Router.push('/manage/posts');
     }
   }, [createPost.isSuccess, updatePost.isSuccess]);

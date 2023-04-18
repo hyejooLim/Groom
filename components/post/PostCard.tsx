@@ -202,7 +202,7 @@ const PostCard: FC<PostCardProps> = ({ post }) => {
         </div>
         {status === 'authenticated' && user?.id === currentPost.authorId && (
           <S.EditButton>
-            <Link href={`/write/${post.id}`}>
+            <Link href={{ pathname: `/write/${post.id}`, query: { prevPathname: 'postcard' } }}>
               <a>
                 <Button className='modify btn'>Modify</Button>
               </a>
