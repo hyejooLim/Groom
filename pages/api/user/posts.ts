@@ -21,8 +21,16 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
             createdAt: 'desc',
           },
         ],
-        include: {
-          category: true,
+        select: {
+          id: true,
+          title: true,
+          content: true,
+          categoryId: true,
+          category: {
+            select: {
+              name: true,
+            },
+          },
           comments: {
             select: {
               id: true,
@@ -33,11 +41,14 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
               id: true,
             },
           },
+          authorId: true,
           author: {
             select: {
               name: true,
             },
-          },
+          }, isPublic: true,
+         
+          createdAt: true,
         },
       });
 

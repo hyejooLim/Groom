@@ -19,7 +19,7 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
           where: {
             email: session.user?.email,
           },
-          include: {
+          select: {
             receivedPosts: {
               where: {
                 post: {
@@ -44,17 +44,22 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
                   },
                 },
                 post: {
-                  include: {
-                    author: {
-                      select: {
-                        name: true,
-                      },
-                    },
+                  select: {
+                    id: true,
+                    title: true,
+                    categoryId: true,
                     category: {
                       select: {
                         name: true,
                       },
                     },
+                    authorId: true,
+                    author: {
+                      select: {
+                        name: true,
+                      },
+                    },
+                    createdAt: true,
                   },
                 },
               },
@@ -71,7 +76,7 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
           where: {
             email: session.user?.email,
           },
-          include: {
+          select: {
             receivedPosts: {
               where: {
                 post: {
@@ -96,17 +101,22 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
                   },
                 },
                 post: {
-                  include: {
-                    author: {
-                      select: {
-                        name: true,
-                      },
-                    },
+                  select: {
+                    id: true,
+                    title: true,
+                    categoryId: true,
                     category: {
                       select: {
                         name: true,
                       },
                     },
+                    authorId: true,
+                    author: {
+                      select: {
+                        name: true,
+                      },
+                    },
+                    createdAt: true,
                   },
                 },
               },
@@ -123,7 +133,7 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
           where: {
             email: session.user?.email,
           },
-          include: {
+          select: {
             receivedPosts: {
               where: {
                 post: {
@@ -150,17 +160,22 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
                   },
                 },
                 post: {
-                  include: {
-                    author: {
-                      select: {
-                        name: true,
-                      },
-                    },
+                  select: {
+                    id: true,
+                    title: true,
+                    categoryId: true,
                     category: {
                       select: {
                         name: true,
                       },
                     },
+                    authorId: true,
+                    author: {
+                      select: {
+                        name: true,
+                      },
+                    },
+                    createdAt: true,
                   },
                 },
               },
@@ -177,7 +192,7 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
           where: {
             email: session.user?.email,
           },
-          include: {
+          select: {
             receivedPosts: {
               where: {
                 sender: {
@@ -202,17 +217,21 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
                   },
                 },
                 post: {
-                  include: {
-                    author: {
-                      select: {
-                        name: true,
-                      },
-                    },
+                  select: {
+                    id: true,
+                    title: true,
+                    categoryId: true,
                     category: {
                       select: {
                         name: true,
                       },
                     },
+                    author: {
+                      select: {
+                        name: true,
+                      },
+                    },
+                    createdAt: true,
                   },
                 },
               },

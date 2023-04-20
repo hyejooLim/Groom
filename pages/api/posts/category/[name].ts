@@ -19,13 +19,20 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
             createdAt: 'desc',
           },
         ],
-        include: {
-          category: true,
+        select: {
+          id: true,
+          title: true,
+          category: {
+            select: {
+              name: true,
+            },
+          },
           author: {
             select: {
               name: true,
             },
           },
+          createdAt: true,
         },
       });
 

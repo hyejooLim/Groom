@@ -30,13 +30,23 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
               createdAt: 'desc',
             },
           ],
-          include: {
-            category: true,
+          select: {
+            id: true,
+            title: true,
+            categoryId: true,
+            category: {
+              select: {
+                name: true,
+              },
+            },
+            authorId: true,
             author: {
               select: {
                 name: true,
               },
             },
+            isPublic: true,
+            createdAt: true,
           },
         });
       } else if (searchType === 'content') {
@@ -54,13 +64,23 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
               createdAt: 'desc',
             },
           ],
-          include: {
-            category: true,
+          select: {
+            id: true,
+            title: true,
+            categoryId: true,
+            category: {
+              select: {
+                name: true,
+              },
+            },
+            authorId: true,
             author: {
               select: {
                 name: true,
               },
             },
+            isPublic: true,
+            createdAt: true,
           },
         });
       } else if (searchType === 'tag') {
@@ -80,13 +100,23 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
               createdAt: 'desc',
             },
           ],
-          include: {
-            category: true,
+          select: {
+            id: true,
+            title: true,
+            categoryId: true,
+            category: {
+              select: {
+                name: true,
+              },
+            },
+            authorId: true,
             author: {
               select: {
                 name: true,
               },
             },
+            isPublic: true,
+            createdAt: true,
           },
         });
       }

@@ -100,8 +100,8 @@ const PostManageList: FC<PostManageListProps> = ({ posts, isLoading, isFetching,
                       <PaperClipOutlined />
                     </div>
                     <div className='post_extra_info'>
-                      <a onClick={() => onClickCategory(post.categoryId)}>
-                        <span>{post.category?.name}</span>
+                      <a onClick={() => onClickCategory(post?.categoryId)}>
+                        <span>{post?.category.name}</span>
                       </a>
                       <span>{post.author?.name}</span>
                       <span>{dayjs(post.createdAt).format('YYYY.MM.DD HH:mm')}</span>
