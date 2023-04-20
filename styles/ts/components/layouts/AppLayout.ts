@@ -8,6 +8,7 @@ export const Container = styled(Layout)`
   flex-direction: row;
   height: 100%;
 `;
+
 export const ImageWrapper = styled.div`
   outline: none;
   float: right;
@@ -29,10 +30,14 @@ export const StyledSider = styled(Sider)`
   border-right: 1px solid #ddd;
   overflow-y: scroll;
   scroll-behavior: smooth;
-  transition: color 0.5s ease-in-out;
+  transition: background-color 0.8s;
 
   &:hover {
     color: #13a085;
+
+    &::-webkit-scrollbar-thumb {
+      background-color: #13a085;
+    }
   }
 
   // 스크롤바 영역에 대한 설정
@@ -50,12 +55,6 @@ export const StyledSider = styled(Sider)`
   // 스크롤바 뒷 배경에 대한 설정
   &::-webkit-scrollbar-track {
     /* box-shadow: inset 0 0 0 10px; */
-  }
-
-  &:hover {
-    &::-webkit-scrollbar-thumb {
-      background-color: #13a085;
-    }
   }
 
   @media (max-width: 959px) {
