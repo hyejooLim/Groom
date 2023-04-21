@@ -1,6 +1,6 @@
 import clientApi from '..';
 import { PostItem } from '../../types';
-import { revalidateCategoryPage, revalidateMainPage, revalidatePostPage, revalidateTagPage } from '../revalidate';
+import { revalidateCategoryPage, revalidateMainPage, revalidateTagPage } from '../revalidate';
 
 const deletePost = async (id: number) => {
   const response = await clientApi.delete(`/post/${id}`);
