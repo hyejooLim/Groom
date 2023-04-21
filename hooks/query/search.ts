@@ -51,6 +51,7 @@ const useSearchUserSharedPosts = (keyword: string, searchType: string) => {
     onSuccess: (data) => {
       setManageSharedPosts(data.receivedPosts);
     },
+    refetchOnWindowFocus: false,
   });
 };
 
