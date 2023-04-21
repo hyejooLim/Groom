@@ -138,19 +138,32 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
     }
 
     if (req.method === 'DELETE') {
+      let post = {};
+
       await prisma.comment.deleteMany({
         where: {
           postId: Number(req.query.id),
         },
       });
 
-      await prisma.post.delete({
+      post = await prisma.post.delete({
         where: {
           id: Number(req.query.id),
         },
+        select: {
+          id: true,
+          category: {
+            select: { name: true },
+          },
+          tags: {
+            select: {
+              name: true,
+            },
+          },
+        },
       });
 
-      res.status(200).send('ok');
+      res.status(200).json(post);
     }
   } catch (err) {
     console.error(err);

@@ -20,7 +20,6 @@ import PostShare from './PostShare';
 import { useGetUser } from '../../hooks/query/user';
 import { useGetPosts } from '../../hooks/query/posts';
 import {
-  useDeletePost,
   useLikePost,
   useUnLikePost,
   useSubscribePost,
@@ -35,9 +34,10 @@ polyfill();
 
 interface PostCardProps {
   post: PostItem;
+  onDeletePost: (id: number) => void;
 }
 
-const PostCard: FC<PostCardProps> = ({ post }) => {
+const PostCard: FC<PostCardProps> = ({ post, onDeletePost }) => {
   const { status } = useSession();
   const { data: user } = useGetUser();
 
@@ -45,7 +45,6 @@ const PostCard: FC<PostCardProps> = ({ post }) => {
   const unLikePost = useUnLikePost();
   const subscribePost = useSubscribePost();
   const unSubscribePost = useUnSubscribePost();
-  const deletePost = useDeletePost();
   const addNeighbor = useAddNeighbor();
   const cancelNeighbor = useCancelNeighbor();
 
@@ -64,14 +63,6 @@ const PostCard: FC<PostCardProps> = ({ post }) => {
   useEffect(() => {
     setCurrentPage(mainPosts.findIndex(findPostIndex) + 1);
   }, [mainPosts]);
-
-  useEffect(() => {
-    if (deletePost.isSuccess) {
-      setTimeout(() => {
-        Router.push('/');
-      }, 200);
-    }
-  }, [deletePost]);
 
   const onToggleLikePost = useCallback(() => {
     if (status === 'unauthenticated') {
@@ -127,13 +118,11 @@ const PostCard: FC<PostCardProps> = ({ post }) => {
     cancelNeighbor.mutate(currentPost.authorId);
   }, [currentPost]);
 
-  const onDeletePost = useCallback(() => {
+  const deletePost = useCallback(() => {
     const confirm = window.confirm('선택한 글을 삭제하시겠습니까?');
-    if (!confirm) {
-      return;
-    }
+    if (!confirm) return;
 
-    deletePost.mutate(currentPost.id);
+    onDeletePost(currentPost.id);
   }, [currentPost]);
 
   const onChangePage = useCallback(
@@ -208,7 +197,7 @@ const PostCard: FC<PostCardProps> = ({ post }) => {
               </a>
             </Link>
             <span className='line'>|</span>
-            <Button className='delete btn' onClick={onDeletePost}>
+            <Button className='delete btn' onClick={deletePost}>
               Delete
             </Button>
           </S.EditButton>

@@ -12,25 +12,40 @@ import getPost from '../../apis/post/getPost';
 import getComments from '../../apis/comments/getComments';
 import getCategories from '../../apis/categories/getCategories';
 import getVisitorsCount from '../../apis/count';
-import { useGetPost } from '../../hooks/query/post';
+import { useDeletePost, useGetPost } from '../../hooks/query/post';
 import { productionURL } from '../../constants/URL';
 import { PostItem } from '../../types';
+import Page404 from '../404';
 
 const Post = () => {
   const router = useRouter();
   const { id } = router.query;
 
+  const deletePost = useDeletePost();
   const { data: post } = useGetPost(Number(id));
 
+  useEffect(() => {
+    if (deletePost.isSuccess) {
+      alert('정상적으로 삭제되었습니다.');
+      router.push('/');
+    }
+  }, [deletePost.isSuccess]);
+
   const computePopoverTop = () => {
-    const popover = document.querySelector('.popover') as HTMLDivElement;
-    const shareButton = document.querySelector('.share') as HTMLButtonElement;
+    if (post) {
+      const popover = document.querySelector('.popover') as HTMLDivElement;
+      const shareButton = document.querySelector('.share') as HTMLButtonElement;
 
-    const popoverHeightPx = getComputedStyle(popover).height;
-    const popoverHeight = Number(popoverHeightPx.slice(0, -2)) + 10;
-    const shareButtonClientY = shareButton.getBoundingClientRect().y;
+      const popoverHeightPx = getComputedStyle(popover).height;
+      const popoverHeight = Number(popoverHeightPx.slice(0, -2)) + 10;
+      const shareButtonClientY = shareButton.getBoundingClientRect().y;
 
-    popover.style.top = shareButtonClientY - popoverHeight + 'px';
+      popover.style.top = shareButtonClientY - popoverHeight + 'px';
+    }
+  };
+
+  const handleDeletePost = (id: number) => {
+    deletePost.mutate(id);
   };
 
   useEffect(() => {
@@ -43,12 +58,18 @@ const Post = () => {
   }, []);
 
   return (
-    <AppLayout>
-      <Head>
-        <title>Groom | {id}번째 게시글</title>
-      </Head>
-      {post && <PostCard post={post} />}
-    </AppLayout>
+    <>
+      {post === null ? (
+        <Page404 />
+      ) : (
+        <AppLayout>
+          <Head>
+            <title>Groom | {id}번째 게시글</title>
+          </Head>
+          {post && <PostCard post={post} onDeletePost={handleDeletePost} />}
+        </AppLayout>
+      )}
+    </>
   );
 };
 
