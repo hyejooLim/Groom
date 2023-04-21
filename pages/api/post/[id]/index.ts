@@ -53,8 +53,10 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
         )
       );
 
+      let post = {};
+
       if (req.body.isPublic && req.body.createdAt) {
-        await prisma.post.update({
+        post = await prisma.post.update({
           where: {
             id: Number(req.query.id),
           },
@@ -79,9 +81,21 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
             allowComments: req.body.allowComments,
             createdAt: new Date(req.body.createdAt),
           },
+          include: {
+            category: {
+              select: {
+                name: true,
+              },
+            },
+            tags: {
+              select: {
+                name: true,
+              },
+            },
+          },
         });
       } else {
-        await prisma.post.update({
+        post = await prisma.post.update({
           where: {
             id: Number(req.query.id),
           },
@@ -105,10 +119,22 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
             isPublic: req.body.isPublic,
             allowComments: req.body.allowComments,
           },
+          include: {
+            category: {
+              select: {
+                name: true,
+              },
+            },
+            tags: {
+              select: {
+                name: true,
+              },
+            },
+          },
         });
       }
 
-      res.status(201).json('ok');
+      res.status(201).json(post);
     }
 
     if (req.method === 'DELETE') {
