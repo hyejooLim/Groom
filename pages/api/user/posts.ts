@@ -46,8 +46,8 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
             select: {
               name: true,
             },
-          }, isPublic: true,
-         
+          },
+          isPublic: true,
           createdAt: true,
         },
       });
