@@ -196,7 +196,11 @@ const PostCard: FC<PostCardProps> = ({ post, onDeletePost }) => {
             <GrFormPrevious className='prev icon' />
             <span>이전 게시글</span>
           </Button>
-          <Button className='next button' onClick={onClickNextPost} disabled={currentIdx === mainPosts.length - 1}>
+          <Button
+            className='next button'
+            onClick={onClickNextPost}
+            disabled={mainPosts.length ? currentIdx === mainPosts.length - 1 : false}
+          >
             <span>다음 게시글</span>
             <GrFormNext className='next icon' />
           </Button>
