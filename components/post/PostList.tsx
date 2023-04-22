@@ -1,36 +1,30 @@
 import React, { FC, useCallback, useEffect } from 'react';
-import { useRecoilState } from 'recoil';
+import Router from 'next/router';
 import Link from 'next/link';
 import dayjs from 'dayjs';
 import BeatLoader from 'react-spinners/BeatLoader';
 
 import { PostItem } from '../../types';
 import { useSsrAllowedState } from '../../recoil/persist';
-import { currentPageState, firstIndexState, lastIndexState, PAGE_SIZE } from '../../recoil/main';
+import { PAGE_SIZE } from '../../recoil/main';
 import PaginationContainer from '../common/PaginationContainer';
 import { ListWrapper, PostInfo } from '../../styles/ts/components/post/PostList';
 
 interface PostListProps {
   posts: PostItem[];
+  pathname: string;
+  page: number;
+  total: number;
   isLoading: boolean;
 }
 
-const PostList: FC<PostListProps> = ({ posts, isLoading }) => {
-  const [firstIndex, setFirstIndex] = useRecoilState(firstIndexState);
-  const [lastIndex, setLastIndex] = useRecoilState(lastIndexState);
-  const [currentPage, setCurrentPage] = useRecoilState(currentPageState);
-
+const PostList: FC<PostListProps> = ({ posts, pathname, page, total, isLoading }) => {
   const setSsrAllowed = useSsrAllowedState();
   useEffect(setSsrAllowed, [setSsrAllowed]);
 
-  const onChangePage = useCallback(
-    (page: number) => {
-      setFirstIndex((page - 1) * PAGE_SIZE);
-      setLastIndex(page * PAGE_SIZE);
-      setCurrentPage(page);
-    },
-    [PAGE_SIZE]
-  );
+  const onChangePage = useCallback((page: number) => {
+    Router.push({ pathname, query: { page } });
+  }, [pathname]);
 
   return (
     <>
@@ -39,7 +33,7 @@ const PostList: FC<PostListProps> = ({ posts, isLoading }) => {
           <BeatLoader className='loader' color='#ddd' size={16} />
         ) : (
           <ul>
-            {posts?.slice(firstIndex, lastIndex).map((post) => (
+            {posts?.map((post) => (
               <li key={post.id}>
                 <Link href={`/post/${post.id}`}>
                   <a>
@@ -55,7 +49,7 @@ const PostList: FC<PostListProps> = ({ posts, isLoading }) => {
           </ul>
         )}
       </ListWrapper>
-      <PaginationContainer pageSize={PAGE_SIZE} current={currentPage} total={posts?.length} onChange={onChangePage} />
+      <PaginationContainer pageSize={PAGE_SIZE} current={page} total={total} onChange={onChangePage} />
     </>
   );
 };

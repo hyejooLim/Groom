@@ -1,15 +1,14 @@
 import { NextApiHandler, NextApiRequest, NextApiResponse } from 'next';
-import prisma from '../../../../lib/prisma';
+import prisma from '../../../../../lib/prisma';
+import { PAGE_SIZE } from '../../../../../recoil/main';
 
 const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     if (req.method === 'GET') {
       const posts = await prisma.post.findMany({
         where: {
-          tags: {
-            some: {
-              name: String(req.query.name),
-            },
+          category: {
+            name: String(req.query.name),
           },
           isPublic: true,
           createdAt: {
@@ -37,6 +36,15 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
           createdAt: true,
         },
       });
+
+      const { page } = req.query;
+      let postsByPage = [];
+
+      if (Number(page) > 0) {
+        postsByPage = posts.slice((Number(page) - 1) * PAGE_SIZE, Number(page) * PAGE_SIZE);
+      } else {
+        postsByPage = posts.slice(0, PAGE_SIZE);
+      }
 
       res.status(200).json(posts);
     }

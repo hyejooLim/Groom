@@ -12,15 +12,18 @@ import getUser from '../../apis/user/getUser';
 import getCategories from '../../apis/categories/getCategories';
 import getVisitorsCount from '../../apis/count';
 import getPostsIncludeCategory from '../../apis/posts/getPostsIncludeCategory';
-import { useGetPostsIncludeCategory } from '../../hooks/query/posts';
+import { useGetPostsIncludeCategory, useGetPostsPerPageIncludeCategory } from '../../hooks/query/posts';
 import { productionURL } from '../../constants/URL';
 import { CategoryItem } from '../../types';
 
 const Category = () => {
   const router = useRouter();
-  const { name } = router.query;
+  const { name, page } = router.query;
 
-  const { data: posts, isLoading } = useGetPostsIncludeCategory(String(name));
+  const { data: posts } = useGetPostsIncludeCategory(String(name));
+  const { data: postsPerPage, isLoading } = page
+    ? useGetPostsPerPageIncludeCategory(String(name), Number(page))
+    : useGetPostsPerPageIncludeCategory(String(name), -1);
 
   return (
     <AppLayout>
@@ -30,7 +33,13 @@ const Category = () => {
       <div style={{ textAlign: 'center' }}>
         <Title title={name as string} />
       </div>
-      <PostList posts={posts} isLoading={isLoading} />
+      <PostList
+        posts={postsPerPage}
+        pathname={`/category/${name}`}
+        total={posts?.length}
+        page={Number(page)}
+        isLoading={isLoading}
+      />
     </AppLayout>
   );
 };

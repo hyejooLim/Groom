@@ -10,7 +10,7 @@ import UserProfile from '../main/UserProfile';
 import Category from '../main/Category';
 import Counter from '../common/Counter';
 import Search from '../main/Search';
-import { currentPageState, firstIndexState, keywordState, lastIndexState, PAGE_SIZE } from '../../recoil/main';
+import { keywordState } from '../../recoil/main';
 import * as S from '../../styles/ts/components/layouts/AppLayout';
 import logo from '../../public/Groom_Logo_No_Background.png';
 
@@ -19,19 +19,8 @@ const AppLayout = ({ children }) => {
   const { status } = useSession();
 
   const setKeyword = useSetRecoilState(keywordState);
-  const setFirstIndex = useSetRecoilState(firstIndexState);
-  const setLastIndex = useSetRecoilState(lastIndexState);
-  const setCurrentPage = useSetRecoilState(currentPageState);
-
-  const onInitPage = () => {
-    setFirstIndex(0);
-    setLastIndex(PAGE_SIZE);
-    setCurrentPage(1);
-  };
 
   useEffect(() => {
-    onInitPage();
-    
     if (!router.asPath.includes('/search')) {
       setKeyword('');
     }

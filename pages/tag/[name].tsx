@@ -12,15 +12,18 @@ import getPostsIncludeTag from '../../apis/posts/getPostsIncludeTag';
 import getUser from '../../apis/user/getUser';
 import getCategories from '../../apis/categories/getCategories';
 import getVisitorsCount from '../../apis/count';
-import { useGetPostsIncludeTag } from '../../hooks/query/posts';
+import { useGetPostsIncludeTag, useGetPostsPerPageIncludeTag } from '../../hooks/query/posts';
 import { productionURL } from '../../constants/URL';
 import { TagItem } from '../../types';
 
 const Tag = () => {
   const router = useRouter();
-  const { name } = router.query;
+  const { name, page } = router.query;
 
-  const { data: posts, isLoading } = useGetPostsIncludeTag(String(name));
+  const { data: posts } = useGetPostsIncludeTag(String(name));
+  const { data: postsPerPage, isLoading } = page
+    ? useGetPostsPerPageIncludeTag(String(name), Number(page))
+    : useGetPostsPerPageIncludeTag(String(name), -1);
 
   return (
     <AppLayout>
@@ -30,7 +33,13 @@ const Tag = () => {
       <div style={{ textAlign: 'center' }}>
         <Title title={name as string} />
       </div>
-      <PostList posts={posts} isLoading={isLoading} />
+      <PostList
+        posts={postsPerPage}
+        pathname={`/tag/${name}`}
+        total={posts?.length}
+        page={Number(page)}
+        isLoading={isLoading}
+      />
     </AppLayout>
   );
 };

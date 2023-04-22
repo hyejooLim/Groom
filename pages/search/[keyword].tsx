@@ -12,15 +12,18 @@ import searchPosts from '../../apis/search/searchPosts';
 import getUser from '../../apis/user/getUser';
 import getCategories from '../../apis/categories/getCategories';
 import getVisitorsCount from '../../apis/count';
-import { useSearchPosts } from '../../hooks/query/search';
+import { useSearchPosts, useSearchPostsPerPage } from '../../hooks/query/search';
 import { keywordState } from '../../recoil/main';
 
 const Search = () => {
   const router = useRouter();
-  const { keyword } = router.query;
+  const { keyword, page } = router.query;
   const setKeyword = useSetRecoilState(keywordState);
 
-  const { data: posts, isLoading } = useSearchPosts(keyword as string);
+  const { data: posts } = useSearchPosts(keyword as string);
+  const { data: postPerPage, isLoading } = page
+    ? useSearchPostsPerPage(String(keyword), Number(page))
+    : useSearchPostsPerPage(String(keyword), -1);
 
   useEffect(() => {
     setKeyword(keyword as string);
@@ -34,7 +37,13 @@ const Search = () => {
       <div style={{ textAlign: 'center' }}>
         <Title title={keyword as string} />
       </div>
-      <PostList posts={posts} isLoading={isLoading} />
+      <PostList
+        posts={postPerPage}
+        pathname={`/search/${keyword}`}
+        total={posts?.length}
+        page={Number(page)}
+        isLoading={isLoading}
+      />
     </AppLayout>
   );
 };

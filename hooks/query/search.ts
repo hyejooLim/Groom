@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useSetRecoilState } from 'recoil';
 
 import searchPosts from '../../apis/search/searchPosts';
+import searchPostsPerPage from '../../apis/search/searchPostsPerPage';
 import searchUserPosts from '../../apis/search/searchUserPosts';
 import searchNeighbors from '../../apis/search/searchNeighbors';
 import searchUserSubscribedPosts from '../../apis/search/searchUserSubscribedPosts';
@@ -13,7 +14,13 @@ import { managePostsState, manageSubscribedPostsState, manageSharedPostsState } 
 
 const useSearchPosts = (keyword: string) => {
   return useQuery(['posts', 'keyword', keyword], () => searchPosts(keyword), {
-    staleTime: 30000, // 3분 이내로 같은 키워드 검색 시 캐싱 값이 리턴
+    staleTime: 300000, // 5분 이내로 같은 키워드 검색 시 캐싱 값이 리턴
+  });
+};
+
+const useSearchPostsPerPage = (keyword: string, page: number) => {
+  return useQuery(['posts', 'keyword', keyword, 'page', page], () => searchPostsPerPage(keyword, page), {
+    staleTime: 300000,
   });
 };
 
@@ -93,6 +100,7 @@ const useSearchCategoryOnUserSharedPosts = (categoryId: number | undefined) => {
 
 export {
   useSearchPosts,
+  useSearchPostsPerPage,
   useSearchUserPosts,
   useSearchNeighbors,
   useSearchUserSubscribedPosts,
