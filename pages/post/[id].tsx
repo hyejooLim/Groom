@@ -66,7 +66,7 @@ const Post = () => {
           <Head>
             <title>Groom | {id}번째 게시글</title>
           </Head>
-          {post && <PostCard post={post} onDeletePost={handleDeletePost} />}
+          <PostCard post={post} onDeletePost={handleDeletePost} />
         </AppLayout>
       )}
     </>
