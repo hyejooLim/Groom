@@ -157,3 +157,63 @@ export const EditButton = styled.div`
     color: #ddd;
   }
 `;
+
+export const ButtonWrapper = styled.div`
+  padding: 10px;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+
+  & div {
+    width: 400px;
+    display: flex;
+    justify-content: space-between;
+
+    & .button {
+      border: 1px solid #999;
+      border-radius: 20px;
+      margin-top: 20px;
+      width: 160px;
+      height: 42px;
+      color: #333;
+      background-color: #f5f5f5;
+      transition: color 0.6s;
+      transition: background-color 0.6s;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      & .icon {
+        font-size: 16px;
+      }
+
+      & .prev {
+        margin-right: 16px;
+      }
+
+      & .next {
+        margin-left: 16px;
+      }
+
+      &:focus {
+        border-color: #999;
+      }
+
+      &:not(:disabled):hover {
+        color: #fff;
+        background-color: #13a085;
+        border: none;
+      }
+
+      &:disabled {
+        background: inherit;
+        color: rgba(0, 0, 0, 0.25);
+        border-color: #d9d9d9;
+
+        & polyline {
+          stroke: rgba(0, 0, 0, 0.25);
+        }
+      }
+    }
+  }
+`;

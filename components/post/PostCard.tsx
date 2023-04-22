@@ -9,22 +9,17 @@ import { polyfill } from 'interweave-ssr';
 import { useRecoilValue } from 'recoil';
 import { BsCloudFill } from 'react-icons/bs';
 import { RiUserFollowLine, RiUserUnfollowLine } from 'react-icons/ri';
+import { GrFormPrevious, GrFormNext } from 'react-icons/gr';
 import { FiShare } from 'react-icons/fi';
 import dayjs from 'dayjs';
 
 import Title from '../common/Title';
-import PaginationContainer from '../common/PaginationContainer';
 import CommentForm from '../comment/CommentForm';
 import CommentList from '../comment/CommentList';
 import PostShare from './PostShare';
 import { useGetUser } from '../../hooks/query/user';
 import { useGetPosts } from '../../hooks/query/posts';
-import {
-  useLikePost,
-  useUnLikePost,
-  useSubscribePost,
-  useUnSubscribePost,
-} from '../../hooks/query/post';
+import { useLikePost, useUnLikePost, useSubscribePost, useUnSubscribePost } from '../../hooks/query/post';
 import { useAddNeighbor, useCancelNeighbor } from '../../hooks/query/neighbor';
 import { mainPostsState } from '../../recoil/posts';
 import { PostItem } from '../../types';
@@ -50,19 +45,14 @@ const PostCard: FC<PostCardProps> = ({ post, onDeletePost }) => {
 
   useGetPosts();
   const mainPosts = useRecoilValue(mainPostsState);
-  const [currentPost, setCurrentPost] = useState<PostItem>(post);
   const [isShowPopover, setIsShowPopover] = useState(false);
 
   const findPostIndex = (element: PostItem) => element.id === post.id;
-  const [currentPage, setCurrentPage] = useState(mainPosts.findIndex(findPostIndex) + 1);
+  const [currentIdx, setCurrentIdx] = useState(mainPosts.findIndex(findPostIndex));
 
   useEffect(() => {
-    setCurrentPost(post);
+    setCurrentIdx(mainPosts.findIndex(findPostIndex));
   }, [post]);
-
-  useEffect(() => {
-    setCurrentPage(mainPosts.findIndex(findPostIndex) + 1);
-  }, [mainPosts]);
 
   const onToggleLikePost = useCallback(() => {
     if (status === 'unauthenticated') {
@@ -73,10 +63,8 @@ const PostCard: FC<PostCardProps> = ({ post, onDeletePost }) => {
       return;
     }
 
-    currentPost.likers?.find((liker) => liker.id === user?.id)
-      ? unLikePost.mutate(currentPost.id)
-      : likePost.mutate(currentPost.id);
-  }, [status, user, currentPost]);
+    post?.likers.find((liker) => liker.id === user?.id) ? unLikePost.mutate(post?.id) : likePost.mutate(post?.id);
+  }, [status, user, post]);
 
   const onSubscribePost = useCallback(() => {
     if (status === 'unauthenticated') {
@@ -87,12 +75,12 @@ const PostCard: FC<PostCardProps> = ({ post, onDeletePost }) => {
       return;
     }
 
-    subscribePost.mutate(currentPost.id);
-  }, [status, currentPost]);
+    subscribePost.mutate(post?.id);
+  }, [status, post]);
 
   const onUnSubscribePost = useCallback(() => {
-    unSubscribePost.mutate(currentPost.id);
-  }, [currentPost]);
+    unSubscribePost.mutate(post?.id);
+  }, [post]);
 
   const onAddNeighbor = useCallback(() => {
     if (status === 'unauthenticated') {
@@ -103,79 +91,78 @@ const PostCard: FC<PostCardProps> = ({ post, onDeletePost }) => {
       return;
     }
 
-    if (!confirm(`${currentPost.author?.name}님을 이웃 추가하시겠습니까?`)) {
+    if (!confirm(`${post?.author.name}님을 이웃 추가하시겠습니까?`)) {
       return;
     }
 
-    addNeighbor.mutate(currentPost.authorId);
-  }, [status, currentPost]);
+    addNeighbor.mutate(post?.authorId);
+  }, [status, post]);
 
   const onCancelNeighbor = useCallback(() => {
-    if (!confirm(`${currentPost.author?.name}님을 이웃 취소하시겠습니까?`)) {
+    if (!confirm(`${post?.author.name}님을 이웃 취소하시겠습니까?`)) {
       return;
     }
 
-    cancelNeighbor.mutate(currentPost.authorId);
-  }, [currentPost]);
+    cancelNeighbor.mutate(post?.authorId);
+  }, [post]);
 
   const deletePost = useCallback(() => {
     const confirm = window.confirm('선택한 글을 삭제하시겠습니까?');
     if (!confirm) return;
 
-    onDeletePost(currentPost.id);
-  }, [currentPost]);
+    onDeletePost(post?.id);
+  }, [post]);
 
-  const onChangePage = useCallback(
-    (page: number) => {
-      const postId = mainPosts.find((item, idx) => idx === page - 1).id;
+  const onClickPrevPost = useCallback(() => {
+    const prevPostId = mainPosts && mainPosts[mainPosts.findIndex(findPostIndex) - 1].id;
+    Router.push(`/post/${prevPostId}`);
+  }, [mainPosts, post]);
 
-      setCurrentPage(page);
-
-      Router.push(`/post/${postId}`);
-    },
-    [mainPosts]
-  );
+  const onClickNextPost = useCallback(() => {
+    const nextPostId = mainPosts && mainPosts[mainPosts.findIndex(findPostIndex) + 1].id;
+    Router.push(`/post/${nextPostId}`);
+  }, [mainPosts, post]);
 
   return (
     <>
       <S.HeadWrapper>
-        <Title title={`[${currentPost.category?.name}] ${currentPost.title}`} />
+        <Title title={`[${post?.category.name}] ${post?.title}`} />
         <S.Author>
-          {status === 'authenticated' && user?.id === currentPost.authorId && <BsCloudFill className='icon groom' />}
+          {status === 'authenticated' && user?.id === post?.authorId && <BsCloudFill className='icon groom' />}
           {status === 'authenticated' &&
-            user?.id !== currentPost.authorId &&
-            user?.neighbors.find((neighbor) => neighbor.id === currentPost.authorId) && (
+            user?.id !== post?.authorId &&
+            user?.neighbors.find((neighbor) => neighbor.id === post?.authorId) && (
               <RiUserFollowLine className='icon' onClick={onCancelNeighbor} />
             )}
           {status === 'authenticated' &&
-            user?.id !== currentPost.authorId &&
-            !user?.neighbors.find((neighbor) => neighbor.id === currentPost.authorId) && (
+            user?.id !== post?.authorId &&
+            !user?.neighbors.find((neighbor) => neighbor.id === post?.authorId) && (
               <RiUserUnfollowLine className='icon' onClick={onAddNeighbor} />
             )}
           {status === 'unauthenticated' && <RiUserUnfollowLine className='icon' onClick={onAddNeighbor} />}
-          <span>{currentPost.author?.name}의 글</span>
+          <span>{post?.author.name}의 글</span>
         </S.Author>
-        <S.Date>{dayjs(currentPost.createdAt).format('YYYY.MM.DD HH:mm')}</S.Date>
+        <S.Date>{dayjs(post?.createdAt).format('YYYY.MM.DD HH:mm')}</S.Date>
       </S.HeadWrapper>
       <S.ContentWrapper>
         <div className='tag_label'>
-          {currentPost.tags?.map((tag) => (
+          {post?.tags.map((tag) => (
             <Link key={tag.id} href={`/tag/${tag.name}`}>
               <a>#{tag.name}</a>
             </Link>
           ))}
         </div>
         <div className='article'>
-          <Markup content={currentPost.htmlContent} />
+          <Markup content={post?.htmlContent} />
         </div>
         <div style={{ display: 'flex' }}>
           <S.PostButton className='share' onClick={() => setIsShowPopover(true)}>
             <FiShare />
           </S.PostButton>
-          <PostShare postId={currentPost.id} isShow={isShowPopover} onClose={() => setIsShowPopover(false)} />
+          <PostShare postId={post?.id} isShow={isShowPopover} onClose={() => setIsShowPopover(false)} />
           <S.PostButton onClick={onToggleLikePost}>
             <span>
-              {status === 'authenticated' && currentPost.likers?.find((liker) => liker.id === user?.id) ? (
+              {status === 'authenticated' && post?.likers.find((liker) => liker.id === user?.id) ? (
                 <HeartTwoTone key='heart' twoToneColor='red' />
               ) : (
                 <HeartOutlined key='heart' />
@@ -183,13 +170,13 @@ const PostCard: FC<PostCardProps> = ({ post, onDeletePost }) => {
             </span>
             <span style={{ marginLeft: 7 }}>공감</span>
           </S.PostButton>
-          {status === 'authenticated' && currentPost.subscribers?.find((subscriber) => subscriber.id === user?.id) ? (
+          {status === 'authenticated' && post?.subscribers.find((subscriber) => subscriber.id === user?.id) ? (
             <S.PostButton onClick={onUnSubscribePost}>구독취소</S.PostButton>
           ) : (
             <S.PostButton onClick={onSubscribePost}>구독하기</S.PostButton>
           )}
         </div>
-        {status === 'authenticated' && user?.id === currentPost.authorId && (
+        {status === 'authenticated' && user?.id === post?.authorId && (
           <S.EditButton>
             <Link href={{ pathname: `/write/${post.id}`, query: { prevPathname: 'postcard' } }}>
               <a>
@@ -203,10 +190,21 @@ const PostCard: FC<PostCardProps> = ({ post, onDeletePost }) => {
           </S.EditButton>
         )}
       </S.ContentWrapper>
-      <PaginationContainer pageSize={1} current={currentPage} total={mainPosts?.length} onChange={onChangePage} />
+      <S.ButtonWrapper>
+        <div>
+          <Button className='prev button' onClick={onClickPrevPost} disabled={currentIdx === 0}>
+            <GrFormPrevious className='prev icon' />
+            <span>이전 게시글</span>
+          </Button>
+          <Button className='next button' onClick={onClickNextPost} disabled={currentIdx === mainPosts.length - 1}>
+            <span>다음 게시글</span>
+            <GrFormNext className='next icon' />
+          </Button>
+        </div>
+      </S.ButtonWrapper>
       <div>
-        {currentPost.allowComments && <CommentForm post={currentPost} />}
-        <CommentList postId={currentPost.id} />
+        {post?.allowComments && <CommentForm post={post} />}
+        {post && <CommentList postId={post?.id} />}
       </div>
     </>
   );
