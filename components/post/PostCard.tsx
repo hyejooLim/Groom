@@ -48,11 +48,11 @@ const PostCard: FC<PostCardProps> = ({ post, onDeletePost }) => {
   const [isShowPopover, setIsShowPopover] = useState(false);
 
   const findPostIndex = (element: PostItem) => element.id === post.id;
-  const [currentIdx, setCurrentIdx] = useState(mainPosts.findIndex(findPostIndex));
+  const [currentIdx, setCurrentIdx] = useState(0);
 
   useEffect(() => {
-    setCurrentIdx(mainPosts.findIndex(findPostIndex));
-  }, [post]);
+    mainPosts.length && setCurrentIdx(mainPosts.findIndex(findPostIndex));
+  }, [post, mainPosts]);
 
   const onToggleLikePost = useCallback(() => {
     if (status === 'unauthenticated') {
