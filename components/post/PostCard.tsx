@@ -33,8 +33,8 @@ interface PostCardProps {
 }
 
 const PostCard: FC<PostCardProps> = ({ post, onDeletePost }) => {
-  const { status } = useSession();
-  const { data: user } = useGetUser();
+  const { data: session, status } = useSession();
+  const { data: user } = useGetUser(session?.user.email);
 
   const likePost = useLikePost();
   const unLikePost = useUnLikePost();

@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { signOut } from 'next-auth/react';
+import { signOut, useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { useRecoilState } from 'recoil';
 import { Avatar } from 'antd';
@@ -13,7 +13,8 @@ import SkeletonUserProfile from '../skeleton/SkeletonUserProfile';
 import * as S from '../../styles/ts/components/main/UserProfile';
 
 const UserProfile = () => {
-  const { data: user, error, refetch, isLoading, isFetching, isError } = useGetUser();
+  const { data: session } = useSession();
+  const { data: user, error, refetch, isLoading, isFetching, isError } = useGetUser(session?.user.email);
   const [isLogIn, setIsLogIn] = useRecoilState(isLogInState);
 
   useEffect(() => {

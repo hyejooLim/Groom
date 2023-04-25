@@ -79,7 +79,7 @@ export const getStaticProps: GetStaticProps = async () => {
   const queryClient = new QueryClient();
 
   await Promise.all([
-    queryClient.prefetchQuery(['user'], getUser),
+    // queryClient.prefetchQuery(['user'], getUser),
     queryClient.prefetchQuery(['categories'], getCategories),
   ]);
 

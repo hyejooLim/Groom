@@ -108,7 +108,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   context.res.setHeader('Cache-Control', 'public, s-maxage=31536000, max-age=31536000');
 
   await Promise.all([
-    queryClient.prefetchQuery(['user'], getUser),
+    // queryClient.prefetchQuery(['user'], getUser),
     queryClient.prefetchQuery(['userPosts'], getUserPosts),
     categoryId &&
       queryClient.prefetchQuery(['userPosts', 'category', Number(categoryId)], () =>

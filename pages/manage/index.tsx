@@ -7,6 +7,7 @@ import ManageLayout from '../../components/layouts/ManageLayout';
 import SkeletonLastPosts from '../../components/skeleton/SkeletonLastPosts';
 import getUser from '../../apis/user/getUser';
 import getVisitorsCount from '../../apis/count';
+import getUserPosts from '../../apis/posts/getUserPosts';
 import { useGetUserPosts } from '../../hooks/query/posts';
 import useGetVisitorsCount from '../../hooks/query/visitorsCount';
 import * as S from '../../styles/ts/pages/manage';
@@ -67,11 +68,13 @@ const Manage = () => {
   );
 };
 
+// prefetch 안됨
 export const getStaticProps: GetStaticProps = async () => {
   const queryClient = new QueryClient();
 
   await Promise.all([
-    queryClient.prefetchQuery(['user'], getUser),
+    // queryClient.prefetchQuery(['user'], getUser),
+    queryClient.prefetchQuery(['userPosts'], getUserPosts),
     queryClient.prefetchQuery(['visitorsCount'], getVisitorsCount),
   ]);
 

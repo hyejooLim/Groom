@@ -1,6 +1,7 @@
 import React from 'react';
 import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
+import { getSession } from 'next-auth/react';
 import { dehydrate, QueryClient } from '@tanstack/react-query';
 
 import AppLayout from '../components/layouts/AppLayout';
@@ -30,15 +31,15 @@ const Home = () => {
 };
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  // const { req } = context;
-  // const session = await getSession({ req });
-  // const email = session && session?.user.email;
+  const { req } = context;
+  const session = await getSession({ req });
+  const email = session && session?.user.email;
 
   const queryClient = new QueryClient();
   context.res.setHeader('Cache-Control', 'public, s-maxage=31536000, max-age=59');
 
   await Promise.all([
-    queryClient.prefetchQuery(['user'], getUser),
+    queryClient.prefetchQuery(['user', email], () => getUser(email)),
     queryClient.prefetchQuery(['posts'], getPosts),
     queryClient.prefetchQuery(['categories'], getCategories),
     queryClient.prefetchQuery(['visitorsCount'], getVisitorsCount),
