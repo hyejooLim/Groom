@@ -56,7 +56,11 @@ const ManageCategory = () => {
             <span>{categories?.length}</span> / 100
           </S.TotalCount>
         </S.Description>
-        <CategoryManageList categories={categories} categoryJson={categoryJson} setCategoryJson={setCategoryJson} />
+        <CategoryManageList
+          categories={categories ?? []}
+          categoryJson={categoryJson}
+          setCategoryJson={setCategoryJson}
+        />
         <div className='set_btn'>
           <S.SaveDiffButton onClick={onUpdateCategories} disabled={isDisabled}>
             {isSave ? (
@@ -79,7 +83,7 @@ export const getStaticProps: GetStaticProps = async () => {
   const queryClient = new QueryClient();
 
   await Promise.all([
-    // queryClient.prefetchQuery(['user'], getUser),
+    queryClient.prefetchQuery(['user'], getUser),
     queryClient.prefetchQuery(['categories'], getCategories),
   ]);
 
