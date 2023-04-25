@@ -16,6 +16,7 @@ const useGetPost = (id: number) => {
     onError: (err) => {
       throw new Error('Request failed.', err);
     },
+    refetchOnWindowFocus: false,
   });
 };
 
