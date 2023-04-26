@@ -78,7 +78,7 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
         postsByPage = posts.slice(0, PAGE_SIZE);
       }
 
-      res.status(200).json(posts);
+      res.status(200).json(postsByPage);
     }
   } catch (err) {
     console.error(err);
