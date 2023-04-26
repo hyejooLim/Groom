@@ -5,8 +5,8 @@ import { revalidateMainPage, revalidatePostPage, revalidateCategoryPage, revalid
 interface UpdatePostProps {
   id?: number;
   title: string;
-  content: string;
-  htmlContent: string;
+  content?: string;
+  htmlContent?: string;
   tags?: TagItem[];
   category: CategoryItem;
   isPublic: boolean;

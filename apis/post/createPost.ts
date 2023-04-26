@@ -4,8 +4,8 @@ import { revalidateMainPage, revalidateCategoryPage, revalidateTagPage } from '.
 
 interface CreatePostProps {
   title: string;
-  content: string;
-  htmlContent: string;
+  content?: string;
+  htmlContent?: string;
   tags?: TagItem[];
   category: CategoryItem;
   isPublic: boolean;

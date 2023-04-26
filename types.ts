@@ -22,17 +22,17 @@ export type Sharer = {
 
 export type UserType = {
   id?: number;
-  email: string;
-  password: string;
-  name: string;
+  email?: string;
+  password?: string;
+  name?: string;
   imageUrl?: string; // 프로필 이미지 주소
-  comments: CommentItem[];
+  comments?: CommentItem[];
   posts?: PostItem[]; // 작성한 게시글
   sentPosts?: SharedPost[]; // 유저가 공유한 게시글
   receivedPosts?: SharedPost[]; // 유저가 공유받은 게시글
   tempPosts?: TempPostItem[];
-  neighbors: UserType[]; // 유저의 이웃들
-  neighborsAddUser: UserType[]; // 유저를 이웃으로 추가한 유저들
+  neighbors?: UserType[]; // 유저의 이웃들
+  neighborsAddUser?: UserType[]; // 유저를 이웃으로 추가한 유저들
   subscribedPosts?: PostItem[]; // 유저가 구독한 게시글
   likedPosts?: PostItem[]; // 유저가 좋아요한 게시글
   createdAt?: string;
@@ -42,8 +42,8 @@ export type UserType = {
 export type PostItem = {
   id?: number;
   title: string;
-  content: string;
-  htmlContent: string;
+  content?: string;
+  htmlContent?: string;
   tags?: TagItem[];
   isPublic: boolean; // 공개 또는 비공개 (작성자만 볼 수 있음)
   allowComments: boolean;

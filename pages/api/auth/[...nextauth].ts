@@ -41,5 +41,42 @@ export default NextAuth({
       },
     }),
   ],
+  callbacks: {
+    async jwt({ token }) {
+      return token;
+    },
+    async session({ session }) {
+      const user = await prisma.user.findUnique({
+        where: { email: session.user?.email },
+        select: {
+          id: true,
+          email: true,
+          name: true,
+          imageUrl: true,
+          posts: {
+            select: {
+              id: true,
+              title: true,
+              category: {
+                select: {
+                  name: true,
+                },
+              },
+              isPublic: true,
+              allowComments: true,
+            },
+          },
+          neighbors: {
+            select: {
+              id: true,
+            },
+          },
+        },
+      });
+
+      session.user = user;
+      return session;
+    },
+  },
   secret: process.env.COOKIE_SECRET,
 });
