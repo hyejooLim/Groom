@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
+import { getSession } from 'next-auth/react';
 import { GetServerSideProps } from 'next';
 import { useSetRecoilState } from 'recoil';
 import { dehydrate, QueryClient } from '@tanstack/react-query';
@@ -9,11 +10,11 @@ import AppLayout from '../../components/layouts/AppLayout';
 import Title from '../../components/common/Title';
 import PostList from '../../components/post/PostList';
 import searchPosts from '../../apis/search/searchPosts';
-import getUser from '../../apis/user/getUser';
 import getCategories from '../../apis/categories/getCategories';
 import getVisitorsCount from '../../apis/count';
-import { useSearchPosts, useSearchPostsPerPage } from '../../hooks/query/search';
+import searchPostsPerPage from '../../apis/search/searchPostsPerPage';
 import { keywordState } from '../../recoil/main';
+import { useSearchPosts, useSearchPostsPerPage } from '../../hooks/query/search';
 
 const Search = () => {
   const router = useRouter();
@@ -21,9 +22,7 @@ const Search = () => {
   const setKeyword = useSetRecoilState(keywordState);
 
   const { data: posts } = useSearchPosts(keyword as string);
-  const { data: postPerPage, isLoading } = page
-    ? useSearchPostsPerPage(String(keyword), Number(page))
-    : useSearchPostsPerPage(String(keyword), -1);
+  const { data: postPerPage, isLoading } = useSearchPostsPerPage(String(keyword), page ? Number(page) : 1);
 
   useEffect(() => {
     setKeyword(keyword as string);
@@ -49,20 +48,24 @@ const Search = () => {
 };
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
+  const { req } = context;
   const { keyword } = context.params;
-  const queryClient = new QueryClient();
 
+  const queryClient = new QueryClient();
   context.res.setHeader('Cache-Control', 'public, s-maxage=31536000, max-age=59');
 
   await Promise.all([
-    // queryClient.prefetchQuery(['user'], getUser),
     queryClient.prefetchQuery(['categories'], getCategories),
     queryClient.prefetchQuery(['visitorsCount'], getVisitorsCount),
     queryClient.prefetchQuery(['posts', 'keyword', String(keyword)], () => searchPosts(String(keyword))),
+    queryClient.prefetchQuery(['posts', 'keyword', String(keyword), 'page', 1], () =>
+      searchPostsPerPage(String(keyword), 1)
+    ),
   ]);
 
   return {
     props: {
+      session: await getSession({ req }),
       dehydratedState: dehydrate(queryClient),
     },
   };

@@ -40,15 +40,9 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
       });
 
       const { page } = req.query;
-      let postsByPage = [];
+      let postsByPage = posts.slice((Number(page) - 1) * PAGE_SIZE, Number(page) * PAGE_SIZE);
 
-      if (Number(page) > 0) {
-        postsByPage = posts.slice((Number(page) - 1) * PAGE_SIZE, Number(page) * PAGE_SIZE);
-      } else {
-        postsByPage = posts.slice(0, PAGE_SIZE);
-      }
-
-      res.status(200).json(posts);
+      res.status(200).json(postsByPage);
     }
   } catch (err) {
     console.error(err);
