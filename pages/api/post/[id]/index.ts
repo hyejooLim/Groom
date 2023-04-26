@@ -53,10 +53,8 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
         )
       );
 
-      let post = {};
-
       if (req.body.isPublic && req.body.createdAt) {
-        post = await prisma.post.update({
+        await prisma.post.update({
           where: {
             id: Number(req.query.id),
           },
@@ -95,7 +93,7 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
           },
         });
       } else {
-        post = await prisma.post.update({
+        await prisma.post.update({
           where: {
             id: Number(req.query.id),
           },
@@ -134,19 +132,17 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
         });
       }
 
-      res.status(201).json(post);
+      res.status(201).json('ok');
     }
 
     if (req.method === 'DELETE') {
-      let post = {};
-
       await prisma.comment.deleteMany({
         where: {
           postId: Number(req.query.id),
         },
       });
 
-      post = await prisma.post.delete({
+      await prisma.post.delete({
         where: {
           id: Number(req.query.id),
         },
@@ -163,7 +159,7 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
         },
       });
 
-      res.status(200).json(post);
+      res.status(200).json('ok');
     }
   } catch (err) {
     console.error(err);

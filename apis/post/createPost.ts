@@ -1,6 +1,5 @@
 import clientApi from '..';
-import { TagItem, CategoryItem, PostItem } from '../../types';
-import { revalidateMainPage, revalidateCategoryPage, revalidateTagPage } from '../revalidate';
+import { TagItem, CategoryItem } from '../../types';
 
 interface CreatePostProps {
   title: string;
@@ -13,18 +12,8 @@ interface CreatePostProps {
   createdAt?: string;
 }
 
-const createPost = async ({ data }: { data: CreatePostProps }) => {
-  const response = await clientApi.post('/post', data);
-
-  if (response) {
-    const post = response as PostItem;
-
-    await Promise.all([
-      revalidateMainPage(),
-      post.category.name !== '카테고리 없음' && revalidateCategoryPage(post.category.name),
-      post.tags.map(({ name }) => revalidateTagPage(name)),
-    ]);
-  }
+const createPost = async ({ data }: { data: CreatePostProps }): Promise<Response> => {
+  return await clientApi.post('/post', data);
 };
 
 export default createPost;
