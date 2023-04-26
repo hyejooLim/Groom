@@ -1,6 +1,5 @@
 import React, { ChangeEvent, useCallback, useEffect } from 'react';
-import { signOut } from 'next-auth/react';
-import { useRecoilState } from 'recoil';
+import { signOut, useSession } from 'next-auth/react';
 import { Button, Card } from 'antd';
 import { FiCamera } from 'react-icons/fi';
 import { BsCloudFill } from 'react-icons/bs';
@@ -8,8 +7,7 @@ import { AiFillMinusSquare } from 'react-icons/ai';
 import classNames from 'classnames';
 import AWS from 'aws-sdk';
 
-import { isLogInState } from '../../recoil/auth';
-import { useGetUser, useUpdateUser } from '../../hooks/query/user';
+import { useUpdateUser } from '../../hooks/query/user';
 import SkeletonManageProfile from '../skeleton/SkeletonManageProfile';
 import * as S from '../../styles/ts/components/manage/ManageProfile';
 
@@ -28,26 +26,15 @@ AWS.config.update({
 });
 
 const ManageProfile = () => {
-  const { data: user, error, refetch, isLoading, isFetching, isError } = useGetUser();
-  const [isLogIn, setIsLogIn] = useRecoilState(isLogInState);
-
+  const { data: session, status } = useSession();
   const updateUser = useUpdateUser();
 
   useEffect(() => {
-    if (isLogIn) {
-      refetch();
-      setIsLogIn(false);
-    }
-  }, [isLogIn]);
-
-  useEffect(() => {
-    if (isError) {
-      const err = error as any;
-
-      alert(err?.response?.data?.message);
+    if (session?.user === null) {
+      alert('세션이 만료되었습니다.');
       signOut({ redirect: false });
     }
-  }, [isError]);
+  }, [session]);
 
   const handleLogout = () => {
     if (confirm('로그아웃 하시겠습니까?')) {
@@ -97,14 +84,14 @@ const ManageProfile = () => {
     <S.StyledCard
       cover={
         <>
-          {user?.imageUrl ? (
-            <img className='profile' alt='profile' src={user?.imageUrl} width={214} height={200} />
+          {session?.user?.imageUrl ? (
+            <img className='profile' alt='profile' src={session?.user?.imageUrl} width={214} height={200} />
           ) : (
             <S.EmptyProfile>
               <BsCloudFill />
             </S.EmptyProfile>
           )}
-          <S.RemoveButton className={classNames({ show: user?.imageUrl })} onClick={onRemoveProfileImage}>
+          <S.RemoveButton className={classNames({ show: session?.user?.imageUrl })} onClick={onRemoveProfileImage}>
             <AiFillMinusSquare className='icon' />
           </S.RemoveButton>
           <S.CameraButton>
@@ -115,11 +102,11 @@ const ManageProfile = () => {
       }
     >
       <div className='card_meta'>
-        {isLoading || isFetching ? (
+        {status === 'loading' ? (
           <SkeletonManageProfile />
         ) : (
           <>
-            <Card.Meta title={`${user?.name}님`} description={user?.email} />
+            <Card.Meta title={`${session?.user?.name}님`} description={session?.user?.email} />
             <Button className='logout_btn' onClick={handleLogout}>
               로그아웃
             </Button>

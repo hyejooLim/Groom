@@ -1,37 +1,23 @@
 import React, { useEffect } from 'react';
 import { signOut, useSession } from 'next-auth/react';
 import Link from 'next/link';
-import { useRecoilState } from 'recoil';
 import { Avatar } from 'antd';
 import { BsCloudFill } from 'react-icons/bs';
 import { HiOutlinePencilAlt } from 'react-icons/hi';
 import { BsFillPersonFill } from 'react-icons/bs';
 
-import { useGetUser } from '../../hooks/query/user';
-import { isLogInState } from '../../recoil/auth';
 import SkeletonUserProfile from '../skeleton/SkeletonUserProfile';
 import * as S from '../../styles/ts/components/main/UserProfile';
 
 const UserProfile = () => {
-  const { data: session } = useSession();
-  const { data: user, error, refetch, isLoading, isFetching, isError } = useGetUser(session?.user.email);
-  const [isLogIn, setIsLogIn] = useRecoilState(isLogInState);
+  const { data: session, status } = useSession();
 
   useEffect(() => {
-    if (isLogIn) {
-      refetch();
-      setIsLogIn(false);
-    }
-  }, [isLogIn]);
-
-  useEffect(() => {
-    if (isError) {
-      const err = error as any;
-
-      alert(err?.response?.data?.message);
+    if (session?.user === null) {
+      alert('세션이 만료되었습니다.');
       signOut({ redirect: false });
     }
-  }, [isError]);
+  }, [session]);
 
   const handleLogout = () => {
     if (!confirm('로그아웃 하시겠습니까?')) return;
@@ -41,7 +27,7 @@ const UserProfile = () => {
 
   return (
     <S.UserProfileWrapper>
-      {isLoading || isFetching ? (
+      {status === 'loading' ? (
         <SkeletonUserProfile />
       ) : (
         <>
@@ -51,7 +37,7 @@ const UserProfile = () => {
                 <Avatar
                   size={80}
                   icon={<BsCloudFill style={{ height: '80px', lineHeight: '80px' }} />}
-                  src={user?.imageUrl}
+                  src={session?.user?.imageUrl}
                 />
               </a>
             </Link>
@@ -59,7 +45,7 @@ const UserProfile = () => {
               <S.InfoBox>
                 <Link href='/manage'>
                   <a className='go_to_profile'>
-                    <span>{user?.name}님</span>
+                    <span>{session?.user?.name}님</span>
                   </a>
                 </Link>
                 <Link href='/write'>
@@ -67,14 +53,14 @@ const UserProfile = () => {
                     <HiOutlinePencilAlt />
                   </a>
                 </Link>
-                <div style={{ marginTop: 5, color: '#888' }}>{user?.email}</div>
+                <div style={{ marginTop: 5, color: '#888' }}>{session?.user?.email}</div>
               </S.InfoBox>
               <S.NewBox>
                 <div className='posts'>
                   <span>게시글</span>
                   <Link href='/manage/posts'>
                     <a>
-                      <span className='count'>{user?.posts?.length}</span>
+                      <span className='count'>{session?.user?.posts.length}</span>
                     </a>
                   </Link>
                 </div>
@@ -82,7 +68,7 @@ const UserProfile = () => {
                   <BsFillPersonFill />
                   <Link href='/manage/neighbors'>
                     <a>
-                      <span className='count'>{user?.neighbors?.length}</span>
+                      <span className='count'>{session?.user?.neighbors.length}</span>
                     </a>
                   </Link>
                 </div>
