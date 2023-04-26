@@ -1,10 +1,8 @@
 import clientApi from '..';
 import { UserType } from '../../types';
 
-const getUser = async (email?: string): Promise<UserType> => {
-  const response = await clientApi.get<UserType>(`/user/${email}`);
-
-  return response;
+const getUser = async (): Promise<UserType> => {
+  return await clientApi.get<UserType>('/user');
 };
 
 export default getUser;

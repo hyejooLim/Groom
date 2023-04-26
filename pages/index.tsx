@@ -8,9 +8,9 @@ import AppLayout from '../components/layouts/AppLayout';
 import Title from '../components/common/Title';
 import PostList from '../components/post/PostList';
 import getPosts from '../apis/posts/getPosts';
-import getUser from '../apis/user/getUser';
 import getCategories from '../apis/categories/getCategories';
 import getVisitorsCount from '../apis/count';
+import getPostsPerPage from '../apis/posts/getPostsPerPage';
 import { useGetPosts, useGetPostsPerPage } from '../hooks/query/posts';
 
 const Home = () => {
@@ -18,7 +18,7 @@ const Home = () => {
   const { page } = router.query;
 
   const { data: posts } = useGetPosts();
-  const { data: postsByPage, isLoading } = useGetPostsPerPage(page ? Number(page) : -1);
+  const { data: postsByPage, isLoading } = useGetPostsPerPage(page ? Number(page) : 1);
 
   return (
     <AppLayout>
@@ -32,43 +32,23 @@ const Home = () => {
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const { req } = context;
-  const session = await getSession({ req });
-  const email = session && session?.user.email;
 
   const queryClient = new QueryClient();
   context.res.setHeader('Cache-Control', 'public, s-maxage=31536000, max-age=59');
 
   await Promise.all([
-    queryClient.prefetchQuery(['user', email], () => getUser(email)),
     queryClient.prefetchQuery(['posts'], getPosts),
+    queryClient.prefetchQuery(['posts', 'page', 1], () => getPostsPerPage(1)),
     queryClient.prefetchQuery(['categories'], getCategories),
     queryClient.prefetchQuery(['visitorsCount'], getVisitorsCount),
   ]);
 
   return {
     props: {
+      session: await getSession({ req }),
       dehydratedState: dehydrate(queryClient),
     },
   };
 };
-
-// export const getStaticProps: GetStaticProps = async () => {
-//   const queryClient = new QueryClient();
-//   const session = await getSession();
-//   console.log('session!!', session);
-
-//   await Promise.all([
-//     queryClient.prefetchQuery(['user'], getUser),
-//     queryClient.prefetchQuery(['posts'], getPosts),
-//     queryClient.prefetchQuery(['categories'], getCategories),
-//     queryClient.prefetchQuery(['visitorsCount'], getVisitorsCount),
-//   ]);
-
-//   return {
-//     props: {
-//       dehydratedState: dehydrate(queryClient),
-//     },
-//   };
-// };
 
 export default Home;
