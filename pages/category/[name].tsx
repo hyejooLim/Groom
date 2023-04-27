@@ -11,7 +11,6 @@ import PostList from '../../components/post/PostList';
 import getCategories from '../../apis/categories/getCategories';
 import getVisitorsCount from '../../apis/count';
 import getPostsIncludeCategory from '../../apis/posts/getPostsIncludeCategory';
-import getPostsPerPageIncludeCategory from '../../apis/posts/getPostsPerPageIncludeCategory';
 import { useGetPostsIncludeCategory, useGetPostsPerPageIncludeCategory } from '../../hooks/query/posts';
 
 const Category = () => {
@@ -51,9 +50,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     queryClient.prefetchQuery(['categories'], getCategories),
     queryClient.prefetchQuery(['visitorsCount'], getVisitorsCount),
     queryClient.prefetchQuery(['posts', 'category', String(name)], () => getPostsIncludeCategory(String(name))),
-    queryClient.prefetchQuery(['posts', 'category', String(name), 'page', 1], () =>
-      getPostsPerPageIncludeCategory(String(name), 1)
-    ),
   ]);
 
   return {

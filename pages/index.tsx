@@ -10,7 +10,6 @@ import PostList from '../components/post/PostList';
 import getPosts from '../apis/posts/getPosts';
 import getCategories from '../apis/categories/getCategories';
 import getVisitorsCount from '../apis/count';
-import getPostsPerPage from '../apis/posts/getPostsPerPage';
 import { useGetPosts, useGetPostsPerPage } from '../hooks/query/posts';
 
 const Home = () => {
@@ -18,14 +17,20 @@ const Home = () => {
   const { page } = router.query;
 
   const { data: posts } = useGetPosts();
-  const { data: postsByPage, isLoading } = useGetPostsPerPage(page ? Number(page) : 1);
+  const { data: postsByPage, isLoading } = useGetPostsPerPage(page ? Number(page): 1);
 
   return (
     <AppLayout>
       <div style={{ textAlign: 'center' }}>
         <Title title='전체 글' />
       </div>
-      <PostList posts={postsByPage} pathname='/' total={posts?.length} page={Number(page)} isLoading={isLoading} />
+      <PostList
+        posts={postsByPage}
+        pathname='/'
+        total={posts?.length}
+        page={Number(page)}
+        isLoading={isLoading}
+      />
     </AppLayout>
   );
 };
@@ -38,7 +43,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   await Promise.all([
     queryClient.prefetchQuery(['posts'], getPosts),
-    queryClient.prefetchQuery(['posts', 'page', 1], () => getPostsPerPage(1)),
     queryClient.prefetchQuery(['categories'], getCategories),
     queryClient.prefetchQuery(['visitorsCount'], getVisitorsCount),
   ]);

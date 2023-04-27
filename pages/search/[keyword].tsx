@@ -12,7 +12,6 @@ import PostList from '../../components/post/PostList';
 import searchPosts from '../../apis/search/searchPosts';
 import getCategories from '../../apis/categories/getCategories';
 import getVisitorsCount from '../../apis/count';
-import searchPostsPerPage from '../../apis/search/searchPostsPerPage';
 import { keywordState } from '../../recoil/main';
 import { useSearchPosts, useSearchPostsPerPage } from '../../hooks/query/search';
 
@@ -58,9 +57,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     queryClient.prefetchQuery(['categories'], getCategories),
     queryClient.prefetchQuery(['visitorsCount'], getVisitorsCount),
     queryClient.prefetchQuery(['posts', 'keyword', String(keyword)], () => searchPosts(String(keyword))),
-    queryClient.prefetchQuery(['posts', 'keyword', String(keyword), 'page', 1], () =>
-      searchPostsPerPage(String(keyword), 1)
-    ),
   ]);
 
   return {
