@@ -27,7 +27,6 @@ const useGetPosts = () => {
 
 const useGetPostsPerPage = (page: number) => {
   return useQuery(['posts', 'page', page], () => getPostsPerPage(page), {
-    // staleTime: 300000, // 5분 동안 캐시
     refetchOnWindowFocus: false,
   });
 };
@@ -36,7 +35,6 @@ const useGetPostsIncludeTag = (name: string) => useQuery(['posts', 'tag', name],
 
 const useGetPostsPerPageIncludeTag = (name: string, page: number) => {
   return useQuery(['posts', 'tag', name, 'page', page], () => getPostsPerPageIncludeTag(name, page), {
-    // staleTime: 300000,
     refetchOnWindowFocus: false,
   });
 };
@@ -46,7 +44,6 @@ const useGetPostsIncludeCategory = (name: string) =>
 
 const useGetPostsPerPageIncludeCategory = (name: string, page: number) => {
   return useQuery(['posts', 'category', name, 'page', page], () => getPostsPerPageIncludeCategory(name, page), {
-    // staleTime: 300000,
     refetchOnWindowFocus: false,
   });
 };
