@@ -1,6 +1,6 @@
 import clientApi from '..';
-import { TagItem, CategoryItem, PostItem } from '../../types';
-import { revalidateMainPage, revalidatePostPage, revalidateCategoryPage, revalidateTagPage } from '../revalidate';
+import { TagItem, CategoryItem } from '../../types';
+import { revalidatePostPage } from '../revalidate';
 
 interface UpdatePostProps {
   id?: number;
