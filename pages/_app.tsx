@@ -18,18 +18,21 @@ const ReactQueryDevtoolsProduction = React.lazy(() =>
   }))
 );
 
-const App = ({ Component, pageProps }) => {
+const App = ({ Component, pageProps: { session, ...pageProps } }) => {
   const [queryClient] = useState(() => new QueryClient());
   const [showDevtools, setShowDevtools] = useState(false);
 
+  console.log('session', session);
+
   useEffect(() => {
+    console.log(pageProps.dehydratedState);
     // @ts-ignore
     window.toggleDevtools = () => setShowDevtools((old) => !old);
   }, []);
 
   return (
     <>
-      <SessionProvider>
+      <SessionProvider session={session}>
         <QueryClientProvider client={queryClient}>
           <Hydrate state={pageProps.dehydratedState}>
             <RecoilRoot>
