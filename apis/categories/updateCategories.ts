@@ -1,9 +1,7 @@
-import { useRecoilValue } from 'recoil';
-
 import clientApi from '..';
 import { CategoryItem } from '../../types';
+import getPosts from '../posts/getPosts';
 import { revalidatePostPage } from '../revalidate';
-import { mainPostsState } from '../../recoil/posts';
 
 interface UpdateCategoriesProps {
   append: CategoryItem[];
@@ -15,7 +13,7 @@ const updateCategories = async ({ data }: { data: UpdateCategoriesProps }) => {
   const response = await clientApi.put('/categories', data);
 
   if (response === 'ok') {
-    const posts = useRecoilValue(mainPostsState);
+    const posts = await getPosts();
     posts.map((post) => revalidatePostPage(post.id));
   }
 };
