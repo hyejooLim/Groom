@@ -1,20 +1,18 @@
 import React, { useEffect } from 'react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import { GetStaticPaths, GetStaticProps } from 'next';
+import { getSession } from 'next-auth/react';
+import { GetServerSideProps } from 'next';
 import { dehydrate, QueryClient } from '@tanstack/react-query';
-import axios from 'axios';
 
 import AppLayout from '../../components/layouts/AppLayout';
 import PostCard from '../../components/post/PostCard';
-import getUser from '../../apis/user/getUser';
 import getPost from '../../apis/post/getPost';
 import getComments from '../../apis/comments/getComments';
 import getCategories from '../../apis/categories/getCategories';
+import getUserWithEmail from '../../apis/user/getUserWithEmail';
 import getVisitorsCount from '../../apis/count';
 import { useDeletePost, useGetPost } from '../../hooks/query/post';
-import { productionURL } from '../../constants/URL';
-import { PostItem } from '../../types';
 import Page404 from '../404';
 
 const Post = () => {
@@ -73,32 +71,26 @@ const Post = () => {
   );
 };
 
-export const getStaticPaths: GetStaticPaths = async () => {
-  const result = await axios.get(`${productionURL}/api/posts`);
-  const posts = result.data as PostItem[];
-
-  const paths = posts.map(({ id }) => ({ params: { id: String(id) } }));
-
-  return {
-    paths,
-    fallback: 'blocking',
-  };
-};
-
-export const getStaticProps: GetStaticProps = async (context) => {
+export const getServerSideProps: GetServerSideProps = async (context) => {
   const { id } = context.params;
+
+  const session = await getSession(context);
+  const email = session ? session.user.email : null;
+
   const queryClient = new QueryClient();
+  context.res.setHeader('Cache-Control', 'public, s-maxage=31536000, max-age=59'); // max-age 더 크게 설정
 
   await Promise.all([
-    // queryClient.prefetchQuery(['user'], getUser),
     queryClient.prefetchQuery(['categories'], getCategories),
     queryClient.prefetchQuery(['visitorsCount'], getVisitorsCount),
+    queryClient.prefetchQuery(['user', email], () => getUserWithEmail(email)),
     queryClient.prefetchQuery(['post', Number(id)], () => getPost(Number(id))),
     queryClient.prefetchQuery(['comments', Number(id)], () => getComments(Number(id))),
   ]);
 
   return {
     props: {
+      session,
       dehydratedState: dehydrate(queryClient),
     },
   };
