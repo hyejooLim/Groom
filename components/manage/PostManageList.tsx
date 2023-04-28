@@ -19,7 +19,7 @@ import * as S from '../../styles/ts/components/manage/PostManageList';
 
 interface PostManageListProps {
   posts: PostItem[];
-  isLoading: boolean;
+  isLoading?: boolean;
   isFetching: boolean;
   onClickCategory: (id: number) => void;
 }

@@ -12,7 +12,7 @@ import * as S from '../../styles/ts/components/manage/NeighborManageList';
 
 interface NeighborManageListProps {
   neighbors: UserType[];
-  isLoading: boolean;
+  isLoading?: boolean;
   isFetching: boolean;
 }
 

@@ -19,7 +19,7 @@ import * as S from '../../styles/ts/components/manage/SharedPostManageList';
 
 interface SharedPostManageListProps {
   sharedPosts: SharedPost[];
-  isLoading: boolean;
+  isLoading?: boolean;
   isFetching: boolean;
   onClickCategory: (id: number) => void;
 }
