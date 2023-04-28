@@ -31,13 +31,17 @@ const useSearchUserPosts = (keyword: string, searchType: string) => {
     onSuccess: (data) => {
       setManagePosts(data);
     },
+    staleTime: Infinity, // 무한 fresh 상태 (api 요청 x)
+    enabled: keyword !== 'undefined',
     refetchOnWindowFocus: false,
   });
 };
 
 const useSearchNeighbors = (keyword: string) =>
   useQuery(['neighbors', keyword], () => searchNeighbors(keyword), {
-    staleTime: 30000,
+    staleTime: Infinity,
+    enabled: keyword !== 'undefined',
+    refetchOnWindowFocus: false,
   });
 
 const useSearchUserSubscribedPosts = (keyword: string, searchType: string) => {
@@ -47,6 +51,8 @@ const useSearchUserSubscribedPosts = (keyword: string, searchType: string) => {
     onSuccess: (data) => {
       setManageSubscribedPosts(data);
     },
+    staleTime: Infinity,
+    enabled: keyword !== 'undefined',
     refetchOnWindowFocus: false,
   });
 };
@@ -58,17 +64,21 @@ const useSearchUserSharedPosts = (keyword: string, searchType: string) => {
     onSuccess: (data) => {
       setManageSharedPosts(data.receivedPosts);
     },
+    staleTime: 180000, // 3분동안 fresh 상태
+    enabled: keyword !== 'undefined',
     refetchOnWindowFocus: false,
   });
 };
 
-const useSearchCategoryOnUserPosts = (categoryId: number | undefined) => {
+const useSearchCategoryOnUserPosts = (categoryId: number) => {
   const setManagePosts = useSetRecoilState(managePostsState);
 
   return useQuery(['userPosts', 'category', categoryId], () => searchCategoryOnUserPosts(categoryId), {
     onSuccess: (data) => {
       setManagePosts(data.posts);
     },
+    staleTime: Infinity,
+    enabled: !!categoryId, // categoryId가 존재할 때에만 쿼리 요청
     refetchOnWindowFocus: false,
   });
 };
@@ -83,6 +93,8 @@ const useSearchCategoryOnUserSubscribedPosts = (categoryId: number | undefined) 
       onSuccess: (data) => {
         setManageSubscribedPosts(data.posts);
       },
+      staleTime: Infinity,
+      enabled: !!categoryId,
       refetchOnWindowFocus: false,
     }
   );
@@ -95,6 +107,9 @@ const useSearchCategoryOnUserSharedPosts = (categoryId: number | undefined) => {
     onSuccess: (data) => {
       setManageSharedPosts(data);
     },
+    staleTime: 180000,
+    enabled: !!categoryId,
+    refetchOnWindowFocus: false,
   });
 };
 
