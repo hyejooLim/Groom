@@ -5,6 +5,7 @@ import updateCategories from '../../apis/categories/updateCategories';
 
 const useGetCategories = () =>
   useQuery(['categories'], getCategories, {
+    staleTime: 180000,
     refetchOnWindowFocus: false,
   });
 

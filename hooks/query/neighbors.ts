@@ -3,6 +3,7 @@ import getNeighbors from '../../apis/neighbors/getNeighbors';
 
 const useGetNeighbors = () =>
   useQuery(['neighbors'], getNeighbors, {
+    staleTime: Infinity,
     refetchOnWindowFocus: false,
   });
 

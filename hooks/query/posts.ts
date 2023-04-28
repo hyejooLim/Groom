@@ -50,17 +50,19 @@ const useGetPostsPerPageIncludeCategory = (name: string, page: number) => {
 
 const useGetUserPosts = () =>
   useQuery(['userPosts'], getUserPosts, {
+    staleTime: Infinity,
     refetchOnWindowFocus: false,
   });
 
 const useGetUserSubscribedPosts = () =>
   useQuery(['userSubscribedPosts'], getUserSubscribedPosts, {
+    staleTime: Infinity,
     refetchOnWindowFocus: false,
   });
 
 const useGetUserSharedPosts = () =>
   useQuery(['userSharedPosts'], getUserSharedPosts, {
-    refetchInterval: 180000,
+    staleTime: 180000,
     refetchOnWindowFocus: false,
   });
 
