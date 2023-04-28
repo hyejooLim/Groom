@@ -19,6 +19,7 @@ import CommentList from '../comment/CommentList';
 import PostShare from './PostShare';
 import { useGetPosts } from '../../hooks/query/posts';
 import { useLikePost, useUnLikePost, useSubscribePost, useUnSubscribePost } from '../../hooks/query/post';
+import { useGetUser, useGetUserWithEmail } from '../../hooks/query/user';
 import { useAddNeighbor, useCancelNeighbor } from '../../hooks/query/neighbor';
 import { mainPostsState } from '../../recoil/posts';
 import { PostItem } from '../../types';
@@ -33,6 +34,7 @@ interface PostCardProps {
 
 const PostCard: FC<PostCardProps> = ({ post, onDeletePost }) => {
   const { data: session, status } = useSession();
+  const { data: user } = session ? useGetUserWithEmail(session.user.email) : useGetUser();
 
   const likePost = useLikePost();
   const unLikePost = useUnLikePost();
@@ -130,15 +132,15 @@ const PostCard: FC<PostCardProps> = ({ post, onDeletePost }) => {
       <S.HeadWrapper>
         <Title title={`[${post?.category.name}] ${post?.title}`} />
         <S.Author>
-          {status === 'authenticated' && session.user?.id === post?.authorId && <BsCloudFill className='icon groom' />}
+          {status === 'authenticated' && user?.id === post?.authorId && <BsCloudFill className='icon groom' />}
           {status === 'authenticated' &&
-            session.user?.id !== post?.authorId &&
-            session.user?.neighbors.find((neighbor) => neighbor.id === post?.authorId) && (
+            user?.id !== post?.authorId &&
+            user?.neighbors.find((neighbor) => neighbor.id === post?.authorId) && (
               <RiUserFollowLine className='icon' onClick={onCancelNeighbor} />
             )}
           {status === 'authenticated' &&
-            session.user?.id !== post?.authorId &&
-            !session.user?.neighbors.find((neighbor) => neighbor.id === post?.authorId) && (
+            user?.id !== post?.authorId &&
+            !user?.neighbors.find((neighbor) => neighbor.id === post?.authorId) && (
               <RiUserUnfollowLine className='icon' onClick={onAddNeighbor} />
             )}
           {status === 'unauthenticated' && <RiUserUnfollowLine className='icon' onClick={onAddNeighbor} />}
@@ -164,7 +166,7 @@ const PostCard: FC<PostCardProps> = ({ post, onDeletePost }) => {
           <PostShare postId={post?.id} isShow={isShowPopover} onClose={() => setIsShowPopover(false)} />
           <S.PostButton onClick={onToggleLikePost}>
             <span>
-              {status === 'authenticated' && post?.likers.find((liker) => liker.id === session.user?.id) ? (
+              {status === 'authenticated' && post?.likers.find((liker) => liker.id === user?.id) ? (
                 <HeartTwoTone key='heart' twoToneColor='red' />
               ) : (
                 <HeartOutlined key='heart' />
@@ -172,13 +174,13 @@ const PostCard: FC<PostCardProps> = ({ post, onDeletePost }) => {
             </span>
             <span style={{ marginLeft: 7 }}>공감</span>
           </S.PostButton>
-          {status === 'authenticated' && post?.subscribers.find((subscriber) => subscriber.id === session.user?.id) ? (
+          {status === 'authenticated' && post?.subscribers.find((subscriber) => subscriber.id === user?.id) ? (
             <S.PostButton onClick={onUnSubscribePost}>구독취소</S.PostButton>
           ) : (
             <S.PostButton onClick={onSubscribePost}>구독하기</S.PostButton>
           )}
         </div>
-        {status === 'authenticated' && session.user?.id === post?.authorId && (
+        {status === 'authenticated' && user?.id === post?.authorId && (
           <S.EditButton>
             <Link href={{ pathname: `/write/${post?.id}`, query: { prevPathname: 'postcard' } }}>
               <a>

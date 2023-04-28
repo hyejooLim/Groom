@@ -11,6 +11,7 @@ import Title from '../../components/common/Title';
 import PostList from '../../components/post/PostList';
 import searchPosts from '../../apis/search/searchPosts';
 import getCategories from '../../apis/categories/getCategories';
+import getUserWithEmail from '../../apis/user/getUserWithEmail';
 import getVisitorsCount from '../../apis/count';
 import { keywordState } from '../../recoil/main';
 import { useSearchPosts, useSearchPostsPerPage } from '../../hooks/query/search';
@@ -47,8 +48,10 @@ const Search = () => {
 };
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const { req } = context;
   const { keyword } = context.params;
+
+  const session = await getSession(context);
+  const email = session ? session.user.email : null;
 
   const queryClient = new QueryClient();
   context.res.setHeader('Cache-Control', 'public, s-maxage=31536000, max-age=59');
@@ -56,12 +59,13 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   await Promise.all([
     queryClient.prefetchQuery(['categories'], getCategories),
     queryClient.prefetchQuery(['visitorsCount'], getVisitorsCount),
+    queryClient.prefetchQuery(['user', email], () => getUserWithEmail(email)),
     queryClient.prefetchQuery(['posts', 'keyword', String(keyword)], () => searchPosts(String(keyword))),
   ]);
 
   return {
     props: {
-      session: await getSession({ req }),
+      session,
       dehydratedState: dehydrate(queryClient),
     },
   };

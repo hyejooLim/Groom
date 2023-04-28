@@ -6,12 +6,17 @@ import { BsCloudFill } from 'react-icons/bs';
 import { HiOutlinePencilAlt } from 'react-icons/hi';
 import { BsFillPersonFill } from 'react-icons/bs';
 
+import { useGetUser, useGetUserWithEmail } from '../../hooks/query/user';
 import SkeletonUserProfile from '../skeleton/SkeletonUserProfile';
 import * as S from '../../styles/ts/components/main/UserProfile';
 
 const UserProfile = () => {
-  const { data: session, status } = useSession();
+  const { data: session } = useSession();
+  const { data: user, isLoading } = session ? useGetUserWithEmail(session.user.email) : useGetUser();
 
+  // 에러 처리 ex. isError 
+  // test1. database에서 유저 정보 삭제
+  // test2. 로그아웃 상태에서 새로고침
   useEffect(() => {
     if (session?.user === null) {
       alert('세션이 만료되었습니다.');
@@ -27,7 +32,7 @@ const UserProfile = () => {
 
   return (
     <S.UserProfileWrapper>
-      {status === 'loading' ? (
+      {isLoading ? (
         <SkeletonUserProfile />
       ) : (
         <>
@@ -37,7 +42,7 @@ const UserProfile = () => {
                 <Avatar
                   size={80}
                   icon={<BsCloudFill style={{ height: '80px', lineHeight: '80px' }} />}
-                  src={session?.user?.imageUrl}
+                  src={user?.imageUrl}
                 />
               </a>
             </Link>
@@ -45,7 +50,7 @@ const UserProfile = () => {
               <S.InfoBox>
                 <Link href='/manage'>
                   <a className='go_to_profile'>
-                    <span>{session?.user?.name}님</span>
+                    <span>{user?.name}님</span>
                   </a>
                 </Link>
                 <Link href='/write'>
@@ -53,14 +58,14 @@ const UserProfile = () => {
                     <HiOutlinePencilAlt />
                   </a>
                 </Link>
-                <div style={{ marginTop: 5, color: '#888' }}>{session?.user?.email}</div>
+                <div style={{ marginTop: 5, color: '#888' }}>{user?.email}</div>
               </S.InfoBox>
               <S.NewBox>
                 <div className='posts'>
                   <span>게시글</span>
                   <Link href='/manage/posts'>
                     <a>
-                      <span className='count'>{session?.user?.posts.length}</span>
+                      <span className='count'>{user?.posts.length}</span>
                     </a>
                   </Link>
                 </div>
@@ -68,7 +73,7 @@ const UserProfile = () => {
                   <BsFillPersonFill />
                   <Link href='/manage/neighbors'>
                     <a>
-                      <span className='count'>{session?.user?.neighbors.length}</span>
+                      <span className='count'>{user?.neighbors.length}</span>
                     </a>
                   </Link>
                 </div>

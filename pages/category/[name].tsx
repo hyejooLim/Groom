@@ -10,6 +10,7 @@ import Title from '../../components/common/Title';
 import PostList from '../../components/post/PostList';
 import getCategories from '../../apis/categories/getCategories';
 import getVisitorsCount from '../../apis/count';
+import getUserWithEmail from '../../apis/user/getUserWithEmail';
 import getPostsIncludeCategory from '../../apis/posts/getPostsIncludeCategory';
 import { useGetPostsIncludeCategory, useGetPostsPerPageIncludeCategory } from '../../hooks/query/posts';
 
@@ -40,8 +41,10 @@ const Category = () => {
 };
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const { req } = context;
   const { name } = context.params;
+
+  const session = await getSession(context);
+  const email = session ? session.user.email : null;
 
   const queryClient = new QueryClient();
   context.res.setHeader('Cache-Control', 'public, s-maxage=31536000, max-age=59');
@@ -49,12 +52,13 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   await Promise.all([
     queryClient.prefetchQuery(['categories'], getCategories),
     queryClient.prefetchQuery(['visitorsCount'], getVisitorsCount),
+    queryClient.prefetchQuery(['user', email], () => getUserWithEmail(email)),
     queryClient.prefetchQuery(['posts', 'category', String(name)], () => getPostsIncludeCategory(String(name))),
   ]);
 
   return {
     props: {
-      session: await getSession({ req }),
+      session,
       dehydratedState: dehydrate(queryClient),
     },
   };

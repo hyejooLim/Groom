@@ -9,6 +9,7 @@ import Title from '../components/common/Title';
 import PostList from '../components/post/PostList';
 import getPosts from '../apis/posts/getPosts';
 import getCategories from '../apis/categories/getCategories';
+import getUserWithEmail from '../apis/user/getUserWithEmail';
 import getVisitorsCount from '../apis/count';
 import { useGetPosts, useGetPostsPerPage } from '../hooks/query/posts';
 
@@ -17,26 +18,21 @@ const Home = () => {
   const { page } = router.query;
 
   const { data: posts } = useGetPosts();
-  const { data: postsByPage, isLoading } = useGetPostsPerPage(page ? Number(page): 1);
+  const { data: postsByPage, isLoading } = useGetPostsPerPage(page ? Number(page) : 1);
 
   return (
     <AppLayout>
       <div style={{ textAlign: 'center' }}>
         <Title title='전체 글' />
       </div>
-      <PostList
-        posts={postsByPage}
-        pathname='/'
-        total={posts?.length}
-        page={Number(page)}
-        isLoading={isLoading}
-      />
+      <PostList posts={postsByPage} pathname='/' total={posts?.length} page={Number(page)} isLoading={isLoading} />
     </AppLayout>
   );
 };
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const { req } = context;
+  const session = await getSession(context);
+  const email = session ? session.user.email : null;
 
   const queryClient = new QueryClient();
   context.res.setHeader('Cache-Control', 'public, s-maxage=31536000, max-age=59');
@@ -45,11 +41,12 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     queryClient.prefetchQuery(['posts'], getPosts),
     queryClient.prefetchQuery(['categories'], getCategories),
     queryClient.prefetchQuery(['visitorsCount'], getVisitorsCount),
+    queryClient.prefetchQuery(['user', email], () => getUserWithEmail(email)),
   ]);
 
   return {
     props: {
-      session: await getSession({ req }),
+      session,
       dehydratedState: dehydrate(queryClient),
     },
   };
