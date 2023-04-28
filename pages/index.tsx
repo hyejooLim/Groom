@@ -10,7 +10,6 @@ import PostList from '../components/post/PostList';
 import getPosts from '../apis/posts/getPosts';
 import getCategories from '../apis/categories/getCategories';
 import getUserWithEmail from '../apis/user/getUserWithEmail';
-import getVisitorsCount from '../apis/count';
 import { useGetPosts, useGetPostsPerPage } from '../hooks/query/posts';
 
 const Home = () => {
@@ -40,7 +39,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   await Promise.all([
     queryClient.prefetchQuery(['posts'], getPosts),
     queryClient.prefetchQuery(['categories'], getCategories),
-    queryClient.prefetchQuery(['visitorsCount'], getVisitorsCount),
     queryClient.prefetchQuery(['user', email], () => getUserWithEmail(email)),
   ]);
 

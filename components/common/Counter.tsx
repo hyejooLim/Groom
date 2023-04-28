@@ -1,10 +1,11 @@
 import React from 'react';
+import useSWR from 'swr';
 
-import useGetVisitorsCount from '../../hooks/query/visitorsCount';
+import { VisitorsCount } from '../../types';
 import { CounterWrapper } from '../../styles/ts/components/common/Counter';
 
 const Counter = () => {
-  const { data } = useGetVisitorsCount();
+  const { data } = useSWR<VisitorsCount>('/count');
 
   return (
     <CounterWrapper>

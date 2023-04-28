@@ -1,15 +1,11 @@
 import React from 'react';
 import Link from 'next/link';
-import { GetStaticProps } from 'next';
-import { dehydrate, QueryClient } from '@tanstack/react-query';
+import useSWR from 'swr';
 
 import ManageLayout from '../../components/layouts/ManageLayout';
 import SkeletonLastPosts from '../../components/skeleton/SkeletonLastPosts';
-import getUser from '../../apis/user/getUser';
-import getVisitorsCount from '../../apis/count';
-import getUserPosts from '../../apis/posts/getUserPosts';
 import { useGetUserPosts } from '../../hooks/query/posts';
-import useGetVisitorsCount from '../../hooks/query/visitorsCount';
+import { VisitorsCount } from '../../types';
 import * as S from '../../styles/ts/pages/manage';
 
 const renderEmptyBox = (length: number) => {
@@ -24,7 +20,7 @@ const renderEmptyBox = (length: number) => {
 
 const Manage = () => {
   const { data: userPosts, isLoading } = useGetUserPosts();
-  const { data: visitors } = useGetVisitorsCount();
+  const { data: visitors } = useSWR<VisitorsCount>('/count');
 
   return (
     <ManageLayout>
@@ -66,23 +62,6 @@ const Manage = () => {
       </S.LastPosts>
     </ManageLayout>
   );
-};
-
-// prefetch 안됨
-export const getStaticProps: GetStaticProps = async () => {
-  const queryClient = new QueryClient();
-
-  await Promise.all([
-    // queryClient.prefetchQuery(['user'], getUser),
-    queryClient.prefetchQuery(['userPosts'], getUserPosts),
-    queryClient.prefetchQuery(['visitorsCount'], getVisitorsCount),
-  ]);
-
-  return {
-    props: {
-      dehydratedState: dehydrate(queryClient),
-    },
-  };
 };
 
 export default Manage;
