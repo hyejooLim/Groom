@@ -2,8 +2,6 @@ import React, { useEffect } from 'react';
 import Head from 'next/head';
 import Router, { useRouter } from 'next/router';
 import Link from 'next/link';
-import { GetServerSideProps } from 'next';
-import { dehydrate, QueryClient } from '@tanstack/react-query';
 import { useRecoilState } from 'recoil';
 import { CloseCircleOutlined } from '@ant-design/icons';
 
@@ -13,26 +11,15 @@ import WrapSearchInput from '../../components/manage/WrapSearchInput';
 import { managePostsState } from '../../recoil/manage';
 import { useGetUserPosts } from '../../hooks/query/posts';
 import { useSearchUserPosts, useSearchCategoryOnUserPosts } from '../../hooks/query/search';
-import getUser from '../../apis/user/getUser';
-import getUserPosts from '../../apis/posts/getUserPosts';
-import searchCategoryOnUserPosts from '../../apis/search/searchCategoryOnUserPosts';
-import searchUserPosts from '../../apis/search/searchUserPosts';
 import { TitleWrapper, CloseButton } from '../../styles/ts/common';
 
 const ManagePosts = () => {
   const router = useRouter();
   const { category: categoryId, searchKeyword, searchType } = router.query;
 
-  const { data: userPosts, isLoading: isLoadingPosts, isFetching: isFetchingPosts } = useGetUserPosts();
-  const { isLoading: isLoadingSearch, isFetching: isFetchingSearch } = useSearchUserPosts(
-    String(searchKeyword),
-    String(searchType)
-  );
-  const {
-    data: category,
-    isLoading: isLoadingSearchCategory,
-    isFetching: isFetchingSearchCategory,
-  } = useSearchCategoryOnUserPosts(categoryId ? Number(categoryId) : undefined);
+  const { data: userPosts, isFetching: isFetchingPosts } = useGetUserPosts();
+  const { isFetching: isFetchingSearch } = useSearchUserPosts(String(searchKeyword), String(searchType));
+  const { data: category, isFetching: isFetchingSearchCategory } = useSearchCategoryOnUserPosts(Number(categoryId));
 
   const [managePosts, setManagePosts] = useRecoilState(managePostsState);
 
@@ -92,39 +79,12 @@ const ManagePosts = () => {
         <WrapSearchInput placeholder='글' onSearch={onSearchInput} />
         <PostManageList
           posts={managePosts ?? userPosts}
-          isLoading={isLoadingSearch || isLoadingSearchCategory || isLoadingPosts}
           isFetching={isFetchingSearch || isFetchingSearchCategory || isFetchingPosts}
           onClickCategory={onClickCategory}
         />
       </div>
     </ManageLayout>
   );
-};
-
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const { category: categoryId, searchKeyword, searchType } = context.query;
-  const queryClient = new QueryClient();
-
-  context.res.setHeader('Cache-Control', 'public, s-maxage=31536000, max-age=31536000');
-
-  await Promise.all([
-    // queryClient.prefetchQuery(['user'], getUser),
-    queryClient.prefetchQuery(['userPosts'], getUserPosts),
-    categoryId &&
-      queryClient.prefetchQuery(['userPosts', 'category', Number(categoryId)], () =>
-        searchCategoryOnUserPosts(Number(categoryId))
-      ),
-    searchKeyword &&
-      queryClient.prefetchQuery(['userPosts', searchKeyword, searchType], () =>
-        searchUserPosts(String(searchKeyword), String(searchType))
-      ),
-  ]);
-
-  return {
-    props: {
-      dehydratedState: dehydrate(queryClient),
-    },
-  };
 };
 
 export default ManagePosts;
