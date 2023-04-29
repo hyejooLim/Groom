@@ -68,9 +68,9 @@ const ManageSharedPosts = () => {
                   <span className='text'>검색결과</span>
                 </>
               )}
-              {sharedInfo?.length > 0 && (
+              {categoryId && (
                 <>
-                  <span className='text title'>'{sharedInfo[0].post.category.name}'</span>
+                  <span className='text title'>'{sharedInfo && sharedInfo[0].post.category.name}'</span>
                   <span className='text'>글</span>
                 </>
               )}
