@@ -8,10 +8,15 @@ export const Container = styled(Layout)`
   width: 1180px;
   height: 100%;
   margin: auto;
-  padding: 50px 0;
+  padding: 54px 0;
   display: flex;
   justify-content: center;
   align-items: center;
+
+  @media (min-width: 1860px) {
+    margin: 0 auto;
+    padding: 150px 0;
+  }
 `;
 
 export const HomeButton = styled.div`
@@ -46,8 +51,17 @@ export const AddPostButton = styled(Button)`
 `;
 
 export const StyledSider = styled(Sider)`
-  margin: 100px 50px 50px 0;
+  position: relative;
+  top: 30px;
+  left: 0px;
+  height: 100%;
   background: transparent;
+`;
+
+export const StyledLayout = styled(Layout)`
+  margin-left: 30px;
+  width: 100%;
+  height: 100%;
 `;
 
 export const StyledHeader = styled(Header)`

@@ -30,7 +30,7 @@ const ManageLayout = ({ children }) => {
           <ManageWrite />
           <ManageList />
         </S.StyledSider>
-        <Layout style={{ width: '100%', height: '100%' }}>
+        <S.StyledLayout>
           <S.StyledHeader>
             <S.HomeButton>
               <Link href='/'>
@@ -48,8 +48,8 @@ const ManageLayout = ({ children }) => {
               </a>
             </Link>
           </S.StyledHeader>
-          <Layout.Content style={{ width: '889px' }}>{children}</Layout.Content>
-        </Layout>
+          <Layout.Content style={{ width: '912px' }}>{children}</Layout.Content>
+        </S.StyledLayout>
       </S.Container>
     </>
   );
