@@ -10,8 +10,7 @@ export const Container = styled(Layout)`
   margin: auto;
   padding: 54px 0;
   display: flex;
-  justify-content: center;
-  align-items: center;
+  flex-direction: row;
 
   @media (min-width: 1860px) {
     margin: 0 auto;
