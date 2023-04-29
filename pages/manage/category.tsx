@@ -1,14 +1,10 @@
 import React, { useCallback, useState, useEffect } from 'react';
 import Head from 'next/head';
-import { GetStaticProps } from 'next';
-import { dehydrate, QueryClient } from '@tanstack/react-query';
 import { FiCheck } from 'react-icons/fi';
 
 import ManageLayout from '../../components/layouts/ManageLayout';
 import CategoryManageList from '../../components/manage/CategoryManageList';
 import { useGetCategories, useUpdateCategories } from '../../hooks/query/categories';
-import getUser from '../../apis/user/getUser';
-import getCategories from '../../apis/categories/getCategories';
 import { CategoryJson } from '../../types';
 import * as S from '../../styles/ts/pages/manage/category';
 
@@ -77,21 +73,6 @@ const ManageCategory = () => {
       <div style={{ height: '100px' }} />
     </ManageLayout>
   );
-};
-
-export const getStaticProps: GetStaticProps = async () => {
-  const queryClient = new QueryClient();
-
-  await Promise.all([
-    queryClient.prefetchQuery(['user'], getUser),
-    queryClient.prefetchQuery(['categories'], getCategories),
-  ]);
-
-  return {
-    props: {
-      dehydratedState: dehydrate(queryClient),
-    },
-  };
 };
 
 export default ManageCategory;
