@@ -9,21 +9,20 @@ import PostList from '../components/post/PostList';
 import getUser from '../apis/user/getUser';
 import getPosts from '../apis/posts/getPosts';
 import getCategories from '../apis/categories/getCategories';
-import { useGetPosts, useGetPostsPerPage } from '../hooks/query/posts';
+import { useGetPosts } from '../hooks/query/posts';
 
 const Home = () => {
   const router = useRouter();
   const { page } = router.query;
 
-  const { data: posts } = useGetPosts();
-  const { data: postsByPage, isLoading } = useGetPostsPerPage(page ? Number(page) : 1);
+  const { data: posts, isFetching } = useGetPosts();
 
   return (
     <AppLayout>
       <div style={{ textAlign: 'center' }}>
         <Title title='전체 글' />
       </div>
-      <PostList posts={postsByPage} pathname='/' total={posts?.length} page={Number(page)} isLoading={isLoading} />
+      <PostList posts={posts} pathname='/' currentPage={Number(page)} isFetching={isFetching} />
     </AppLayout>
   );
 };

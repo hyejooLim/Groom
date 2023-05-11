@@ -1,15 +1,13 @@
 import { NextApiHandler, NextApiRequest, NextApiResponse } from 'next';
-import prisma from '../../../../../lib/prisma';
+import prisma from '../../../../lib/prisma';
 
 const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     if (req.method === 'GET') {
       const posts = await prisma.post.findMany({
         where: {
-          tags: {
-            some: {
-              name: String(req.query.name),
-            },
+          category: {
+            name: String(req.query.name),
           },
           isPublic: true,
           createdAt: {

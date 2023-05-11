@@ -1,11 +1,10 @@
-import React, { FC, useCallback, useEffect } from 'react';
+import React, { FC, useCallback, useEffect, useState } from 'react';
 import Router from 'next/router';
 import Link from 'next/link';
 import dayjs from 'dayjs';
 import BeatLoader from 'react-spinners/BeatLoader';
 
 import { PostItem } from '../../types';
-import { useSsrAllowedState } from '../../recoil/persist';
 import { PAGE_SIZE } from '../../recoil/main';
 import PaginationContainer from '../common/PaginationContainer';
 import { ListWrapper, PostInfo } from '../../styles/ts/components/post/PostList';
@@ -13,27 +12,39 @@ import { ListWrapper, PostInfo } from '../../styles/ts/components/post/PostList'
 interface PostListProps {
   posts: PostItem[];
   pathname: string;
-  page: number;
-  total: number;
-  isLoading: boolean;
+  currentPage: number;
+  isFetching: boolean;
 }
 
-const PostList: FC<PostListProps> = ({ posts, pathname, page, total, isLoading }) => {
-  const setSsrAllowed = useSsrAllowedState();
-  useEffect(setSsrAllowed, [setSsrAllowed]);
+const PostList: FC<PostListProps> = ({ posts, pathname, currentPage, isFetching }) => {
+  const [firstIndex, setFirstIndex] = useState(0);
+  const [lastIndex, setLastIndex] = useState(PAGE_SIZE);
 
-  const onChangePage = useCallback((page: number) => {
-    Router.push({ pathname, query: { page } });
-  }, [pathname]);
+  useEffect(() => {
+    if (currentPage) {
+      setFirstIndex((currentPage - 1) * PAGE_SIZE);
+      setLastIndex(currentPage * PAGE_SIZE);
+    } else {
+      setFirstIndex(0);
+      setLastIndex(PAGE_SIZE);
+    }
+  }, [currentPage, PAGE_SIZE]);
+
+  const onChangePage = useCallback(
+    (page: number) => {
+      Router.push({ pathname, query: { page } });
+    },
+    [PAGE_SIZE, pathname]
+  );
 
   return (
     <>
       <ListWrapper>
-        {isLoading ? (
+        {isFetching ? (
           <BeatLoader className='loader' color='#ddd' size={16} />
         ) : (
           <ul>
-            {posts?.map((post) => (
+            {posts?.slice(firstIndex, lastIndex).map((post) => (
               <li key={post.id}>
                 <Link href={`/post/${post.id}`}>
                   <a>
@@ -49,7 +60,7 @@ const PostList: FC<PostListProps> = ({ posts, pathname, page, total, isLoading }
           </ul>
         )}
       </ListWrapper>
-      <PaginationContainer pageSize={PAGE_SIZE} current={page} total={total} onChange={onChangePage} />
+      <PaginationContainer pageSize={PAGE_SIZE} current={currentPage} total={posts?.length} onChange={onChangePage} />
     </>
   );
 };
