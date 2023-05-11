@@ -17,9 +17,9 @@ import Title from '../common/Title';
 import CommentForm from '../comment/CommentForm';
 import CommentList from '../comment/CommentList';
 import PostShare from './PostShare';
+import { useGetUser } from '../../hooks/query/user';
 import { useGetPosts } from '../../hooks/query/posts';
 import { useLikePost, useUnLikePost, useSubscribePost, useUnSubscribePost } from '../../hooks/query/post';
-import { useGetUser, useGetUserWithEmail } from '../../hooks/query/user';
 import { useAddNeighbor, useCancelNeighbor } from '../../hooks/query/neighbor';
 import { mainPostsState } from '../../recoil/posts';
 import { PostItem } from '../../types';
@@ -33,8 +33,8 @@ interface PostCardProps {
 }
 
 const PostCard: FC<PostCardProps> = ({ post, onDeletePost }) => {
-  const { data: session, status } = useSession();
-  const { data: user } = session ? useGetUserWithEmail(session.user.email) : useGetUser();
+  const { status } = useSession();
+  const { data: user } = useGetUser();
 
   const likePost = useLikePost();
   const unLikePost = useUnLikePost();
@@ -65,10 +65,8 @@ const PostCard: FC<PostCardProps> = ({ post, onDeletePost }) => {
       return;
     }
 
-    post?.likers.find((liker) => liker.id === session?.user?.id)
-      ? unLikePost.mutate(post?.id)
-      : likePost.mutate(post?.id);
-  }, [status, session, post]);
+    post?.likers.find((liker) => liker.id === user?.id) ? unLikePost.mutate(post?.id) : likePost.mutate(post?.id);
+  }, [status, post]);
 
   const onSubscribePost = useCallback(() => {
     if (status === 'unauthenticated') {
@@ -132,6 +130,7 @@ const PostCard: FC<PostCardProps> = ({ post, onDeletePost }) => {
       <S.HeadWrapper>
         <Title title={`[${post?.category.name}] ${post?.title}`} />
         <S.Author>
+          {status === 'loading' && <BsCloudFill className='icon groom' />}
           {status === 'authenticated' && user?.id === post?.authorId && <BsCloudFill className='icon groom' />}
           {status === 'authenticated' &&
             user?.id !== post?.authorId &&
