@@ -24,10 +24,7 @@ const App = ({ Component, pageProps: { session, ...pageProps } }) => {
   const [queryClient] = useState(() => new QueryClient());
   const [showDevtools, setShowDevtools] = useState(false);
 
-  console.log('session', session);
-
   useEffect(() => {
-    console.log(pageProps.dehydratedState);
     // @ts-ignore
     window.toggleDevtools = () => setShowDevtools((old) => !old);
   }, []);
