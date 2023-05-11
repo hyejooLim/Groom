@@ -151,6 +151,10 @@ export const EditButton = styled.div`
     }
   }
 
+  .modify:hover {
+    color: #2587ff;
+  }
+
   .line {
     padding: 0 5px;
     font-size: 9px;
