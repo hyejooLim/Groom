@@ -1,28 +1,26 @@
 import React, { useEffect } from 'react';
-import { signOut, useSession } from 'next-auth/react';
+import { signOut } from 'next-auth/react';
 import Link from 'next/link';
 import { Avatar } from 'antd';
 import { BsCloudFill } from 'react-icons/bs';
 import { HiOutlinePencilAlt } from 'react-icons/hi';
 import { BsFillPersonFill } from 'react-icons/bs';
 
-import { useGetUser, useGetUserWithEmail } from '../../hooks/query/user';
+import { useGetUser } from '../../hooks/query/user';
 import SkeletonUserProfile from '../skeleton/SkeletonUserProfile';
 import * as S from '../../styles/ts/components/main/UserProfile';
 
 const UserProfile = () => {
-  const { data: session } = useSession();
-  const { data: user, isLoading } = session ? useGetUserWithEmail(session.user.email) : useGetUser();
+  const { data: user, isLoading, isError, error } = useGetUser();
 
-  // 에러 처리 ex. isError 
-  // test1. database에서 유저 정보 삭제
-  // test2. 로그아웃 상태에서 새로고침
   useEffect(() => {
-    if (session?.user === null) {
-      alert('세션이 만료되었습니다.');
+    if (isError) {
+      const err = error as any;
+
+      alert(err?.response?.data?.message);
       signOut({ redirect: false });
     }
-  }, [session]);
+  }, [isError]);
 
   const handleLogout = () => {
     if (!confirm('로그아웃 하시겠습니까?')) return;
