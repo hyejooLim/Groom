@@ -1,28 +1,20 @@
 import React, { useEffect } from 'react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import { getSession } from 'next-auth/react';
-import { GetServerSideProps } from 'next';
 import { useSetRecoilState } from 'recoil';
-import { dehydrate, QueryClient } from '@tanstack/react-query';
 
 import AppLayout from '../../components/layouts/AppLayout';
 import Title from '../../components/common/Title';
 import PostList from '../../components/post/PostList';
-import searchPosts from '../../apis/search/searchPosts';
-import getCategories from '../../apis/categories/getCategories';
-import getUserWithEmail from '../../apis/user/getUserWithEmail';
-import getVisitorsCount from '../../apis/count';
 import { keywordState } from '../../recoil/main';
-import { useSearchPosts, useSearchPostsPerPage } from '../../hooks/query/search';
+import { useSearchPosts } from '../../hooks/query/search';
 
 const Search = () => {
   const router = useRouter();
   const { keyword, page } = router.query;
   const setKeyword = useSetRecoilState(keywordState);
 
-  const { data: posts } = useSearchPosts(keyword as string);
-  const { data: postPerPage, isLoading } = useSearchPostsPerPage(String(keyword), page ? Number(page) : 1);
+  const { data: posts, isFetching } = useSearchPosts(keyword as string);
 
   useEffect(() => {
     setKeyword(keyword as string);
@@ -36,39 +28,9 @@ const Search = () => {
       <div style={{ textAlign: 'center' }}>
         <Title title={keyword as string} />
       </div>
-      <PostList
-        posts={postPerPage}
-        pathname={`/search/${keyword}`}
-        total={posts?.length}
-        page={Number(page)}
-        isLoading={isLoading}
-      />
+      <PostList posts={posts} pathname={`/search/${keyword}`} currentPage={Number(page)} isFetching={isFetching} />
     </AppLayout>
   );
-};
-
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const { keyword } = context.params;
-
-  const session = await getSession(context);
-  const email = session ? session.user.email : null;
-
-  const queryClient = new QueryClient();
-  context.res.setHeader('Cache-Control', 'public, max-age=59');
-
-  await Promise.all([
-    queryClient.prefetchQuery(['categories'], getCategories),
-    queryClient.prefetchQuery(['visitorsCount'], getVisitorsCount),
-    queryClient.prefetchQuery(['user', email], () => getUserWithEmail(email)),
-    queryClient.prefetchQuery(['posts', 'keyword', String(keyword)], () => searchPosts(String(keyword))),
-  ]);
-
-  return {
-    props: {
-      session,
-      dehydratedState: dehydrate(queryClient),
-    },
-  };
 };
 
 export default Search;
