@@ -7,8 +7,13 @@
 
 > ### FrontEnd
 * Next.js
+  * SEO (검색 엔진 최적화)
+  * pre-render
+  * dynamic routing
 * React
+  * 재사용 가능한 컴포넌트 개발
 * Recoil
+  * Hook을 통한 React state 전역 관리
 * React Query
 * TypeScript
 * Ant Design
