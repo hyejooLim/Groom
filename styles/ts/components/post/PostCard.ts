@@ -41,8 +41,8 @@ export const Date = styled.div`
 
   @media (max-width: 959px) {
     bottom: -10px;
-    right: 0;
-    left: inherit;
+    left: 0;
+    right: inherit;
     padding: 8px 5px 6px;
     font-size: 11px;
   }

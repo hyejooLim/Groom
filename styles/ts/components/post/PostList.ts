@@ -26,6 +26,18 @@ export const ListWrapper = styled.div`
     line-height: 432px;
     text-align: center;
   }
+
+  @media (max-width: 420px) {
+    height: 556px;
+
+    & ul {
+      & li {
+        padding: 8px 10px;
+        height: 64px;
+        font-size: 15px;
+      }
+    }
+  }
 `;
 
 export const PostInfo = styled.div`
@@ -34,5 +46,10 @@ export const PostInfo = styled.div`
 
   & span {
     color: #666;
+  }
+
+  @media (max-width: 420px) {
+    position: absolute;
+    font-size: 12px;
   }
 `;

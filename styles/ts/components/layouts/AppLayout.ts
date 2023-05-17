@@ -16,6 +16,10 @@ export const ImageWrapper = styled.div`
   padding: 0;
   margin: 15px 0 0 0;
   background-color: transparent;
+
+  @media (max-width: 420px) {
+    width: 120px;
+  }
 `;
 
 export const StyledSider = styled(Sider)`
@@ -79,6 +83,10 @@ export const StyledHeader = styled(Header)`
   height: 80px;
   padding: 0 24px;
   background: transparent;
+
+  @media (max-width: 420px) {
+    padding: 0;
+  }
 `;
 
 export const StyledFooter = styled(Footer)`
