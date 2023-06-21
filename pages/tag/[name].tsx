@@ -26,9 +26,7 @@ const Tag = () => {
       <Head>
         <title>Groom | '{name}' 태그의 글 목록</title>
       </Head>
-      <div style={{ textAlign: 'center' }}>
-        <Title title={name as string} />
-      </div>
+      <Title title={name as string} />
       <PostList posts={posts} pathname={`/tag/${name}`} currentPage={Number(page)} isFetching={isFetching} />
     </AppLayout>
   );

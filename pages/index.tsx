@@ -19,9 +19,7 @@ const Home = () => {
 
   return (
     <AppLayout>
-      <div style={{ textAlign: 'center' }}>
-        <Title title='전체 글' />
-      </div>
+      <Title title='전체 글' />
       <PostList posts={posts} pathname='/' currentPage={Number(page)} isFetching={isFetching} />
     </AppLayout>
   );

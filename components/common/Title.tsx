@@ -6,7 +6,11 @@ interface TitleProps {
 }
 
 const Title: FC<TitleProps> = ({ title }) => {
-  return <StyledTitle>{title}</StyledTitle>;
+  return (
+    <StyledTitle>
+      <h2>{title}</h2>
+    </StyledTitle>
+  );
 };
 
 export default Title;

@@ -25,9 +25,7 @@ const Search = () => {
       <Head>
         <title>Groom | '{keyword}'의 검색결과</title>
       </Head>
-      <div style={{ textAlign: 'center' }}>
-        <Title title={keyword as string} />
-      </div>
+      <Title title={keyword as string} />
       <PostList posts={posts} pathname={`/search/${keyword}`} currentPage={Number(page)} isFetching={isFetching} />
     </AppLayout>
   );

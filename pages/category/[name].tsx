@@ -26,9 +26,7 @@ const Category = () => {
       <Head>
         <title>Groom | '{name}' 카테고리의 글 목록</title>
       </Head>
-      <div style={{ textAlign: 'center' }}>
-        <Title title={name as string} />
-      </div>
+      <Title title={name as string} />
       <PostList posts={posts} pathname={`/category/${name}`} currentPage={Number(page)} isFetching={isFetching} />
     </AppLayout>
   );
