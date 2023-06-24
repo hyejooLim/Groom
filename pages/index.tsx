@@ -15,12 +15,12 @@ const Home = () => {
   const router = useRouter();
   const { page } = router.query;
 
-  const { data: posts, isFetching } = useGetPosts();
+  const { data: posts, isLoading } = useGetPosts();
 
   return (
     <AppLayout>
       <Title title='전체 글' />
-      <PostList posts={posts} pathname='/' currentPage={Number(page)} isFetching={isFetching} />
+      <PostList posts={posts} pathname='/' currentPage={Number(page)} isLoading={isLoading} />
     </AppLayout>
   );
 };

@@ -13,10 +13,10 @@ interface PostListProps {
   posts: PostItem[];
   pathname: string;
   currentPage: number;
-  isFetching: boolean;
+  isLoading: boolean;
 }
 
-const PostList: FC<PostListProps> = ({ posts, pathname, currentPage, isFetching }) => {
+const PostList: FC<PostListProps> = ({ posts, pathname, currentPage, isLoading }) => {
   const [firstIndex, setFirstIndex] = useState(0);
   const [lastIndex, setLastIndex] = useState(PAGE_SIZE);
 
@@ -40,7 +40,7 @@ const PostList: FC<PostListProps> = ({ posts, pathname, currentPage, isFetching 
   return (
     <>
       <ListWrapper>
-        {isFetching ? (
+        {isLoading ? (
           <BeatLoader className='loader' color='#ddd' size={16} />
         ) : (
           <ul>

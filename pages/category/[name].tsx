@@ -19,7 +19,7 @@ const Category = () => {
   const router = useRouter();
   const { name, page } = router.query;
 
-  const { data: posts, isFetching } = useGetPostsIncludeCategory(String(name));
+  const { data: posts, isLoading } = useGetPostsIncludeCategory(String(name));
 
   return (
     <AppLayout>
@@ -27,7 +27,7 @@ const Category = () => {
         <title>Groom | '{name}' 카테고리의 글 목록</title>
       </Head>
       <Title title={name as string} />
-      <PostList posts={posts} pathname={`/category/${name}`} currentPage={Number(page)} isFetching={isFetching} />
+      <PostList posts={posts} pathname={`/category/${name}`} currentPage={Number(page)} isLoading={isLoading} />
     </AppLayout>
   );
 };

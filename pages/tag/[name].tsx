@@ -19,7 +19,7 @@ const Tag = () => {
   const router = useRouter();
   const { name, page } = router.query;
 
-  const { data: posts, isFetching } = useGetPostsIncludeTag(String(name));
+  const { data: posts, isLoading } = useGetPostsIncludeTag(String(name));
 
   return (
     <AppLayout>
@@ -27,7 +27,7 @@ const Tag = () => {
         <title>Groom | '{name}' 태그의 글 목록</title>
       </Head>
       <Title title={name as string} />
-      <PostList posts={posts} pathname={`/tag/${name}`} currentPage={Number(page)} isFetching={isFetching} />
+      <PostList posts={posts} pathname={`/tag/${name}`} currentPage={Number(page)} isLoading={isLoading} />
     </AppLayout>
   );
 };

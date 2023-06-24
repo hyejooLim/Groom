@@ -14,7 +14,7 @@ const Search = () => {
   const { keyword, page } = router.query;
   const setKeyword = useSetRecoilState(keywordState);
 
-  const { data: posts, isFetching } = useSearchPosts(keyword as string);
+  const { data: posts, isLoading } = useSearchPosts(keyword as string);
 
   useEffect(() => {
     setKeyword(keyword as string);
@@ -26,7 +26,7 @@ const Search = () => {
         <title>Groom | '{keyword}'의 검색결과</title>
       </Head>
       <Title title={keyword as string} />
-      <PostList posts={posts} pathname={`/search/${keyword}`} currentPage={Number(page)} isFetching={isFetching} />
+      <PostList posts={posts} pathname={`/search/${keyword}`} currentPage={Number(page)} isLoading={isLoading} />
     </AppLayout>
   );
 };
