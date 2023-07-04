@@ -32,7 +32,7 @@ const ManageCategory = () => {
     }
   }, [updateCategories.isSuccess]);
 
-  const onUpdateCategories = useCallback(() => {
+  const handleCategoriesUpdate = useCallback(() => {
     updateCategories.mutate({ data: categoryJson });
   }, [categoryJson]);
 
@@ -58,7 +58,7 @@ const ManageCategory = () => {
           setCategoryJson={setCategoryJson}
         />
         <div className='set_btn'>
-          <S.SaveDiffButton onClick={onUpdateCategories} disabled={isDisabled}>
+          <S.SaveDiffButton onClick={handleCategoriesUpdate} disabled={isDisabled}>
             {isSave ? (
               <div className='checkBox'>
                 <p>저장 완료</p>
