@@ -52,7 +52,7 @@ const EditorContent: FC<EditorContentProps> = ({
   const [tag, onChangeTag, setTag] = useInput('');
   const dropzoneRef = useRef(null);
 
-  const handleKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
+  const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
     if (!tag || !tag.trim()) {
       return;
     }
@@ -136,7 +136,7 @@ const EditorContent: FC<EditorContentProps> = ({
               placeholder='태그입력'
               value={tag}
               onChange={onChangeTag}
-              onKeyPress={handleKeyPress}
+              onKeyDown={handleKeyDown}
             />
           </div>
         </span>
