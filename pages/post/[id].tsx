@@ -43,7 +43,7 @@ const Post = () => {
     }
   };
 
-  const handleDeletePost = (id: number) => {
+  const handlePostDelete = (id: number) => {
     deletePost.mutate(id);
   };
 
@@ -65,7 +65,7 @@ const Post = () => {
           <Head>
             <title>Groom | {id}번째 게시글</title>
           </Head>
-          <PostCard post={post} onDeletePost={handleDeletePost} />
+          <PostCard post={post} onDeletePost={handlePostDelete} />
         </AppLayout>
       )}
     </>
