@@ -27,14 +27,16 @@ const CategoryManageList: FC<CategoryManageListProps> = ({ categories }) => {
     name: '',
     priority: null,
   });
-  const [newCategories, setNewCategories] = useState<CategoryItem[]>(categories);
+  const [newCategories, setNewCategories] = useState<CategoryItem[]>([]);
   const [draggedItemIdx, setDraggedItemIdx] = useState(0);
   const [targetItemIdx, setTargetItemIdx] = useState(0);
 
   const [categoryJson, setCategoryJson] = useRecoilState(categoryJsonState);
 
   useEffect(() => {
-    setNewCategories(categories);
+    if (categories) {
+      setNewCategories(categories);
+    }
   }, [categories]);
 
   const onChangeCategoryName = useCallback(
