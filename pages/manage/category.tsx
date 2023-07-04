@@ -1,11 +1,12 @@
 import React, { useCallback, useState, useEffect } from 'react';
 import Head from 'next/head';
 import { FiCheck } from 'react-icons/fi';
+import { useRecoilState } from 'recoil';
 
 import ManageLayout from '../../components/layouts/ManageLayout';
 import CategoryManageList from '../../components/manage/CategoryManageList';
 import { useGetCategories, useUpdateCategories } from '../../hooks/query/categories';
-import { CategoryJson } from '../../types';
+import { categoryJsonState } from '../../recoil/manage';
 import * as S from '../../styles/ts/pages/manage/category';
 
 const ManageCategory = () => {
@@ -14,7 +15,7 @@ const ManageCategory = () => {
 
   const [isSave, setIsSave] = useState(false);
   const [isDisabled, setIsDisabled] = useState(true);
-  const [categoryJson, setCategoryJson] = useState<CategoryJson>({ append: [], update: [], delete: [] });
+  const [categoryJson, setCategoryJson] = useRecoilState(categoryJsonState);
 
   useEffect(() => {
     if (categoryJson.append.length === 0 && categoryJson.update.length === 0 && categoryJson.delete.length === 0) {
@@ -52,11 +53,7 @@ const ManageCategory = () => {
             <span>{categories?.length}</span> / 100
           </S.TotalCount>
         </S.Description>
-        <CategoryManageList
-          categories={categories ?? []}
-          categoryJson={categoryJson}
-          setCategoryJson={setCategoryJson}
-        />
+        <CategoryManageList categories={categories} />
         <div className='set_btn'>
           <S.SaveDiffButton onClick={handleCategoriesUpdate} disabled={isDisabled}>
             {isSave ? (

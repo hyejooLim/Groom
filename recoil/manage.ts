@@ -1,6 +1,6 @@
 import { atom } from 'recoil';
 import { persistAtomEffect } from './persist';
-import { PostItem, SharedPost } from '../types';
+import { CategoryJson, PostItem, SharedPost } from '../types';
 
 export const MANAGE_PAGE_SIZE = 5;
 
@@ -38,4 +38,10 @@ export const currentPageState = atom<number>({
   key: 'manage_currentPage',
   default: 1,
   effects_UNSTABLE: [persistAtomEffect],
+});
+
+export const categoryJsonState = atom<CategoryJson>({
+  key: 'categoryJson',
+  default: { append: [], update: [], delete: [] },
+  dangerouslyAllowMutability: true,
 });

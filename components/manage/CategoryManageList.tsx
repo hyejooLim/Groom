@@ -1,9 +1,10 @@
 import React, { FC, useState, useCallback, useEffect, ChangeEvent, FormEvent, DragEvent } from 'react';
 import { Button, Form } from 'antd';
 import { MenuOutlined, PlusOutlined } from '@ant-design/icons';
+import { useRecoilState } from 'recoil';
 
 import useInput from '../../hooks/common/input';
-import { CategoryItem, CategoryJson } from '../../types';
+import { CategoryItem } from '../../types';
 import {
   changeProperty,
   changePriorityWhenDrop,
@@ -12,14 +13,13 @@ import {
   changePriorityWhenDeleteExcludeNewItem,
 } from '../../utils/newList';
 import * as S from '../../styles/ts/components/manage/CategoryManageList';
+import { categoryJsonState } from '../../recoil/manage';
 
 interface CategoryManageListProps {
   categories: CategoryItem[];
-  categoryJson: CategoryJson;
-  setCategoryJson: React.Dispatch<React.SetStateAction<CategoryJson>>;
 }
 
-const CategoryManageList: FC<CategoryManageListProps> = ({ categories, categoryJson, setCategoryJson }) => {
+const CategoryManageList: FC<CategoryManageListProps> = ({ categories }) => {
   const [category, onChangeCategory, setCategory] = useInput('');
   const [showInput, setShowInput] = useState(false);
   const [currentCategory, setCurrentCategory] = useState<CategoryItem>({
@@ -28,9 +28,10 @@ const CategoryManageList: FC<CategoryManageListProps> = ({ categories, categoryJ
     priority: null,
   });
   const [newCategories, setNewCategories] = useState<CategoryItem[]>(categories);
-
   const [draggedItemIdx, setDraggedItemIdx] = useState(0);
   const [targetItemIdx, setTargetItemIdx] = useState(0);
+
+  const [categoryJson, setCategoryJson] = useRecoilState(categoryJsonState);
 
   useEffect(() => {
     setNewCategories(categories);
@@ -212,7 +213,7 @@ const CategoryManageList: FC<CategoryManageListProps> = ({ categories, categoryJ
         <div className='wrap_order'>
           <div className='list_order'>
             {categories &&
-              newCategories.map((item, idx) =>
+              newCategories?.map((item, idx) =>
                 item.id === currentCategory.id ? (
                   <S.ItemWrapper key={item.id} style={{ background: '#fbfbfb' }}>
                     <Form
