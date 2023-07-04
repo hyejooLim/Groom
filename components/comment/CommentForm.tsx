@@ -15,7 +15,7 @@ interface CommentFormProps {
 const CommentForm: FC<CommentFormProps> = ({ post }) => {
   const { status } = useSession();
 
-  const createComment = useCreateComment();
+  const { mutate: createComment, isLoading } = useCreateComment();
   const [commentText, onChangeCommentText, setCommentText] = useInput('');
 
   const onSubmitForm = useCallback(() => {
@@ -33,7 +33,7 @@ const CommentForm: FC<CommentFormProps> = ({ post }) => {
       return;
     }
 
-    createComment.mutate({ data: { content: commentText, postId: post.id } });
+    createComment({ data: { content: commentText, postId: post.id } });
     setCommentText('');
   }, [status, commentText, post]);
 
@@ -46,7 +46,7 @@ const CommentForm: FC<CommentFormProps> = ({ post }) => {
           onChange={onChangeCommentText}
           placeholder='내용을 입력해 주세요.'
         />
-        <AddCommentButton htmlType='submit' type='primary' loading={createComment.isLoading}>
+        <AddCommentButton htmlType='submit' type='primary' loading={isLoading}>
           Write
         </AddCommentButton>
       </Form.Item>

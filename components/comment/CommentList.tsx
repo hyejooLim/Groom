@@ -17,8 +17,8 @@ const CommentList: FC<CommentListProps> = ({ postId }) => {
   const { data: user } = useGetUser();
 
   const { data: comments } = useGetComments(postId);
-  const updateComment = useUpdateComment();
-  const deleteComment = useDeleteComment();
+  const { mutate: updateComment } = useUpdateComment();
+  const { mutate: deleteComment } = useDeleteComment();
 
   const [currentComment, setCurrentComment] = useState<CommentItem>(null);
 
@@ -49,7 +49,7 @@ const CommentList: FC<CommentListProps> = ({ postId }) => {
       return;
     }
 
-    updateComment.mutate({ data: { id: currentComment.id, content: currentComment.content } });
+    updateComment({ data: { id: currentComment.id, content: currentComment.content } });
 
     setTimeout(() => {
       setCurrentComment(null);
@@ -65,7 +65,7 @@ const CommentList: FC<CommentListProps> = ({ postId }) => {
       return;
     }
 
-    deleteComment.mutate(id);
+    deleteComment(id);
   }, []);
 
   return (
