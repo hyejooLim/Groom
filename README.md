@@ -37,7 +37,12 @@ npm install
 </br>
 
 ### 2. pscale 로그인
+
 ```
+// 1. install pscale with homebrew
+brew install planetscale/tap/pscale
+
+// 2. login pscale
 pscale auth login
 
 // 위 명령어 실행으로 `certificate is not standards compliant` error 발생 시
