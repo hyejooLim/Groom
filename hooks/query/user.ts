@@ -1,29 +1,40 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
-import getUser from '../../apis/user/getUser';
-import updateUser from '../../apis/user/updateUser';
-import getUserWithEmail from '../../apis/user/getUserWithEmail';
+import getUser from "../../apis/user/getUser";
+import updateUser from "../../apis/user/updateUser";
+import getUserWithEmail from "../../apis/user/getUserWithEmail";
 
 const useGetUser = () => {
-  return useQuery(['user'], getUser, {
+  const query = useQuery({
+    queryKey: ["user"],
+    queryFn: getUser,
     refetchOnWindowFocus: false,
     staleTime: Infinity,
   });
+
+  return query;
 };
 
 const useGetUserWithEmail = (email: string) => {
-  return useQuery(['user', email], () => getUserWithEmail(email), {
+  const query = useQuery({
+    queryKey: ["user", email],
+    queryFn: () => getUserWithEmail(email),
     refetchOnWindowFocus: false,
     staleTime: Infinity,
   });
+
+  return query;
 };
 
 const useUpdateUser = () => {
   const queryClient = useQueryClient();
 
-  return useMutation(updateUser, {
+  return useMutation({
+    mutationFn: updateUser,
     onSuccess: () => {
-      queryClient.invalidateQueries(['user']);
+      queryClient.invalidateQueries({
+        queryKey: ["user"],
+      });
     },
   });
 };
