@@ -1,19 +1,19 @@
-import React from 'react';
-import Head from 'next/head';
-import { useRouter } from 'next/router';
-import { GetStaticPaths, GetStaticProps } from 'next';
-import { dehydrate, QueryClient } from '@tanstack/react-query';
-import axios from 'axios';
+import React from "react";
+import Head from "next/head";
+import { useRouter } from "next/router";
+import { GetStaticPaths, GetStaticProps } from "next";
+import { dehydrate, QueryClient } from "@tanstack/react-query";
+import axios from "axios";
 
-import AppLayout from '../../components/layouts/AppLayout';
-import Title from '../../components/common/Title';
-import PostList from '../../components/post/PostList';
-import getUser from '../../apis/user/getUser';
-import getCategories from '../../apis/categories/getCategories';
-import getPostsIncludeCategory from '../../apis/posts/getPostsIncludeCategory';
-import { useGetPostsIncludeCategory } from '../../hooks/query/posts';
-import { productionURL } from '../../constants/URL';
-import { CategoryItem } from '../../types';
+import AppLayout from "../../components/layouts/AppLayout";
+import Title from "../../components/common/Title";
+import PostList from "../../components/post/PostList";
+import getUser from "../../apis/user/getUser";
+import getCategories from "../../apis/categories/getCategories";
+import getPostsIncludeCategory from "../../apis/posts/getPostsIncludeCategory";
+import { useGetPostsIncludeCategory } from "../../hooks/query/posts";
+import { productionURL } from "../../constants/URL";
+import { CategoryItem } from "../../types";
 
 const Category = () => {
   const router = useRouter();
@@ -27,7 +27,12 @@ const Category = () => {
         <title>Groom | '{name}' 카테고리의 글 목록</title>
       </Head>
       <Title title={name as string} />
-      <PostList posts={posts} pathname={`/category/${name}`} currentPage={Number(page)} isLoading={isLoading} />
+      <PostList
+        posts={posts}
+        pathname={`/category/${name}`}
+        currentPage={Number(page)}
+        isLoading={isLoading}
+      />
     </AppLayout>
   );
 };
@@ -40,7 +45,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
   return {
     paths,
-    fallback: 'blocking',
+    fallback: "blocking",
   };
 };
 
@@ -49,9 +54,15 @@ export const getStaticProps: GetStaticProps = async (context) => {
   const queryClient = new QueryClient();
 
   await Promise.all([
-    queryClient.prefetchQuery(['user'], getUser),
-    queryClient.prefetchQuery(['categories'], getCategories),
-    queryClient.prefetchQuery(['posts', 'category', String(name)], () => getPostsIncludeCategory(String(name))),
+    queryClient.prefetchQuery({ queryKey: ["user"], queryFn: getUser }),
+    queryClient.prefetchQuery({
+      queryKey: ["categories"],
+      queryFn: getCategories,
+    }),
+    queryClient.prefetchQuery({
+      queryKey: ["posts", "category", String(name)],
+      queryFn: () => getPostsIncludeCategory(String(name)),
+    }),
   ]);
 
   return {

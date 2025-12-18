@@ -1,15 +1,16 @@
-import { useQueryClient, useMutation } from '@tanstack/react-query';
+import { useQueryClient, useMutation } from "@tanstack/react-query";
 
-import createComment from '../../apis/comment/createComment';
-import deleteComment from '../../apis/comment/deleteComment';
-import updateComment from '../../apis/comment/updateComment';
+import createComment from "../../apis/comment/createComment";
+import deleteComment from "../../apis/comment/deleteComment";
+import updateComment from "../../apis/comment/updateComment";
 
 const useCreateComment = () => {
   const queryClient = useQueryClient();
 
-  return useMutation(createComment, {
+  return useMutation({
+    mutationFn: createComment,
     onSuccess: () => {
-      queryClient.invalidateQueries(['comments']);
+      queryClient.invalidateQueries({ queryKey: ["comments"] });
     },
   });
 };
@@ -17,9 +18,10 @@ const useCreateComment = () => {
 const useDeleteComment = () => {
   const queryClient = useQueryClient();
 
-  return useMutation(deleteComment, {
+  return useMutation({
+    mutationFn: deleteComment,
     onSuccess: () => {
-      queryClient.invalidateQueries(['comments']);
+      queryClient.invalidateQueries({ queryKey: ["comments"] });
     },
   });
 };
@@ -27,9 +29,10 @@ const useDeleteComment = () => {
 const useUpdateComment = () => {
   const queryClient = useQueryClient();
 
-  return useMutation(updateComment, {
+  return useMutation({
+    mutationFn: updateComment,
     onSuccess: () => {
-      queryClient.invalidateQueries(['comments']);
+      queryClient.invalidateQueries({ queryKey: ["comments"] });
     },
   });
 };

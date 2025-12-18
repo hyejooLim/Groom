@@ -1,13 +1,13 @@
-import React, { FC, useEffect, useState } from 'react';
-import { RiKakaoTalkFill } from 'react-icons/ri';
-import { BsCloudFill } from 'react-icons/bs';
-import { FiLink } from 'react-icons/fi';
+import React, { FC, useEffect, useState } from "react";
+import { RiKakaoTalkFill } from "react-icons/ri";
+import { BsCloudFill } from "react-icons/bs";
+import { FiLink } from "react-icons/fi";
 
-import Popover from '../common/Popover';
-import PostShareModal from './PostShareModal';
-import { useGetPost, useSharePost } from '../../hooks/query/post';
-import { developmentURL, productionURL } from '../../constants/URL';
-import { Sharer } from '../../types';
+import Popover from "../common/Popover";
+import PostShareModal from "./PostShareModal";
+import { useGetPost, useSharePost } from "../../hooks/query/post";
+import { developmentURL, productionURL } from "../../constants/URL";
+import { Sharer } from "../../types";
 
 interface PostShareProps {
   postId: number;
@@ -41,23 +41,24 @@ const PostShare: FC<PostShareProps> = ({ postId, isShow, onClose }) => {
       }
 
       kakao.Share.sendDefault({
-        objectType: 'feed',
+        objectType: "feed",
         content: {
           title: `${post.title}`,
           description: `${post.content}`,
-          imageUrl: 'https://groom-project.s3.ap-northeast-2.amazonaws.com/Groom_Logo_Circle.png',
+          imageUrl:
+            "https://groom-project.s3.ap-northeast-2.amazonaws.com/Groom_Logo_Circle.png",
           link: {
             webUrl:
-              process.env.NODE_ENV === 'development'
+              process.env.NODE_ENV === "development"
                 ? `${developmentURL}/post/${postId}`
                 : `${productionURL}/post/${postId}`,
             mobileWebUrl:
-              process.env.NODE_ENV === 'development'
+              process.env.NODE_ENV === "development"
                 ? `${developmentURL}/post/${postId}`
                 : `${productionURL}/post/${postId}`,
           },
         },
-        buttonTitle: 'Groom 웹에서 보기',
+        buttonTitle: "Groom 웹에서 보기",
       });
     }
   };
@@ -65,9 +66,9 @@ const PostShare: FC<PostShareProps> = ({ postId, isShow, onClose }) => {
   const handleCopyURL = async () => {
     try {
       await navigator.clipboard.writeText(window.location.href);
-      alert('복사 되었습니다.');
+      alert("복사 되었습니다.");
     } catch (err) {
-      alert('복사 실패했습니다.');
+      alert("복사 실패했습니다.");
     }
   };
 
@@ -78,11 +79,11 @@ const PostShare: FC<PostShareProps> = ({ postId, isShow, onClose }) => {
   return (
     <Popover isShow={isShow} onClose={onClose}>
       <div onClick={handleSharePostByKakao}>
-        <RiKakaoTalkFill className='icon' />
+        <RiKakaoTalkFill className="icon" />
         카카오톡으로 공유
       </div>
       <div onClick={() => setIsOpenModal(true)}>
-        <BsCloudFill className='icon' />
+        <BsCloudFill className="icon" />
         구름 유저에게 공유
       </div>
       <PostShareModal
@@ -92,7 +93,7 @@ const PostShare: FC<PostShareProps> = ({ postId, isShow, onClose }) => {
         onSharePost={handleSharePost}
       />
       <div onClick={handleCopyURL}>
-        <FiLink className='icon' />
+        <FiLink className="icon" />
         URL 복사
       </div>
     </Popover>
