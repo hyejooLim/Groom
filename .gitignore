@@ -5,6 +5,9 @@
 .next
 next-env.d.ts
 
+# Prisma generated client
+/prisma/generated/
+
 # testing
 /coverage
 
