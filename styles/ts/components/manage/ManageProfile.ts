@@ -1,5 +1,8 @@
-import styled from 'styled-components';
-import { Card } from 'antd';
+import styled from "styled-components";
+import { Card } from "antd";
+import { ButtonHTMLAttributes } from "react";
+
+type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement>;
 
 export const CameraButton = styled.label`
   display: none;
@@ -21,7 +24,7 @@ export const CameraButton = styled.label`
     right: 0;
     bottom: 0;
     z-index: 10;
-    content: '';
+    content: "";
   }
 
   .icon {
@@ -38,7 +41,7 @@ export const CameraButton = styled.label`
   }
 `;
 
-export const RemoveButton = styled.label`
+export const RemoveButton = styled.label<ButtonProps>`
   display: none;
   position: absolute;
   top: -1px;

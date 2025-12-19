@@ -1,5 +1,8 @@
-import styled from 'styled-components';
-import { Input } from 'antd';
+import styled from "styled-components";
+import { Input } from "antd";
+import { HTMLAttributes } from "react";
+
+type Props = HTMLAttributes<HTMLDivElement>;
 
 export const CategoryManageListWrapper = styled.div`
   .set_order {
@@ -63,7 +66,7 @@ export const DragIconWrapper = styled.div`
   }
 `;
 
-export const ItemWrapper = styled.div`
+export const ItemWrapper = styled.div<Props>`
   padding: 0 19px;
   height: 52px;
   border: 1px solid #e0e5ee;
@@ -162,7 +165,7 @@ export const FormButton = styled.div`
   }
 `;
 
-export const AddCategoryWrapper = styled.div`
+export const AddCategoryWrapper = styled.div<Props>`
   height: 50px;
   margin-top: 8px;
   padding: 3px 20px;

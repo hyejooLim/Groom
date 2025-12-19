@@ -1,6 +1,9 @@
-import styled from 'styled-components';
+import { HTMLAttributes } from "react";
+import styled from "styled-components";
 
-export const LabelContainer = styled.div`
+type Props = HTMLAttributes<HTMLDivElement>;
+
+export const LabelContainer = styled.div<Props>`
   width: 352px;
   height: 46px;
   overflow-x: auto;
@@ -45,7 +48,7 @@ export const LabelContainer = styled.div`
 export const DropdownWrapper = styled.div`
   width: 125px;
   height: 23px;
-  font-family: 'Nanum Godic';
+  font-family: "Nanum Godic";
 
   & .list_title {
     display: flex;
@@ -70,7 +73,8 @@ export const DropdownWrapper = styled.div`
     color: #333;
     border-radius: 3px;
     background-color: #fff;
-    box-shadow: 0 3px 6px -4px rgb(0 0 0 / 12%), 0 6px 16px 0 rgb(0 0 0 / 8%), 0 9px 28px 8px rgb(0 0 0 / 5%);
+    box-shadow: 0 3px 6px -4px rgb(0 0 0 / 12%), 0 6px 16px 0 rgb(0 0 0 / 8%),
+      0 9px 28px 8px rgb(0 0 0 / 5%);
 
     & .all_share {
       padding: 6px 4px 4px 4px;

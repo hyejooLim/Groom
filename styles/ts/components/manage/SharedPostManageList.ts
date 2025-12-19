@@ -1,4 +1,7 @@
-import styled from 'styled-components';
+import { HTMLAttributes } from "react";
+import styled from "styled-components";
+
+type Props = HTMLAttributes<HTMLDivElement>;
 
 export const ButtonWrapper = styled.div`
   float: right;
@@ -23,7 +26,7 @@ export const ButtonWrapper = styled.div`
   }
 `;
 
-export const PostInfo = styled.div`
+export const PostInfo = styled.div<Props>`
   display: flex;
   align-items: center;
   padding: 13px 16px 12px;
@@ -71,7 +74,7 @@ export const PostInfo = styled.div`
         border-radius: 2px;
         background: #c5cdd7;
         vertical-align: top;
-        content: '';
+        content: "";
       }
     }
   }
