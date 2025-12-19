@@ -1,6 +1,9 @@
-import styled from 'styled-components';
+import { HTMLAttributes } from "react";
+import styled from "styled-components";
 
-export const Container = styled.div`
+type Props = HTMLAttributes<HTMLDivElement>;
+
+export const Container = styled.div<Props>`
   background-color: #fff;
   position: absolute;
   top: 70px;
