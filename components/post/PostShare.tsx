@@ -88,7 +88,7 @@ const PostShare: FC<PostShareProps> = ({ postId, isShow, onClose }) => {
       </div>
       <PostShareModal
         isOpen={isOpenModal}
-        isLoading={sharePost?.isLoading}
+        isLoading={sharePost?.isPending}
         onClose={() => setIsOpenModal(false)}
         onSharePost={handleSharePost}
       />
