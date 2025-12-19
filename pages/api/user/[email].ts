@@ -1,9 +1,12 @@
-import { NextApiHandler, NextApiRequest, NextApiResponse } from 'next';
-import prisma from '../../../lib/prisma';
+import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
+import prisma from "../../../prisma/prisma";
 
-const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
+const handler: NextApiHandler = async (
+  req: NextApiRequest,
+  res: NextApiResponse
+) => {
   try {
-    if (req.method === 'GET') {
+    if (req.method === "GET") {
       const user = await prisma.user.findUnique({
         where: {
           email: String(req.query.email),
@@ -27,7 +30,7 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
       });
 
       if (!user) {
-        return res.status(403).send({ message: '존재하지 않는 사용자입니다.' });
+        return res.status(403).send({ message: "존재하지 않는 사용자입니다." });
       }
 
       res.status(200).json(user);

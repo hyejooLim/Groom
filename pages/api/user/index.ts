@@ -1,13 +1,16 @@
-import { NextApiHandler, NextApiRequest, NextApiResponse } from 'next';
-import { getSession } from 'next-auth/react';
-import prisma from '../../../lib/prisma';
+import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
+import { getSession } from "next-auth/react";
+import prisma from "../../../prisma/prisma";
 
-const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
+const handler: NextApiHandler = async (
+  req: NextApiRequest,
+  res: NextApiResponse
+) => {
   try {
-    if (req.method === 'GET') {
+    if (req.method === "GET") {
       const session = await getSession({ req });
       if (!session) {
-        return res.status(401).send({ message: '세션이 만료되었습니다.' });
+        return res.status(401).send({ message: "세션이 만료되었습니다." });
       }
 
       const user = await prisma.user.findUnique({
@@ -29,7 +32,7 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
       });
 
       if (!user) {
-        return res.status(403).send({ message: '사용자를 찾을 수 없습니다.' });
+        return res.status(403).send({ message: "사용자를 찾을 수 없습니다." });
       }
 
       const { id, email, name, imageUrl, posts, neighbors } = user;
@@ -37,10 +40,10 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
       res.status(200).json({ id, email, name, imageUrl, posts, neighbors });
     }
 
-    if (req.method === 'PUT') {
+    if (req.method === "PUT") {
       const session = await getSession({ req });
       if (!session) {
-        return res.status(403).send({ message: '세션이 만료되었습니다.' });
+        return res.status(403).send({ message: "세션이 만료되었습니다." });
       }
 
       await prisma.user.update({
@@ -52,7 +55,7 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
         },
       });
 
-      res.status(200).json('ok');
+      res.status(200).json("ok");
     }
   } catch (err) {
     console.error(err);

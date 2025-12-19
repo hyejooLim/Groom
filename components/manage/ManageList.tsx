@@ -1,12 +1,12 @@
-import React from 'react';
-import { useRouter } from 'next/router';
-import Link from 'next/link';
-import { HomeOutlined, SettingOutlined } from '@ant-design/icons';
-import classNames from 'classnames';
+import React from "react";
+import { useRouter } from "next/router";
+import Link from "next/link";
+import { HomeOutlined, SettingOutlined } from "@ant-design/icons";
+import classNames from "classnames";
 
-import { useGetUserSharedPosts } from '../../hooks/query/posts';
-import { NewIcon } from '../../styles/ts/common';
-import * as S from '../../styles/ts/components/manage/ManageList';
+import { useGetUserSharedPosts } from "../../hooks/query/posts";
+import { NewIcon } from "../../styles/ts/common";
+import * as S from "../../styles/ts/components/manage/ManageList";
 
 const ManageList = () => {
   const router = useRouter();
@@ -15,50 +15,78 @@ const ManageList = () => {
   return (
     <>
       <S.Container>
-        <Link href='/manage'>
+        <Link href="/manage">
           <S.LinkWrapper>
-            <a className='link_menu'>
-              <HomeOutlined />
+            <a className="link_menu">
+              <HomeOutlined
+                {...({} as React.ComponentProps<typeof HomeOutlined>)}
+              />
               <span>블로그 관리 홈</span>
             </a>
           </S.LinkWrapper>
         </Link>
         <S.WrapMenu>
           <div>
-            <SettingOutlined />
+            <SettingOutlined
+              {...({} as React.ComponentProps<typeof SettingOutlined>)}
+            />
             <span>관리</span>
           </div>
           <S.ListWrapper>
-            <Link href='/manage/posts'>
+            <Link href="/manage/posts">
               <li>
-                <a className={classNames('list_menu', { on: router.pathname.includes('/manage/posts') })}>글 관리</a>
+                <a
+                  className={classNames("list_menu", {
+                    on: router.pathname.includes("/manage/posts"),
+                  })}
+                >
+                  글 관리
+                </a>
               </li>
             </Link>
-            <Link href='/manage/neighbors'>
+            <Link href="/manage/neighbors">
               <li>
-                <a className={classNames('list_menu', { on: router.pathname.includes('/manage/neighbors') })}>
+                <a
+                  className={classNames("list_menu", {
+                    on: router.pathname.includes("/manage/neighbors"),
+                  })}
+                >
                   이웃 관리
                 </a>
               </li>
             </Link>
-            <Link href='/manage/subscribedPosts'>
+            <Link href="/manage/subscribedPosts">
               <li>
-                <a className={classNames('list_menu', { on: router.pathname.includes('/manage/subscribedPosts') })}>
+                <a
+                  className={classNames("list_menu", {
+                    on: router.pathname.includes("/manage/subscribedPosts"),
+                  })}
+                >
                   구독 글 관리
                 </a>
               </li>
             </Link>
-            <Link href='/manage/sharedPosts'>
+            <Link href="/manage/sharedPosts">
               <li>
-                <a className={classNames('list_menu', { on: router.pathname.includes('/manage/sharedPosts') })}>
+                <a
+                  className={classNames("list_menu", {
+                    on: router.pathname.includes("/manage/sharedPosts"),
+                  })}
+                >
                   공유 글 관리
                 </a>
-                {sharedPosts?.find((post) => !post.isVisited) && <NewIcon>N</NewIcon>}
+                {sharedPosts?.find((post) => !post.isVisited) && (
+                  <NewIcon>N</NewIcon>
+                )}
               </li>
             </Link>
-            <Link href='/manage/category'>
+            <Link href="/manage/category">
               <li>
-                <a className={classNames('list_menu', { on: router.pathname.includes('/manage/category') })}>
+                <a
+                  className={classNames("list_menu", {
+                    on: router.pathname.includes("/manage/category"),
+                  })}
+                >
                   카테고리 관리
                 </a>
               </li>

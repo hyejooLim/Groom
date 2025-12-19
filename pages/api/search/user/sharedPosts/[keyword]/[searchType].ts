@@ -1,20 +1,23 @@
-import { NextApiHandler, NextApiRequest, NextApiResponse } from 'next';
-import { getSession } from 'next-auth/react';
-import prisma from '../../../../../../lib/prisma';
+import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
+import { getSession } from "next-auth/react";
+import prisma from "../../../../../../prisma/prisma";
 
-const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
+const handler: NextApiHandler = async (
+  req: NextApiRequest,
+  res: NextApiResponse
+) => {
   try {
-    if (req.method === 'GET') {
+    if (req.method === "GET") {
       const session = await getSession({ req });
       if (!session) {
-        return res.status(403).send({ message: '세션이 만료되었습니다.' });
+        return res.status(403).send({ message: "세션이 만료되었습니다." });
       }
 
       let user = {};
       const keyword = req.query.keyword as string;
       const searchType = req.query.searchType as string;
 
-      if (searchType === 'title') {
+      if (searchType === "title") {
         user = await prisma.user.findUnique({
           where: {
             email: session.user?.email,
@@ -65,13 +68,13 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
               },
               orderBy: [
                 {
-                  sharedAt: 'desc',
+                  sharedAt: "desc",
                 },
               ],
             },
           },
         });
-      } else if (searchType === 'content') {
+      } else if (searchType === "content") {
         user = await prisma.user.findUnique({
           where: {
             email: session.user?.email,
@@ -122,13 +125,13 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
               },
               orderBy: [
                 {
-                  sharedAt: 'desc',
+                  sharedAt: "desc",
                 },
               ],
             },
           },
         });
-      } else if (searchType === 'tag') {
+      } else if (searchType === "tag") {
         user = await prisma.user.findUnique({
           where: {
             email: session.user?.email,
@@ -181,13 +184,13 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
               },
               orderBy: [
                 {
-                  sharedAt: 'desc',
+                  sharedAt: "desc",
                 },
               ],
             },
           },
         });
-      } else if (searchType === 'sender') {
+      } else if (searchType === "sender") {
         user = await prisma.user.findUnique({
           where: {
             email: session.user?.email,
@@ -237,7 +240,7 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
               },
               orderBy: [
                 {
-                  sharedAt: 'desc',
+                  sharedAt: "desc",
                 },
               ],
             },

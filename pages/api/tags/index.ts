@@ -1,9 +1,12 @@
-import { NextApiHandler, NextApiRequest, NextApiResponse } from 'next';
-import prisma from '../../../lib/prisma';
+import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
+import prisma from "../../../prisma/prisma";
 
-const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
+const handler: NextApiHandler = async (
+  req: NextApiRequest,
+  res: NextApiResponse
+) => {
   try {
-    if (req.method === 'GET') {
+    if (req.method === "GET") {
       const tags = await prisma.tag.findMany({});
 
       res.status(200).json(tags);

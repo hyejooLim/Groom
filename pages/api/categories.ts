@@ -1,18 +1,21 @@
-import { NextApiHandler, NextApiRequest, NextApiResponse } from 'next';
+import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
 
-import { CategoryItem } from '../../types';
-import prisma from '../../lib/prisma';
+import { CategoryItem } from "../../types";
+import prisma from "../../prisma/prisma";
 
-const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
+const handler: NextApiHandler = async (
+  req: NextApiRequest,
+  res: NextApiResponse
+) => {
   try {
-    if (req.method === 'GET') {
+    if (req.method === "GET") {
       const categories = await prisma.category.findMany({
         include: {
           posts: true,
         },
         orderBy: [
           {
-            priority: 'asc',
+            priority: "asc",
           },
         ],
       });
@@ -20,7 +23,7 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
       res.status(200).json(categories);
     }
 
-    if (req.method === 'PUT') {
+    if (req.method === "PUT") {
       if (0 < req.body.append.length) {
         await Promise.all(
           req.body.append?.map((item: CategoryItem) =>
@@ -63,7 +66,7 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
         );
       }
 
-      res.status(200).json('ok');
+      res.status(200).json("ok");
     }
   } catch (err) {
     console.error(err);

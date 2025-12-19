@@ -1,7 +1,10 @@
-import styled from 'styled-components';
-import { Button } from 'antd';
+import styled from "styled-components";
+import { Button } from "antd";
+import { HTMLAttributes } from "react";
 
-export const EditorWrapper = styled.div`
+type Props = HTMLAttributes<HTMLDivElement>;
+
+export const EditorWrapper = styled.div<Props>`
   position: relative;
   width: 100%;
   height: 100%;
@@ -39,7 +42,7 @@ export const ContentAside = styled.div`
   }
 
   .btn_wrapper .count:before {
-    content: '';
+    content: "";
     width: 1px;
     height: 12px;
     background-color: rgba(0, 0, 0, 0.09);

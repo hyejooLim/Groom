@@ -1,19 +1,22 @@
-import { NextApiHandler, NextApiRequest, NextApiResponse } from 'next';
-import dayjs from 'dayjs';
+import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
+import dayjs from "dayjs";
 
-import prisma from '../../lib/prisma';
-import { VisitorsCount } from '../../types';
+import prisma from "../../prisma/prisma";
+import { VisitorsCount } from "../../types";
 
-const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
+const handler: NextApiHandler = async (
+  req: NextApiRequest,
+  res: NextApiResponse
+) => {
   try {
-    if (req.method === 'GET') {
+    if (req.method === "GET") {
       const csrfToken =
-        process.env.NODE_ENV === 'development'
-          ? req.cookies['next-auth.csrf-token']
-          : req.cookies['__Host-next-auth.csrf-token'];
+        process.env.NODE_ENV === "development"
+          ? req.cookies["next-auth.csrf-token"]
+          : req.cookies["__Host-next-auth.csrf-token"];
 
       if (!csrfToken) {
-        return res.status(401).send({ message: '토큰이 존재하지 않습니다.' });
+        return res.status(401).send({ message: "토큰이 존재하지 않습니다." });
       }
 
       const exVisitorsCount = await prisma.visitorsCount.findFirst();
@@ -31,7 +34,7 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
           data: {
             todayCount: 1,
             totalCount: 1,
-            expireDate: dayjs().format('YYYY-MM-DD 23:59:59'),
+            expireDate: dayjs().format("YYYY-MM-DD 23:59:59"),
           },
         });
       } else {
@@ -52,7 +55,7 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
             data: {
               todayCount: 1,
               totalCount: exVisitorsCount.totalCount + 1,
-              expireDate: dayjs().format('YYYY-MM-DD 23:59:59'),
+              expireDate: dayjs().format("YYYY-MM-DD 23:59:59"),
             },
           });
         } else {

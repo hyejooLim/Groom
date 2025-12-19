@@ -1,15 +1,18 @@
-import { NextApiHandler, NextApiRequest, NextApiResponse } from 'next';
-import { getSession } from 'next-auth/react';
+import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
+import { getSession } from "next-auth/react";
 
-import prisma from '../../../lib/prisma';
-import { TagItem } from '../../../types';
+import prisma from "../../../prisma/prisma";
+import { TagItem } from "../../../types";
 
-const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
+const handler: NextApiHandler = async (
+  req: NextApiRequest,
+  res: NextApiResponse
+) => {
   try {
-    if (req.method === 'POST') {
+    if (req.method === "POST") {
       const session = await getSession({ req });
       if (!session) {
-        return res.status(403).send('세션이 만료되었습니다.');
+        return res.status(403).send("세션이 만료되었습니다.");
       }
 
       await Promise.all(
@@ -63,7 +66,7 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
         });
       }
 
-      res.status(201).json('ok');
+      res.status(201).json("ok");
     }
   } catch (err) {
     console.error(err);
