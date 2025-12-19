@@ -1,9 +1,9 @@
-import React, { FC, ReactNode } from 'react';
-import Modal from 'react-modal';
+import React, { FC, ReactNode } from "react";
+import Modal from "react-modal";
 
-import { InnerModal } from '../../styles/ts/components/common/ReactModal';
+import { InnerModal } from "../../styles/ts/components/common/ReactModal";
 
-Modal.setAppElement('#__next');
+Modal.setAppElement("#__next");
 
 interface ReactModalProps {
   isOpen: boolean;
@@ -11,10 +11,18 @@ interface ReactModalProps {
   children?: ReactNode;
 }
 
-const ReactModal: FC<ReactModalProps> = ({ isOpen, onRequestClose, children }) => {
+const ReactModal: FC<ReactModalProps> = ({
+  isOpen,
+  onRequestClose,
+  children,
+}) => {
   return (
-    <Modal className='modal_layer' isOpen={isOpen} onRequestClose={onRequestClose}>
-      <InnerModal className='inner_modal_layer'>{children}</InnerModal>
+    <Modal
+      className="modal_layer"
+      isOpen={isOpen}
+      onRequestClose={onRequestClose}
+    >
+      <InnerModal className="inner_modal_layer">{children}</InnerModal>
     </Modal>
   );
 };

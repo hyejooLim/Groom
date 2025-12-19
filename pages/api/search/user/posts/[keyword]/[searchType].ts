@@ -1,21 +1,24 @@
-import { NextApiHandler, NextApiRequest, NextApiResponse } from 'next';
-import { getSession } from 'next-auth/react';
+import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
+import { getSession } from "next-auth/react";
 
-import prisma from '../../../../../../lib/prisma';
+import prisma from "../../../../../../prisma/prisma";
 
-const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
+const handler: NextApiHandler = async (
+  req: NextApiRequest,
+  res: NextApiResponse
+) => {
   try {
-    if (req.method === 'GET') {
+    if (req.method === "GET") {
       const session = await getSession({ req });
       if (!session) {
-        return res.status(403).send({ message: '세션이 만료되었습니다.' });
+        return res.status(403).send({ message: "세션이 만료되었습니다." });
       }
 
       let posts = [];
       const keyword = req.query.keyword as string;
       const searchType = req.query.searchType as string;
 
-      if (searchType === 'title') {
+      if (searchType === "title") {
         posts = await prisma.post.findMany({
           where: {
             title: {
@@ -27,7 +30,7 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
           },
           orderBy: [
             {
-              createdAt: 'desc',
+              createdAt: "desc",
             },
           ],
           select: {
@@ -49,7 +52,7 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
             createdAt: true,
           },
         });
-      } else if (searchType === 'content') {
+      } else if (searchType === "content") {
         posts = await prisma.post.findMany({
           where: {
             content: {
@@ -61,7 +64,7 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
           },
           orderBy: [
             {
-              createdAt: 'desc',
+              createdAt: "desc",
             },
           ],
           select: {
@@ -83,7 +86,7 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
             createdAt: true,
           },
         });
-      } else if (searchType === 'tag') {
+      } else if (searchType === "tag") {
         posts = await prisma.post.findMany({
           where: {
             tags: {
@@ -97,7 +100,7 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
           },
           orderBy: [
             {
-              createdAt: 'desc',
+              createdAt: "desc",
             },
           ],
           select: {

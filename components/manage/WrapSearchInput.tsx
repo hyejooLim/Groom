@@ -1,11 +1,11 @@
-import React, { FC, useState, useEffect, useCallback, MouseEvent } from 'react';
-import { Dropdown } from 'antd';
-import { UpOutlined, DownOutlined } from '@ant-design/icons';
-import { GrSearch } from 'react-icons/gr';
-import classNames from 'classnames';
+import React, { FC, useState, useEffect, useCallback, MouseEvent } from "react";
+import { Dropdown } from "antd";
+import { UpOutlined, DownOutlined } from "@ant-design/icons";
+import { GrSearch } from "react-icons/gr";
+import classNames from "classnames";
 
-import useInput from '../../hooks/common/input';
-import * as S from '../../styles/ts/components/manage/WrapSearchInput';
+import useInput from "../../hooks/common/input";
+import * as S from "../../styles/ts/components/manage/WrapSearchInput";
 
 interface WrapSearchInputProps {
   placeholder: string;
@@ -15,26 +15,32 @@ interface WrapSearchInputProps {
 
 const searchTypeList = [
   {
-    key: 'title',
-    label: '제목',
+    key: "title",
+    label: "제목",
   },
   {
-    key: 'content',
-    label: '내용',
+    key: "content",
+    label: "내용",
   },
   {
-    key: 'tag',
-    label: '태그',
+    key: "tag",
+    label: "태그",
   },
 ];
 
-const WrapSearchInput: FC<WrapSearchInputProps> = ({ placeholder, newSearchTypes, onSearch }) => {
+const WrapSearchInput: FC<WrapSearchInputProps> = ({
+  placeholder,
+  newSearchTypes,
+  onSearch,
+}) => {
   const [openMenu, setOpenMenu] = useState(false);
   const [showInput, setShowInput] = useState(false);
   const [searchType, setSearchType] = useState(searchTypeList[0]);
-  const [searchKeyword, onChangeSearchKeyword, setSearchKeyword] = useInput('');
+  const [searchKeyword, onChangeSearchKeyword, setSearchKeyword] = useInput("");
 
-  const totalSearchType = newSearchTypes ? searchTypeList.concat(newSearchTypes) : searchTypeList;
+  const totalSearchType = newSearchTypes
+    ? searchTypeList.concat(newSearchTypes)
+    : searchTypeList;
 
   useEffect(() => {
     function onClick() {
@@ -43,22 +49,25 @@ const WrapSearchInput: FC<WrapSearchInputProps> = ({ placeholder, newSearchTypes
       }
     }
 
-    window.addEventListener('click', onClick);
+    window.addEventListener("click", onClick);
 
     return () => {
-      window.removeEventListener('click', onClick);
+      window.removeEventListener("click", onClick);
     };
   }, [showInput]);
 
   useEffect(() => {
     if (!showInput) {
-      setSearchKeyword('');
+      setSearchKeyword("");
       setSearchType(searchTypeList[0]);
     }
   }, [showInput]);
 
   const onClickLabel = useCallback((e: MouseEvent<HTMLButtonElement>) => {
-    setSearchType({ key: e.currentTarget.dataset.key, label: e.currentTarget.dataset.label });
+    setSearchType({
+      key: e.currentTarget.dataset.key,
+      label: e.currentTarget.dataset.label,
+    });
   }, []);
 
   const onSubmitInput = useCallback(() => {
@@ -74,12 +83,16 @@ const WrapSearchInput: FC<WrapSearchInputProps> = ({ placeholder, newSearchTypes
   const menu = (
     <S.OverrideMenu
       selectable
-      defaultSelectedKeys={['title']}
+      defaultSelectedKeys={["title"]}
       items={totalSearchType.map((item) => {
         return {
           key: item.key,
           label: (
-            <button data-key={item.key} data-label={item.label} onClick={onClickLabel}>
+            <button
+              data-key={item.key}
+              data-label={item.label}
+              onClick={onClickLabel}
+            >
               {item.label}
             </button>
           ),
@@ -95,29 +108,46 @@ const WrapSearchInput: FC<WrapSearchInputProps> = ({ placeholder, newSearchTypes
           {showInput && (
             <>
               <S.DropdownWrapper>
-                <Dropdown overlay={menu} trigger={['click']} overlayStyle={{ width: '100px' }}>
+                <Dropdown
+                  overlay={menu}
+                  trigger={["click"]}
+                  overlayStyle={{ width: "100px" }}
+                >
                   <span
                     onClick={(e) => {
                       e.stopPropagation();
                       setOpenMenu((prev) => !prev);
                     }}
                   >
-                    <span style={{ fontSize: '14px', margin: '0 24px 0 -10px' }}>{searchType.label}</span>
+                    <span
+                      style={{ fontSize: "14px", margin: "0 24px 0 -10px" }}
+                    >
+                      {searchType.label}
+                    </span>
                     {openMenu ? (
-                      <UpOutlined style={{ fontSize: '12px' }} />
+                      <UpOutlined
+                        style={{ fontSize: "12px" }}
+                        {...({} as React.ComponentProps<typeof UpOutlined>)}
+                      />
                     ) : (
-                      <DownOutlined style={{ fontSize: '12px' }} />
+                      <DownOutlined
+                        style={{ fontSize: "12px" }}
+                        {...({} as React.ComponentProps<typeof DownOutlined>)}
+                      />
                     )}
                   </span>
                 </Dropdown>
               </S.DropdownWrapper>
               <S.StyledInput
-                type='text'
+                type="text"
                 value={searchKeyword}
                 onChange={onChangeSearchKeyword}
-                placeholder={placeholder + '에서 검색합니다.'}
+                placeholder={placeholder + "에서 검색합니다."}
               />
-              <S.SearchButton htmlType='submit' disabled={!searchKeyword || !searchKeyword.trim()}>
+              <S.SearchButton
+                htmlType="submit"
+                disabled={!searchKeyword || !searchKeyword.trim()}
+              >
                 <GrSearch />
               </S.SearchButton>
               <S.CloseButton onClick={onClickCloseButton}>닫기</S.CloseButton>
@@ -126,7 +156,7 @@ const WrapSearchInput: FC<WrapSearchInputProps> = ({ placeholder, newSearchTypes
           {!showInput && (
             <S.ShowInputButton onClick={() => setShowInput(true)}>
               <span>검색</span>
-              <GrSearch className='icon' />
+              <GrSearch className="icon" />
             </S.ShowInputButton>
           )}
         </S.InnerWrapper>

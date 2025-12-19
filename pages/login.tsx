@@ -67,7 +67,10 @@ const Login = () => {
             </Link>
           </div>
           <div className="email input_form">
-            <UserOutlined className="icon" />
+            <UserOutlined
+              className="icon"
+              {...({} as React.ComponentProps<typeof UserOutlined>)}
+            />
             <S.StyledInput
               type="email"
               value={email}
@@ -78,7 +81,10 @@ const Login = () => {
             />
           </div>
           <div className="password input_form">
-            <LockOutlined className="icon" />
+            <LockOutlined
+              className="icon"
+              {...({} as React.ComponentProps<typeof LockOutlined>)}
+            />
             <S.StyledInput
               type="password"
               value={password}

@@ -1,6 +1,9 @@
-import styled from 'styled-components';
+import { HTMLAttributes } from "react";
+import styled from "styled-components";
 
-export const InnerModal = styled.div`
+type Props = HTMLAttributes<HTMLDivElement>;
+
+export const InnerModal = styled.div<Props>`
   width: 860px;
   margin: 0 auto;
   padding: 35px 0 42px;

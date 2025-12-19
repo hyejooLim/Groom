@@ -142,6 +142,7 @@ const EditorContent: FC<EditorContentProps> = ({
               <CloseOutlined
                 className="close_icon"
                 onClick={() => onRemoveTag(idx)}
+                {...({} as React.ComponentProps<typeof CloseOutlined>)}
               />
             </span>
           </div>

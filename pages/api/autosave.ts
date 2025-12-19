@@ -1,15 +1,18 @@
-import { NextApiHandler, NextApiRequest, NextApiResponse } from 'next';
-import { getSession } from 'next-auth/react';
+import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
+import { getSession } from "next-auth/react";
 
-import prisma from '../../lib/prisma';
-import { TagItem } from '../../types';
+import prisma from "../../prisma/prisma";
+import { TagItem } from "../../types";
 
-const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
+const handler: NextApiHandler = async (
+  req: NextApiRequest,
+  res: NextApiResponse
+) => {
   try {
-    if (req.method === 'GET') {
+    if (req.method === "GET") {
       const session = await getSession({ req });
       if (!session) {
-        return res.status(403).send({ message: '세션이 만료되었습니다.' });
+        return res.status(403).send({ message: "세션이 만료되었습니다." });
       }
 
       const autoSave = await prisma.autoSave.findFirst({
@@ -19,7 +22,7 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
           },
         },
         orderBy: {
-          createdAt: 'desc',
+          createdAt: "desc",
         },
         include: {
           tags: true,
@@ -30,10 +33,10 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
       });
 
       res.status(200).json(autoSave);
-    } else if (req.method === 'POST') {
+    } else if (req.method === "POST") {
       const session = await getSession({ req });
       if (!session) {
-        return res.status(403).send({ message: '세션이 만료되었습니다.' });
+        return res.status(403).send({ message: "세션이 만료되었습니다." });
       }
 
       const { title, content, htmlContent, categoryId, tags } = req.body;
@@ -71,7 +74,7 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
         },
       });
 
-      res.status(201).send('ok');
+      res.status(201).send("ok");
     }
   } catch (err) {
     console.error(err);
