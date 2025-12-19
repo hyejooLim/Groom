@@ -1,5 +1,8 @@
-import styled from 'styled-components';
-import { Button, Form, Input } from 'antd';
+import styled from "styled-components";
+import { Button, Form, Input } from "antd";
+import { HTMLAttributes } from "react";
+
+type Prop = HTMLAttributes<HTMLDivElement>;
 
 export const SignupWrapper = styled.div`
   height: 100%;
@@ -25,11 +28,11 @@ export const InputWrapper = styled(Input)`
   height: 38px;
   margin-top: 5px;
   border: 0;
-  font-family: 'Courier New', Courier, monospace;
+  font-family: "Courier New", Courier, monospace;
   font-size: 16px;
 `;
 
-export const ErrorMessage = styled.div`
+export const ErrorMessage = styled.div<Prop>`
   color: red;
   font-size: 13px;
   display: none;

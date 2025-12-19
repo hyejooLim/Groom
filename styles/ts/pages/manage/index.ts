@@ -1,4 +1,7 @@
-import styled from 'styled-components';
+import { HTMLAttributes } from "react";
+import styled from "styled-components";
+
+type Props = HTMLAttributes<HTMLDivElement>;
 
 export const CountVisitorWrapper = styled.div`
   position: relative;
@@ -11,14 +14,15 @@ export const CountVisitorWrapper = styled.div`
   box-sizing: border-box;
 `;
 
-export const CountVisitor = styled.div`
+export const CountVisitor = styled.div<Props>`
   float: left;
   padding: 0 24px 0 0;
   margin-top: -1px;
 
   & .title {
     font-size: 15px;
-    font-family: Noto Sans Medium, AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, '돋움', sans-serif;
+    font-family: Noto Sans Medium, AppleSDGothicNeo-Regular, "Malgun Gothic",
+      "맑은 고딕", dotum, "돋움", sans-serif;
     color: #555;
   }
 
@@ -26,7 +30,8 @@ export const CountVisitor = styled.div`
     padding: 5px 0 0;
     font-weight: bold;
     font-size: 20px;
-    font-family: 'Avenir Next Regular', AppleSDGothicNeo, '돋움', dotum, sans-serif;
+    font-family: "Avenir Next Regular", AppleSDGothicNeo, "돋움", dotum,
+      sans-serif;
     color: #000;
   }
 `;
@@ -67,7 +72,7 @@ export const PostTitle = styled.p`
   margin-bottom: 12px;
   font-size: 16px;
   font-weight: normal;
-  font-family: 'Noto Sans Regular', AppleSDGothicNeo, '돋움', dotum, sans-serif;
+  font-family: "Noto Sans Regular", AppleSDGothicNeo, "돋움", dotum, sans-serif;
 `;
 
 export const PostContent = styled.p`
@@ -96,13 +101,14 @@ export const InfoWrapper = styled.div`
     position: relative;
     margin: 4px 12px 0 0;
     font-size: 13px;
-    font-family: 'Avenir Next Regular', 'Noto Sans DemiLight', AppleSDGothicNeo, '돋움', dotum, sans-serif;
+    font-family: "Avenir Next Regular", "Noto Sans DemiLight", AppleSDGothicNeo,
+      "돋움", dotum, sans-serif;
     white-space: nowrap;
     text-overflow: ellipsis;
   }
 
   :last-child::after {
-    content: '';
+    content: "";
     display: block;
     position: absolute;
     top: 11px;

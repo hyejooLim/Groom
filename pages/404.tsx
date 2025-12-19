@@ -1,6 +1,9 @@
-import Image from 'next/image';
-import styled from 'styled-components';
-import logo from '../public/Groom_Logo_No_Background.png';
+import Image from "next/image";
+import { HTMLAttributes } from "react";
+import styled from "styled-components";
+import logo from "../public/Groom_Logo_No_Background.png";
+
+type Props = HTMLAttributes<HTMLDivElement>;
 
 const Page404Wrapper = styled.div`
   height: 100%;
@@ -22,7 +25,7 @@ const Page404Wrapper = styled.div`
   }
 `;
 
-const BackButton = styled.button`
+const BackButton = styled.button<Props>`
   border: 1px solid #666;
   border-radius: 20px;
   margin-top: 40px;
@@ -46,7 +49,7 @@ const Page404 = () => {
         <BackButton onClick={() => window.history.back()}>이전 화면</BackButton>
       </div>
       <footer>
-        <Image src={logo} alt='groom_logo' width={130} height={58} />
+        <Image src={logo} alt="groom_logo" width={130} height={58} />
       </footer>
     </Page404Wrapper>
   );
