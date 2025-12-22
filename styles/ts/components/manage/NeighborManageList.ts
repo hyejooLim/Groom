@@ -1,5 +1,8 @@
-import styled from 'styled-components';
-import { Button } from 'antd';
+import styled from "styled-components";
+import { Button } from "antd";
+import { HTMLAttributes } from "react";
+
+type Props = HTMLAttributes<HTMLDivElement>;
 
 export const ListWrapper = styled.div`
   background-color: #fff;
@@ -33,7 +36,7 @@ export const NeighborCancelButton = styled(Button)`
   }
 `;
 
-export const NeighborInfoWrapper = styled.div`
+export const NeighborInfoWrapper = styled.div<Props>`
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -78,7 +81,7 @@ export const NeighborInfoWrapper = styled.div`
             border-radius: 2px;
             background: #c5cdd7;
             vertical-align: top;
-            content: '';
+            content: "";
           }
         }
       }

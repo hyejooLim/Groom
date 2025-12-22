@@ -1,14 +1,20 @@
-import React, { FC, ChangeEvent, KeyboardEvent, useRef, useCallback } from 'react';
-import Dropzone from 'react-dropzone';
-import { Input, Select } from 'antd';
-import { CloseOutlined } from '@ant-design/icons';
-import classNames from 'classnames';
+import React, {
+  FC,
+  ChangeEvent,
+  KeyboardEvent,
+  useRef,
+  useCallback,
+} from "react";
+import Dropzone from "react-dropzone";
+import { Input, Select } from "antd";
+import { CloseOutlined } from "@ant-design/icons";
+import classNames from "classnames";
 
-import TinymceEditor from './TinymceEditor';
-import useInput from '../../hooks/common/input';
-import { CategoryItem, TagItem } from '../../types';
-import { useGetCategories } from '../../hooks/query/categories';
-import * as S from '../../styles/ts/components/editor/EditorContent';
+import TinymceEditor from "./TinymceEditor";
+import useInput from "../../hooks/common/input";
+import { CategoryItem, TagItem } from "../../types";
+import { useGetCategories } from "../../hooks/query/categories";
+import * as S from "../../styles/ts/components/editor/EditorContent";
 
 interface EditorContentProps {
   title: string;
@@ -49,7 +55,7 @@ const EditorContent: FC<EditorContentProps> = ({
 }) => {
   const { data: categories } = useGetCategories();
 
-  const [tag, onChangeTag, setTag] = useInput('');
+  const [tag, onChangeTag, setTag] = useInput("");
   const dropzoneRef = useRef(null);
 
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
@@ -57,9 +63,9 @@ const EditorContent: FC<EditorContentProps> = ({
       return;
     }
 
-    if (e.key === 'Enter') {
+    if (e.key === "Enter") {
       onAddTag(tag);
-      setTag('');
+      setTag("");
     }
   };
 
@@ -68,17 +74,22 @@ const EditorContent: FC<EditorContentProps> = ({
   }, [dropzoneRef]);
 
   return (
-    <S.Container className='container'>
-      <div className='post_header'>
+    <S.Container className="container">
+      <div className="post_header">
         <S.SelectCategory>
           <Select
-            defaultValue={'카테고리'}
-            value={category?.name || '카테고리'}
-            style={{ width: '170px' }}
+            defaultValue={"카테고리"}
+            value={category?.name || "카테고리"}
+            style={{ width: "170px" }}
             onChange={onChangeCategory}
           >
             {categories?.map((category) => (
-              <Select.Option key={category.id} className='select_option' id={category.id} value={category.name}>
+              <Select.Option
+                key={category.id}
+                className="select_option"
+                id={category.id}
+                value={category.name}
+              >
                 {category.name}
               </Select.Option>
             ))}
@@ -87,18 +98,22 @@ const EditorContent: FC<EditorContentProps> = ({
         <S.PostTitle>
           <Input
             ref={titleRef}
-            className={classNames('title', { empty: isTitleEmpty })}
+            className={classNames("title", { empty: isTitleEmpty })}
             value={title}
             onChange={onChangeTitle}
-            placeholder='제목을 입력하세요'
+            placeholder="제목을 입력하세요"
             autoFocus
           />
         </S.PostTitle>
       </div>
-      <Dropzone ref={dropzoneRef} accept={{ 'image/*': ['.gif', '.jpg', '.jpeg', '.png'] }} onDrop={onGetImageUrl}>
+      <Dropzone
+        ref={dropzoneRef}
+        accept={{ "image/*": [".gif", ".jpg", ".jpeg", ".png"] }}
+        onDrop={onGetImageUrl}
+      >
         {({ getRootProps, getInputProps, isDragActive }) => (
           <div
-            className='editor_inner'
+            className="editor_inner"
             {...getRootProps({
               onClick: (e) => e.stopPropagation(),
             })}
@@ -121,19 +136,23 @@ const EditorContent: FC<EditorContentProps> = ({
       </Dropzone>
       <S.TagArea>
         {tags?.map((tag, idx) => (
-          <div key={idx} style={{ display: 'inline-block' }}>
-            <span className='tag'>
+          <div key={idx} style={{ display: "inline-block" }}>
+            <span className="tag">
               #{tag.name}
-              <CloseOutlined className='close_icon' onClick={() => onRemoveTag(idx)} />
+              <CloseOutlined
+                className="close_icon"
+                onClick={() => onRemoveTag(idx)}
+                {...({} as React.ComponentProps<typeof CloseOutlined>)}
+              />
             </span>
           </div>
         ))}
-        <span className='tag_input'>
+        <span className="tag_input">
           <span>#</span>
-          <div style={{ display: 'inline-block' }}>
+          <div style={{ display: "inline-block" }}>
             <Input
-              style={{ padding: 0, border: 0, boxSizing: 'content-box' }}
-              placeholder='태그입력'
+              style={{ padding: 0, border: 0, boxSizing: "content-box" }}
+              placeholder="태그입력"
               value={tag}
               onChange={onChangeTag}
               onKeyDown={handleKeyDown}

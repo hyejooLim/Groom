@@ -1,25 +1,25 @@
-import React, { useState, useCallback } from 'react';
-import { signIn } from 'next-auth/react';
-import Head from 'next/head';
-import Link from 'next/link';
-import Image from 'next/image';
-import Router, { useRouter } from 'next/router';
-import { useSetRecoilState } from 'recoil';
-import { UserOutlined, LockOutlined } from '@ant-design/icons';
-import { toast, ToastContainer } from 'react-toastify';
-import { Oval } from 'react-loader-spinner';
+import React, { useState, useCallback } from "react";
+import { signIn } from "next-auth/react";
+import Head from "next/head";
+import Link from "next/link";
+import Image from "next/image";
+import Router, { useRouter } from "next/router";
+import { useSetRecoilState } from "recoil";
+import { UserOutlined, LockOutlined } from "@ant-design/icons";
+import { toast, ToastContainer } from "react-toastify";
+import { Oval } from "react-loader-spinner";
 
-import useInput from '../hooks/common/input';
-import { isLogInState } from '../recoil/auth';
-import * as S from '../styles/ts/pages/login';
-import logo from '../public/Groom_Logo_No_Background.png';
+import useInput from "../hooks/common/input";
+import { isLogInState } from "../recoil/auth";
+import * as S from "../styles/ts/pages/login";
+import logo from "../public/Groom_Logo_No_Background.png";
 
 const Login = () => {
   const router = useRouter();
   const { prevPathname } = router.query;
 
-  const [email, onChangeEmail] = useInput('');
-  const [password, onChangePassword] = useInput('');
+  const [email, onChangeEmail] = useInput("");
+  const [password, onChangePassword] = useInput("");
   const [isLoading, setIsLoading] = useState(false);
 
   const setIsLogIn = useSetRecoilState(isLogInState);
@@ -27,7 +27,7 @@ const Login = () => {
   const onSubmitForm = useCallback(async () => {
     setIsLoading(true);
 
-    const result = await signIn('credentials', {
+    const result = await signIn("credentials", {
       redirect: false, // 로그인 중 에러 발생 시 현재 화면 유지
       email,
       password,
@@ -41,14 +41,14 @@ const Login = () => {
 
     setIsLogIn(result.ok);
 
-    toast.success('로그인 되었습니다.', {
+    toast.success("로그인 되었습니다.", {
       autoClose: 2000,
-      position: toast.POSITION.TOP_RIGHT,
+      position: "top-right",
       hideProgressBar: true,
     });
 
     setTimeout(() => {
-      prevPathname === 'signup' ? Router.push('/') : Router.back();
+      prevPathname === "signup" ? Router.push("/") : Router.back();
     }, 3000);
   }, [email, password]);
 
@@ -59,49 +59,57 @@ const Login = () => {
       </Head>
       <S.LoginWrapper>
         <S.StyledForm onFinish={onSubmitForm}>
-          <div className='logo'>
-            <Link href='/'>
-              <a>
-                <Image src={logo} alt='groom_logo' width={140} height={60} />
-              </a>
+          <div className="logo">
+            <Link href="/">
+              <Image src={logo} alt="groom_logo" width={140} height={60} />
             </Link>
           </div>
-          <div className='email input_form'>
-            <UserOutlined className='icon' />
+          <div className="email input_form">
+            <UserOutlined
+              className="icon"
+              {...({} as React.ComponentProps<typeof UserOutlined>)}
+            />
             <S.StyledInput
-              type='email'
+              type="email"
               value={email}
               onChange={onChangeEmail}
-              placeholder='email'
+              placeholder="email"
               disabled={isLoading}
               required
             />
           </div>
-          <div className='password input_form'>
-            <LockOutlined className='icon' />
+          <div className="password input_form">
+            <LockOutlined
+              className="icon"
+              {...({} as React.ComponentProps<typeof LockOutlined>)}
+            />
             <S.StyledInput
-              type='password'
+              type="password"
               value={password}
               onChange={onChangePassword}
-              placeholder='password'
+              placeholder="password"
               disabled={isLoading}
               required
             />
           </div>
-          <div className='buttons'>
-            <S.LoginButton htmlType='submit' disabled={isLoading}>
+          <div className="buttons">
+            <S.LoginButton htmlType="submit" disabled={isLoading}>
               {isLoading ? (
-                <Oval height={20} width={20} color='#fff' secondaryColor='#eee' strokeWidth={6} />
+                <Oval
+                  height={20}
+                  width={20}
+                  color="#fff"
+                  secondaryColor="#eee"
+                  strokeWidth={6}
+                />
               ) : (
-                '로그인'
+                "로그인"
               )}
             </S.LoginButton>
             <S.SignupButton>
-              <Link href='/signup'>
-                <a style={{ color: '#888' }}>
-                  <span>아직 계정이 없으신가요?</span>
-                  <span className='go_to_signup'>회원가입</span>
-                </a>
+              <Link href="/signup" style={{ color: "#888" }}>
+                <span>아직 계정이 없으신가요?</span>
+                <span className="go_to_signup">회원가입</span>
               </Link>
             </S.SignupButton>
           </div>

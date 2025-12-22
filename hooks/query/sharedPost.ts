@@ -1,15 +1,19 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import visitSharedPost from '../../apis/sharedPost/visitSharedPost';
-import deleteSharedPost from '../../apis/sharedPost/deleteSharedPost';
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import visitSharedPost from "../../apis/sharedPost/visitSharedPost";
+import deleteSharedPost from "../../apis/sharedPost/deleteSharedPost";
 
-const useVisitSharedPost = () => useMutation(visitSharedPost);
+const useVisitSharedPost = () =>
+  useMutation({
+    mutationFn: visitSharedPost,
+  });
 
 const useDeleteSharedPost = () => {
   const queryClient = useQueryClient();
 
-  return useMutation(deleteSharedPost, {
+  return useMutation({
+    mutationFn: deleteSharedPost,
     onSuccess: () => {
-      queryClient.invalidateQueries(['userSharedPosts']);
+      queryClient.invalidateQueries({ queryKey: ["userSharedPosts"] });
     },
   });
 };

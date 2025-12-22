@@ -1,11 +1,14 @@
-import { NextApiHandler, NextApiRequest, NextApiResponse } from 'next';
+import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
 
-import prisma from '../../../lib/prisma';
-import { TagItem } from '../../../types';
+import prisma from "../../../prisma/prisma";
+import { TagItem } from "../../../types";
 
-const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
+const handler: NextApiHandler = async (
+  req: NextApiRequest,
+  res: NextApiResponse
+) => {
   try {
-    if (req.method === 'PUT') {
+    if (req.method === "PUT") {
       await Promise.all(
         req.body.tags?.map((tag: TagItem) =>
           prisma.tag.upsert({
@@ -55,17 +58,17 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
         });
       }
 
-      res.status(200).json('ok');
+      res.status(200).json("ok");
     }
 
-    if (req.method === 'DELETE') {
+    if (req.method === "DELETE") {
       await prisma.tempPost.delete({
         where: {
           id: Number(req.query.id),
         },
       });
 
-      return res.status(200).send('ok');
+      return res.status(200).send("ok");
     }
   } catch (err) {
     console.error(err);

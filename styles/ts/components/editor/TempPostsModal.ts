@@ -1,6 +1,10 @@
-import styled from 'styled-components';
+import { HTMLAttributes, ButtonHTMLAttributes } from "react";
+import styled from "styled-components";
 
-export const InfoBoxWrapper = styled.div`
+type Props = HTMLAttributes<HTMLDivElement>;
+type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement>;
+
+export const InfoBoxWrapper = styled.div<Props>`
   display: none;
   width: 287px;
   height: 60px;
@@ -16,7 +20,7 @@ export const InfoBoxWrapper = styled.div`
   left: -2px;
 
   ::after {
-    content: '';
+    content: "";
     display: block;
     position: absolute;
     left: 13px;
@@ -32,13 +36,13 @@ export const InfoBoxWrapper = styled.div`
   }
 `;
 
-export const HeadLayer = styled.div`
+export const HeadLayer = styled.div<Props>`
   border-bottom: 2px solid #000;
 
   ::after {
     display: block;
     clear: both;
-    content: '';
+    content: "";
   }
 
   .head_layer_title {
@@ -46,7 +50,8 @@ export const HeadLayer = styled.div`
     padding: 0 0 12px;
     font-weight: 400;
     font-size: 18px;
-    font-family: Noto Sans Medium, AppleSDGothicNeo-Regular, Malgun Gothic, dotum, sans-serif;
+    font-family: Noto Sans Medium, AppleSDGothicNeo-Regular, Malgun Gothic,
+      dotum, sans-serif;
     color: #000;
   }
 
@@ -70,7 +75,7 @@ export const HeadLayer = styled.div`
   }
 `;
 
-export const ItemInfoWrapper = styled.div`
+export const ItemInfoWrapper = styled.div<Props>`
   position: absolute;
   z-index: 1;
   border-radius: 1px;
@@ -93,7 +98,7 @@ export const ItemInfoWrapper = styled.div`
   }
 
   ::after {
-    content: '';
+    content: "";
     display: block;
     position: absolute;
     top: -7px;
@@ -109,7 +114,7 @@ export const ItemInfoWrapper = styled.div`
   }
 `;
 
-export const RemoveButton = styled.button`
+export const RemoveButton = styled.button<ButtonProps>`
   display: none;
   height: 13px;
   padding: 0;
@@ -122,7 +127,7 @@ export const RemoveButton = styled.button`
   }
 `;
 
-export const BodyLayer = styled.div`
+export const BodyLayer = styled.div<Props>`
   .list_container {
     overflow: auto;
     height: 387px;
@@ -150,7 +155,7 @@ export const BodyLayer = styled.div`
           ::after {
             display: block;
             clear: both;
-            content: '';
+            content: "";
           }
 
           & dt {
@@ -158,7 +163,8 @@ export const BodyLayer = styled.div`
             width: 96px;
             padding: 2px 0 0;
             line-height: 18px;
-            font-family: Avenir Next, Noto Sans DemiLight, AppleSDGothicNeo-Regular, Malgun Gothic, dotum, sans-serif;
+            font-family: Avenir Next, Noto Sans DemiLight,
+              AppleSDGothicNeo-Regular, Malgun Gothic, dotum, sans-serif;
             color: #000;
             font-weight: 300;
           }
@@ -175,7 +181,7 @@ export const BodyLayer = styled.div`
             ::after {
               display: block;
               clear: both;
-              content: '';
+              content: "";
             }
 
             &:hover {
@@ -220,7 +226,7 @@ export const BodyLayer = styled.div`
   }
 `;
 
-export const FootLayer = styled.div`
+export const FootLayer = styled.div<Props>`
   .btn_wrapper {
     padding: 30px 0 0;
     font-size: 0;

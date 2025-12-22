@@ -1,9 +1,12 @@
-import { NextApiHandler, NextApiRequest, NextApiResponse } from 'next';
-import prisma from '../../../lib/prisma';
+import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
+import prisma from "../../../prisma/prisma";
 
-const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
+const handler: NextApiHandler = async (
+  req: NextApiRequest,
+  res: NextApiResponse
+) => {
   try {
-    if (req.method === 'GET') {
+    if (req.method === "GET") {
       const keyword = req.query.keyword as string;
 
       const posts = await prisma.post.findMany({
@@ -48,7 +51,7 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
         },
         orderBy: [
           {
-            createdAt: 'desc',
+            createdAt: "desc",
           },
         ],
         select: {

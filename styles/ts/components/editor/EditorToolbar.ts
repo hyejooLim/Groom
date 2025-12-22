@@ -1,7 +1,9 @@
-import styled from 'styled-components';
-import { Button } from 'antd';
+import styled from "styled-components";
+import { Button } from "antd";
+import { HTMLAttributes } from "react";
 
-export const Toolbar = styled.div`
+type Props = HTMLAttributes<HTMLDivElement>;
+export const Toolbar = styled.div<Props>`
   position: fixed;
   top: 0;
   min-width: 944px;

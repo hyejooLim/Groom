@@ -1,6 +1,9 @@
-import styled from 'styled-components';
+import { HTMLAttributes } from "react";
+import styled from "styled-components";
 
-export const PopoverWrapper = styled.div`
+type Props = HTMLAttributes<HTMLDivElement>;
+
+export const PopoverWrapper = styled.div<Props>`
   position: absolute;
   background-color: #fff;
   padding: 10px 0;
@@ -15,7 +18,7 @@ export const PopoverWrapper = styled.div`
   }
 
   &::before {
-    content: '';
+    content: "";
     border-top: 6px solid #fff;
     border-left: 6px solid transparent;
     border-right: 6px solid transparent;
@@ -26,7 +29,7 @@ export const PopoverWrapper = styled.div`
   }
 
   &::after {
-    content: '';
+    content: "";
     border-top: 6px solid #999;
     border-left: 6px solid transparent;
     border-right: 6px solid transparent;
@@ -38,7 +41,8 @@ export const PopoverWrapper = styled.div`
   & div {
     width: 100%;
     padding: 7px 18px;
-    font-family: 'Noto Sans DemiLight', AppleSDGothicNeo, 'Malgun Gothic', '맑은 고딕', '돋움', dotum, sans-serif !important;
+    font-family: "Noto Sans DemiLight", AppleSDGothicNeo, "Malgun Gothic",
+      "맑은 고딕", "돋움", dotum, sans-serif !important;
     line-height: 16px;
     color: #333;
     text-align: left;

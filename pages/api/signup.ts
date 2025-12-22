@@ -1,10 +1,13 @@
-import next, { NextApiHandler, NextApiRequest, NextApiResponse } from 'next';
-import prisma from '../../lib/prisma';
-import { hashPassword } from '../../utils/auth';
+import next, { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
+import prisma from "../../prisma/prisma";
+import { hashPassword } from "../../utils/auth";
 
-const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
+const handler: NextApiHandler = async (
+  req: NextApiRequest,
+  res: NextApiResponse
+) => {
   try {
-    if (req.method !== 'POST') {
+    if (req.method !== "POST") {
       return;
     }
 
@@ -17,13 +20,15 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
       },
     });
     if (exUser) {
-      return res.status(403).send({ message: '이미 가입한 이메일입니다.' });
+      return res.status(403).send({ message: "이미 가입한 이메일입니다." });
     }
 
     const hashedPassword = await hashPassword(password);
-    await prisma.user.create({ data: { email, password: hashedPassword, name } });
+    await prisma.user.create({
+      data: { email, password: hashedPassword, name },
+    });
 
-    res.status(200).send('ok');
+    res.status(200).send("ok");
   } catch (error) {
     console.error(error);
     next(error);

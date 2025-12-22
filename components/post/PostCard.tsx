@@ -1,29 +1,34 @@
-import React, { FC, useCallback, useEffect, useState } from 'react';
-import Link from 'next/link';
-import Router from 'next/router';
-import { useSession } from 'next-auth/react';
-import { Button } from 'antd';
-import { HeartOutlined, HeartTwoTone } from '@ant-design/icons';
-import { Markup } from 'interweave';
-import { polyfill } from 'interweave-ssr';
-import { useRecoilValue } from 'recoil';
-import { BsCloudFill } from 'react-icons/bs';
-import { RiUserFollowLine, RiUserUnfollowLine } from 'react-icons/ri';
-import { GrFormPrevious, GrFormNext } from 'react-icons/gr';
-import { FiShare } from 'react-icons/fi';
-import dayjs from 'dayjs';
+import React, { FC, useCallback, useEffect, useState } from "react";
+import Link from "next/link";
+import Router from "next/router";
+import { useSession } from "next-auth/react";
+import { Button } from "antd";
+import { HeartOutlined, HeartTwoTone } from "@ant-design/icons";
+import { Markup } from "interweave";
+import { polyfill } from "interweave-ssr";
+import { useRecoilValue } from "recoil";
+import { BsCloudFill } from "react-icons/bs";
+import { RiUserFollowLine, RiUserUnfollowLine } from "react-icons/ri";
+import { GrFormPrevious, GrFormNext } from "react-icons/gr";
+import { FiShare } from "react-icons/fi";
+import dayjs from "dayjs";
 
-import Title from '../common/Title';
-import CommentForm from '../comment/CommentForm';
-import CommentList from '../comment/CommentList';
-import PostShare from './PostShare';
-import { useGetUser } from '../../hooks/query/user';
-import { useGetPosts } from '../../hooks/query/posts';
-import { useLikePost, useUnLikePost, useSubscribePost, useUnSubscribePost } from '../../hooks/query/post';
-import { useAddNeighbor, useCancelNeighbor } from '../../hooks/query/neighbor';
-import { mainPostsState } from '../../recoil/posts';
-import { PostItem } from '../../types';
-import * as S from '../../styles/ts/components/post/PostCard';
+import Title from "../common/Title";
+import CommentForm from "../comment/CommentForm";
+import CommentList from "../comment/CommentList";
+import PostShare from "./PostShare";
+import { useGetUser } from "../../hooks/query/user";
+import { useGetPosts } from "../../hooks/query/posts";
+import {
+  useLikePost,
+  useUnLikePost,
+  useSubscribePost,
+  useUnSubscribePost,
+} from "../../hooks/query/post";
+import { useAddNeighbor, useCancelNeighbor } from "../../hooks/query/neighbor";
+import { mainPostsState } from "../../recoil/posts";
+import { PostItem } from "../../types";
+import * as S from "../../styles/ts/components/post/PostCard";
 
 polyfill();
 
@@ -57,21 +62,23 @@ const PostCard: FC<PostCardProps> = ({ post, onDeletePost }) => {
   }, [post, mainPosts]);
 
   const onToggleLikePost = useCallback(() => {
-    if (status === 'unauthenticated') {
-      if (confirm('로그인이 필요합니다. 로그인 페이지로 이동하시겠습니까?')) {
-        Router.push('/login');
+    if (status === "unauthenticated") {
+      if (confirm("로그인이 필요합니다. 로그인 페이지로 이동하시겠습니까?")) {
+        Router.push("/login");
       }
 
       return;
     }
 
-    post?.likers.find((liker) => liker.id === user?.id) ? unLikePost.mutate(post?.id) : likePost.mutate(post?.id);
+    post?.likers.find((liker) => liker.id === user?.id)
+      ? unLikePost.mutate(post?.id)
+      : likePost.mutate(post?.id);
   }, [status, post]);
 
   const onSubscribePost = useCallback(() => {
-    if (status === 'unauthenticated') {
-      if (confirm('로그인이 필요합니다. 로그인 페이지로 이동하시겠습니까?')) {
-        Router.push('/login');
+    if (status === "unauthenticated") {
+      if (confirm("로그인이 필요합니다. 로그인 페이지로 이동하시겠습니까?")) {
+        Router.push("/login");
       }
 
       return;
@@ -85,9 +92,9 @@ const PostCard: FC<PostCardProps> = ({ post, onDeletePost }) => {
   }, [post]);
 
   const onAddNeighbor = useCallback(() => {
-    if (status === 'unauthenticated') {
-      if (confirm('로그인이 필요합니다. 로그인 페이지로 이동하시겠습니까?')) {
-        Router.push('/login');
+    if (status === "unauthenticated") {
+      if (confirm("로그인이 필요합니다. 로그인 페이지로 이동하시겠습니까?")) {
+        Router.push("/login");
       }
 
       return;
@@ -109,7 +116,7 @@ const PostCard: FC<PostCardProps> = ({ post, onDeletePost }) => {
   }, [post]);
 
   const deletePost = useCallback(() => {
-    const confirm = window.confirm('선택한 글을 삭제하시겠습니까?');
+    const confirm = window.confirm("선택한 글을 삭제하시겠습니까?");
     if (!confirm) return;
 
     onDeletePost(post?.id);
@@ -130,64 +137,91 @@ const PostCard: FC<PostCardProps> = ({ post, onDeletePost }) => {
       <S.HeadWrapper>
         <Title title={`[${post?.category.name}] ${post?.title}`} />
         <S.Author>
-          {status === 'loading' && <BsCloudFill className='icon groom' />}
-          {status === 'authenticated' && user?.id === post?.authorId && <BsCloudFill className='icon groom' />}
-          {status === 'authenticated' &&
+          {status === "loading" && <BsCloudFill className="icon groom" />}
+          {status === "authenticated" && user?.id === post?.authorId && (
+            <BsCloudFill className="icon groom" />
+          )}
+          {status === "authenticated" &&
             user?.id !== post?.authorId &&
-            user?.neighbors.find((neighbor) => neighbor.id === post?.authorId) && (
-              <RiUserFollowLine className='icon' onClick={onCancelNeighbor} />
+            user?.neighbors.find(
+              (neighbor) => neighbor.id === post?.authorId
+            ) && (
+              <RiUserFollowLine className="icon" onClick={onCancelNeighbor} />
             )}
-          {status === 'authenticated' &&
+          {status === "authenticated" &&
             user?.id !== post?.authorId &&
-            !user?.neighbors.find((neighbor) => neighbor.id === post?.authorId) && (
-              <RiUserUnfollowLine className='icon' onClick={onAddNeighbor} />
+            !user?.neighbors.find(
+              (neighbor) => neighbor.id === post?.authorId
+            ) && (
+              <RiUserUnfollowLine className="icon" onClick={onAddNeighbor} />
             )}
-          {status === 'unauthenticated' && <RiUserUnfollowLine className='icon' onClick={onAddNeighbor} />}
+          {status === "unauthenticated" && (
+            <RiUserUnfollowLine className="icon" onClick={onAddNeighbor} />
+          )}
           <span>{post?.author.name}의 글</span>
         </S.Author>
-        <S.Date>{dayjs(post?.createdAt).format('YYYY.MM.DD HH:mm')}</S.Date>
+        <S.Date>{dayjs(post?.createdAt).format("YYYY.MM.DD HH:mm")}</S.Date>
       </S.HeadWrapper>
       <S.ContentWrapper>
-        <div className='tag_label'>
+        <div className="tag_label">
           {post?.tags.map((tag) => (
             <Link key={tag.id} href={`/tag/${tag.name}`}>
-              <a>#{tag.name}</a>
+              #{tag.name}
             </Link>
           ))}
         </div>
-        <div className='article'>
+        <div className="article">
           <Markup content={post?.htmlContent} />
         </div>
-        <div style={{ display: 'flex' }}>
-          <S.PostButton className='share' onClick={() => setIsShowPopover(true)}>
+        <div style={{ display: "flex" }}>
+          <S.PostButton
+            className="share"
+            onClick={() => setIsShowPopover(true)}
+          >
             <FiShare />
           </S.PostButton>
-          <PostShare postId={post?.id} isShow={isShowPopover} onClose={() => setIsShowPopover(false)} />
+          <PostShare
+            postId={post?.id}
+            isShow={isShowPopover}
+            onClose={() => setIsShowPopover(false)}
+          />
           <S.PostButton onClick={onToggleLikePost}>
             <span>
-              {status === 'authenticated' && post?.likers.find((liker) => liker.id === user?.id) ? (
-                <HeartTwoTone key='heart' twoToneColor='red' />
+              {status === "authenticated" &&
+              post?.likers.find((liker) => liker.id === user?.id) ? (
+                <HeartTwoTone
+                  key="heart"
+                  twoToneColor="red"
+                  {...({} as React.ComponentProps<typeof HeartTwoTone>)}
+                />
               ) : (
-                <HeartOutlined key='heart' />
+                <HeartOutlined
+                  key="heart"
+                  {...({} as React.ComponentProps<typeof HeartOutlined>)}
+                />
               )}
             </span>
             <span style={{ marginLeft: 7 }}>공감</span>
           </S.PostButton>
-          {status === 'authenticated' && post?.subscribers.find((subscriber) => subscriber.id === user?.id) ? (
+          {status === "authenticated" &&
+          post?.subscribers.find((subscriber) => subscriber.id === user?.id) ? (
             <S.PostButton onClick={onUnSubscribePost}>구독취소</S.PostButton>
           ) : (
             <S.PostButton onClick={onSubscribePost}>구독하기</S.PostButton>
           )}
         </div>
-        {status === 'authenticated' && user?.id === post?.authorId && (
+        {status === "authenticated" && user?.id === post?.authorId && (
           <S.EditButton>
-            <Link href={{ pathname: `/write/${post?.id}`, query: { prevPathname: 'postcard' } }}>
-              <a>
-                <Button className='modify btn'>Modify</Button>
-              </a>
+            <Link
+              href={{
+                pathname: `/write/${post?.id}`,
+                query: { prevPathname: "postcard" },
+              }}
+            >
+              <Button className="modify btn">Modify</Button>
             </Link>
-            <span className='line'>|</span>
-            <Button className='delete btn' onClick={deletePost}>
+            <span className="line">|</span>
+            <Button className="delete btn" onClick={deletePost}>
               Delete
             </Button>
           </S.EditButton>
@@ -195,17 +229,23 @@ const PostCard: FC<PostCardProps> = ({ post, onDeletePost }) => {
       </S.ContentWrapper>
       <S.ButtonWrapper>
         <div>
-          <Button className='prev button' onClick={onClickPrevPost} disabled={currentIdx === 0}>
-            <GrFormPrevious className='prev icon' />
+          <Button
+            className="prev button"
+            onClick={onClickPrevPost}
+            disabled={currentIdx === 0}
+          >
+            <GrFormPrevious className="prev icon" />
             <span>이전 게시글</span>
           </Button>
           <Button
-            className='next button'
+            className="next button"
             onClick={onClickNextPost}
-            disabled={mainPosts.length ? currentIdx === mainPosts.length - 1 : false}
+            disabled={
+              mainPosts.length ? currentIdx === mainPosts.length - 1 : false
+            }
           >
             <span>다음 게시글</span>
-            <GrFormNext className='next icon' />
+            <GrFormNext className="next icon" />
           </Button>
         </div>
       </S.ButtonWrapper>

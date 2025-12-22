@@ -1,13 +1,16 @@
-import { NextApiHandler, NextApiRequest, NextApiResponse } from 'next';
-import { getSession } from 'next-auth/react';
-import prisma from '../../../../../../lib/prisma';
+import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
+import { getSession } from "next-auth/react";
+import prisma from "../../../../../../prisma/prisma";
 
-const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
+const handler: NextApiHandler = async (
+  req: NextApiRequest,
+  res: NextApiResponse
+) => {
   try {
-    if (req.method === 'GET') {
+    if (req.method === "GET") {
       const session = await getSession({ req });
       if (!session) {
-        return res.status(403).send({ message: '세션이 만료되었습니다.' });
+        return res.status(403).send({ message: "세션이 만료되었습니다." });
       }
 
       const category = await prisma.category.findUnique({
@@ -23,7 +26,7 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
             },
             orderBy: [
               {
-                createdAt: 'desc',
+                createdAt: "desc",
               },
             ],
             select: {

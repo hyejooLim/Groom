@@ -1,13 +1,16 @@
-import React, { FC, useCallback, useEffect, useState } from 'react';
-import Router from 'next/router';
-import Link from 'next/link';
-import dayjs from 'dayjs';
-import BeatLoader from 'react-spinners/BeatLoader';
+import React, { FC, useCallback, useEffect, useState } from "react";
+import Router from "next/router";
+import Link from "next/link";
+import dayjs from "dayjs";
+import BeatLoader from "react-spinners/BeatLoader";
 
-import { PostItem } from '../../types';
-import { PAGE_SIZE } from '../../recoil/main';
-import PaginationContainer from '../common/PaginationContainer';
-import { ListWrapper, PostInfo } from '../../styles/ts/components/post/PostList';
+import { PostItem } from "../../types";
+import { PAGE_SIZE } from "../../recoil/main";
+import PaginationContainer from "../common/PaginationContainer";
+import {
+  ListWrapper,
+  PostInfo,
+} from "../../styles/ts/components/post/PostList";
 
 interface PostListProps {
   posts: PostItem[];
@@ -16,7 +19,12 @@ interface PostListProps {
   isLoading: boolean;
 }
 
-const PostList: FC<PostListProps> = ({ posts, pathname, currentPage, isLoading }) => {
+const PostList: FC<PostListProps> = ({
+  posts,
+  pathname,
+  currentPage,
+  isLoading,
+}) => {
   const [firstIndex, setFirstIndex] = useState(0);
   const [lastIndex, setLastIndex] = useState(PAGE_SIZE);
 
@@ -41,26 +49,29 @@ const PostList: FC<PostListProps> = ({ posts, pathname, currentPage, isLoading }
     <>
       <ListWrapper>
         {isLoading ? (
-          <BeatLoader className='loader' color='#ddd' size={16} />
+          <BeatLoader className="loader" color="#ddd" size={16} />
         ) : (
           <ul>
             {posts?.slice(firstIndex, lastIndex).map((post) => (
               <li key={post.id}>
                 <Link href={`/post/${post.id}`}>
-                  <a>
-                    [{post.category?.name}] {post.title}
-                  </a>
+                  [{post.category?.name}] {post.title}
                 </Link>
                 <PostInfo>
                   <span style={{ marginRight: 8 }}>{post.author?.name}</span>
-                  <span>{dayjs(post.createdAt).format('YYYY.MM.DD')}</span>
+                  <span>{dayjs(post.createdAt).format("YYYY.MM.DD")}</span>
                 </PostInfo>
               </li>
             ))}
           </ul>
         )}
       </ListWrapper>
-      <PaginationContainer pageSize={PAGE_SIZE} current={currentPage} total={posts?.length} onChange={onChangePage} />
+      <PaginationContainer
+        pageSize={PAGE_SIZE}
+        current={currentPage}
+        total={posts?.length}
+        onChange={onChangePage}
+      />
     </>
   );
 };

@@ -1,21 +1,32 @@
-import React, { FC, useEffect, useCallback } from 'react';
-import { useRouter } from 'next/router';
-import Link from 'next/link';
-import { useRecoilState } from 'recoil';
-import dayjs from 'dayjs';
-import { Avatar, Button } from 'antd';
-import { PaperClipOutlined } from '@ant-design/icons';
-import { FiSearch } from 'react-icons/fi';
-import { BsCloudFill, BsArrowRight } from 'react-icons/bs';
-import { BeatLoader } from 'react-spinners';
+import React, { FC, useEffect, useCallback } from "react";
+import { useRouter } from "next/router";
+import Link from "next/link";
+import { useRecoilState } from "recoil";
+import dayjs from "dayjs";
+import { Avatar, Button } from "antd";
+import { PaperClipOutlined } from "@ant-design/icons";
+import { FiSearch } from "react-icons/fi";
+import { BsCloudFill, BsArrowRight } from "react-icons/bs";
+import { BeatLoader } from "react-spinners";
 
-import { SharedPost } from '../../types';
-import PaginationContainer from '../common/PaginationContainer';
-import { useVisitSharedPost, useDeleteSharedPost } from '../../hooks/query/sharedPost';
-import { firstIndexState, lastIndexState, currentPageState, MANAGE_PAGE_SIZE } from '../../recoil/manage';
-import { EmptySearchBox, ListWrapper } from '../../styles/ts/components/manage/PostManageList';
-import { NewIcon } from '../../styles/ts/common';
-import * as S from '../../styles/ts/components/manage/SharedPostManageList';
+import { SharedPost } from "../../types";
+import PaginationContainer from "../common/PaginationContainer";
+import {
+  useVisitSharedPost,
+  useDeleteSharedPost,
+} from "../../hooks/query/sharedPost";
+import {
+  firstIndexState,
+  lastIndexState,
+  currentPageState,
+  MANAGE_PAGE_SIZE,
+} from "../../recoil/manage";
+import {
+  EmptySearchBox,
+  ListWrapper,
+} from "../../styles/ts/components/manage/PostManageList";
+import { NewIcon } from "../../styles/ts/common";
+import * as S from "../../styles/ts/components/manage/SharedPostManageList";
 
 interface SharedPostManageListProps {
   sharedPosts: SharedPost[];
@@ -48,16 +59,19 @@ const SharedPostManageList: FC<SharedPostManageListProps> = ({
     onInitPage();
   }, [router.query]);
 
-  const onClickTitle = useCallback((sharedPostId: number, isVisited: boolean) => {
-    if (isVisited) {
-      return;
-    }
+  const onClickTitle = useCallback(
+    (sharedPostId: number, isVisited: boolean) => {
+      if (isVisited) {
+        return;
+      }
 
-    visitSharedPost.mutate(sharedPostId);
-  }, []);
+      visitSharedPost.mutate(sharedPostId);
+    },
+    []
+  );
 
   const onDeleteSharedPost = useCallback((sharedPostId: number) => {
-    if (!confirm('해당 게시글을 공유 리스트에서 제거하시겠습니까?')) {
+    if (!confirm("해당 게시글을 공유 리스트에서 제거하시겠습니까?")) {
       return;
     }
 
@@ -77,51 +91,81 @@ const SharedPostManageList: FC<SharedPostManageListProps> = ({
     <>
       <ListWrapper>
         {isLoading || isFetching ? (
-          <BeatLoader className='loader' color='#ddd' size={16} />
+          <BeatLoader className="loader" color="#ddd" size={16} />
         ) : (
           <>
             {sharedPosts?.length > 0 ? (
               sharedPosts?.slice(firstIndex, lastIndex).map((sharedPost) => (
                 <S.PostInfo key={sharedPost.id}>
-                  <div className='info_area'>
-                    <div className='post_title'>
-                      <Link href={`/post/${sharedPost.post?.id}`}>
-                        <a onClick={() => onClickTitle(sharedPost.id, sharedPost.isVisited)}>
-                          <span>{sharedPost.post?.title}</span>
-                        </a>
+                  <div className="info_area">
+                    <div className="post_title">
+                      <Link
+                        href={`/post/${sharedPost.post?.id}`}
+                        onClick={() =>
+                          onClickTitle(sharedPost.id, sharedPost.isVisited)
+                        }
+                      >
+                        <span>{sharedPost.post?.title}</span>
                       </Link>
-                      <PaperClipOutlined />
+                      <PaperClipOutlined
+                        {...({} as React.ComponentProps<
+                          typeof PaperClipOutlined
+                        >)}
+                      />
                       {!sharedPost.isVisited && <NewIcon>N</NewIcon>}
                     </div>
-                    <div className='post_extra_info'>
-                      <a onClick={() => onClickCategory(sharedPost.post?.categoryId)}>
+                    <div className="post_extra_info">
+                      <a
+                        onClick={() =>
+                          onClickCategory(sharedPost.post?.categoryId)
+                        }
+                      >
                         <span>{sharedPost.post?.category?.name}</span>
                       </a>
                       <span>{sharedPost.post?.author.name}</span>
-                      <span>{dayjs(sharedPost.post?.createdAt).format('YYYY.MM.DD HH:mm')}</span>
+                      <span>
+                        {dayjs(sharedPost.post?.createdAt).format(
+                          "YYYY.MM.DD HH:mm"
+                        )}
+                      </span>
                     </div>
                   </div>
                   <S.SharerNames>
                     <div>
                       <Avatar
                         size={24}
-                        icon={<BsCloudFill style={{ height: '24px', lineHeight: '24px' }} />}
+                        icon={
+                          <BsCloudFill
+                            style={{ height: "24px", lineHeight: "24px" }}
+                          />
+                        }
                         src={sharedPost.sender.imageUrl}
                       />
-                      <span className='sender name'>{sharedPost.sender.name}</span>
+                      <span className="sender name">
+                        {sharedPost.sender.name}
+                      </span>
                     </div>
-                    <BsArrowRight className='arrow_icon' />
+                    <BsArrowRight className="arrow_icon" />
                     <div>
                       <Avatar
                         size={24}
-                        icon={<BsCloudFill style={{ height: '24px', lineHeight: '24px' }} />}
+                        icon={
+                          <BsCloudFill
+                            style={{ height: "24px", lineHeight: "24px" }}
+                          />
+                        }
                         src={sharedPost.receiver.imageUrl}
                       />
-                      <span className='receiver name'>{sharedPost.receiver.name}</span>
+                      <span className="receiver name">
+                        {sharedPost.receiver.name}
+                      </span>
                     </div>
                   </S.SharerNames>
                   <S.ButtonWrapper>
-                    <Button className='delete btn' onClick={() => onDeleteSharedPost(sharedPost.id)}>
+                    <Button
+                      className="delete btn"
+                      onClick={() => onDeleteSharedPost(sharedPost.id)}
+                    >
                       공유 리스트에서 제거
                     </Button>
                   </S.ButtonWrapper>
@@ -129,8 +173,8 @@ const SharedPostManageList: FC<SharedPostManageListProps> = ({
               ))
             ) : (
               <EmptySearchBox>
-                <div className='icon_wrapper'>
-                  <FiSearch className='icon' />
+                <div className="icon_wrapper">
+                  <FiSearch className="icon" />
                 </div>
                 결과가 없습니다.
               </EmptySearchBox>

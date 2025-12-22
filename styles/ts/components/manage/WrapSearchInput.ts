@@ -1,7 +1,10 @@
-import styled from 'styled-components';
-import { Form, Input, Button, Menu } from 'antd';
+import styled from "styled-components";
+import { Form, Input, Button, Menu } from "antd";
+import { HTMLAttributes } from "react";
 
-export const FormWrapper = styled.div`
+type Props = HTMLAttributes<HTMLDivElement>;
+
+export const FormWrapper = styled.div<Props>`
   width: 100%;
   height: 58px;
   border-radius: 1px;
