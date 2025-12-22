@@ -8,10 +8,11 @@ import React, {
 } from "react";
 import { useRecoilValue } from "recoil";
 import Router, { useRouter } from "next/router";
-import AWS from "aws-sdk";
 import { Modal } from "antd";
 import dayjs from "dayjs";
+import { PutObjectCommand } from "@aws-sdk/client-s3";
 
+import { s3 } from "../../lib/s3";
 import EditorToolbar from "./EditorToobar";
 import EditorContent from "./EditorContent";
 import TempPostsModal from "./TempPostsModal";
@@ -35,12 +36,6 @@ import {
   TempPostItem,
 } from "../../types";
 import * as S from "../../styles/ts/components/editor/Editor";
-
-AWS.config.update({
-  region: "ap-northeast-2",
-  accessKeyId: process.env.NEXT_PUBLIC_BUCKET_ACCESS_KEY_ID,
-  secretAccessKey: process.env.NEXT_PUBLIC_BUCKET_SECRET_ACCESS_KEY,
-});
 
 interface EditorProps {
   post?: PostItem;
@@ -316,17 +311,14 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
 
   const handleGetImageUrl = (files: Array<File>) => {
     [].forEach.call(files, async (file: File) => {
-      const upload = new AWS.S3.ManagedUpload({
-        params: {
-          Bucket: "groom-project",
-          Key: file.name,
-          Body: file,
-        },
+      const command = new PutObjectCommand({
+        Bucket: "groom-project",
+        Key: file.name,
+        Body: file,
       });
 
-      const promise = upload.promise();
-      const imageUrl = await promise.then((response) => response.Location);
-
+      await s3.send(command);
+      const imageUrl = `https://${command.input.Bucket}.s3.${s3.config.region}.amazonaws.com/${command.input.Key}`;
       handleUploadImage(imageUrl, file.name);
     });
   };
