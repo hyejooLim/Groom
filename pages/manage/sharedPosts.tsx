@@ -74,15 +74,13 @@ const ManageSharedPosts = () => {
           ) : (
             <div style={{ display: "flex", alignItems: "center" }}>
               <Link href="/manage/sharedPosts">
-                <a>
-                  <CloseButton>
-                    <CloseCircleOutlined
-                      {...({} as React.ComponentProps<
-                        typeof CloseCircleOutlined
-                      >)}
-                    />
-                  </CloseButton>
-                </a>
+                <CloseButton>
+                  <CloseCircleOutlined
+                    {...({} as React.ComponentProps<
+                      typeof CloseCircleOutlined
+                    >)}
+                  />
+                </CloseButton>
               </Link>
               {searchKeyword && (
                 <>

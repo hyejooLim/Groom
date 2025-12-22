@@ -95,9 +95,7 @@ const Signup = () => {
       <S.SignupWrapper>
         <div className="logo">
           <Link href="/">
-            <a>
-              <Image src={logo} alt="groom_logo" width={140} height={60} />
-            </a>
+            <Image src={logo} alt="groom_logo" width={140} height={60} />
           </Link>
         </div>
         <S.StyledForm

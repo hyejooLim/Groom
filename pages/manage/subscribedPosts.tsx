@@ -76,15 +76,13 @@ const ManageSubscribedPosts = () => {
           ) : (
             <div style={{ display: "flex", alignItems: "center" }}>
               <Link href="/manage/subscribedPosts">
-                <a>
-                  <CloseButton>
-                    <CloseCircleOutlined
-                      {...({} as React.ComponentProps<
-                        typeof CloseCircleOutlined
-                      >)}
-                    />
-                  </CloseButton>
-                </a>
+                <CloseButton>
+                  <CloseCircleOutlined
+                    {...({} as React.ComponentProps<
+                      typeof CloseCircleOutlined
+                    >)}
+                  />
+                </CloseButton>
               </Link>
               {searchKeyword && (
                 <>

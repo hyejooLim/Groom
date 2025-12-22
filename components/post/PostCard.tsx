@@ -166,7 +166,7 @@ const PostCard: FC<PostCardProps> = ({ post, onDeletePost }) => {
         <div className="tag_label">
           {post?.tags.map((tag) => (
             <Link key={tag.id} href={`/tag/${tag.name}`}>
-              <a>#{tag.name}</a>
+              #{tag.name}
             </Link>
           ))}
         </div>
@@ -218,9 +218,7 @@ const PostCard: FC<PostCardProps> = ({ post, onDeletePost }) => {
                 query: { prevPathname: "postcard" },
               }}
             >
-              <a>
-                <Button className="modify btn">Modify</Button>
-              </a>
+              <Button className="modify btn">Modify</Button>
             </Link>
             <span className="line">|</span>
             <Button className="delete btn" onClick={deletePost}>

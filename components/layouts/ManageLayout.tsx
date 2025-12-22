@@ -34,20 +34,16 @@ const ManageLayout = ({ children }) => {
           <S.StyledHeader>
             <S.HomeButton>
               <Link href="/">
-                <a>
-                  <Image src={logo} alt="groom_logo" width={160} height={70} />
-                </a>
+                <Image src={logo} alt="groom_logo" width={160} height={70} />
               </Link>
             </S.HomeButton>
             <Link href="/write">
-              <a>
-                <S.AddPostButton>
-                  <span>글쓰기</span>
-                  <EditOutlined
-                    {...({} as React.ComponentProps<typeof EditOutlined>)}
-                  />
-                </S.AddPostButton>
-              </a>
+              <S.AddPostButton>
+                <span>글쓰기</span>
+                <EditOutlined
+                  {...({} as React.ComponentProps<typeof EditOutlined>)}
+                />
+              </S.AddPostButton>
             </Link>
           </S.StyledHeader>
           <Layout.Content style={{ width: "912px" }}>{children}</Layout.Content>

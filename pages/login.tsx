@@ -61,9 +61,7 @@ const Login = () => {
         <S.StyledForm onFinish={onSubmitForm}>
           <div className="logo">
             <Link href="/">
-              <a>
-                <Image src={logo} alt="groom_logo" width={140} height={60} />
-              </a>
+              <Image src={logo} alt="groom_logo" width={140} height={60} />
             </Link>
           </div>
           <div className="email input_form">
@@ -109,11 +107,9 @@ const Login = () => {
               )}
             </S.LoginButton>
             <S.SignupButton>
-              <Link href="/signup">
-                <a style={{ color: "#888" }}>
-                  <span>아직 계정이 없으신가요?</span>
-                  <span className="go_to_signup">회원가입</span>
-                </a>
+              <Link href="/signup" style={{ color: "#888" }}>
+                <span>아직 계정이 없으신가요?</span>
+                <span className="go_to_signup">회원가입</span>
               </Link>
             </S.SignupButton>
           </div>

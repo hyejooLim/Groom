@@ -99,14 +99,13 @@ const SharedPostManageList: FC<SharedPostManageListProps> = ({
                 <S.PostInfo key={sharedPost.id}>
                   <div className="info_area">
                     <div className="post_title">
-                      <Link href={`/post/${sharedPost.post?.id}`}>
-                        <a
-                          onClick={() =>
-                            onClickTitle(sharedPost.id, sharedPost.isVisited)
-                          }
-                        >
-                          <span>{sharedPost.post?.title}</span>
-                        </a>
+                      <Link
+                        href={`/post/${sharedPost.post?.id}`}
+                        onClick={() =>
+                          onClickTitle(sharedPost.id, sharedPost.isVisited)
+                        }
+                      >
+                        <span>{sharedPost.post?.title}</span>
                       </Link>
                       <PaperClipOutlined
                         {...({} as React.ComponentProps<

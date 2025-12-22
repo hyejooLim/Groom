@@ -107,9 +107,7 @@ const PostManageList: FC<PostManageListProps> = ({
                   <div>
                     <div className="post_title">
                       <Link href={`/post/${post.id}`}>
-                        <a>
-                          <span>{post.title}</span>
-                        </a>
+                        <span>{post.title}</span>
                       </Link>
                       <PaperClipOutlined
                         {...({} as React.ComponentProps<
@@ -134,9 +132,7 @@ const PostManageList: FC<PostManageListProps> = ({
                     {user?.id === post?.authorId && (
                       <>
                         <Link href={`/write/${post.id}`}>
-                          <a>
-                            <Button className="modify btn">수정</Button>
-                          </a>
+                          <Button className="modify btn">수정</Button>
                         </Link>
                         <Button
                           className="delete btn"

@@ -1,10 +1,10 @@
-import React from 'react';
-import Link from 'next/link';
+import React from "react";
+import Link from "next/link";
 
-import { CategoryItem } from '../../types';
-import { useGetCategories } from '../../hooks/query/categories';
-import { CategoryWrapper } from '../../styles/ts/components/main/Category';
-import { getPublicAndPublishedPosts } from '../../utils/posts';
+import { CategoryItem } from "../../types";
+import { useGetCategories } from "../../hooks/query/categories";
+import { CategoryWrapper } from "../../styles/ts/components/main/Category";
+import { getPublicAndPublishedPosts } from "../../utils/posts";
 
 const Category = () => {
   const { data: categories } = useGetCategories();
@@ -17,10 +17,12 @@ const Category = () => {
           (category: CategoryItem) =>
             category.id !== 0 && (
               <li key={category.id}>
-                <Link href={`/category/${category.name}`}>
-                  <a className='category_item'>
-                    {category.name} ({getPublicAndPublishedPosts(category.posts).length})
-                  </a>
+                <Link
+                  href={`/category/${category.name}`}
+                  className="category_item"
+                >
+                  {category.name} (
+                  {getPublicAndPublishedPosts(category.posts).length})
                 </Link>
               </li>
             )

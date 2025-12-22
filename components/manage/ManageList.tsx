@@ -15,14 +15,12 @@ const ManageList = () => {
   return (
     <>
       <S.Container>
-        <Link href="/manage">
+        <Link href="/manage" className="link_menu">
           <S.LinkWrapper>
-            <a className="link_menu">
-              <HomeOutlined
-                {...({} as React.ComponentProps<typeof HomeOutlined>)}
-              />
-              <span>블로그 관리 홈</span>
-            </a>
+            <HomeOutlined
+              {...({} as React.ComponentProps<typeof HomeOutlined>)}
+            />
+            <span>블로그 관리 홈</span>
           </S.LinkWrapper>
         </Link>
         <S.WrapMenu>
@@ -33,63 +31,50 @@ const ManageList = () => {
             <span>관리</span>
           </div>
           <S.ListWrapper>
-            <Link href="/manage/posts">
-              <li>
-                <a
-                  className={classNames("list_menu", {
-                    on: router.pathname.includes("/manage/posts"),
-                  })}
-                >
-                  글 관리
-                </a>
-              </li>
+            <Link
+              href="/manage/posts"
+              className={classNames("list_menu", {
+                on: router.pathname.includes("/manage/posts"),
+              })}
+            >
+              <li>글 관리</li>
             </Link>
-            <Link href="/manage/neighbors">
-              <li>
-                <a
-                  className={classNames("list_menu", {
-                    on: router.pathname.includes("/manage/neighbors"),
-                  })}
-                >
-                  이웃 관리
-                </a>
-              </li>
+            <Link
+              href="/manage/neighbors"
+              className={classNames("list_menu", {
+                on: router.pathname.includes("/manage/neighbors"),
+              })}
+            >
+              <li>이웃 관리</li>
             </Link>
-            <Link href="/manage/subscribedPosts">
-              <li>
-                <a
-                  className={classNames("list_menu", {
-                    on: router.pathname.includes("/manage/subscribedPosts"),
-                  })}
-                >
-                  구독 글 관리
-                </a>
-              </li>
+            <Link
+              href="/manage/subscribedPosts"
+              className={classNames("list_menu", {
+                on: router.pathname.includes("/manage/subscribedPosts"),
+              })}
+            >
+              <li>구독 글 관리</li>
             </Link>
-            <Link href="/manage/sharedPosts">
+            <Link
+              href="/manage/sharedPosts"
+              className={classNames("list_menu", {
+                on: router.pathname.includes("/manage/sharedPosts"),
+              })}
+            >
               <li>
-                <a
-                  className={classNames("list_menu", {
-                    on: router.pathname.includes("/manage/sharedPosts"),
-                  })}
-                >
-                  공유 글 관리
-                </a>
+                공유 글 관리
                 {sharedPosts?.find((post) => !post.isVisited) && (
                   <NewIcon>N</NewIcon>
                 )}
               </li>
             </Link>
-            <Link href="/manage/category">
-              <li>
-                <a
-                  className={classNames("list_menu", {
-                    on: router.pathname.includes("/manage/category"),
-                  })}
-                >
-                  카테고리 관리
-                </a>
-              </li>
+            <Link
+              href="/manage/category"
+              className={classNames("list_menu", {
+                on: router.pathname.includes("/manage/category"),
+              })}
+            >
+              <li>카테고리 관리</li>
             </Link>
           </S.ListWrapper>
         </S.WrapMenu>

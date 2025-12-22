@@ -1,5 +1,5 @@
-import Link from 'next/link';
-import styled from 'styled-components';
+import Link from "next/link";
+import styled from "styled-components";
 
 const ManageWriteWrapper = styled.div`
   margin: 6px 0;
@@ -19,12 +19,10 @@ const ManageWriteWrapper = styled.div`
 
 const ManageWrite = () => {
   return (
-    <Link href='/write'>
-      <a>
-        <ManageWriteWrapper>
-          <span>글 쓰러가기</span>
-        </ManageWriteWrapper>
-      </a>
+    <Link href="/write">
+      <ManageWriteWrapper>
+        <span>글 쓰러가기</span>
+      </ManageWriteWrapper>
     </Link>
   );
 };
