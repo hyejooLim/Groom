@@ -1,8 +1,10 @@
 import { PrismaClient } from "./generated/prisma/client";
-import { PrismaPg } from "@prisma/adapter-pg";
+import { PrismaMariaDb } from "@prisma/adapter-mariadb";
 
-const adapter = new PrismaPg({
-  connectionString: process.env.DATABASE_URL,
+const adapter = new PrismaMariaDb({
+  host: "localhost",
+  port: 3306,
+  connectionLimit: 5,
 });
 
 let prisma: PrismaClient;
