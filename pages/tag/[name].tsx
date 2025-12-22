@@ -14,6 +14,7 @@ import getCategories from "../../apis/categories/getCategories";
 import { useGetPostsIncludeTag } from "../../hooks/query/posts";
 import { productionURL } from "../../constants/URL";
 import { TagItem } from "../../types";
+import prisma from "../../prisma/prisma";
 
 const Tag = () => {
   const router = useRouter();
@@ -37,20 +38,32 @@ const Tag = () => {
   );
 };
 
-export const getStaticPaths: GetStaticPaths = async () => {
-  const result = await axios.get(`${productionURL}/api/tags`);
-  const tags = result.data as TagItem[];
+export const getStaticPaths = (async () => {
+  try {
+    const tags = await prisma.tag.findMany({
+      select: { name: true },
+    });
 
-  const paths = tags.map(({ name }) => ({ params: { name } }));
+    const paths = tags.map(({ name }) => ({ params: { name } }));
 
-  return {
-    paths,
-    fallback: "blocking",
-  };
-};
+    return {
+      paths,
+      fallback: "blocking",
+    };
+  } catch (err) {
+    console.warn(
+      "[getStaticPaths] DB not available. Falling back to empty paths."
+    );
 
-export const getStaticProps: GetStaticProps = async (context) => {
-  const { name } = context.params;
+    return {
+      paths: [],
+      fallback: "blocking",
+    };
+  }
+}) satisfies GetStaticPaths;
+
+export const getStaticProps = (async ({ params }) => {
+  const { name } = params;
   const queryClient = new QueryClient();
 
   await Promise.all([
@@ -71,6 +84,6 @@ export const getStaticProps: GetStaticProps = async (context) => {
     },
     revalidate: 10,
   };
-};
+}) satisfies GetStaticProps;
 
 export default Tag;

@@ -14,6 +14,7 @@ import getPostsIncludeCategory from "../../apis/posts/getPostsIncludeCategory";
 import { useGetPostsIncludeCategory } from "../../hooks/query/posts";
 import { productionURL } from "../../constants/URL";
 import { CategoryItem } from "../../types";
+import prisma from "../../prisma/prisma";
 
 const Category = () => {
   const router = useRouter();
@@ -37,20 +38,33 @@ const Category = () => {
   );
 };
 
-export const getStaticPaths: GetStaticPaths = async () => {
-  const result = await axios.get(`${productionURL}/api/categories`);
-  const categories = result.data as CategoryItem[];
+export const getStaticPaths = (async () => {
+  try {
+    const categories = await prisma.category.findMany({
+      select: { name: true },
+    });
+    const paths = categories.map(({ name }) => ({
+      params: { name },
+    }));
 
-  const paths = categories.map(({ name }) => ({ params: { name } }));
+    return {
+      paths,
+      fallback: "blocking",
+    };
+  } catch (err) {
+    console.warn(
+      "[getStaticPaths] DB not available. Falling back to empty paths."
+    );
 
-  return {
-    paths,
-    fallback: "blocking",
-  };
-};
+    return {
+      paths: [],
+      fallback: "blocking",
+    };
+  }
+}) satisfies GetStaticPaths;
 
-export const getStaticProps: GetStaticProps = async (context) => {
-  const { name } = context.params;
+export const getStaticProps = (async ({ params }) => {
+  const { name } = params;
   const queryClient = new QueryClient();
 
   await Promise.all([
@@ -71,6 +85,6 @@ export const getStaticProps: GetStaticProps = async (context) => {
     },
     revalidate: 10,
   };
-};
+}) satisfies GetStaticProps;
 
 export default Category;
