@@ -18,6 +18,7 @@ export default NextAuth({
             email: String(credentials.email),
           },
           select: {
+            id: true,
             email: true,
             password: true,
             name: true,
@@ -37,6 +38,7 @@ export default NextAuth({
         }
 
         const userWithoutPassword = {
+          id: String(user.id),
           email: user.email,
           name: user.name,
         };
