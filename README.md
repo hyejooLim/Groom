@@ -24,7 +24,7 @@
 
 > ### API ENDPOINT 및 DB 생성
 * Prisma
-* PlanetScale
+* TiDB
 
 </br>
 
@@ -36,49 +36,28 @@ npm install
 
 </br>
 
-### 2. pscale 로그인
-
+### 2. db pull (DB 존재할 경우)
 ```
-// 1. install pscale with homebrew
-brew install planetscale/tap/pscale
-
-// 2. login pscale
-pscale auth login
-
-// 위 명령어 실행으로 `certificate is not standards compliant` error 발생 시
-sudo pscale auth login
+npx prisma db pull
 ```
 
 </br>
 
-### 3. Database에 연결
+### 3. db push (DB 첫 생성 시)
 ```
-// pscale connect [DB 이름] [Branch 이름]
-pscale connect groom develop
-```
-
-</br>
-
-### 4. Prisma와 Database 연결
-`Local address`를 .env 파일의 DATABASE_URL 키값에 삽입
-
-</br>
-
-.env
-```
-DATABASE_URL=mysql://Local address/groom
+npx prisma db push
 ```
 
 </br>
 
-### 5. 생성한 DB 확인 (관리자 패널창)
+### 4. 생성한 DB 확인 (관리자 패널창)
 ```
 npx prisma studio
 ```
 
 </br>
 
-### 6. 로컬 서버 실행
+### 5. 로컬 서버 실행
 ```
 npm run dev
 ```
