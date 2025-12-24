@@ -14,7 +14,7 @@ import getCategories from "../../apis/categories/getCategories";
 import { useGetPostsIncludeTag } from "../../hooks/query/posts";
 import { productionURL } from "../../constants/URL";
 import { TagItem } from "../../types";
-import prisma from "../../prisma/prisma";
+import prisma from "../../lib/prisma";
 
 const Tag = () => {
   const router = useRouter();

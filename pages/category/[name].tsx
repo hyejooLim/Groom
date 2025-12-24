@@ -14,7 +14,7 @@ import getPostsIncludeCategory from "../../apis/posts/getPostsIncludeCategory";
 import { useGetPostsIncludeCategory } from "../../hooks/query/posts";
 import { productionURL } from "../../constants/URL";
 import { CategoryItem } from "../../types";
-import prisma from "../../prisma/prisma";
+import prisma from "../../lib/prisma";
 
 const Category = () => {
   const router = useRouter();

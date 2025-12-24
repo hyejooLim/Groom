@@ -1,7 +1,7 @@
 import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
 import { getSession } from "next-auth/react";
 
-import prisma from "../../../../prisma/prisma";
+import prisma from "../../../../lib/prisma";
 import { Sharer } from "../../../../types";
 
 const handler: NextApiHandler = async (

@@ -1,7 +1,7 @@
 import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
 import dayjs from "dayjs";
 
-import prisma from "../../prisma/prisma";
+import prisma from "../../lib/prisma";
 import { VisitorsCount } from "../../types";
 
 const handler: NextApiHandler = async (
