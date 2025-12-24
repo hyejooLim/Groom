@@ -2,16 +2,12 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider = "prisma-client"
-  output = "./generated/prisma"
-  moduleFormat = "esm"
-  generatedFileExtension = "ts"
-  importFileExtension = "ts"
+  provider = "prisma-client-js"
 }
 
 datasource db {
   provider = "mysql"
-  relationMode = "prisma"
+  url = env("DATABASE_URL")
 }
 
 model User {
