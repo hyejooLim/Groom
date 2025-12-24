@@ -15,7 +15,7 @@ import { PostItem } from "../../types";
 import { productionURL } from "../../constants/URL";
 import { useDeletePost, useGetPost } from "../../hooks/query/post";
 import Page404 from "../404";
-import prisma from "../../prisma/prisma";
+import prisma from "../../lib/prisma";
 
 const Post = () => {
   const router = useRouter();

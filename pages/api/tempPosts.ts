@@ -2,7 +2,7 @@ import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
 import { getSession } from "next-auth/react";
 import dayjs from "dayjs";
 
-import prisma from "../../prisma/prisma";
+import prisma from "../../lib/prisma";
 
 const handler: NextApiHandler = async (
   req: NextApiRequest,

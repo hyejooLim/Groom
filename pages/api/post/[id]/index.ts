@@ -1,6 +1,6 @@
 import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
 
-import prisma from "../../../../prisma/prisma";
+import prisma from "../../../../lib/prisma";
 import { TagItem } from "../../../../types";
 
 const handler: NextApiHandler = async (
