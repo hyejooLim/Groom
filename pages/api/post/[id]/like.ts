@@ -1,5 +1,6 @@
 import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
-import { getSession } from "next-auth/react";
+import { getServerSession } from "next-auth/next";
+import { authOptions } from "../../auth/[...nextauth]";
 import prisma from "../../../../lib/prisma";
 
 const handler: NextApiHandler = async (
@@ -8,7 +9,7 @@ const handler: NextApiHandler = async (
 ) => {
   try {
     if (req.method === "PUT") {
-      const session = await getSession({ req });
+      const session = await getServerSession(req, res, authOptions);
       if (!session) {
         return res.status(403).send({ message: "세션이 만료되었습니다." });
       }
@@ -30,7 +31,7 @@ const handler: NextApiHandler = async (
     }
 
     if (req.method === "DELETE") {
-      const session = await getSession({ req });
+      const session = await getServerSession(req, res, authOptions);
       if (!session) {
         return res.status(403).send({ message: "세션이 만료되었습니다." });
       }

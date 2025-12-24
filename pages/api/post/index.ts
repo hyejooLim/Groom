@@ -1,5 +1,6 @@
 import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
-import { getSession } from "next-auth/react";
+import { getServerSession } from "next-auth/next";
+import { authOptions } from "../auth/[...nextauth]";
 
 import prisma from "../../../lib/prisma";
 import { TagItem } from "../../../types";
@@ -10,11 +11,10 @@ const handler: NextApiHandler = async (
 ) => {
   try {
     if (req.method === "POST") {
-      const session = await getSession({ req });
+      const session = await getServerSession(req, res, authOptions);
       if (!session) {
         return res.status(403).send({ message: "세션이 만료되었습니다." });
       }
-
       await Promise.all(
         req.body.tags?.map((tag: TagItem) =>
           prisma.tag.upsert({
@@ -112,6 +112,7 @@ const handler: NextApiHandler = async (
     }
   } catch (err) {
     console.error(err);
+    return res.status(500).json({ message: "Server error" });
   }
 };
 

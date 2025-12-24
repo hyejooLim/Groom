@@ -1,8 +1,12 @@
-import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
-import { developmentURL, productionURL } from '../constants/URL';
+import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
+import { developmentURL, productionURL } from "../constants/URL";
 
 export const createApi = axios.create({
-  baseURL: process.env.NODE_ENV === 'development' ? `${developmentURL}/api` : `${productionURL}/api`,
+  baseURL:
+    process.env.NODE_ENV === "development"
+      ? `${developmentURL}/api`
+      : `${productionURL}/api`,
+  withCredentials: true,
 });
 
 createApi.interceptors.request.use(
