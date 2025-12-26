@@ -3,7 +3,6 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import { GetStaticPaths, GetStaticProps } from "next";
 import { dehydrate, QueryClient } from "@tanstack/react-query";
-import axios from "axios";
 
 import AppLayout from "../../components/layouts/AppLayout";
 import PostCard from "../../components/post/PostCard";
@@ -11,8 +10,6 @@ import getUser from "../../apis/user/getUser";
 import getPost from "../../apis/post/getPost";
 import getComments from "../../apis/comments/getComments";
 import getCategories from "../../apis/categories/getCategories";
-import { PostItem } from "../../types";
-import { productionURL } from "../../constants/URL";
 import { useDeletePost, useGetPost } from "../../hooks/query/post";
 import Page404 from "../404";
 import prisma from "../../lib/prisma";
@@ -59,7 +56,7 @@ const Post = () => {
 
   return (
     <>
-      {post === null ? (
+      {!post ? (
         <Page404 />
       ) : (
         <AppLayout>
