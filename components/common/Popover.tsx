@@ -1,9 +1,6 @@
-import React, { FC, forwardRef, useCallback, useEffect, useRef } from "react";
+import React, { FC, useCallback, useEffect, useRef } from "react";
 import classNames from "classnames";
-
-import { PopoverWrapper as PopoverWrapperBase } from "../../styles/ts/components/common/Popover";
-
-const PopoverWrapper = forwardRef(PopoverWrapperBase);
+import { PopoverWrapper } from "../../styles/ts/components/common/Popover";
 
 interface PopoverProps {
   isShow: boolean;
