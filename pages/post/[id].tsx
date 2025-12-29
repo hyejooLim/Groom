@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { GetStaticPaths, GetStaticProps } from "next";
+import { GetServerSideProps } from "next";
 import { dehydrate, QueryClient } from "@tanstack/react-query";
 
 import AppLayout from "../../components/layouts/AppLayout";
@@ -11,8 +11,6 @@ import getPost from "../../apis/post/getPost";
 import getComments from "../../apis/comments/getComments";
 import getCategories from "../../apis/categories/getCategories";
 import { useDeletePost, useGetPost } from "../../hooks/query/post";
-import Page404 from "../404";
-import prisma from "../../lib/prisma";
 
 const Post = () => {
   const router = useRouter();
@@ -32,6 +30,7 @@ const Post = () => {
     if (post) {
       const popover = document.querySelector(".popover") as HTMLDivElement;
       const shareButton = document.querySelector(".share") as HTMLButtonElement;
+      if (popover === null) return;
 
       const popoverHeightPx = getComputedStyle(popover).height;
       const popoverHeight = Number(popoverHeightPx.slice(0, -2)) + 10;
@@ -54,47 +53,23 @@ const Post = () => {
     };
   }, []);
 
+  useEffect(() => {
+    if (post === null || post === undefined) {
+      router.replace("/404");
+    }
+  }, [post]);
+
   return (
-    <>
-      {!post ? (
-        <Page404 />
-      ) : (
-        <AppLayout>
-          <Head>
-            <title>Groom | {id}번째 게시글</title>
-          </Head>
-          <PostCard post={post} onDeletePost={handlePostDelete} />
-        </AppLayout>
-      )}
-    </>
+    <AppLayout>
+      <Head>
+        <title>Groom | {id}번째 게시글</title>
+      </Head>
+      <PostCard post={post} onDeletePost={handlePostDelete} />
+    </AppLayout>
   );
 };
 
-export const getStaticPaths = (async () => {
-  try {
-    const posts = await prisma.post.findMany({
-      select: { id: true },
-    });
-
-    const paths = posts.map(({ id }) => ({ params: { id: String(id) } }));
-
-    return {
-      paths,
-      fallback: "blocking",
-    };
-  } catch (err) {
-    console.warn(
-      "[getStaticPaths] DB not available. Falling back to empty paths."
-    );
-
-    return {
-      paths: [],
-      fallback: "blocking",
-    };
-  }
-}) satisfies GetStaticPaths;
-
-export const getStaticProps = (async ({ params }) => {
+export const getServerSideProps = (async ({ params }) => {
   const { id } = params;
   const queryClient = new QueryClient();
 
@@ -118,8 +93,7 @@ export const getStaticProps = (async ({ params }) => {
     props: {
       dehydratedState: dehydrate(queryClient),
     },
-    revalidate: 10,
   };
-}) satisfies GetStaticProps;
+}) satisfies GetServerSideProps;
 
 export default Post;
