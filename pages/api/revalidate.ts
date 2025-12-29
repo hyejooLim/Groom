@@ -1,3 +1,4 @@
+export const runtime = "nodejs";
 import { NextApiHandler, NextApiRequest, NextApiResponse } from 'next';
 
 const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {

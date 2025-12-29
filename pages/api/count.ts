@@ -1,3 +1,4 @@
+export const runtime = "nodejs";
 import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
 import dayjs from "dayjs";
 

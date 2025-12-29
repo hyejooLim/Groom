@@ -1,3 +1,4 @@
+export const runtime = "nodejs";
 import next, { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
 import prisma from "../../lib/prisma";
 import { hashPassword } from "../../utils/auth";
