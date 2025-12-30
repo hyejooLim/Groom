@@ -6,7 +6,7 @@ import { FiLink } from "react-icons/fi";
 import Popover from "../common/Popover";
 import PostShareModal from "./PostShareModal";
 import { useGetPost, useSharePost } from "../../hooks/query/post";
-import { developmentURL, productionURL } from "../../constants/URL";
+import { developmentURL, productionURL2 } from "../../constants/URL";
 import { Sharer } from "../../types";
 
 interface PostShareProps {
@@ -51,11 +51,11 @@ const PostShare: FC<PostShareProps> = ({ postId, isShow, onClose }) => {
             webUrl:
               process.env.NODE_ENV === "development"
                 ? `${developmentURL}/post/${postId}`
-                : `${productionURL}/post/${postId}`,
+                : `${productionURL2}/post/${postId}`,
             mobileWebUrl:
               process.env.NODE_ENV === "development"
                 ? `${developmentURL}/post/${postId}`
-                : `${productionURL}/post/${postId}`,
+                : `${productionURL2}/post/${postId}`,
           },
         },
         buttonTitle: "Groom 웹에서 보기",

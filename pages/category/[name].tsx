@@ -3,7 +3,6 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import { GetStaticPaths, GetStaticProps } from "next";
 import { dehydrate, QueryClient } from "@tanstack/react-query";
-import axios from "axios";
 
 import AppLayout from "../../components/layouts/AppLayout";
 import Title from "../../components/common/Title";
@@ -12,8 +11,6 @@ import getUser from "../../apis/user/getUser";
 import getCategories from "../../apis/categories/getCategories";
 import getPostsIncludeCategory from "../../apis/posts/getPostsIncludeCategory";
 import { useGetPostsIncludeCategory } from "../../hooks/query/posts";
-import { productionURL } from "../../constants/URL";
-import { CategoryItem } from "../../types";
 import prisma from "../../lib/prisma";
 
 const Category = () => {

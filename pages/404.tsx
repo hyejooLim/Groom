@@ -13,7 +13,7 @@ const Page404Wrapper = styled.div`
 
   & div {
     text-align: center;
-  }
+  }ㅏㄴ
 
   & footer {
     width: 100%;
