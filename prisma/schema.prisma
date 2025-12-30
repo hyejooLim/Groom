@@ -1,12 +1,9 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "mysql"
+  provider = "postgresql"
   url = env("DATABASE_URL")
 }
 
@@ -15,7 +12,7 @@ model User {
   email String @unique
   password String
   name String
-  imageUrl String? @db.LongText
+  imageUrl String? @db.Text
   comments Comment[]
   posts Post[] @relation("OwnPosts")
   tempPosts TempPost[]
@@ -33,8 +30,8 @@ model User {
 model Post {
   id Int @id @default(autoincrement())
   title String
-  content String @db.LongText
-  htmlContent String @db.LongText
+  content String @db.Text
+  htmlContent String @db.Text
   tags Tag[] @relation("PostsAndTags")
   isPublic Boolean
   allowComments Boolean
@@ -72,8 +69,8 @@ model SharedPost {
 model TempPost {
   id Int @id @default(autoincrement())
   title String
-  content String @db.LongText
-  htmlContent String @db.LongText
+  content String @db.Text
+  htmlContent String @db.Text
   tags Tag[] @relation("TempPostsAndTags")
   category Category? @relation(fields: [categoryId], references: [id])
   categoryId Int?
@@ -108,7 +105,7 @@ model Comment {
   postId Int
   author User @relation(fields: [authorId], references: [id], onDelete: Cascade)
   authorId Int
-  content String @db.LongText
+  content String @db.Text
   datetime DateTime @default(now())
 
   @@index([postId])
@@ -130,8 +127,8 @@ model VisitorsCount {
 model AutoSave {
   id Int @id @default(autoincrement())
   title String
-  content String @db.LongText
-  htmlContent String @db.LongText
+  content String @db.Text
+  htmlContent String @db.Text
   category Category? @relation(fields: [categoryId], references: [id])
   categoryId Int?
   tags Tag[]

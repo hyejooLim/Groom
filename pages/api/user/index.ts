@@ -11,7 +11,7 @@ const handler: NextApiHandler = async (
   try {
     if (req.method === "GET") {
       const session = await getServerSession(req, res, authOptions);
-      if (!session) {
+      if (!session || !session.user?.email) {
         return res.status(401).send({ message: "세션이 만료되었습니다." });
       }
 

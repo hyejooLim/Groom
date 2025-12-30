@@ -178,7 +178,10 @@ const CategoryManageList: FC<CategoryManageListProps> = ({ categories }) => {
 
   const onAddCategory = useCallback(
     (e: FormEvent<HTMLButtonElement>) => {
-      const maxCategoryId = Math.max(...newCategories.map((item) => item.id));
+      const maxCategoryId =
+        newCategories.length > 0
+          ? Math.max(...newCategories.map((item) => item.id ?? 0))
+          : 0;
 
       if (newCategories.length === 100) {
         alert("최대 100개의 카테고리를 추가할 수 있습니다.");
