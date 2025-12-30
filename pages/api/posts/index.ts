@@ -6,11 +6,8 @@ const handler: NextApiHandler = async (
   req: NextApiRequest,
   res: NextApiResponse
 ) => {
-  console.log("API handler entered");
-
   try {
     if (req.method === "GET") {
-      console.log("DB connect start");
       const posts = await prisma.post.findMany({
         where: {
           isPublic: true,
@@ -40,7 +37,6 @@ const handler: NextApiHandler = async (
         },
       });
 
-      console.log("DB connect success");
       return res.status(200).json(posts);
     }
   } catch (err) {
