@@ -10,7 +10,7 @@ import * as ContentMode from "../../constants/ContentMode";
 import * as PublishMode from "../../constants/PublishMode";
 import { ContentModeType, PostItem, ReserveDate } from "../../types";
 import * as S from "../../styles/ts/components/editor/SettingModal";
-import { productionURL2 } from "../../constants/URL";
+import { productionURL } from "../../constants/URL";
 
 interface SettingModalProps {
   mode: ContentModeType;
@@ -273,7 +273,7 @@ const SettingModal: FC<SettingModalProps> = ({
               <dl className="editor_info url">
                 <dt>URL</dt>
                 <dd>
-                  <span className="post_url">{`${productionURL2}/entry/${postData.title}`}</span>
+                  <span className="post_url">{`${productionURL}/entry/${postData.title}`}</span>
                 </dd>
               </dl>
             </div>
