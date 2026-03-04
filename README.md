@@ -39,32 +39,23 @@ DATABASE_URL=postgresql://neondb_owner:npg_DQ0o7Klutrmx@ep-patient-art-a1wy8jp1-
 npm install
 ```
 
-</br>
-
 ### 3. db pull (DB 존재할 경우)
 ```
 npx prisma db pull
 ```
-
-</br>
 
 ### 4. db push (DB 첫 생성 시)
 ```
 npx prisma db push
 ```
 
-</br>
-
 ### 5. 생성한 DB 확인 (관리자 패널창)
 ```
 npx prisma studio
 ```
-
-</br>
 
 ### 6. 로컬 서버 실행
 ```
 npm run dev
 ```
 
-</br>
