@@ -1,21 +1,22 @@
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 
-import getPost from "../../apis/post/getPost";
-import createPost from "../../apis/post/createPost";
-import updatePost from "../../apis/post/updatePost";
-import deletePost from "../../apis/post/deletePost";
-import likePost from "../../apis/post/likePost";
-import unLikePost from "../../apis/post/unLikePost";
-import subscribePost from "../../apis/post/subscribePost";
-import unSubscribePost from "../../apis/post/unSubscribePost";
-import sharePost from "../../apis/post/sharePost";
-import toggleIsPublicPost from "../../apis/post/toggleIsPublicPost";
+import getPost from '../../apis/post/getPost';
+import createPost from '../../apis/post/createPost';
+import updatePost from '../../apis/post/updatePost';
+import deletePost from '../../apis/post/deletePost';
+import likePost from '../../apis/post/likePost';
+import unLikePost from '../../apis/post/unLikePost';
+import subscribePost from '../../apis/post/subscribePost';
+import unSubscribePost from '../../apis/post/unSubscribePost';
+import sharePost from '../../apis/post/sharePost';
+import toggleIsPublicPost from '../../apis/post/toggleIsPublicPost';
 
 const useGetPost = (id: number) => {
   const query = useQuery({
-    queryKey: ["post", id],
+    queryKey: ['post', Number(id)],
     queryFn: () => getPost(id),
     refetchOnWindowFocus: false,
+    enabled: !!id,
   });
 
   return query;
@@ -27,9 +28,9 @@ const useCreatePost = () => {
   return useMutation({
     mutationFn: createPost,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["user"] });
-      queryClient.invalidateQueries({ queryKey: ["posts"] });
-      queryClient.invalidateQueries({ queryKey: ["userPosts"] });
+      queryClient.invalidateQueries({ queryKey: ['user'] });
+      queryClient.invalidateQueries({ queryKey: ['posts'] });
+      queryClient.invalidateQueries({ queryKey: ['userPosts'] });
     },
   });
 };
@@ -40,9 +41,9 @@ const useUpdatePost = () => {
   return useMutation({
     mutationFn: updatePost,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["user"] });
-      queryClient.invalidateQueries({ queryKey: ["posts"] });
-      queryClient.invalidateQueries({ queryKey: ["userPosts"] });
+      queryClient.invalidateQueries({ queryKey: ['user'] });
+      queryClient.invalidateQueries({ queryKey: ['posts'] });
+      queryClient.invalidateQueries({ queryKey: ['userPosts'] });
     },
   });
 };
@@ -53,9 +54,9 @@ const useDeletePost = () => {
   return useMutation({
     mutationFn: deletePost,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["user"] });
-      queryClient.invalidateQueries({ queryKey: ["posts"] });
-      queryClient.invalidateQueries({ queryKey: ["userPosts"] });
+      queryClient.invalidateQueries({ queryKey: ['user'] });
+      queryClient.invalidateQueries({ queryKey: ['posts'] });
+      queryClient.invalidateQueries({ queryKey: ['userPosts'] });
     },
   });
 };
@@ -66,7 +67,7 @@ const useLikePost = () => {
   return useMutation({
     mutationFn: likePost,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["post"] });
+      queryClient.invalidateQueries({ queryKey: ['post'] });
     },
   });
 };
@@ -77,7 +78,7 @@ const useUnLikePost = () => {
   return useMutation({
     mutationFn: unLikePost,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["post"] });
+      queryClient.invalidateQueries({ queryKey: ['post'] });
     },
   });
 };
@@ -88,8 +89,8 @@ const useSubscribePost = () => {
   return useMutation({
     mutationFn: subscribePost,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["post"] });
-      queryClient.invalidateQueries({ queryKey: ["userSubscribedPosts"] });
+      queryClient.invalidateQueries({ queryKey: ['post'] });
+      queryClient.invalidateQueries({ queryKey: ['userSubscribedPosts'] });
     },
   });
 };
@@ -100,8 +101,8 @@ const useUnSubscribePost = () => {
   return useMutation({
     mutationFn: unSubscribePost,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["post"] });
-      queryClient.invalidateQueries({ queryKey: ["userSubscribedPosts"] });
+      queryClient.invalidateQueries({ queryKey: ['post'] });
+      queryClient.invalidateQueries({ queryKey: ['userSubscribedPosts'] });
     },
   });
 };
@@ -118,7 +119,7 @@ const useToggleIsPublicPost = () => {
   return useMutation({
     mutationFn: toggleIsPublicPost,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["userPosts"] });
+      queryClient.invalidateQueries({ queryKey: ['userPosts'] });
     },
   });
 };

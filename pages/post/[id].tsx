@@ -53,12 +53,6 @@ const Post = () => {
     };
   }, []);
 
-  useEffect(() => {
-    if (post === null || post === undefined) {
-      router.replace("/404");
-    }
-  }, [post]);
-
   return (
     <AppLayout>
       <Head>
