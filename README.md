@@ -29,7 +29,7 @@
 </br>
 
 ## 🚀 프로젝트 실행
-### 1. .env 파일에 DB URL 추가 ([Neon Console]([https://tidbcloud.com/clusters/10097203093761811354/overview?orgId=1372813089209293796&projectId=1372813089454611768](https://console.neon.tech/app/projects/small-sun-80744943?branchId=br-soft-queen-a1sc6zsp&database=neondb))에서 확인)
+### 1. .env 파일에 DB URL 추가 ([Neon Console](https://console.neon.tech/app/projects/small-sun-80744943?branchId=br-soft-queen-a1sc6zsp&database=neondb)에서 확인)
 ```
 DATABASE_URL=postgresql://neondb_owner:npg_DQ0o7Klutrmx@ep-patient-art-a1wy8jp1-pooler.ap-southeast-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require
 ```
