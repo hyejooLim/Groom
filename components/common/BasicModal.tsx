@@ -15,7 +15,7 @@ interface BasicModalProps {
 
 const BasicModal: FC<BasicModalProps> = ({ title, isOpen, onClose, children }) => {
   return (
-    <Modal className='basic_modal' title={title} visible={isOpen} onCancel={onClose}>
+    <Modal className='basic_modal' title={title} open={isOpen} onCancel={onClose}>
       <InnerModal>{children}</InnerModal>
     </Modal>
   );
