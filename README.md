@@ -31,7 +31,7 @@
 ## 🚀 프로젝트 실행
 ### 1. .env 파일에 DB URL 추가 ([Neon Console](https://console.neon.tech/app/projects/small-sun-80744943?branchId=br-soft-queen-a1sc6zsp&database=neondb)에서 확인)
 ```
-DATABASE_URL=postgresql://neondb_owner:npg_DQ0o7Klutrmx@ep-patient-art-a1wy8jp1-pooler.ap-southeast-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require
+DATABASE_URL=postgresql://neondb_owner:*************@ep-patient-art-a1wy8jp1-pooler.ap-southeast-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require
 ```
 
 ### 2. 패키지 설치
