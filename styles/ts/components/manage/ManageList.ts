@@ -3,25 +3,29 @@ import styled from 'styled-components';
 export const Container = styled.div`
   background-color: #fff;
   height: 288px;
-  font-family: Noto Sans Regular, AppleSDGothicNeo-Regular, 'Malgun Gothic', '맑은 고딕', dotum, '돋움', sans-serif;
+  font-family:
+    Noto Sans Regular,
+    AppleSDGothicNeo-Regular,
+    'Malgun Gothic',
+    '맑은 고딕',
+    dotum,
+    '돋움',
+    sans-serif;
 `;
 
 export const LinkWrapper = styled.div`
   border-bottom: 1px solid #f1f3f6;
   padding: 14px 10px;
+  color: #ff5544;
+  font-size: 18px;
 
   :hover {
     cursor: pointer;
     background-color: #fafbfd;
   }
 
-  .link_menu {
-    color: #ff5544;
-    font-size: 18px;
-
-    & span {
-      margin-left: 10px;
-    }
+  & span {
+    margin-left: 10px;
   }
 `;
 
@@ -51,10 +55,6 @@ export const ListWrapper = styled.ul`
 
     :hover {
       background: #f3f5f7;
-    }
-
-    & a {
-      color: inherit;
     }
 
     & .on {
