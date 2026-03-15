@@ -35,26 +35,30 @@ const ManageProfile = () => {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    const res = await fetch('/api/s3', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        fileName: file.name,
-        fileType: file.type,
-      }),
-    });
+    try {
+      const res = await fetch('/api/s3', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          fileName: file.name,
+          fileType: file.type,
+        }),
+      });
 
-    const { key, uploadUrl, imageUrl } = await res.json();
+      const { key, uploadUrl, imageUrl } = await res.json();
 
-    await fetch(uploadUrl, {
-      method: 'PUT',
-      body: file,
-    });
+      await fetch(uploadUrl, {
+        method: 'PUT',
+        body: file,
+      });
 
-    localStorage.setItem('imageKey', key);
-    updateUser.mutate(imageUrl);
+      localStorage.setItem('imageKey', key);
+      updateUser.mutate(imageUrl);
+    } catch (err) {
+      console.error('S3 upload error', err);
+    }
   };
 
   const onRemoveProfileImage = async () => {
