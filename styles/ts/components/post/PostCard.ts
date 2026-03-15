@@ -96,6 +96,12 @@ export const ContentWrapper = styled.div`
       }
     }
   }
+
+  .article {
+    img {
+      width: 50%;
+    }
+  }
 `;
 
 export const PostButton = styled(Button)`
