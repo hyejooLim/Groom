@@ -1,15 +1,14 @@
-export const runtime = "nodejs";
-import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
+export const runtime = 'nodejs';
+import { NextApiHandler, NextApiRequest, NextApiResponse } from 'next';
+import { DeleteObjectCommand } from '@aws-sdk/client-s3';
 
-import prisma from "../../../../lib/prisma";
-import { TagItem } from "../../../../types";
+import prisma from '../../../../lib/prisma';
+import { s3 } from '../../../../lib/s3';
+import { TagItem } from '../../../../types';
 
-const handler: NextApiHandler = async (
-  req: NextApiRequest,
-  res: NextApiResponse
-) => {
+const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
-    if (req.method === "GET") {
+    if (req.method === 'GET') {
       const post = await prisma.post.findUnique({
         where: {
           id: Number(req.query.id),
@@ -44,7 +43,7 @@ const handler: NextApiHandler = async (
       res.status(200).json(post);
     }
 
-    if (req.method === "PUT") {
+    if (req.method === 'PUT') {
       await Promise.all(
         req.body.tags?.map((tag: TagItem) =>
           prisma.tag.upsert({
@@ -53,8 +52,8 @@ const handler: NextApiHandler = async (
             create: {
               name: tag.name,
             },
-          })
-        )
+          }),
+        ),
       );
 
       if (req.body.isPublic && req.body.createdAt) {
@@ -136,10 +135,39 @@ const handler: NextApiHandler = async (
         });
       }
 
-      res.status(201).json("ok");
+      res.status(201).json('ok');
     }
 
-    if (req.method === "DELETE") {
+    if (req.method === 'DELETE') {
+      const post = await prisma.post.findUnique({
+        where: { id: Number(req.query.id) },
+        select: { htmlContent: true },
+      });
+
+      if (post?.htmlContent) {
+        const imgRegex = /<img[^>]+src="([^">]+)"/g;
+        const matches = [...post.htmlContent.matchAll(imgRegex)];
+
+        for (const match of matches) {
+          const imageUrl = match[1];
+          const key = imageUrl.split('.amazonaws.com/')[1];
+          const bucket = process.env.AWS_BUCKET_NAME;
+
+          if (key) {
+            try {
+              await s3.send(
+                new DeleteObjectCommand({
+                  Bucket: bucket,
+                  Key: key,
+                }),
+              );
+            } catch (err) {
+              console.error('S3 image delete error:', err);
+            }
+          }
+        }
+      }
+
       await prisma.comment.deleteMany({
         where: {
           postId: Number(req.query.id),
@@ -163,7 +191,7 @@ const handler: NextApiHandler = async (
         },
       });
 
-      res.status(200).json("ok");
+      res.status(200).json('ok');
     }
   } catch (err) {
     console.error(err);
