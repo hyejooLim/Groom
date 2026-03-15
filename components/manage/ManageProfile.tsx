@@ -57,26 +57,28 @@ const ManageProfile = () => {
     updateUser.mutate(imageUrl);
   };
 
-  // FIXME
-  const onRemoveProfileImage = useCallback(async () => {
+  const onRemoveProfileImage = async () => {
     if (!confirm('이미지를 삭제하시겠습니까?')) {
       return;
     }
 
     const key = localStorage.getItem('imageKey');
-    const command = new DeleteObjectCommand({
-      Bucket: process.env.NEXT_PUBLIC_AWS_BUCKET_NAME,
-      Key: key,
-    });
 
     try {
-      await s3.send(command);
+      const res = await fetch(`/api/s3?key=${encodeURIComponent(key)}`, {
+        method: 'DELETE',
+      });
+
+      if (!res.ok) {
+        throw new Error('Failed to delete image');
+      }
+
       localStorage.removeItem('imageKey');
       updateUser.mutate(null);
     } catch (err) {
       console.error('S3 remove error', err);
     }
-  }, []);
+  };
 
   return (
     <S.StyledCard

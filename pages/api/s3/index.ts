@@ -8,14 +8,13 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
   const region = process.env.AWS_REGION;
 
   try {
-    const { fileName, fileType } = req.body;
-    if (!fileName || !fileType) {
-      return res.status(400).json({ message: 'fileName and fileType required' });
-    }
-
-    const key = `profile/${Date.now()}-${fileName}`;
-
     if (req.method === 'POST') {
+      const { fileName } = req.body;
+      if (!fileName) {
+        return res.status(400).json({ message: 'fileName is required' });
+      }
+
+      const key = `profile/${Date.now()}-${fileName}`;
       const command = new PutObjectCommand({
         Bucket: bucket,
         Key: key,
@@ -34,8 +33,8 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
     }
 
     if (req.method === 'DELETE') {
-      const { key } = req.body;
-      if (!key) {
+      const { key } = req.query;
+      if (!key || typeof key !== 'string') {
         return res.status(400).json({ message: 'key is required' });
       }
 
@@ -46,7 +45,7 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
         }),
       );
 
-      return res.status(200).json({ success: true });
+      return res.status(200).json('ok');
     }
   } catch (err) {
     console.error(err);
