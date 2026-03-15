@@ -9,12 +9,12 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
 
   try {
     if (req.method === 'POST') {
-      const { fileName } = req.body;
+      const { fileName, folder } = req.body;
       if (!fileName) {
         return res.status(400).json({ message: 'fileName is required' });
       }
 
-      const key = `profile/${Date.now()}-${fileName}`;
+      const key = `${folder}/${Date.now()}-${fileName}`;
       const command = new PutObjectCommand({
         Bucket: bucket,
         Key: key,

@@ -43,7 +43,7 @@ const ManageProfile = () => {
         },
         body: JSON.stringify({
           fileName: file.name,
-          fileType: file.type,
+          folder: 'profile',
         }),
       });
 

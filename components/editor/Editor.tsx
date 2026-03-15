@@ -1,41 +1,24 @@
-import React, {
-  FC,
-  ChangeEvent,
-  useRef,
-  useState,
-  useEffect,
-  useCallback,
-} from "react";
-import { useRecoilValue } from "recoil";
-import Router, { useRouter } from "next/router";
-import { Modal } from "antd";
-import dayjs from "dayjs";
-import { PutObjectCommand } from "@aws-sdk/client-s3";
+import React, { FC, ChangeEvent, useRef, useState, useEffect, useCallback } from 'react';
+import { useRecoilValue } from 'recoil';
+import Router, { useRouter } from 'next/router';
+import { Modal } from 'antd';
+import dayjs from 'dayjs';
 
-import { s3 } from "../../lib/s3";
-import EditorToolbar from "./EditorToobar";
-import EditorContent from "./EditorContent";
-import TempPostsModal from "./TempPostsModal";
-import ToastMessage from "../common/ToastMessage";
-import SettingModal from "./SettingModal";
-import { tinymceEditorState } from "../../recoil/tinymce";
-import { useCreatePost, useUpdatePost } from "../../hooks/query/post";
-import useGetTempPosts from "../../hooks/query/tempPosts";
-import {
-  useCreateTempPost,
-  useUpdateTempPost,
-} from "../../hooks/query/tempPost";
-import useDebounce from "../../hooks/common/debounce";
-import useCreateAutoSave from "../../hooks/query/autosave";
-import getAutoSave from "../../apis/autosave/getAutoSave";
-import * as ContentMode from "../../constants/ContentMode";
-import {
-  ContentModeType,
-  PostItem,
-  CategoryItem,
-  TempPostItem,
-} from "../../types";
-import * as S from "../../styles/ts/components/editor/Editor";
+import EditorToolbar from './EditorToobar';
+import EditorContent from './EditorContent';
+import TempPostsModal from './TempPostsModal';
+import ToastMessage from '../common/ToastMessage';
+import SettingModal from './SettingModal';
+import { tinymceEditorState } from '../../recoil/tinymce';
+import { useCreatePost, useUpdatePost } from '../../hooks/query/post';
+import useGetTempPosts from '../../hooks/query/tempPosts';
+import { useCreateTempPost, useUpdateTempPost } from '../../hooks/query/tempPost';
+import useDebounce from '../../hooks/common/debounce';
+import useCreateAutoSave from '../../hooks/query/autosave';
+import getAutoSave from '../../apis/autosave/getAutoSave';
+import * as ContentMode from '../../constants/ContentMode';
+import { ContentModeType, PostItem, CategoryItem, TempPostItem } from '../../types';
+import * as S from '../../styles/ts/components/editor/Editor';
 
 interface EditorProps {
   post?: PostItem;
@@ -58,18 +41,18 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
       };
     } else {
       return {
-        title: "",
-        content: "",
-        htmlContent: "",
+        title: '',
+        content: '',
+        htmlContent: '',
         tags: [],
-        category: { id: 0, name: "카테고리 없음" },
+        category: { id: 0, name: '카테고리 없음' },
         isPublic: true,
         allowComments: true,
       };
     }
   };
 
-  let editorUrl = "";
+  let editorUrl = '';
   const titleRef = useRef(null);
 
   const router = useRouter();
@@ -79,7 +62,7 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
   const createPost = useCreatePost();
   const updatePost = useUpdatePost();
 
-  const [toastMessage, setToastMessage] = useState("");
+  const [toastMessage, setToastMessage] = useState('');
   const [loadContent, setLoadContent] = useState(false);
 
   const createAutoSave = useCreateAutoSave();
@@ -108,15 +91,13 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
       const { title, content, htmlContent, category, tags, createdAt } = result;
 
       Modal.confirm({
-        content: `${dayjs(createdAt).format(
-          "YYYY-MM-DD HH:mm:ss"
-        )}에 저장된 글이 있습니다. 이어서 작성하시겠습니까?`,
-        cancelText: "취소",
-        okText: "확인",
+        content: `${dayjs(createdAt).format('YYYY-MM-DD HH:mm:ss')}에 저장된 글이 있습니다. 이어서 작성하시겠습니까?`,
+        cancelText: '취소',
+        okText: '확인',
         onCancel: () => {
           titleRef.current?.focus();
           setPostData(makePostState());
-          localStorage.removeItem("isSaved"); // 글을 이어서 작성하지 않는 경우 임시저장글을 새로 저장할 수 있음
+          localStorage.removeItem('isSaved'); // 글을 이어서 작성하지 않는 경우 임시저장글을 새로 저장할 수 있음
         },
         onOk: () => {
           setPostData({
@@ -161,47 +142,43 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
 
   useEffect(() => {
     if (createPost.isSuccess || updatePost.isSuccess) {
-      if (prevPathname === "postcard") {
+      if (prevPathname === 'postcard') {
         Router.push({ pathname: `/post/${id}` });
         return;
       }
 
-      Router.push("/manage/posts");
+      Router.push('/manage/posts');
     }
   }, [createPost.isSuccess, updatePost.isSuccess]);
 
   useEffect(() => {
     if (createTempPost.isSuccess) {
-      setToastMessage("작성 중인 글이 저장되었습니다.");
-      localStorage.setItem("isSaved", "true");
+      setToastMessage('작성 중인 글이 저장되었습니다.');
+      localStorage.setItem('isSaved', 'true');
     }
   }, [createTempPost.isSuccess]);
 
   useEffect(() => {
     if (updateTempPost.isSuccess) {
-      setToastMessage("작성 중인 글이 저장되었습니다.");
+      setToastMessage('작성 중인 글이 저장되었습니다.');
     }
   }, [updateTempPost.isSuccess]);
 
   useEffect(() => {
-    document
-      .querySelector(".groom_wrapper")
-      .addEventListener("click", clickPage);
-    tinymceEditor?.on("click", clickPage);
+    document.querySelector('.groom_wrapper').addEventListener('click', clickPage);
+    tinymceEditor?.on('click', clickPage);
 
     return () => {
-      document
-        .querySelector(".groom_wrapper")
-        ?.removeEventListener("click", clickPage);
-      tinymceEditor?.off("click", clickPage);
+      document.querySelector('.groom_wrapper')?.removeEventListener('click', clickPage);
+      tinymceEditor?.off('click', clickPage);
     };
   }, [tinymceEditor]);
 
   useEffect(() => {
-    window.addEventListener("beforeunload", preventUnload);
+    window.addEventListener('beforeunload', preventUnload);
 
     return () => {
-      window.removeEventListener("beforeunload", preventUnload);
+      window.removeEventListener('beforeunload', preventUnload);
     };
   }, []);
 
@@ -209,12 +186,12 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
     if (isClickedPage) {
       editorUrl = location.href;
 
-      history.pushState(null, "", location.href);
-      window.addEventListener("popstate", preventGoBack); // 사용자의 세션 기록 탐색으로 인해 현재 활성화된 기록 항목이 바뀔 때 발생
+      history.pushState(null, '', location.href);
+      window.addEventListener('popstate', preventGoBack); // 사용자의 세션 기록 탐색으로 인해 현재 활성화된 기록 항목이 바뀔 때 발생
     }
 
     return () => {
-      window.removeEventListener("popstate", preventGoBack);
+      window.removeEventListener('popstate', preventGoBack);
     };
   }, [isClickedPage]);
 
@@ -225,7 +202,7 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
   // 새로고침 및 창 닫기 방지
   const preventUnload = (e: BeforeUnloadEvent) => {
     e.preventDefault();
-    e.returnValue = ""; // chrome에서 동작하도록 추가
+    e.returnValue = ''; // chrome에서 동작하도록 추가
   };
 
   // 뒤로가기 방지
@@ -235,12 +212,11 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
     }
 
     Modal.confirm({
-      content:
-        "사이트에서 나가시겠습니까? 변경사항이 저장되지 않을 수 있습니다.",
-      cancelText: "취소",
-      okText: "확인",
+      content: '사이트에서 나가시겠습니까? 변경사항이 저장되지 않을 수 있습니다.',
+      cancelText: '취소',
+      okText: '확인',
       onCancel: () => {
-        history.pushState(null, "", location.href);
+        history.pushState(null, '', location.href);
       },
       onOk: () => {
         history.back(); // popstate 이벤트 발생
@@ -293,44 +269,58 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
     const dom = tinymceEditor.dom;
 
     tinymceEditor.execCommand(
-      "mceInsertContent",
+      'mceInsertContent',
       false,
-      '<img src="' + imageUrl + '" data-filename="' + filename + '" />'
+      '<img src="' + imageUrl + '" data-filename="' + filename + '" />',
     );
 
-    let images = dom.select("img");
+    let images = dom.select('img');
     images.map((image) => {
-      image.removeAttribute("data-mce-src");
+      image.removeAttribute('data-mce-src');
     });
 
-    dom.bind(images, "load", (e) => {
+    dom.bind(images, 'load', (e) => {
       tinymceEditor.nodeChanged();
-      dom.unbind(images, "load");
+      dom.unbind(images, 'load');
     });
   };
 
   const handleGetImageUrl = (files: Array<File>) => {
-    [].forEach.call(files, async (file: File) => {
-      const command = new PutObjectCommand({
-        Bucket: "groom-project",
-        Key: file.name,
-        Body: file,
-      });
+    files.forEach(async (file: File) => {
+      try {
+        const res = await fetch('/api/s3', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            fileName: file.name,
+            folder: 'editor',
+          }),
+        });
 
-      await s3.send(command);
-      const imageUrl = `https://${command.input.Bucket}.s3.${s3.config.region}.amazonaws.com/${command.input.Key}`;
-      handleUploadImage(imageUrl, file.name);
+        const { uploadUrl, imageUrl } = await res.json();
+
+        await fetch(uploadUrl, {
+          method: 'PUT',
+          body: file,
+        });
+
+        handleUploadImage(imageUrl, file.name);
+      } catch (err) {
+        console.error('S3 upload error', err);
+      }
     });
   };
 
   const handleSaveTempPost = () => {
     if (tempPosts.length === 100) {
-      alert("최대 100개의 글을 임시 저장할 수 있습니다.");
+      alert('최대 100개의 글을 임시 저장할 수 있습니다.');
       return;
     }
 
     if (!postData.title && !postData.content) {
-      alert("제목을 입력하세요.");
+      alert('제목을 입력하세요.');
       return;
     }
 
@@ -344,7 +334,7 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
 
     const { title, content, htmlContent, tags, category } = postData;
 
-    localStorage.getItem("isSaved")
+    localStorage.getItem('isSaved')
       ? updateTempPost.mutate({
           id: tempPosts[0].id,
           title,
@@ -368,7 +358,7 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
     });
     setLoadTempPost(true);
 
-    setToastMessage("글을 불러왔습니다.");
+    setToastMessage('글을 불러왔습니다.');
   };
 
   const onClickCompleteButton = useCallback(() => {
@@ -391,7 +381,7 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
   };
 
   return (
-    <S.EditorWrapper className="groom_wrapper">
+    <S.EditorWrapper className='groom_wrapper'>
       <EditorToolbar />
       <EditorContent
         title={postData.title}
@@ -412,26 +402,23 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
         setLoadContent={setLoadContent}
       />
       <S.ContentAside>
-        <div className="btn_wrapper">
+        <div className='btn_wrapper'>
           {mode === ContentMode.ADD && (
-            <span className="temp_save btn">
-              <a className="text" onClick={handleSaveTempPost}>
+            <span className='temp_save btn'>
+              <a className='text' onClick={handleSaveTempPost}>
                 임시저장
               </a>
               <a
-                aria-expanded="false"
+                aria-expanded='false'
                 aria-label={`임시저장 개수 ${tempPosts?.length}개`}
-                className="count"
+                className='count'
                 onClick={() => setIsOpenTempPostsModal(true)}
               >
                 {tempPosts?.length}
               </a>
             </span>
           )}
-          <S.CompleteButton
-            className="complete btn"
-            onClick={onClickCompleteButton}
-          >
+          <S.CompleteButton className='complete btn' onClick={onClickCompleteButton}>
             완료
           </S.CompleteButton>
         </div>
