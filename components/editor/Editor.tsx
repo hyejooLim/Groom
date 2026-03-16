@@ -233,45 +233,35 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
     setIsTitleEmpty(false);
   };
 
-  const prevImagesRef = useRef<string[]>([]);
+  const prevKeysRef = useRef<string[]>([]); // 에디터 수정 전 이미지 key 목록
+  const removedImageKeysRef = useRef<string[]>([]); // 에디터에서 제거된 이미지 key 목록
 
-  const extractImageUrls = (html: string) => {
-    const imgRegex = /<img[^>]+src="([^">]+)"/g;
-    const urls: string[] = [];
+  const getImageKeys = (html: string) => {
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(html, 'text/html');
 
-    let match;
-    while ((match = imgRegex.exec(html)) !== null) {
-      urls.push(match[1]);
-    }
-
-    return urls;
+    const imgs = doc.querySelectorAll('img');
+    return Array.from(imgs)
+      .map((img) => img.getAttribute('data-key'))
+      .filter(Boolean);
   };
 
   useEffect(() => {
     if (postData.htmlContent) {
-      prevImagesRef.current = extractImageUrls(postData.htmlContent);
+      prevKeysRef.current = getImageKeys(postData.htmlContent);
     }
   }, []);
 
   const handleChangeContent = async (htmlValue: string, textValue: string) => {
-    const prevImages = prevImagesRef.current;
-    const currentImages = extractImageUrls(htmlValue);
-    const removedImages = prevImages.filter((image) => !currentImages.includes(image));
+    const prevKeys = prevKeysRef.current;
+    const currentKeys = getImageKeys(htmlValue);
 
-    for (const url of removedImages) {
-      const key = url.split('amazonaws.com/')[1];
-      if (!key) continue;
-
-      try {
-        await fetch(`/api/s3?key=${encodeURIComponent(key)}`, {
-          method: 'DELETE',
-        });
-      } catch (err) {
-        console.error('image remove error', err);
-      }
+    const removedKeys = prevKeys.filter((key) => !currentKeys.includes(key));
+    if (removedKeys.length > 0) {
+      removedImageKeysRef.current = removedKeys;
     }
 
-    prevImagesRef.current = currentImages;
+    prevKeysRef.current = currentKeys;
     setPostData((prev) => ({
       ...prev,
       htmlContent: htmlValue,
@@ -303,13 +293,13 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
     });
   };
 
-  const handleUploadImage = async (imageUrl: string, filename: string) => {
+  const handleUploadImage = async (imageUrl: string, filename: string, key: string) => {
     const dom = tinymceEditor.dom;
 
     tinymceEditor.execCommand(
       'mceInsertContent',
       false,
-      '<img src="' + imageUrl + '" data-filename="' + filename + '" />',
+      `<img src="${imageUrl}" data-key="${key}" data-filename="${filename}" />`,
     );
 
     let images = dom.select('img');
@@ -337,14 +327,14 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
           }),
         });
 
-        const { uploadUrl, imageUrl } = await res.json();
+        const { key, uploadUrl, imageUrl } = await res.json();
 
         await fetch(uploadUrl, {
           method: 'PUT',
           body: file,
         });
 
-        handleUploadImage(imageUrl, file.name);
+        handleUploadImage(imageUrl, file.name, key);
       } catch (err) {
         console.error('S3 upload error', err);
       }
@@ -410,11 +400,27 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
     setIsOpenSettingModal(true);
   }, [postData.title]);
 
-  const onPublishPost = () => {
-    if (mode === ContentMode.ADD) {
-      createPost.mutate({ data: postData });
-    } else if (mode === ContentMode.EDIT) {
-      updatePost.mutate({ data: postData });
+  const onPublishPost = async () => {
+    try {
+      const removedKeys = [...new Set(removedImageKeysRef.current)];
+
+      for (const key of removedKeys) {
+        if (!key) continue;
+
+        await fetch(`/api/s3?key=${encodeURIComponent(key)}`, {
+          method: 'DELETE',
+        });
+      }
+
+      removedImageKeysRef.current = [];
+
+      if (mode === ContentMode.ADD) {
+        createPost.mutate({ data: postData });
+      } else if (mode === ContentMode.EDIT) {
+        updatePost.mutate({ data: postData });
+      }
+    } catch (err) {
+      console.error('image remove error', err);
     }
   };
 
