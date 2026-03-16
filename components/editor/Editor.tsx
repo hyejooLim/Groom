@@ -233,12 +233,50 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
     setIsTitleEmpty(false);
   };
 
-  const handleChangeContent = (htmlValue: string, textValue: string) => {
-    setPostData({
-      ...postData,
+  const prevImagesRef = useRef<string[]>([]);
+
+  const extractImageUrls = (html: string) => {
+    const imgRegex = /<img[^>]+src="([^">]+)"/g;
+    const urls: string[] = [];
+
+    let match;
+    while ((match = imgRegex.exec(html)) !== null) {
+      urls.push(match[1]);
+    }
+
+    return urls;
+  };
+
+  useEffect(() => {
+    if (postData.htmlContent) {
+      prevImagesRef.current = extractImageUrls(postData.htmlContent);
+    }
+  }, []);
+
+  const handleChangeContent = async (htmlValue: string, textValue: string) => {
+    const prevImages = prevImagesRef.current;
+    const currentImages = extractImageUrls(htmlValue);
+    const removedImages = prevImages.filter((image) => !currentImages.includes(image));
+
+    for (const url of removedImages) {
+      const key = url.split('amazonaws.com/')[1];
+      if (!key) continue;
+
+      try {
+        await fetch(`/api/s3?key=${encodeURIComponent(key)}`, {
+          method: 'DELETE',
+        });
+      } catch (err) {
+        console.error('image remove error', err);
+      }
+    }
+
+    prevImagesRef.current = currentImages;
+    setPostData((prev) => ({
+      ...prev,
       htmlContent: htmlValue,
       content: textValue,
-    });
+    }));
   };
 
   const handleAddTag = (value: string) => {
