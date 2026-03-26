@@ -1,16 +1,14 @@
-import React, { ChangeEvent, useCallback, useEffect } from 'react';
+import React, { ChangeEvent, useEffect } from 'react';
 import { signOut } from 'next-auth/react';
 import { Button, Card } from 'antd';
 import { FiCamera } from 'react-icons/fi';
 import { BsCloudFill } from 'react-icons/bs';
 import { AiFillMinusSquare } from 'react-icons/ai';
 import classNames from 'classnames';
-import { DeleteObjectCommand } from '@aws-sdk/client-s3';
 
 import { useGetUser, useUpdateUser } from '../../hooks/query/user';
 import SkeletonManageProfile from '../skeleton/SkeletonManageProfile';
 import * as S from '../../styles/ts/components/manage/ManageProfile';
-import { s3 } from '../../lib/s3';
 
 const ManageProfile = () => {
   const { data: user, isLoading, isError, error } = useGetUser();
@@ -69,13 +67,9 @@ const ManageProfile = () => {
     const key = localStorage.getItem('imageKey');
 
     try {
-      const res = await fetch(`/api/s3?key=${encodeURIComponent(key)}`, {
+      await fetch(`/api/s3?key=${encodeURIComponent(key)}`, {
         method: 'DELETE',
       });
-
-      if (!res.ok) {
-        throw new Error('Failed to delete image');
-      }
 
       localStorage.removeItem('imageKey');
       updateUser.mutate(null);
