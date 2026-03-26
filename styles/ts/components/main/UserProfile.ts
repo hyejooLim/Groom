@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Button } from 'antd';
+import Button from '@mui/material/Button';
 
 export const UserProfileWrapper = styled.div`
   height: 220px;
@@ -72,23 +72,10 @@ export const NewBox = styled.div`
 `;
 
 export const LogoutButton = styled(Button)`
-  background-color: #13a085;
-  color: #fff;
-  width: 70px;
-  height: 32px;
-  font-size: 13px;
-  border-radius: 8px;
-  margin-top: 10px;
-  padding: 0;
+  background-color: #13a085 !important;
+  color: #fff !important;
 
   :hover {
-    cursor: pointer;
-    background-color: #20b79a;
-    color: #fff;
-  }
-
-  :focus {
-    background-color: #13a085;
-    color: #fff;
+    background-color: #20b79a !important;
   }
 `;

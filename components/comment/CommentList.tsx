@@ -1,6 +1,7 @@
 import React, { ChangeEvent, FC, useCallback, useState } from 'react';
-import { BsCloudFill } from 'react-icons/bs';
-import { Comment, List, Button, Avatar } from 'antd';
+import Avatar from '@mui/material/Avatar';
+import CloudIcon from '@mui/icons-material/Cloud';
+import { Comment, List, Button } from 'antd';
 import dayjs from 'dayjs';
 
 import { useGetUser } from '../../hooks/query/user';
@@ -30,7 +31,7 @@ const CommentList: FC<CommentListProps> = ({ postId }) => {
         content,
       });
     },
-    [currentComment]
+    [currentComment],
   );
 
   const onChangeContent = useCallback(
@@ -40,7 +41,7 @@ const CommentList: FC<CommentListProps> = ({ postId }) => {
         content: e.target.value,
       });
     },
-    [currentComment]
+    [currentComment],
   );
 
   const onUpdateComment = useCallback(() => {
@@ -95,12 +96,9 @@ const CommentList: FC<CommentListProps> = ({ postId }) => {
           <S.CommentBox>
             <Comment
               avatar={
-                <Avatar
-                  size={32}
-                  icon={<BsCloudFill style={{ height: '32px' }} />}
-                  src={item.author.imageUrl}
-                  style={{ cursor: 'default' }}
-                />
+                <Avatar className='avatar' sx={{ width: 32, height: 32 }} src={item.author.imageUrl}>
+                  <CloudIcon sx={{ fontSize: 20 }} />
+                </Avatar>
               }
               author={<span style={{ fontSize: '14px' }}>{item.author.name}</span>}
               content={<p style={{ whiteSpace: 'pre-wrap' }}>{item.content}</p>}

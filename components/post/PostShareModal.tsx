@@ -1,6 +1,8 @@
 import React, { FC, useCallback, MouseEvent, useState, useEffect } from 'react';
-import { Avatar, Button } from 'antd';
-import { BsCloudFill, BsPersonPlusFill, BsCheck2 } from 'react-icons/bs';
+import { Button } from 'antd';
+import Avatar from '@mui/material/Avatar';
+import CloudIcon from '@mui/icons-material/Cloud';
+import { BsPersonPlusFill, BsCheck2 } from 'react-icons/bs';
 import { MdArrowDropDown, MdOutlineClose } from 'react-icons/md';
 import { Oval } from 'react-loader-spinner';
 import classNames from 'classnames';
@@ -75,7 +77,7 @@ const PostShareModal: FC<PostShareModalProps> = ({ isOpen, isLoading, onClose, o
         },
       ]);
     },
-    [sharers]
+    [sharers],
   );
 
   const onClickAllSharers = useCallback(() => {
@@ -87,7 +89,7 @@ const PostShareModal: FC<PostShareModalProps> = ({ isOpen, isLoading, onClose, o
     setSharers(
       neighbors.map((neighbor) => {
         return { id: neighbor.id, name: neighbor.name };
-      })
+      }),
     );
   }, [sharers, neighbors]);
 
@@ -95,7 +97,7 @@ const PostShareModal: FC<PostShareModalProps> = ({ isOpen, isLoading, onClose, o
     (id: number) => {
       setSharers(sharers.filter((sharer) => sharer.id !== id));
     },
-    [sharers]
+    [sharers],
   );
 
   const onRemoveAllSharers = useCallback(() => {
@@ -135,11 +137,9 @@ const PostShareModal: FC<PostShareModalProps> = ({ isOpen, isLoading, onClose, o
                 data-neighbor-name={neighbor.name}
                 onClick={onClickSharer}
               >
-                <Avatar
-                  size={20}
-                  icon={<BsCloudFill style={{ height: '20px', lineHeight: '20px' }} />}
-                  src={neighbor?.imageUrl}
-                />
+                <Avatar sx={{ width: 20, heihgt: 20 }} src={neighbor?.imageUrl}>
+                  <CloudIcon sx={{ fontSize: 14 }} />
+                </Avatar>
                 <span className='name'>{neighbor.name}</span>
                 {sharers.find((sharer) => sharer.id === neighbor.id) && <BsCheck2 />}
               </div>

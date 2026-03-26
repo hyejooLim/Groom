@@ -1,8 +1,9 @@
 import React, { FC, useCallback } from 'react';
 import { BeatLoader } from 'react-spinners';
 import { useRecoilState } from 'recoil';
-import { Avatar } from 'antd';
-import { BsCloudFill, BsPersonFill } from 'react-icons/bs';
+import Avatar from '@mui/material/Avatar';
+import CloudIcon from '@mui/icons-material/Cloud';
+import { BsPersonFill } from 'react-icons/bs';
 
 import { UserType } from '../../types';
 import PaginationContainer from '../common/PaginationContainer';
@@ -37,7 +38,7 @@ const NeighborManageList: FC<NeighborManageListProps> = ({ neighbors, isLoading,
       setFirstIndex((page - 1) * MANAGE_PAGE_SIZE);
       setLastIndex(page * MANAGE_PAGE_SIZE);
     },
-    [MANAGE_PAGE_SIZE]
+    [MANAGE_PAGE_SIZE],
   );
 
   return (
@@ -51,11 +52,9 @@ const NeighborManageList: FC<NeighborManageListProps> = ({ neighbors, isLoading,
               neighbors?.slice(firstIndex, lastIndex).map((neighbor) => (
                 <S.NeighborInfoWrapper key={neighbor.id}>
                   <div className='neighbor_info'>
-                    <Avatar
-                      size={40}
-                      icon={<BsCloudFill style={{ height: '40px', lineHeight: '40px' }} />}
-                      src={neighbor?.imageUrl}
-                    />
+                    <Avatar sx={{ width: 40, height: 40 }} src={neighbor?.imageUrl}>
+                      <CloudIcon sx={{ fontSize: 20 }} />
+                    </Avatar>
                     <div className='neighbor_info_text'>
                       <div className='neighbor_title'>
                         <span className='name'>{neighbor.name}</span>
