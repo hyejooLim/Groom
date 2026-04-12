@@ -6,7 +6,7 @@ const config: Config = {
     extend: {
       colors: {
         primary: 'rgb(var(--primary-color) / <alpha-value>)',
-        error: 'rgb(var(--error-color) / <alphvalue>)',
+        error: 'rgb(var(--error-color) / <alpha-value>)',
         bg: 'var(--bg-color)',
         text: 'var(--text-color)',
         border: 'var(--border-color)',
