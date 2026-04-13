@@ -68,7 +68,7 @@ const Login = () => {
       <Head>
         <title>Groom | 로그인</title>
       </Head>
-      <div className='flex justify-center items-center h-full overflow-y-hidden'>
+      <div className='flex justify-center items-center h-full overflow-y-hidden bg-more-light-grey'>
         <form className='flex flex-col items-center px-32 py-8 rounded-2xl shadow-lg' onSubmit={onSubmitForm}>
           <div className='mb-4'>
             <Link href='/'>

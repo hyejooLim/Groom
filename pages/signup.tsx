@@ -90,7 +90,7 @@ const Signup = () => {
       <Head>
         <title>Groom | 회원가입</title>
       </Head>
-      <div className='h-full flex flex-col justify-center items-center overflow-y-hidden'>
+      <div className='h-full flex flex-col justify-center items-center overflow-y-hidden bg-more-light-grey'>
         <Link href='/' className='mb-8'>
           <Image src={logo} alt='groom_logo' width={140} height={60} />
         </Link>
