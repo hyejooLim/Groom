@@ -1,27 +1,21 @@
-import React, {
-  ChangeEvent,
-  KeyboardEvent,
-  useCallback,
-  useState,
-} from "react";
-import Head from "next/head";
-import Image from "next/image";
-import Link from "next/link";
-import Router from "next/router";
-import { ToastContainer, toast } from "react-toastify";
-import classNames from "classnames";
+import React, { ChangeEvent, KeyboardEvent, SubmitEvent, useCallback, useState } from 'react';
+import Head from 'next/head';
+import Image from 'next/image';
+import Link from 'next/link';
+import Router from 'next/router';
+import { ToastContainer, toast } from 'react-toastify';
+import { Oval } from 'react-loader-spinner';
+import TextField from '@mui/material/TextField';
 
-import useInput from "../hooks/common/input";
-import signup from "../apis/signup";
-import * as S from "../styles/ts/pages/signup";
-import logo from "../public/Groom_Logo_No_Background.png";
-import { Oval } from "react-loader-spinner";
+import useInput from '../hooks/common/input';
+import signup from '../apis/signup';
+import logo from '../public/Groom_Logo_No_Background.png';
 
 const Signup = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [passwordCheck, setPasswordCheck] = useState("");
-  const [name, onChangeName] = useInput("");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [passwordCheck, setPasswordCheck] = useState('');
+  const [name, onChangeName] = useInput('');
   const [isLoading, setIsLoading] = useState(false);
 
   const [emailError, setEmailError] = useState(false);
@@ -47,173 +41,139 @@ const Signup = () => {
       setPasswordCheck(e.target.value);
       setPasswordCheckError(e.target.value !== password);
     },
-    [password]
+    [password],
   );
 
   const onKeyUpPassword = (e: KeyboardEvent<HTMLInputElement>) => {
-    e.getModifierState("CapsLock")
-      ? setIsCapsLockPassword(true)
-      : setIsCapsLockPassword(false);
+    e.getModifierState('CapsLock') ? setIsCapsLockPassword(true) : setIsCapsLockPassword(false);
   };
 
   const onKeyUpPasswordCheck = (e: KeyboardEvent<HTMLInputElement>) => {
-    e.getModifierState("CapsLock")
-      ? setIsCapsLockPasswordCheck(true)
-      : setIsCapsLockPasswordCheck(false);
+    e.getModifierState('CapsLock') ? setIsCapsLockPasswordCheck(true) : setIsCapsLockPasswordCheck(false);
   };
 
-  const onSubmitForm = useCallback(async () => {
-    try {
-      setIsLoading(true);
+  const onSubmitForm = useCallback(
+    async (e: SubmitEvent<HTMLFormElement>) => {
+      e.preventDefault();
 
-      await signup({ data: { email, password, name } });
+      try {
+        setIsLoading(true);
 
-      toast.success("회원가입이 완료되었습니다.", {
-        autoClose: 2000,
-        position: "top-right",
-        hideProgressBar: true,
-      });
+        await signup({ data: { email, password, name } });
 
-      setTimeout(() => {
-        Router.push(
-          { pathname: "/login", query: { prevPathname: "signup" } },
-          "/login"
-        );
-      }, 3000);
-    } catch (error) {
-      alert(error?.response?.data?.message);
-      setIsLoading(false);
-      console.error(error);
-    }
-  }, [email, password, passwordCheck, name]);
+        toast.success('회원가입이 완료되었습니다.', {
+          autoClose: 2000,
+          position: 'top-right',
+          hideProgressBar: true,
+        });
+
+        setTimeout(() => {
+          Router.push({ pathname: '/login', query: { prevPathname: 'signup' } }, '/login');
+        }, 3000);
+      } catch (error) {
+        alert(error?.response?.data?.message);
+        setIsLoading(false);
+        console.error(error);
+      }
+    },
+    [email, password, passwordCheck, name],
+  );
+
+  const buttonDisabled = () => {
+    return (
+      !email || !password || !passwordCheck || !name || emailError || passwordError || passwordCheckError || isLoading
+    );
+  };
 
   return (
     <>
       <Head>
         <title>Groom | 회원가입</title>
       </Head>
-      <S.SignupWrapper>
-        <div className="logo">
-          <Link href="/">
-            <Image src={logo} alt="groom_logo" width={140} height={60} />
-          </Link>
-        </div>
-        <S.StyledForm
-          onFinish={onSubmitForm}
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <div className="input_form">
-            <label htmlFor="user-email">Email</label>
+      <div className='h-full flex flex-col justify-center items-center overflow-y-hidden bg-more-light-grey'>
+        <Link href='/' className='mb-8'>
+          <Image src={logo} alt='groom_logo' width={140} height={60} />
+        </Link>
+        <form className='flex flex-col items-center gap-y-4' onSubmit={onSubmitForm}>
+          <div>
+            <label htmlFor='user-name'>이름</label>
             <br />
-            <S.InputWrapper
-              name="user-email"
-              value={email}
-              type="email"
-              placeholder="이메일을 입력하세요."
-              onChange={onChangeEmail}
-              disabled={isLoading}
-              required
-            />
-            <S.ErrorMessage className={classNames({ error: emailError })}>
-              이메일 형식이 올바르지 않습니다.
-            </S.ErrorMessage>
-          </div>
-          <div className="input_form">
-            <label htmlFor="user-password">Password</label>
-            <br />
-            <S.InputWrapper
-              name="user-password"
-              value={password}
-              type="password"
-              placeholder="비밀번호를 입력하세요."
-              onChange={onChangePassword}
-              onKeyUp={onKeyUpPassword}
-              disabled={isLoading}
-              required
-            />
-            <S.ErrorMessage
-              className={classNames({ error: isCapsLockPassword })}
-            >
-              CapsLock이 켜져 있습니다.
-            </S.ErrorMessage>
-            <S.ErrorMessage
-              className={classNames({
-                error: passwordError && !isCapsLockPassword,
-              })}
-            >
-              비밀번호는 8자리 이상이어야 합니다.
-            </S.ErrorMessage>
-          </div>
-          <div className="input_form">
-            <label htmlFor="user-password-check">Password Check</label>
-            <br />
-            <S.InputWrapper
-              name="user-password-check"
-              value={passwordCheck}
-              type="password"
-              placeholder="비밀번호를 입력하세요."
-              onChange={onChangePasswordCheck}
-              onKeyUp={onKeyUpPasswordCheck}
-              disabled={isLoading}
-              required
-            />
-            <S.ErrorMessage
-              className={classNames({ error: isCapsLockPasswordCheck })}
-            >
-              CapsLock이 켜져 있습니다.
-            </S.ErrorMessage>
-            <S.ErrorMessage
-              className={classNames({
-                error: passwordCheckError && !isCapsLockPasswordCheck,
-              })}
-            >
-              비밀번호가 일치하지 않습니다.
-            </S.ErrorMessage>
-          </div>
-          <div className="input_form">
-            <label htmlFor="user-name">Name</label>
-            <br />
-            <S.InputWrapper
-              name="user-name"
+            <TextField
+              name='user-name'
               value={name}
-              placeholder="이름을 입력하세요."
+              className='w-[340px]'
+              placeholder='이름을 입력하세요.'
               onChange={onChangeName}
               disabled={isLoading}
               required
             />
           </div>
-          <S.SubmitButton
-            htmlType="submit"
-            disabled={
-              !email ||
-              !password ||
-              !passwordCheck ||
-              !name ||
-              emailError ||
-              passwordError ||
-              passwordCheckError ||
-              isLoading
-            }
+          <div>
+            <label htmlFor='user-email'>이메일</label>
+            <br />
+            <TextField
+              name='user-email'
+              value={email}
+              className='w-[340px]'
+              type='email'
+              placeholder='이메일을 입력하세요.'
+              onChange={onChangeEmail}
+              disabled={isLoading}
+              required
+            />
+            {emailError && <div className='text-error'>이메일 형식이 올바르지 않습니다.</div>}
+          </div>
+          <div>
+            <label htmlFor='user-password'>비밀번호</label>
+            <br />
+            <TextField
+              name='user-password'
+              value={password}
+              className='w-[340px]'
+              type='password'
+              placeholder='비밀번호를 입력하세요.'
+              onChange={onChangePassword}
+              onKeyUp={onKeyUpPassword}
+              disabled={isLoading}
+              required
+            />
+            {isCapsLockPassword && <div className='text-error'>CapsLock이 켜져 있습니다.</div>}
+            {passwordError && !isCapsLockPassword && (
+              <div className='text-error'>비밀번호는 8자리 이상이어야 합니다.</div>
+            )}
+          </div>
+          <div>
+            <label htmlFor='user-password-check'>비밀번호 확인</label>
+            <br />
+            <TextField
+              name='user-password-check'
+              value={passwordCheck}
+              className='w-[340px]'
+              type='password'
+              placeholder='비밀번호를 입력하세요.'
+              onChange={onChangePasswordCheck}
+              onKeyUp={onKeyUpPasswordCheck}
+              disabled={isLoading}
+              required
+            />
+            {isCapsLockPasswordCheck && <div className='text-error'>CapsLock이 켜져 있습니다.</div>}
+            {passwordCheckError && !isCapsLockPasswordCheck && (
+              <div className='text-error'>비밀번호가 일치하지 않습니다.</div>
+            )}
+          </div>
+          <button
+            type='submit'
+            className={`mt-8 text-white px-6 py-3 rounded-lg ${buttonDisabled() ? 'bg-light-grey cursor-not-allowed' : 'bg-primary cursor-pointer'}`}
+            disabled={buttonDisabled()}
           >
             {isLoading ? (
-              <Oval
-                height={20}
-                width={20}
-                color="#d0d0d0"
-                secondaryColor="#ddd"
-                strokeWidth={6}
-              />
+              <Oval height={20} width={20} color='#d0d0d0' secondaryColor='#ddd' strokeWidth={6} />
             ) : (
-              "가입하기"
+              '가입하기'
             )}
-          </S.SubmitButton>
-        </S.StyledForm>
-      </S.SignupWrapper>
+          </button>
+        </form>
+      </div>
       <ToastContainer />
     </>
   );
