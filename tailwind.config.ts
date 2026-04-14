@@ -7,9 +7,10 @@ const config: Config = {
       colors: {
         primary: 'rgb(var(--primary-color) / <alpha-value>)',
         error: 'rgb(var(--error-color) / <alpha-value>)',
-        bg: 'var(--bg-color)',
-        text: 'var(--text-color)',
+        background: 'var(--bg-color)',
+        dark: 'var(--text-color)',
         border: 'var(--border-color)',
+        accent: 'rgb(var(--accent-color) / <alpha-value>)',
         blue: 'var(--blue-color)',
         'light-blue': 'var(--light-blue-color)',
         grey: 'var(--grey-color)',
