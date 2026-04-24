@@ -10,6 +10,10 @@ export const CommentBox = styled.li`
   box-shadow: 8px 7px 8px -1px #d3d3d3;
   display: flex;
   justify-content: space-between;
+
+  & .avatar {
+    cursor: default;
+  }
 `;
 
 export const ButtonWrapper = styled.div`
