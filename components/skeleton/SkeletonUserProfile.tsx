@@ -1,17 +1,16 @@
 import SkeletonElement from './SkeletonElement';
-import * as S from '../../styles/ts/components/skeleton/SkeletonUserProfile';
 
 const SkeletonUserProfile = () => {
   return (
     <>
-      <S.InfoArea>
+      <div className='flex items-center mt-2 mb-6'>
         <SkeletonElement type='avatar' />
-        <S.UserInfo>
+        <div className='ml-8'>
           <SkeletonElement type='title' />
           <SkeletonElement type='text' />
           <SkeletonElement type='info' />
-        </S.UserInfo>
-      </S.InfoArea>
+        </div>
+      </div>
       <SkeletonElement type='button' />
     </>
   );

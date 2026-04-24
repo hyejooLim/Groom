@@ -29,7 +29,7 @@ const UserProfile = () => {
   };
 
   return (
-    <div className='flex flex-col justify-center w-full my-2 h-60'>
+    <div className='flex flex-col items-center justify-center w-full my-2 h-60'>
       {isLoading ? (
         <SkeletonUserProfile />
       ) : (
