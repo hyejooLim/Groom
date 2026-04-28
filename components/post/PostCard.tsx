@@ -2,7 +2,6 @@ import React, { FC, useCallback, useEffect, useState } from 'react';
 import Link from 'next/link';
 import Router from 'next/router';
 import { useSession } from 'next-auth/react';
-import { Button } from 'antd';
 import { HeartOutlined, HeartTwoTone } from '@ant-design/icons';
 import { Markup } from 'interweave';
 import { polyfill } from 'interweave-ssr';
@@ -11,6 +10,7 @@ import { BsCloudFill } from 'react-icons/bs';
 import { RiUserFollowLine, RiUserUnfollowLine } from 'react-icons/ri';
 import { GrFormPrevious, GrFormNext } from 'react-icons/gr';
 import { FiShare } from 'react-icons/fi';
+import Button from '@mui/material/Button';
 import dayjs from 'dayjs';
 
 import Title from '../common/Title';
@@ -23,7 +23,6 @@ import { useLikePost, useUnLikePost, useSubscribePost, useUnSubscribePost } from
 import { useAddNeighbor, useCancelNeighbor } from '../../hooks/query/neighbor';
 import { mainPostsState } from '../../recoil/posts';
 import { PostItem } from '../../types';
-import * as S from '../../styles/ts/components/post/PostCard';
 
 polyfill();
 
@@ -125,45 +124,77 @@ const PostCard: FC<PostCardProps> = ({ post, onDeletePost }) => {
     Router.push(`/post/${nextPostId}`);
   }, [mainPosts, post]);
 
+  const formatDate = (createdAt: string) => {
+    const now = dayjs();
+    const date = dayjs(createdAt);
+
+    const diffInSeconds = now.diff(date, 'second');
+    const diffInMinutes = now.diff(date, 'minute');
+    const diffInHours = now.diff(date, 'hour');
+    const diffInDays = now.diff(date, 'day');
+
+    // 1. 24시간 이내
+    if (diffInHours < 24) {
+      if (diffInSeconds < 60) return `${diffInSeconds}초 전`;
+      if (diffInMinutes < 60) return `${diffInMinutes}분 전`;
+      return `${diffInHours}시간 전`;
+    }
+
+    // 2. 24시간 이후 ~ 30일 이전
+    if (diffInDays < 30) {
+      return `${diffInDays}일 전`;
+    }
+
+    // 3. 한 달 이후
+    return date.format('YYYY년 M월 D일');
+  };
+
   return (
     <>
-      <S.HeadWrapper>
+      <div className='w-full text-center'>
         {post?.id ? <Title title={`[${post?.category.name}] ${post?.title}`} /> : <Title title='[Category] Title' />}
-        <S.Author>
-          {status === 'loading' && <BsCloudFill className='icon groom' />}
-          {status === 'authenticated' && user?.id === post?.authorId && <BsCloudFill className='icon groom' />}
-          {status === 'authenticated' &&
-            user?.id !== post?.authorId &&
-            user?.neighbors.find((neighbor) => neighbor.id === post?.authorId) && (
-              <RiUserFollowLine className='icon' onClick={onCancelNeighbor} />
+        <div className='flex justify-between items-center'>
+          <div className='text-black/60 text-sm'>{formatDate(post?.createdAt)}</div>
+          <div className='flex items-center gap-x-2'>
+            {status === 'loading' && <BsCloudFill className='text-2xl' color='#fff' />}
+            {status === 'authenticated' && user?.id === post?.authorId && (
+              <BsCloudFill className='text-2xl' color='#fff' />
             )}
-          {status === 'authenticated' &&
-            user?.id !== post?.authorId &&
-            !user?.neighbors.find((neighbor) => neighbor.id === post?.authorId) && (
-              <RiUserUnfollowLine className='icon' onClick={onAddNeighbor} />
-            )}
-          {status === 'unauthenticated' && <RiUserUnfollowLine className='icon' onClick={onAddNeighbor} />}
-          <span>{post?.author.name}의 글</span>
-        </S.Author>
-        <S.Date>{dayjs(post?.createdAt).format('YYYY.MM.DD HH:mm')}</S.Date>
-      </S.HeadWrapper>
-      <S.ContentWrapper>
-        <div className='tag_label'>
-          {post?.tags.map((tag) => (
-            <Link key={tag.id} href={`/tag/${tag.name}`}>
-              #{tag.name}
-            </Link>
-          ))}
+            {status === 'authenticated' &&
+              user?.id !== post?.authorId &&
+              user?.neighbors.find((neighbor) => neighbor.id === post?.authorId) && (
+                <RiUserFollowLine className='text-2xl' onClick={onCancelNeighbor} />
+              )}
+            {status === 'authenticated' &&
+              user?.id !== post?.authorId &&
+              !user?.neighbors.find((neighbor) => neighbor.id === post?.authorId) && (
+                <RiUserUnfollowLine className='text-2xl' onClick={onAddNeighbor} />
+              )}
+            {status === 'unauthenticated' && <RiUserUnfollowLine className='text-2xl' onClick={onAddNeighbor} />}
+            <span>{post?.author.name}의 글</span>
+          </div>
         </div>
-        <div className='article'>
-          <Markup content={post?.htmlContent} />
-        </div>
-        <div style={{ display: 'flex' }}>
-          <S.PostButton className='share' onClick={() => setIsShowPopover(true)}>
+      </div>
+      <div className='p-4 bg-white border border-light-grey mt-4'>
+        {post?.tags?.length ? (
+          <div className='min-h-8 text-right pb-2 pl-16'>
+            {post.tags.map((tag) => (
+              <Link key={tag.id} href={`/tag/${tag.name}`}>
+                #{tag.name}
+              </Link>
+            ))}
+          </div>
+        ) : null}
+        <Markup content={post?.htmlContent} />
+        <div className='flex gap-x-3 mt-14'>
+          <button
+            className='border border-solid border-light-grey px-4 py-2 rounded-2xl'
+            onClick={() => setIsShowPopover(true)}
+          >
             <FiShare />
-          </S.PostButton>
+          </button>
           <PostShare postId={post?.id} isShow={isShowPopover} onClose={() => setIsShowPopover(false)} />
-          <S.PostButton onClick={onToggleLikePost}>
+          <button className='border border-solid border-light-grey px-4 py-2 rounded-2xl' onClick={onToggleLikePost}>
             <span>
               {status === 'authenticated' && post?.likers.find((liker) => liker.id === user?.id) ? (
                 <HeartTwoTone key='heart' twoToneColor='red' {...({} as React.ComponentProps<typeof HeartTwoTone>)} />
@@ -171,47 +202,57 @@ const PostCard: FC<PostCardProps> = ({ post, onDeletePost }) => {
                 <HeartOutlined key='heart' {...({} as React.ComponentProps<typeof HeartOutlined>)} />
               )}
             </span>
-            <span style={{ marginLeft: 7 }}>공감</span>
-          </S.PostButton>
+            <span className='ml-2'>공감</span>
+          </button>
           {status === 'authenticated' && post?.subscribers.find((subscriber) => subscriber.id === user?.id) ? (
-            <S.PostButton onClick={onUnSubscribePost}>구독취소</S.PostButton>
+            <button className='border border-solid border-light-grey px-4 py-2 rounded-2xl' onClick={onUnSubscribePost}>
+              구독취소
+            </button>
           ) : (
-            <S.PostButton onClick={onSubscribePost}>구독하기</S.PostButton>
+            <button className='border border-solid border-light-grey px-4 py-2 rounded-2xl' onClick={onSubscribePost}>
+              구독하기
+            </button>
           )}
         </div>
         {status === 'authenticated' && user?.id === post?.authorId && (
-          <S.EditButton>
+          <div className='flex items-center justify-center mt-20 mb-10 text-lg'>
             <Link
               href={{
                 pathname: `/write/${post?.id}`,
                 query: { prevPathname: 'postcard' },
               }}
             >
-              <Button className='modify btn'>Modify</Button>
+              <button className='text-dark-grey hover:text-blue transition-colors duration-200'>Modify</button>
             </Link>
-            <span className='line'>|</span>
-            <Button className='delete btn' onClick={deletePost}>
+            <span className='text-light-grey px-4'>|</span>
+            <button className='text-dark-grey hover:text-error transition-colors duration-200' onClick={deletePost}>
               Delete
-            </Button>
-          </S.EditButton>
+            </button>
+          </div>
         )}
-      </S.ContentWrapper>
-      <S.ButtonWrapper>
-        <div>
-          <Button className='prev button' onClick={onClickPrevPost} disabled={currentIdx === 0}>
-            <GrFormPrevious className='prev icon' />
-            <span>이전 게시글</span>
-          </Button>
-          <Button
-            className='next button'
-            onClick={onClickNextPost}
-            disabled={mainPosts.length ? currentIdx === mainPosts.length - 1 : false}
-          >
-            <span>다음 게시글</span>
-            <GrFormNext className='next icon' />
-          </Button>
-        </div>
-      </S.ButtonWrapper>
+      </div>
+      <div className='flex justify-center gap-x-20 mt-8'>
+        <Button
+          className='!rounded-full enabled:!text-dark enabled:!border-dark enabled:hover:!text-white enabled:hover:!bg-primary enabled:hover:!border-primary'
+          size='large'
+          variant='outlined'
+          disabled={currentIdx === 0}
+          onClick={onClickPrevPost}
+        >
+          <GrFormPrevious className='mr-5' />
+          <span>이전 게시글</span>
+        </Button>
+        <Button
+          className='!rounded-full enabled:!text-dark enabled:!border-dark enabled:hover:!text-white enabled:hover:!bg-primary enabled:hover:!border-primary'
+          size='large'
+          variant='outlined'
+          disabled={mainPosts.length ? currentIdx === mainPosts.length - 1 : false}
+          onClick={onClickNextPost}
+        >
+          <span>다음 게시글</span>
+          <GrFormNext className='ml-5' />
+        </Button>
+      </div>
       <div>
         {post?.allowComments && <CommentForm post={post} />}
         {post && <CommentList postId={post?.id} />}
