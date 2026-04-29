@@ -12,7 +12,6 @@ import 'antd/dist/antd.css';
 import 'react-toastify/dist/ReactToastify.css';
 import 'react-datepicker/dist/react-datepicker.css';
 import '../styles/css/global.css';
-import '../styles/css/modal.css';
 import '../styles/css/Skeleton.css';
 import { fetcher } from '../utils/fetcher';
 
