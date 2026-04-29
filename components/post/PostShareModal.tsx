@@ -1,16 +1,15 @@
-import React, { FC, useCallback, MouseEvent, useState, useEffect } from 'react';
-import { Button } from 'antd';
+import React, { FC, useCallback, useState, useEffect } from 'react';
+import { BsPersonPlusFill, BsCheck2 } from 'react-icons/bs';
+import { Oval } from 'react-loader-spinner';
 import Avatar from '@mui/material/Avatar';
 import CloudIcon from '@mui/icons-material/Cloud';
-import { BsPersonPlusFill, BsCheck2 } from 'react-icons/bs';
-import { MdArrowDropDown, MdOutlineClose } from 'react-icons/md';
-import { Oval } from 'react-loader-spinner';
-import classNames from 'classnames';
+import MenuItem from '@mui/material/MenuItem';
+import Menu from '@mui/material/Menu';
+import Button from '@mui/material/Button';
 
 import { Sharer } from '../../types';
 import BasicModal from '../common/BasicModal';
 import useGetNeighbors from '../../hooks/query/neighbors';
-import * as S from '../../styles/ts/components/post/PostShareModal';
 
 interface PostShareModalProps {
   isOpen: boolean;
@@ -23,8 +22,10 @@ const PostShareModal: FC<PostShareModalProps> = ({ isOpen, isLoading, onClose, o
   const { data: neighbors } = useGetNeighbors();
 
   const [sharers, setSharers] = useState<Sharer[]>([]);
-  const [isShowDropdown, setIsShowDropdown] = useState(false);
   const [isLoadingShare, setIsLoadingShare] = useState(false);
+
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
 
   useEffect(() => {
     if (isLoading) {
@@ -34,128 +35,98 @@ const PostShareModal: FC<PostShareModalProps> = ({ isOpen, isLoading, onClose, o
     setIsLoadingShare(false);
   }, [isLoading]);
 
-  const handleClick = useCallback((e: any) => {
-    const dropdown = document.querySelector('.dropdown') as HTMLDivElement;
-    const listTitle = document.querySelector('.list_title') as HTMLDivElement;
-    const labelContainer = document.querySelector('.label_container') as HTMLDivElement;
-
-    if (!dropdown.contains(e.target) && !listTitle.contains(e.target) && !labelContainer.contains(e.target)) {
-      setIsShowDropdown(false);
-    }
-  }, []);
-
-  useEffect(() => {
-    if (isShowDropdown) {
-      window.addEventListener('click', handleClick, true);
-    }
-
-    return () => {
-      window.removeEventListener('click', handleClick, true);
-    };
-  }, [isShowDropdown]);
-
   const handleClose = useCallback(() => {
     onClose();
     setSharers([]);
+    setAnchorEl(null);
   }, [onClose]);
 
-  const onClickSharer = useCallback(
-    (e: MouseEvent<HTMLDivElement>) => {
-      const neighborId = Number(e.currentTarget?.dataset?.neighborId);
-      const neighborName = e.currentTarget?.dataset?.neighborName;
+  const onRemoveSharer = (id: number) => {
+    setSharers((prev) => prev.filter((sharer) => sharer.id !== id));
+  };
 
-      if (sharers.find((sharer) => sharer.id === neighborId)) {
-        onRemoveSharer(neighborId);
+  const onToggleSharer = useCallback(
+    (sharerId: number) => {
+      if (sharers.find((sharer) => sharer.id === sharerId)) {
+        onRemoveSharer(sharerId);
         return;
       }
 
-      setSharers([
-        ...sharers,
+      const selectedNeighbor = neighbors.find((neighbor) => neighbor.id === sharerId);
+      if (!selectedNeighbor) return;
+
+      setSharers((prev) => [
+        ...prev,
         {
-          id: neighborId,
-          name: neighborName,
+          id: selectedNeighbor.id,
+          name: selectedNeighbor.name,
         },
       ]);
     },
-    [sharers],
+    [neighbors, sharers],
   );
 
-  const onClickAllSharers = useCallback(() => {
-    if (sharers.length === neighbors.length) {
-      onRemoveAllSharers();
-      return;
-    }
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget); // 버튼의 위치를 기준으로 메뉴를 띄움
+  };
 
-    setSharers(
-      neighbors.map((neighbor) => {
-        return { id: neighbor.id, name: neighbor.name };
-      }),
-    );
-  }, [sharers, neighbors]);
-
-  const onRemoveSharer = useCallback(
-    (id: number) => {
-      setSharers(sharers.filter((sharer) => sharer.id !== id));
-    },
-    [sharers],
-  );
-
-  const onRemoveAllSharers = useCallback(() => {
-    setSharers([]);
-  }, []);
+  const handleCloseMenu = () => {
+    setAnchorEl(null);
+  };
 
   return (
     <BasicModal title='게시글을 공유할 이웃들을 선택해 보세요!' isOpen={isOpen} onClose={handleClose}>
-      <S.LabelContainer className='label_container'>
-        {sharers.length === 0 && (
-          <div className='icon_wrapper'>
-            <BsPersonPlusFill className='icon' />
-          </div>
+      <div
+        className='h-12 bg-primary/80 text-white flex justify-center items-center rounded-3xl cursor-pointer hover:bg-primary/100 transition-colors'
+        onClick={handleClick}
+      >
+        {sharers?.length === 0 ? (
+          <BsPersonPlusFill size={20} />
+        ) : (
+          <span>
+            {sharers
+              .slice(0, 4)
+              .map((s) => s.name)
+              .join(', ')}
+            {sharers.length > 4 && ' ...'}
+          </span>
         )}
-        {sharers.map((sharer) => (
-          <div className='label'>
-            <span>{sharer.name}</span>
-            <MdOutlineClose className='icon' onClick={() => onRemoveSharer(sharer.id)} />
-          </div>
+      </div>
+
+      <Menu anchorEl={anchorEl} open={open} onClose={handleCloseMenu}>
+        {neighbors?.map((neighbor) => (
+          <MenuItem
+            key={neighbor.id}
+            className='flex gap-x-4'
+            onClick={() => {
+              onToggleSharer(neighbor.id);
+              handleCloseMenu();
+            }}
+            selected={!sharers.find((sharer) => sharer.id === neighbor.id)}
+          >
+            <Avatar src={neighbor?.imageUrl} sx={{ width: 24, height: 24 }}>
+              <CloudIcon sx={{ fontSize: 12 }} />
+            </Avatar>
+            <span className='name'>{neighbor.name}</span>
+            {sharers.find((sharer) => sharer.id === neighbor.id) && <BsCheck2 />}
+          </MenuItem>
         ))}
-      </S.LabelContainer>
-      <S.DropdownWrapper>
-        <div className='list_title' onClick={() => setIsShowDropdown((prev) => !prev)}>
-          <span>내 이웃 리스트</span>
-          <MdArrowDropDown className='icon' />
-        </div>
-        <div className={classNames('dropdown', { isShow: isShowDropdown })}>
-          <div className='all_share' onClick={onClickAllSharers}>
-            전체 공유
-          </div>
-          <div className='item_list'>
-            {neighbors?.map((neighbor) => (
-              <div
-                key={neighbor.id}
-                className='item_wrapper'
-                data-neighbor-id={neighbor.id}
-                data-neighbor-name={neighbor.name}
-                onClick={onClickSharer}
-              >
-                <Avatar sx={{ width: 20, heihgt: 20 }} src={neighbor?.imageUrl}>
-                  <CloudIcon sx={{ fontSize: 14 }} />
-                </Avatar>
-                <span className='name'>{neighbor.name}</span>
-                {sharers.find((sharer) => sharer.id === neighbor.id) && <BsCheck2 />}
-              </div>
-            ))}
-          </div>
-        </div>
-      </S.DropdownWrapper>
-      <S.ShareButtonWrapper>
-        <Button className='share_btn' onClick={() => onSharePost(sharers)} disabled={sharers.length === 0}>
+      </Menu>
+
+      <div className='flex justify-center mt-8'>
+        <Button
+          className='!text-dark hover:!bg-primary/5'
+          size='large'
+          onClick={() => onSharePost(sharers)}
+          disabled={sharers?.length === 0}
+        >
           {isLoadingShare ? (
             <Oval height={20} width={20} color='#fff' secondaryColor='#eee' strokeWidth={6} />
           ) : (
             '공유하기'
           )}
         </Button>
-      </S.ShareButtonWrapper>
+      </div>
     </BasicModal>
   );
 };
