@@ -54,7 +54,7 @@ const CommentForm: FC<CommentFormProps> = ({ post }) => {
         onChange={onChangeCommentText}
         placeholder='내용을 입력해 주세요.'
         variant='outlined'
-        sx={{ backgroundColor: 'white' }}
+        sx={{ backgroundColor: 'white', borderRadius: '4px' }}
       />
 
       <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
@@ -63,6 +63,7 @@ const CommentForm: FC<CommentFormProps> = ({ post }) => {
           variant='text'
           disabled={isPending}
           startIcon={isPending ? <CircularProgress size={16} color='inherit' /> : null}
+          className='!text-primary'
         >
           {isPending ? 'Writing...' : 'Write'}
         </Button>
