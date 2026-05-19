@@ -18,7 +18,6 @@ const Manage = () => {
   const slicedPosts = userPosts?.slice(0, displayCount) || [];
 
   const renderEmptyBoxes = (currentLength: number, capacity: number) => {
-    console.log('currentLength capacity', currentLength, capacity);
     const emptyCount = capacity - currentLength;
     if (emptyCount <= 0) return null;
 
