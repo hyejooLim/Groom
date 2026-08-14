@@ -7,7 +7,7 @@ import ManageLayout from '../../components/layouts/ManageLayout';
 import CategoryManageList from '../../components/manage/CategoryManageList';
 import { useGetCategories, useUpdateCategories } from '../../hooks/query/categories';
 import { categoryJsonState } from '../../recoil/manage';
-import * as S from '../../styles/ts/pages/manage/category';
+import Button from '../../components/common/Button';
 
 const ManageCategory = () => {
   const { data: categories } = useGetCategories();
@@ -42,31 +42,35 @@ const ManageCategory = () => {
       <Head>
         <title>Groom | 카테고리 관리</title>
       </Head>
-      <span style={{ fontSize: '20px' }}>카테고리 관리</span>
-      <S.ManageCategoryWrapper>
-        <S.Description>
-          <div className='desc_text'>
-            <p className='title'>카테고리 순서를 변경하고 새로운 카테고리를 추가할 수 있습니다.</p>
-            <p className='info'>드래그 앤 드롭으로 카테고리 순서를 변경할 수 있습니다.</p>
+      <span className='text-2xl'>카테고리 관리</span>
+      <div className='mt-2 rounded-sm border border-[#e0e5ee] bg-white p-6'>
+        <div className='mt-2 flex items-center justify-between'>
+          <div>
+            <p className='text-xl'>카테고리 순서를 변경하고 새로운 카테고리를 추가할 수 있습니다.</p>
+            <p className='mt-1 text-md text-grey'>드래그 앤 드롭으로 카테고리 순서를 변경할 수 있습니다.</p>
           </div>
-          <S.TotalCount>
-            <span>{categories?.length}</span> / 100
-          </S.TotalCount>
-        </S.Description>
+          <div className='float-right text-sm text-grey'>
+            <span className='text-[#333]'>{categories?.length}</span> / 100
+          </div>
+        </div>
         <CategoryManageList categories={categories} />
-        <div className='set_btn'>
-          <S.SaveDiffButton onClick={handleCategoriesUpdate} disabled={isDisabled}>
+        <div className='flex justify-end'>
+          <Button
+            disabled={isDisabled}
+            className='flex py-3 px-8 text-lg items-center justify-center rounded-sm border border-solid border-[#333] bg-[#333] text-white shadow-sm hover:border-[#505050] hover:bg-[#505050] hover:shadow-md disabled:border-[#e0e5ee] disabled:bg-white disabled:text-[#959595]'
+            onClick={handleCategoriesUpdate}
+          >
             {isSave ? (
-              <div className='checkBox'>
-                <p>저장 완료</p>
+              <div className='flex items-center justify-center'>
+                <p className='mr-1 inline-block'>저장 완료</p>
                 <FiCheck />
               </div>
             ) : (
               '변경사항 저장'
             )}
-          </S.SaveDiffButton>
+          </Button>
         </div>
-      </S.ManageCategoryWrapper>
+      </div>
       <div style={{ height: '100px' }} />
     </ManageLayout>
   );

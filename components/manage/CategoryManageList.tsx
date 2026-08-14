@@ -1,38 +1,31 @@
-import React, {
-  FC,
-  useState,
-  useCallback,
-  useEffect,
-  ChangeEvent,
-  FormEvent,
-  DragEvent,
-} from "react";
-import { Button, Form } from "antd";
-import { MenuOutlined, PlusOutlined } from "@ant-design/icons";
-import { useRecoilState } from "recoil";
+import React, { FC, useState, useCallback, useEffect, ChangeEvent, DragEvent } from 'react';
+import { useRecoilState } from 'recoil';
+import { Box, TextField } from '@mui/material';
+import MenuOutlinedIcon from '@mui/icons-material/MenuOutlined';
+import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
 
-import useInput from "../../hooks/common/input";
-import { CategoryItem } from "../../types";
+import useInput from '../../hooks/common/input';
+import { CategoryItem } from '../../types';
 import {
   changeProperty,
   changePriorityWhenDrop,
   changePriorityWhenDropExcludeNewItem,
   changePriorityWhenDelete,
   changePriorityWhenDeleteExcludeNewItem,
-} from "../../utils/newList";
-import * as S from "../../styles/ts/components/manage/CategoryManageList";
-import { categoryJsonState } from "../../recoil/manage";
+} from '../../utils/newList';
+import { categoryJsonState } from '../../recoil/manage';
+import Button from '../common/Button';
 
 interface CategoryManageListProps {
   categories: CategoryItem[];
 }
 
 const CategoryManageList: FC<CategoryManageListProps> = ({ categories }) => {
-  const [category, onChangeCategory, setCategory] = useInput("");
+  const [category, onChangeCategory, setCategory] = useInput('');
   const [showInput, setShowInput] = useState(false);
   const [currentCategory, setCurrentCategory] = useState<CategoryItem>({
     id: null,
-    name: "",
+    name: '',
     priority: null,
   });
   const [newCategories, setNewCategories] = useState<CategoryItem[]>([]);
@@ -51,20 +44,15 @@ const CategoryManageList: FC<CategoryManageListProps> = ({ categories }) => {
     (e: ChangeEvent<HTMLInputElement>) => {
       setCurrentCategory({ ...currentCategory, name: e.target.value });
     },
-    [currentCategory]
+    [currentCategory],
   );
 
-  const onClickUpdateButton = useCallback(
-    (categoryId: number, categoryName: string, idx: number) => {
-      setCurrentCategory({ id: categoryId, name: categoryName, priority: idx });
-    },
-    []
-  );
+  const onClickUpdateButton = useCallback((categoryId: number, categoryName: string, idx: number) => {
+    setCurrentCategory({ id: categoryId, name: categoryName, priority: idx });
+  }, []);
 
   const onUpdateCategory = useCallback(() => {
-    setNewCategories(
-      changeProperty({ array: newCategories, state: currentCategory })
-    );
+    setNewCategories(changeProperty({ array: newCategories, state: currentCategory }));
 
     if (categoryJson.append.find((item) => item.id === currentCategory.id)) {
       setCategoryJson((prevState) => {
@@ -80,9 +68,7 @@ const CategoryManageList: FC<CategoryManageListProps> = ({ categories }) => {
       setCategoryJson((prevState) => {
         return {
           ...prevState,
-          update: categoryJson.update.find(
-            (item) => item.id === currentCategory.id
-          )
+          update: categoryJson.update.find((item) => item.id === currentCategory.id)
             ? changeProperty({
                 array: categoryJson.update,
                 state: currentCategory,
@@ -98,11 +84,11 @@ const CategoryManageList: FC<CategoryManageListProps> = ({ categories }) => {
         };
       });
     }
-    setCurrentCategory({ id: null, name: "", priority: null });
+    setCurrentCategory({ id: null, name: '', priority: null });
   }, [currentCategory]);
 
   const onCancelUpdateCategoryName = useCallback(() => {
-    setCurrentCategory({ id: null, name: "", priority: null });
+    setCurrentCategory({ id: null, name: '', priority: null });
   }, []);
 
   const onDeleteCategory = useCallback(
@@ -110,15 +96,11 @@ const CategoryManageList: FC<CategoryManageListProps> = ({ categories }) => {
       const _categories = [...newCategories];
       setNewCategories(_categories.filter((item) => item.id !== categoryId));
 
-      const deletedItemIdx = _categories.findIndex(
-        (item) => item.id === categoryId
-      );
+      const deletedItemIdx = _categories.findIndex((item) => item.id === categoryId);
 
       if (categoryJson.append.find((item) => item.id === categoryId)) {
         const _newAppendList = [...categoryJson.append];
-        const newAppendList = _newAppendList.filter(
-          (item) => item.id !== categoryId
-        );
+        const newAppendList = _newAppendList.filter((item) => item.id !== categoryId);
 
         setCategoryJson((prevState) => {
           return {
@@ -136,9 +118,7 @@ const CategoryManageList: FC<CategoryManageListProps> = ({ categories }) => {
       } else {
         setCategoryJson((prevState) => {
           const _newUpdaeList = [...categoryJson.update];
-          const newUpdaeList = _newUpdaeList.filter(
-            (item) => item.id !== categoryId
-          );
+          const newUpdaeList = _newUpdaeList.filter((item) => item.id !== categoryId);
 
           return {
             ...prevState,
@@ -164,7 +144,7 @@ const CategoryManageList: FC<CategoryManageListProps> = ({ categories }) => {
         });
       }
     },
-    [newCategories]
+    [newCategories],
   );
 
   const onClickAddCategoryField = useCallback(() => {
@@ -173,71 +153,65 @@ const CategoryManageList: FC<CategoryManageListProps> = ({ categories }) => {
 
   const onCancelAddCategory = useCallback(() => {
     setShowInput(false);
-    setCategory("");
+    setCategory('');
   }, []);
 
-  const onAddCategory = useCallback(
-    (e: FormEvent<HTMLButtonElement>) => {
-      const maxCategoryId =
-        newCategories.length > 0
-          ? Math.max(...newCategories.map((item) => item.id ?? 0))
-          : 0;
+  const onAddCategory = useCallback(() => {
+    const maxCategoryId = newCategories.length > 0 ? Math.max(...newCategories.map((item) => item.id ?? 0)) : 0;
 
-      if (newCategories.length === 100) {
-        alert("최대 100개의 카테고리를 추가할 수 있습니다.");
-        return;
-      }
+    if (newCategories.length === 100) {
+      alert('최대 100개의 카테고리를 추가할 수 있습니다.');
+      return;
+    }
 
-      setNewCategories([
-        ...newCategories,
-        {
-          id: maxCategoryId + 1,
-          name: category,
-          priority: newCategories.length,
-        },
-      ]);
+    setNewCategories([
+      ...newCategories,
+      {
+        id: maxCategoryId + 1,
+        name: category,
+        priority: newCategories.length,
+      },
+    ]);
 
-      setCategoryJson((prevState) => {
-        return {
-          ...prevState,
-          append: [
-            ...prevState.append,
-            {
-              id: maxCategoryId + 1,
-              name: category,
-              priority: newCategories.length,
-            },
-          ],
-        };
-      });
+    setCategoryJson((prevState) => {
+      return {
+        ...prevState,
+        append: [
+          ...prevState.append,
+          {
+            id: maxCategoryId + 1,
+            name: category,
+            priority: newCategories.length,
+          },
+        ],
+      };
+    });
 
-      setShowInput(false);
-      setCategory("");
-    },
-    [category]
-  );
+    setShowInput(false);
+    setCategory('');
+  }, [category]);
 
   // Drag & Drop
   const onDragStart = (e: DragEvent<HTMLDivElement>) => {
     setDraggedItemIdx(Number(e.currentTarget.dataset.index));
-    e.currentTarget.classList.add("drag_element");
+    e.currentTarget.classList.add('drag_element');
   };
 
   const onDragEnd = (e: DragEvent<HTMLDivElement>) => {
-    e.currentTarget.classList.remove("drag_element");
+    e.currentTarget.classList.remove('drag_element');
   };
 
   const onDragEnter = (e: DragEvent<HTMLDivElement>) => {
     setTargetItemIdx(Number(e.currentTarget.dataset.index));
-    e.currentTarget.classList.add("drop_zone");
+    e.currentTarget.classList.add('drop_zone');
   };
 
   const onDragLeave = (e: DragEvent<HTMLDivElement>) => {
-    e.currentTarget.classList.remove("drop_zone");
+    e.currentTarget.classList.remove('drop_zone');
   };
 
   const onDrop = (e: DragEvent<HTMLDivElement>) => {
-    e.currentTarget.classList.remove("drop_zone");
+    e.currentTarget.classList.remove('drop_zone');
 
     let _categories = [...newCategories];
     const draggedItemContent = _categories.splice(draggedItemIdx, 1)[0];
@@ -264,158 +238,149 @@ const CategoryManageList: FC<CategoryManageListProps> = ({ categories }) => {
   };
 
   return (
-    <S.CategoryManageListWrapper>
-      <div className="set_order">
-        <div className="wrap_order">
-          <div className="list_order">
-            {categories &&
-              newCategories?.map((item, idx) =>
-                item.id === currentCategory.id ? (
-                  <S.ItemWrapper
-                    key={item.id}
-                    style={{ background: "#fbfbfb" }}
-                  >
-                    <Form
-                      onFinish={onUpdateCategory}
-                      style={{
-                        width: "100%",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "space-between",
-                      }}
-                    >
-                      <S.StyledInput
-                        type="text"
-                        value={currentCategory.name}
-                        onChange={onChangeCategoryName}
-                        autoFocus
-                      />
-                      <S.FormButton>
-                        <Button
-                          className="cancel btn"
-                          onClick={onCancelUpdateCategoryName}
-                        >
-                          취소
-                        </Button>
-                        <Button
-                          className="submit btn"
-                          htmlType="submit"
-                          disabled={
-                            !currentCategory.name ||
-                            !currentCategory.name.trim() ||
-                            item.name === currentCategory.name.trim()
-                          }
-                        >
-                          확인
-                        </Button>
-                      </S.FormButton>
-                    </Form>
-                  </S.ItemWrapper>
-                ) : (
-                  item.id !== 0 && (
-                    <S.ItemWrapper
-                      key={item.id}
-                      data-key={item.id}
-                      data-index={idx}
-                      draggable
-                      onDragStart={onDragStart}
-                      onDragEnd={onDragEnd}
-                      onDragEnter={onDragEnter}
-                      onDragLeave={onDragLeave}
-                      onDragOver={(e) => e.preventDefault()}
-                      onDrop={onDrop}
-                    >
-                      <S.DragIconWrapper>
-                        <MenuOutlined
-                          {...({} as React.ComponentProps<typeof MenuOutlined>)}
-                        />
-                      </S.DragIconWrapper>
-                      <S.TextArea>
-                        <div className="category_name">
-                          <span>{item.name}</span>
-                          <span
-                            style={{
-                              fontSize: "13px",
-                              marginLeft: "4px",
-                              color: "#808080",
-                            }}
-                          >
-                            ({item.posts?.length || 0})
-                          </span>
-                        </div>
-                        <S.EditButton>
-                          <Button
-                            className="modify btn"
-                            onClick={() =>
-                              onClickUpdateButton(item.id, item.name, idx)
-                            }
-                          >
-                            수정
-                          </Button>
-                          <Button
-                            className="delete btn"
-                            onClick={() => onDeleteCategory(item.id)}
-                            disabled={item.posts?.length > 0}
-                          >
-                            삭제
-                          </Button>
-                        </S.EditButton>
-                      </S.TextArea>
-                    </S.ItemWrapper>
-                  )
-                )
-              )}
-            {showInput && (
-              <S.ItemWrapper style={{ background: "#fbfbfb" }}>
-                <Form
-                  onFinish={onAddCategory}
-                  style={{
-                    width: "100%",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "space-between",
-                  }}
+    <div className='my-5 mb-6 rounded-sm bg-extra-light-blue p-2'>
+      <div className='relative'>
+        <div className='flex flex-col gap-sm'>
+          {categories &&
+            newCategories?.map((item, idx) =>
+              item.id === currentCategory.id ? (
+                <div
+                  key={item.id}
+                  className='flex h-16 items-center border border-border bg-background px-5 text-md box-border'
                 >
-                  <S.StyledInput
-                    type="text"
-                    value={category}
-                    onChange={onChangeCategory}
-                    autoFocus
-                  />
-                  <S.FormButton>
-                    <Button
-                      className="cancel btn"
-                      onClick={onCancelAddCategory}
-                    >
-                      취소
-                    </Button>
-                    <Button
-                      className="submit btn"
-                      htmlType="submit"
-                      disabled={!category || !category.trim()}
-                    >
-                      확인
-                    </Button>
-                  </S.FormButton>
-                </Form>
-              </S.ItemWrapper>
+                  <Box
+                    component='form'
+                    onSubmit={onUpdateCategory}
+                    className='flex w-full items-center justify-between'
+                  >
+                    <TextField
+                      type='text'
+                      value={currentCategory.name}
+                      onChange={onChangeCategoryName}
+                      autoFocus
+                      variant='outlined'
+                      className='w-[330px]'
+                      sx={{
+                        '& .MuiInputBase-root': {
+                          height: '40px',
+                          fontSize: '18px',
+                        },
+                      }}
+                    />
+                    <div className='flex items-center gap-x-2'>
+                      <Button
+                        className='h-8 border border-border px-4 rounded-sm bg-white text-sm text-dark shadow-sm hover:shadow-md'
+                        onClick={onCancelUpdateCategoryName}
+                      >
+                        취소
+                      </Button>
+                      <Button
+                        type='submit'
+                        disabled={
+                          !currentCategory.name ||
+                          !currentCategory.name.trim() ||
+                          item.name === currentCategory.name.trim()
+                        }
+                        className='h-8 border border-border px-4 rounded-sm bg-[#333] text-sm text-white shadow-sm hover:bg-[#333]/90 hover:shadow-md disabled:bg-gray-400'
+                      >
+                        확인
+                      </Button>
+                    </div>
+                  </Box>
+                </div>
+              ) : (
+                item.id !== 0 && (
+                  <div
+                    key={item.id}
+                    data-key={item.id}
+                    data-index={idx}
+                    draggable
+                    onDragStart={onDragStart}
+                    onDragEnd={onDragEnd}
+                    onDragEnter={onDragEnter}
+                    onDragLeave={onDragLeave}
+                    onDragOver={(e) => e.preventDefault()}
+                    onDrop={onDrop}
+                    className='group flex h-16 items-center border border-[#e0e5ee] bg-white px-5 text-[15px] box-border hover:border-[#808080]'
+                  >
+                    <div className='-ml-2 mr-2 mt-1 p-2 text-[#bbb] hover:cursor-pointer group-hover:text-[#808080]'>
+                      <MenuOutlinedIcon />
+                    </div>
+                    <div className='flex w-full justify-between'>
+                      <div className='mr-[10px] flex w-[320px] items-center'>
+                        <span className='text-[18px]'>{item.name}</span>
+                        <span className='ml-[4px] text-[13px] text-[#808080]'>({item.posts?.length || 0})</span>
+                      </div>
+                      <div className='flex items-center gap-x-2'>
+                        <Button
+                          className='h-8 hidden group-hover:block border border-solid border-border rounded-sm px-4 text-sm shadow-sm hover:shadow-md'
+                          onClick={() => onClickUpdateButton(item.id, item.name, idx)}
+                        >
+                          수정
+                        </Button>
+                        <Button
+                          disabled={item.posts?.length > 0}
+                          className='h-8 hidden group-hover:block border border-solid border-border rounded-sm px-4 text-sm shadow-sm hover:shadow-md disabled:text-gray-400'
+                          onClick={() => onDeleteCategory(item.id)}
+                        >
+                          삭제
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                )
+              ),
             )}
-          </div>
-          <S.AddCategoryWrapper onClick={onClickAddCategoryField}>
-            <div>
-              <PlusOutlined
-                {...({} as React.ComponentProps<typeof PlusOutlined>)}
-              />
-              <span className="add_category_text">카테고리 추가</span>
+          {showInput && (
+            <div className='flex h-16 items-center border border-[#e0e5ee] bg-[#fbfbfb] px-5 text-md box-border'>
+              <Box component='form' onSubmit={onAddCategory} className='flex w-full items-center justify-between'>
+                <TextField
+                  type='text'
+                  value={category}
+                  onChange={onChangeCategory}
+                  autoFocus
+                  variant='outlined'
+                  className='w-[330px]'
+                  sx={{
+                    '& .MuiInputBase-root': {
+                      height: '40px',
+                      fontSize: '18px',
+                    },
+                  }}
+                />
+                <div className='flex items-center gap-x-2'>
+                  <Button
+                    className='h-8 border border-border px-4 rounded-sm bg-white text-sm text-dark shadow-sm hover:shadow-md'
+                    onClick={onCancelAddCategory}
+                  >
+                    취소
+                  </Button>
+                  <Button
+                    type='submit'
+                    disabled={!category || !category.trim()}
+                    className='h-8 border border-border px-4 rounded-sm bg-[#333] text-sm text-white shadow-sm hover:bg-[#333]/90 hover:shadow-md disabled:bg-gray-400'
+                  >
+                    확인
+                  </Button>
+                </div>
+              </Box>
             </div>
-            <S.TotalCount>
-              <span style={{ color: "#333" }}>{newCategories?.length}</span> /
-              100
-            </S.TotalCount>
-          </S.AddCategoryWrapper>
+          )}
+        </div>
+        <div
+          onClick={onClickAddCategoryField}
+          className='mt-2 flex h-16 items-center justify-between border border-dotted border-[#acb3bf] px-5 py-1 text-xl leading-[48px] hover:cursor-pointer hover:border-[#888]'
+        >
+          <div>
+            <AddOutlinedIcon />
+            <span className='ml-[14px]'>카테고리 추가</span>
+          </div>
+          <div className='text-sm text-[#959595]'>
+            <span className='text-[#333]'>{newCategories?.length}</span> / 100
+          </div>
         </div>
       </div>
-    </S.CategoryManageListWrapper>
+    </div>
   );
 };
 

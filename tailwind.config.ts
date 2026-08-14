@@ -13,6 +13,7 @@ const config: Config = {
         accent: 'rgb(var(--accent-color) / <alpha-value>)',
         blue: 'var(--blue-color)',
         'light-blue': 'var(--light-blue-color)',
+        'extra-light-blue': 'var(--extra-light-blue-color)',
         grey: 'var(--grey-color)',
         'light-grey': 'var(--light-grey-color)',
         'dark-grey': 'rgb(var(--dark-grey-color) / <alpha-value>)',
