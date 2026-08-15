@@ -6,12 +6,12 @@ import { useSession } from 'next-auth/react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import { HiOutlinePencilAlt } from 'react-icons/hi';
+import Container from '@mui/material/Container';
 
 import ManageProfile from '../manage/ManageProfile';
 import ManageWrite from '../manage/ManageWrite';
 import ManageList from '../manage/ManageList';
 import logo from '../../public/Groom_Logo_No_Background.png';
-import Container from '@mui/material/Container';
 
 const ManageLayout = ({ children }) => {
   const { status } = useSession();
