@@ -6,19 +6,15 @@ import { QueryClientProvider, QueryClient, HydrationBoundary } from '@tanstack/r
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { SWRConfig } from 'swr';
 
-// will be removed
-import 'antd/dist/antd.css';
-
 import 'react-toastify/dist/ReactToastify.css';
 import 'react-datepicker/dist/react-datepicker.css';
 import '../styles/css/global.css';
 import '../styles/css/Skeleton.css';
 import { fetcher } from '../utils/fetcher';
 
-import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
-
-const theme = createTheme();
+import { theme } from './theme';
 
 const ReactQueryDevtoolsProduction = React.lazy(() =>
   import('@tanstack/react-query-devtools/build/modern/production.js').then((d) => ({
