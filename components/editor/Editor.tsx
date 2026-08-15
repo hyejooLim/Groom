@@ -19,6 +19,7 @@ import getAutoSave from '../../apis/autosave/getAutoSave';
 import * as ContentMode from '../../constants/ContentMode';
 import { ContentModeType, PostItem, CategoryItem, TempPostItem } from '../../types';
 import * as S from '../../styles/ts/components/editor/Editor';
+import { useGetCategories } from '../../hooks/query/categories';
 
 interface EditorProps {
   post?: PostItem;
@@ -286,11 +287,18 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
     });
   };
 
-  const handleChangeCategory = (value: string, option: CategoryItem) => {
-    setPostData({
-      ...postData,
-      category: { id: Number(option.id), name: value },
-    });
+  const { data: categories } = useGetCategories();
+
+  const handleChangeCategory = (e: ChangeEvent<HTMLInputElement>) => {
+    const selectedName = e.target.value;
+    const selectedCategory = categories.find((cat) => cat.name === selectedName);
+
+    if (selectedCategory) {
+      setPostData({
+        ...postData,
+        category: { id: Number(selectedCategory.id), name: e.target.value },
+      });
+    }
   };
 
   const handleUploadImage = async (imageUrl: string, filename: string, key: string) => {
