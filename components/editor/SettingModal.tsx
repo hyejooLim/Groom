@@ -1,16 +1,15 @@
-import React, { FC, useState, MouseEvent, useEffect, useCallback } from "react";
-import { Button, Dropdown, Form, Radio, RadioChangeEvent } from "antd";
-import { DownOutlined, UpOutlined } from "@ant-design/icons";
-import classNames from "classnames";
-import dayjs from "dayjs";
+import React, { FC, useState, MouseEvent, useEffect, useCallback, ChangeEvent } from 'react';
+import dayjs, { Dayjs } from 'dayjs';
+import { Button, Radio, RadioGroup, FormControlLabel, Menu, MenuItem } from '@mui/material';
+import KeyboardArrowUpOutlinedIcon from '@mui/icons-material/KeyboardArrowUpOutlined';
+import KeyboardArrowDownOutlinedIcon from '@mui/icons-material/KeyboardArrowDownOutlined';
 
-import ReactModal from "../common/ReactModal";
-import ReactDatePicker from "../common/ReactDatePicker";
-import * as ContentMode from "../../constants/ContentMode";
-import * as PublishMode from "../../constants/PublishMode";
-import { ContentModeType, PostItem, ReserveDate } from "../../types";
-import * as S from "../../styles/ts/components/editor/SettingModal";
-import { productionURL } from "../../constants/URL";
+import ReactDatePicker from '../common/ReactDatePicker';
+import * as ContentMode from '../../constants/ContentMode';
+import * as PublishMode from '../../constants/PublishMode';
+import { ContentModeType, PostItem } from '../../types';
+import { productionURL } from '../../constants/URL';
+import BottomModal from '../common/BottomModal';
 
 interface SettingModalProps {
   mode: ContentModeType;
@@ -25,12 +24,12 @@ interface SettingModalProps {
 
 const dropdownList = [
   {
-    key: "ALLOW",
-    label: "댓글 허용",
+    key: 'ALLOW',
+    label: '댓글 허용',
   },
   {
-    key: "NO_ALLOW",
-    label: "댓글 비허용",
+    key: 'NO_ALLOW',
+    label: '댓글 비허용',
   },
 ];
 
@@ -46,21 +45,14 @@ const SettingModal: FC<SettingModalProps> = ({
 }) => {
   const [isSaving, setIsSaving] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
-  const [dropdownItem, setDropdownItem] = useState(
-    dropdownList[postData.allowComments ? 0 : 1]
+  const [dropdownItem, setDropdownItem] = useState(dropdownList[postData.allowComments ? 0 : 1]);
+
+  const [radioValue, setRadioValue] = useState(postData.isPublic ? 'public' : 'private');
+  const [publishedAt, setPublishedAt] = useState(
+    mode === ContentMode.EDIT ? PublishMode.CREATEDAT : PublishMode.CURRENT,
   );
 
-  const [radioValue, setRadioValue] = useState(
-    postData.isPublic ? "public" : "private"
-  );
-  const [publishedAt, setPublishedAt] = useState(
-    mode === ContentMode.EDIT ? PublishMode.CREATEDAT : PublishMode.CURRENT
-  );
-  const [reserveDate, setReserveDate] = useState<ReserveDate>({
-    date: dayjs().format("YYYY-MM-DD"),
-    hour: dayjs().format("HH"),
-    minute: dayjs().format("mm"),
-  });
+  const [reserveDate, setReserveDate] = useState<Dayjs | null>(dayjs());
 
   useEffect(() => {
     if (isLoading) {
@@ -75,10 +67,10 @@ const SettingModal: FC<SettingModalProps> = ({
       }
     }
 
-    window.addEventListener("click", onClick);
+    window.addEventListener('click', onClick);
 
     return () => {
-      window.removeEventListener("click", onClick);
+      window.removeEventListener('click', onClick);
     };
   }, [showDropdown]);
 
@@ -87,36 +79,34 @@ const SettingModal: FC<SettingModalProps> = ({
   }, [publishedAt, reserveDate]);
 
   const updateCreatedAt = useCallback(() => {
-    const { date, hour, minute } = reserveDate;
-
     if (mode === ContentMode.ADD) {
       if (publishedAt === PublishMode.RESERVE) {
         setPostData({
           ...postData,
-          createdAt: date + " " + hour + ":" + minute + ":" + "00",
+          createdAt: reserveDate ? reserveDate.format('YYYY-MM-DD HH:mm:00') : '',
         });
       }
     } else if (mode === ContentMode.EDIT) {
       if (publishedAt === PublishMode.CURRENT) {
         setPostData({
           ...postData,
-          createdAt: dayjs().format("YYYY-MM-DD HH:mm:ss"),
+          createdAt: dayjs().format('YYYY-MM-DD HH:mm:ss'),
         });
       } else if (publishedAt === PublishMode.RESERVE) {
         setPostData({
           ...postData,
-          createdAt: date + " " + hour + ":" + minute + ":" + "00",
+          createdAt: reserveDate ? reserveDate.format('YYYY-MM-DD HH:mm:00') : '',
         });
       }
     }
   }, [reserveDate, mode, publishedAt]);
 
-  const onChangeRadioValue = (e: RadioChangeEvent) => {
+  const onChangeRadioValue = (e: ChangeEvent<HTMLInputElement>) => {
     setRadioValue(e.target.value);
 
     setPostData({
       ...postData,
-      isPublic: e.target.value === "public" ? true : false,
+      isPublic: e.target.value === 'public' ? true : false,
     });
   };
 
@@ -129,7 +119,7 @@ const SettingModal: FC<SettingModalProps> = ({
     });
     setPostData({
       ...postData,
-      allowComments: e.currentTarget.dataset.key === "ALLOW" ? true : false,
+      allowComments: e.currentTarget.dataset.key === 'ALLOW' ? true : false,
     });
   };
 
@@ -138,163 +128,151 @@ const SettingModal: FC<SettingModalProps> = ({
     setIsSaving(false);
   };
 
-  const menu = (
-    <S.OverrideMenu
-      items={dropdownList.map((item) => {
-        return {
-          key: item.key,
-          label: (
-            <span
-              data-key={item.key}
-              data-label={item.label}
-              onClick={onClickLabel}
-            >
-              {item.label}
-            </span>
-          ),
-        };
-      })}
-    />
-  );
+  const [anchorEl, setAnchorEl] = useState(null);
+  const openDropdown = Boolean(anchorEl);
+
+  const handleDropdownClick = (event) => {
+    event.stopPropagation();
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleDropdownClose = () => {
+    setAnchorEl(null);
+  };
 
   return (
-    <ReactModal isOpen={isOpen} onRequestClose={onCloseModal}>
-      <Form onFinish={onPublishPost}>
-        <fieldset>
-          <S.HeadLayer>
-            <strong className="head_layer_title">발행</strong>
-          </S.HeadLayer>
-          <S.BodyLayer>
-            <div className="publish_editor">
-              <strong className="post_title">{postData.title}</strong>
-              <dl className="editor_info default">
-                <dt>기본</dt>
-                <dd>
-                  <Radio.Group
-                    value={radioValue}
-                    onChange={onChangeRadioValue}
-                    disabled={isSaving}
+    <BottomModal isOpen={isOpen} onClose={onCloseModal}>
+      <form onSubmit={onPublishPost} className='w-[860px] mx-auto'>
+        <fieldset className='m-0 border-0 p-0'>
+          <div className='border-b-2 border-black pb-3 mb-8'>
+            <strong className='text-2xl'>발행</strong>
+          </div>
+          <div>
+            <strong className='text-3xl font-normal'>{postData.title}</strong>
+            <dl className='flex items-center border-b border-[#eee] h-20'>
+              <dt className='w-[70px] text-xl'>기본</dt>
+              <dd className='flex justify-between items-center w-full'>
+                <RadioGroup value={radioValue} onChange={onChangeRadioValue} row>
+                  <FormControlLabel
+                    value='public'
+                    control={<Radio />}
+                    label={
+                      <span className='relative group/public'>
+                        공개
+                        <div className='absolute left-[-10px] top-[30px] z-10 hidden w-[186px] h-[32px] rounded-[1px] bg-white p-[6px_11px] text-[13px] text-[#5e5e5e] shadow-[0_0_1px_0_rgba(0,0,0,0.3),0_2px_5px_0_rgba(0,0,0,0.1)] box-border group-hover/public:block after:absolute after:left-[13px] after:top-[-5px] after:h-[10px] after:w-[10px] after:rotate-45 after:border-l after:border-t after:border-[#ddd] after:bg-white'>
+                          누구나 글을 읽을 수 있습니다
+                        </div>
+                      </span>
+                    }
+                  />
+                  <FormControlLabel
+                    value='private'
+                    control={<Radio />}
+                    label={
+                      <span className='relative group/private'>
+                        비공개
+                        <div className='absolute left-[-10px] top-[30px] z-10 hidden w-[200px] h-[32px] rounded-[1px] bg-white p-[6px_11px] text-[13px] text-[#5e5e5e] shadow-[0_0_1px_0_rgba(0,0,0,0.3),0_2px_5px_0_rgba(0,0,0,0.1)] box-border group-hover/private:block after:absolute after:left-[13px] after:top-[-5px] after:h-[10px] after:w-[10px] after:rotate-45 after:border-l after:border-t after:border-[#ddd] after:bg-white'>
+                          작성자만 글을 읽을 수 있습니다
+                        </div>
+                      </span>
+                    }
+                  />
+                </RadioGroup>
+
+                <div>
+                  <button type='button' onClick={handleDropdownClick} className='text-grey'>
+                    <span className='mr-1 text-lg'>{dropdownItem.label}</span>
+                    {openDropdown ? <KeyboardArrowUpOutlinedIcon /> : <KeyboardArrowDownOutlinedIcon />}
+                  </button>
+                  <Menu
+                    anchorEl={anchorEl}
+                    open={openDropdown}
+                    onClose={handleDropdownClose}
+                    className='mt-2'
+                    MenuListProps={{
+                      style: { padding: 0 },
+                    }}
                   >
-                    <Radio className="radio_public" value="public">
-                      공개
-                      <S.PublicInfoBox>
-                        누구나 글을 읽을 수 있습니다
-                      </S.PublicInfoBox>
-                    </Radio>
-                    <Radio className="radio_private" value="private">
-                      비공개
-                      <S.PrivateInfoBox>
-                        작성자만 글을 읽을 수 있습니다
-                      </S.PrivateInfoBox>
-                    </Radio>
-                  </Radio.Group>
-                  <S.DropdownWrapper>
-                    <Dropdown
-                      overlay={menu}
-                      trigger={["click"]}
-                      disabled={isSaving}
-                    >
-                      <button
+                    {dropdownList?.map((item) => (
+                      <MenuItem
+                        key={item.key}
+                        data-key={item.key}
+                        data-label={item.label}
                         onClick={(e) => {
-                          e.stopPropagation();
-                          setShowDropdown((prev) => !prev);
+                          onClickLabel(e);
+                          handleDropdownClose();
                         }}
                       >
-                        <span className="dropdown_label">
-                          {dropdownItem.label}
-                        </span>
-                        {showDropdown ? (
-                          <UpOutlined
-                            className="dropdown_icon"
-                            {...({} as React.ComponentProps<typeof UpOutlined>)}
-                          />
-                        ) : (
-                          <DownOutlined
-                            className="dropdown_icon"
-                            {...({} as React.ComponentProps<
-                              typeof DownOutlined
-                            >)}
-                          />
-                        )}
-                      </button>
-                    </Dropdown>
-                  </S.DropdownWrapper>
-                </dd>
-              </dl>
-              <dl className="editor_info publishedAt">
-                <dt
-                  className={classNames({ disabled: radioValue === "private" })}
-                >
-                  발행일
-                </dt>
-                <dd>
-                  {mode === ContentMode.EDIT && (
-                    <Button
-                      className={classNames("date_btn createdAt", {
-                        on: publishedAt === PublishMode.CREATEDAT,
-                        disabled: radioValue === "private",
-                      })}
-                      onClick={() => setPublishedAt(PublishMode.CREATEDAT)}
+                        {item.label}
+                      </MenuItem>
+                    ))}
+                  </Menu>
+                </div>
+              </dd>
+            </dl>
+
+            <dl className='flex items-center border-b border-[#eee] h-20'>
+              <dt className={`w-[70px] text-xl ${radioValue === 'private' ? '!text-[#ddd]' : ''}`}>발행일</dt>
+              <dd className='flex items-center w-full gap-x-4'>
+                {mode === ContentMode.EDIT && (
+                  <button
+                    type='button'
+                    disabled={isSaving || radioValue === 'private'}
+                    className={`cursor-pointer ${
+                      publishedAt === PublishMode.CREATEDAT ? 'text-dark' : 'text-grey'
+                    } ${radioValue === 'private' ? '!text-[#ddd]' : ''}`}
+                    onClick={() => setPublishedAt(PublishMode.CREATEDAT)}
+                  >
+                    {dayjs(createdAt).format('YYYY-MM-DD HH:mm')}
+                    <span className='ml-6 mr-2 text-grey'>|</span>
+                  </button>
+                )}
+                {radioValue === 'public' && (
+                  <div className='flex items-center'>
+                    <button
+                      type='button'
+                      className={`cursor-pointer ${publishedAt === PublishMode.CURRENT ? 'text-dark' : 'text-grey'}`}
                       disabled={isSaving}
+                      onClick={() => setPublishedAt(PublishMode.CURRENT)}
                     >
-                      {dayjs(createdAt).format("YYYY-MM-DD HH:mm")}
-                    </Button>
-                  )}
-                  {radioValue === "public" && (
-                    <>
-                      <Button
-                        className={classNames("date_btn current", {
-                          on: publishedAt === PublishMode.CURRENT,
-                        })}
-                        onClick={() => setPublishedAt(PublishMode.CURRENT)}
-                        disabled={isSaving}
-                      >
-                        현재
-                      </Button>
-                      <Button
-                        className={classNames("date_btn reserve", {
-                          on: publishedAt === PublishMode.RESERVE,
-                        })}
-                        onClick={() => setPublishedAt(PublishMode.RESERVE)}
-                        disabled={isSaving}
-                      >
-                        예약
-                      </Button>
-                      {publishedAt === PublishMode.RESERVE && (
-                        <ReactDatePicker
-                          reserveDate={reserveDate}
-                          setReserveDate={setReserveDate}
-                        />
-                      )}
-                    </>
-                  )}
-                </dd>
-              </dl>
-              <dl className="editor_info url">
-                <dt>URL</dt>
-                <dd>
-                  <span className="post_url">{`${productionURL}/entry/${postData.title}`}</span>
-                </dd>
-              </dl>
-            </div>
-          </S.BodyLayer>
-          <S.FootLayer>
-            <div className="btn_wrapper">
-              <Button className="cancel btn" onClick={onCloseModal}>
-                취소
-              </Button>
-              <Button htmlType="submit" className="submit btn">
-                {isSaving
-                  ? "저장 중"
-                  : radioValue === "public"
-                  ? "공개 발행"
-                  : "비공개 저장"}
-              </Button>
-            </div>
-          </S.FootLayer>
+                      현재
+                    </button>
+                    <span className='mx-6 text-grey'>|</span>
+                    <button
+                      type='button'
+                      className={`cursor-pointer mr-4 ${publishedAt === PublishMode.RESERVE ? 'text-dark' : 'text-grey'}`}
+                      disabled={isSaving}
+                      onClick={() => setPublishedAt(PublishMode.RESERVE)}
+                    >
+                      예약
+                    </button>
+                    {publishedAt === PublishMode.RESERVE && (
+                      <ReactDatePicker reserveDate={reserveDate} setReserveDate={setReserveDate} />
+                    )}
+                  </div>
+                )}
+              </dd>
+            </dl>
+
+            <dl className='flex items-center border-b border-[#eee] h-20'>
+              <dt className='w-[70px] text-xl'>URL</dt>
+              <dd>
+                <span className='text-grey'>{`${productionURL}/entry/${postData.title}`}</span>
+              </dd>
+            </dl>
+          </div>
+
+          <div className='flex justify-center gap-x-4 pt-10'>
+            <Button variant='outlined' className='!rounded-3xl !text-lg' onClick={onCloseModal}>
+              취소
+            </Button>
+            <Button variant='contained' className='!rounded-3xl !text-lg !px-10' type='submit' disabled={isSaving}>
+              {isSaving ? '저장 중' : radioValue === 'public' ? '공개 발행' : '비공개 저장'}
+            </Button>
+          </div>
         </fieldset>
-      </Form>
-    </ReactModal>
+      </form>
+    </BottomModal>
   );
 };
 
