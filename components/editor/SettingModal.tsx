@@ -263,10 +263,15 @@ const SettingModal: FC<SettingModalProps> = ({
           </div>
 
           <div className='flex justify-center gap-x-4 pt-10'>
-            <Button variant='outlined' className='!rounded-3xl !text-lg' onClick={onCloseModal}>
+            <Button variant='outlined' className='!rounded-3xl !text-lg !py-2' onClick={onCloseModal}>
               취소
             </Button>
-            <Button variant='contained' className='!rounded-3xl !text-lg !px-10' type='submit' disabled={isSaving}>
+            <Button
+              variant='contained'
+              className='!rounded-3xl !text-lg !px-10 !py-2'
+              type='submit'
+              disabled={isSaving}
+            >
               {isSaving ? '저장 중' : radioValue === 'public' ? '공개 발행' : '비공개 저장'}
             </Button>
           </div>
