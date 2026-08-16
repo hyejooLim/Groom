@@ -1,14 +1,14 @@
 import React, { FC, ChangeEvent, useRef, useState, useEffect, useCallback } from 'react';
-import { useRecoilValue } from 'recoil';
 import Router, { useRouter } from 'next/router';
-import { Modal } from 'antd';
-import dayjs from 'dayjs';
+import { useRecoilValue } from 'recoil';
 
 import EditorToolbar from './EditorToobar';
 import EditorContent from './EditorContent';
 import TempPostsModal from './TempPostsModal';
 import ToastMessage from '../common/ToastMessage';
 import SettingModal from './SettingModal';
+import AutoSaveModal from './AutoSaveModal';
+import ExitModal from './ExitModal';
 import { tinymceEditorState } from '../../recoil/tinymce';
 import { useCreatePost, useUpdatePost } from '../../hooks/query/post';
 import useGetTempPosts from '../../hooks/query/tempPosts';
@@ -17,9 +17,9 @@ import useDebounce from '../../hooks/common/debounce';
 import useCreateAutoSave from '../../hooks/query/autosave';
 import getAutoSave from '../../apis/autosave/getAutoSave';
 import * as ContentMode from '../../constants/ContentMode';
-import { ContentModeType, PostItem, CategoryItem, TempPostItem } from '../../types';
-import * as S from '../../styles/ts/components/editor/Editor';
+import { ContentModeType, PostItem, TempPostItem } from '../../types';
 import { useGetCategories } from '../../hooks/query/categories';
+import * as S from '../../styles/ts/components/editor/Editor';
 
 interface EditorProps {
   post?: PostItem;
@@ -81,6 +81,9 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
 
   const tinymceEditor = useRecoilValue(tinymceEditorState);
 
+  const [autoSaveData, setAutoSaveData] = useState<any>(null);
+  const [isAutoSaveModalOpen, setIsAutoSaveModalOpen] = useState(false);
+
   const askContinueWrite = async () => {
     try {
       const result = await getAutoSave();
@@ -89,33 +92,35 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
         return;
       }
 
-      const { title, content, htmlContent, category, tags, createdAt } = result;
-
-      Modal.confirm({
-        content: `${dayjs(createdAt).format('YYYY-MM-DD HH:mm:ss')}에 저장된 글이 있습니다. 이어서 작성하시겠습니까?`,
-        cancelText: '취소',
-        okText: '확인',
-        onCancel: () => {
-          titleRef.current?.focus();
-          setPostData(makePostState());
-          localStorage.removeItem('isSaved'); // 글을 이어서 작성하지 않는 경우 임시저장글을 새로 저장할 수 있음
-        },
-        onOk: () => {
-          setPostData({
-            ...postData,
-            title,
-            content,
-            htmlContent,
-            category,
-            tags,
-          });
-          setLoadContent(true);
-          titleRef.current?.focus();
-        },
-      });
+      setAutoSaveData(result);
+      setIsAutoSaveModalOpen(true);
     } catch (err) {
       console.error(err);
     }
+  };
+
+  const handleConfirmAutoSave = () => {
+    if (autoSaveData) {
+      const { title, content, htmlContent, category, tags } = autoSaveData;
+      setPostData({
+        ...postData,
+        title,
+        content,
+        htmlContent,
+        category,
+        tags,
+      });
+      setLoadContent(true);
+    }
+    setIsAutoSaveModalOpen(false);
+    titleRef.current?.focus();
+  };
+
+  const handleCancelAutoSave = () => {
+    setPostData(makePostState());
+    localStorage.removeItem('isSaved');
+    setIsAutoSaveModalOpen(false);
+    titleRef.current?.focus();
   };
 
   useEffect(() => {
@@ -206,23 +211,42 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
     e.returnValue = ''; // chrome에서 동작하도록 추가
   };
 
+  const [isExitModalOpen, setIsExitModalOpen] = useState(false);
+
   // 뒤로가기 방지
   const preventGoBack = (e: PopStateEvent) => {
     if (editorUrl !== location.href) {
       return;
     }
 
-    Modal.confirm({
-      content: '사이트에서 나가시겠습니까? 변경사항이 저장되지 않을 수 있습니다.',
-      cancelText: '취소',
-      okText: '확인',
-      onCancel: () => {
-        history.pushState(null, '', location.href);
-      },
-      onOk: () => {
-        history.back(); // popstate 이벤트 발생
-      },
-    });
+    // 뒤로 가기를 눌렀을 때 history가 뒤로 밀리는 것을 방지하기 위해 현재 상태를 다시 push
+    history.pushState(null, '', location.href);
+    setIsExitModalOpen(true);
+
+    // Modal.confirm({
+    //   content: '사이트에서 나가시겠습니까? 변경사항이 저장되지 않을 수 있습니다.',
+    //   cancelText: '취소',
+    //   okText: '확인',
+    //   onCancel: () => {
+    //     history.pushState(null, '', location.href);
+    //   },
+    //   onOk: () => {
+    //     history.back(); // popstate 이벤트 발생
+    //   },
+    // });
+  };
+
+  // 모달 [취소] 클릭 시 (현재 페이지에 머뭄)
+  const handleCancelExit = () => {
+    setIsExitModalOpen(false);
+  };
+
+  // 모달 [확인] 클릭 시 (정말 페이지를 나감)
+  const handleConfirmExit = () => {
+    setIsExitModalOpen(false);
+    // popstate 이벤트 리스너를 잠시 해제하거나 뒤로 가기를 두 번 실행하여 실제 페이지를 벗어남
+    window.removeEventListener('popstate', preventGoBack);
+    history.go(-2); // 또는 history.back()을 적절히 처리
   };
 
   const handleChangeTitle = (e: ChangeEvent<HTMLInputElement>) => {
@@ -492,6 +516,13 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
         onPublishPost={onPublishPost}
         isLoading={createPost.isPending || updatePost.isPending}
       />
+      <AutoSaveModal
+        isOpen={isAutoSaveModalOpen}
+        onConfirm={handleConfirmAutoSave}
+        onCancel={handleCancelAutoSave}
+        autoSaveData={autoSaveData}
+      />
+      <ExitModal isOpen={isExitModalOpen} onConfirm={handleConfirmExit} onCancel={handleCancelExit} />
     </S.EditorWrapper>
   );
 };
