@@ -68,7 +68,7 @@ const EditorContent: FC<EditorContentProps> = ({
 
   return (
     <div className='absolute bottom-[66px] left-0 right-0 top-[75px] overflow-y-scroll bg-white'>
-      <div className='px-[40px]'>
+      <div className='px-10'>
         <div className='mx-auto mt-[46px] h-[30px] w-[860px]'>
           <FormControl fullWidth size='small'>
             <Select
@@ -97,7 +97,7 @@ const EditorContent: FC<EditorContentProps> = ({
             </Select>
           </FormControl>
         </div>
-        <div className='mx-auto my-[18px] mb-[17px] w-[860px]'>
+        <div className='mx-auto my-4 w-[860px]'>
           <TextField
             inputRef={titleRef}
             variant='standard'
