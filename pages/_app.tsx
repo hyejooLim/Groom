@@ -5,6 +5,8 @@ import { RecoilRoot } from 'recoil';
 import { QueryClientProvider, QueryClient, HydrationBoundary } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { SWRConfig } from 'swr';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
 import 'react-toastify/dist/ReactToastify.css';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -36,24 +38,26 @@ const App = ({ Component, pageProps: { session, ...pageProps } }) => {
       <SessionProvider session={session}>
         <ThemeProvider theme={theme}>
           <CssBaseline />
-          <QueryClientProvider client={queryClient}>
-            <HydrationBoundary state={pageProps.dehydratedState}>
-              <SWRConfig value={{ fetcher }}>
-                <RecoilRoot>
-                  <Head>
-                    <title>Groom</title>
-                  </Head>
-                  <Component {...pageProps} />
-                </RecoilRoot>
-              </SWRConfig>
-            </HydrationBoundary>
-            <ReactQueryDevtools initialIsOpen={true} />
-            {showDevtools && (
-              <React.Suspense fallback={null}>
-                <ReactQueryDevtoolsProduction />
-              </React.Suspense>
-            )}
-          </QueryClientProvider>
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <QueryClientProvider client={queryClient}>
+              <HydrationBoundary state={pageProps.dehydratedState}>
+                <SWRConfig value={{ fetcher }}>
+                  <RecoilRoot>
+                    <Head>
+                      <title>Groom</title>
+                    </Head>
+                    <Component {...pageProps} />
+                  </RecoilRoot>
+                </SWRConfig>
+              </HydrationBoundary>
+              <ReactQueryDevtools initialIsOpen={true} />
+              {showDevtools && (
+                <React.Suspense fallback={null}>
+                  <ReactQueryDevtoolsProduction />
+                </React.Suspense>
+              )}
+            </QueryClientProvider>
+          </LocalizationProvider>
         </ThemeProvider>
       </SessionProvider>
     </>
