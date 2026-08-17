@@ -1,6 +1,7 @@
 import React, { FC, ChangeEvent, useRef, useState, useEffect, useCallback } from 'react';
 import Router, { useRouter } from 'next/router';
 import { useRecoilValue } from 'recoil';
+import { Button } from '@mui/material';
 
 import EditorToolbar from './EditorToobar';
 import EditorContent from './EditorContent';
@@ -19,7 +20,6 @@ import getAutoSave from '../../apis/autosave/getAutoSave';
 import * as ContentMode from '../../constants/ContentMode';
 import { ContentModeType, PostItem, TempPostItem } from '../../types';
 import { useGetCategories } from '../../hooks/query/categories';
-import * as S from '../../styles/ts/components/editor/Editor';
 
 interface EditorProps {
   post?: PostItem;
@@ -222,18 +222,6 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
     // 뒤로 가기를 눌렀을 때 history가 뒤로 밀리는 것을 방지하기 위해 현재 상태를 다시 push
     history.pushState(null, '', location.href);
     setIsExitModalOpen(true);
-
-    // Modal.confirm({
-    //   content: '사이트에서 나가시겠습니까? 변경사항이 저장되지 않을 수 있습니다.',
-    //   cancelText: '취소',
-    //   okText: '확인',
-    //   onCancel: () => {
-    //     history.pushState(null, '', location.href);
-    //   },
-    //   onOk: () => {
-    //     history.back(); // popstate 이벤트 발생
-    //   },
-    // });
   };
 
   // 모달 [취소] 클릭 시 (현재 페이지에 머뭄)
@@ -457,7 +445,7 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
   };
 
   return (
-    <S.EditorWrapper className='groom_wrapper'>
+    <div className='groom_wrapper relative w-full h-full min-w-[944px]'>
       <EditorToolbar />
       <EditorContent
         title={postData.title}
@@ -477,28 +465,37 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
         loadContent={loadContent}
         setLoadContent={setLoadContent}
       />
-      <S.ContentAside>
-        <div className='btn_wrapper'>
+      <div className='absolute bottom-0 w-full h-[66px] bg-background min-w-[944px] px-20'>
+        <div className='flex justify-end h-full items-center gap-x-3'>
           {mode === ContentMode.ADD && (
-            <span className='temp_save btn'>
-              <a className='text' onClick={handleSaveTempPost}>
+            <div className='rounded-3xl px-6 py-3 border border-grey'>
+              <span
+                className='cursor-pointer hover:text-primary transition-colors duration-200'
+                onClick={handleSaveTempPost}
+              >
                 임시저장
-              </a>
-              <a
+              </span>
+              <span className='mx-2'>|</span>
+              <span
+                className='cursor-pointer hover:text-primary transition-colors duration-200'
                 aria-expanded='false'
                 aria-label={`임시저장 개수 ${tempPosts?.length}개`}
-                className='count'
                 onClick={() => setIsOpenTempPostsModal(true)}
               >
                 {tempPosts?.length}
-              </a>
-            </span>
+              </span>
+            </div>
           )}
-          <S.CompleteButton className='complete btn' onClick={onClickCompleteButton}>
+          <Button
+            type='button'
+            variant='contained'
+            className='!px-6 !py-3 !rounded-3xl'
+            onClick={onClickCompleteButton}
+          >
             완료
-          </S.CompleteButton>
+          </Button>
         </div>
-      </S.ContentAside>
+      </div>
       <ToastMessage message={toastMessage} setMessage={setToastMessage} />
       <TempPostsModal
         isOpen={isOpenTempPostsModal}
@@ -523,7 +520,7 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
         autoSaveData={autoSaveData}
       />
       <ExitModal isOpen={isExitModalOpen} onConfirm={handleConfirmExit} onCancel={handleCancelExit} />
-    </S.EditorWrapper>
+    </div>
   );
 };
 
