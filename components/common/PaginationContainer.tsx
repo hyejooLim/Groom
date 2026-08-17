@@ -1,8 +1,6 @@
 import React, { FC } from 'react';
-import { Pagination } from 'antd';
-import type { PaginationProps } from 'antd';
-
-import { PaginationWrapper } from '../../styles/ts/components/common/PaginationContainer';
+import Pagination from '@mui/material/Pagination';
+import PaginationItem from '@mui/material/PaginationItem';
 
 interface PaginationContainerProps {
   pageSize?: number;
@@ -11,39 +9,44 @@ interface PaginationContainerProps {
   onChange: (page: number) => void;
 }
 
-const PaginationContainer: FC<PaginationContainerProps> = ({ pageSize, current, total, onChange }) => {
-  const itemRender: PaginationProps['itemRender'] = (_, type, originalElement) => {
-    if (type === 'prev') {
-      return <a>PREV</a>;
-    }
+const PaginationContainer: FC<PaginationContainerProps> = ({ pageSize = 10, current, total, onChange }) => {
+  const safeTotal = Number(total) || 0;
+  const safePageSize = Number(pageSize) || 10;
+  const count = Math.ceil(safeTotal / safePageSize);
 
-    if (type === 'next') {
-      return <a>NEXT</a>;
-    }
-
-    if (type === 'jump-prev' || type === 'jump-next') {
-      return '...';
-    }
-
-    return originalElement;
-  };
+  const safeCurrent = Number(current) || 1;
 
   return (
-    <PaginationWrapper>
+    <div className='flex justify-center'>
       <Pagination
-        pageSize={pageSize}
-        current={current}
-        total={total}
-        onChange={onChange}
-        itemRender={itemRender}
-        style={{
-          width: '300px',
-          marginTop: '30px',
-          display: 'flex',
-          justifyContent: 'center',
+        page={safeCurrent}
+        count={count}
+        onChange={(_, page) => onChange(page)}
+        renderItem={(item) => {
+          return (
+            <PaginationItem
+              {...item}
+              sx={{
+                fontFamily: "'Courier New', Courier, monospace",
+                fontSize: '15px',
+                '&.Mui-selected': {
+                  backgroundColor: 'transparent',
+                  color: '#13a085',
+                  '&:hover': {
+                    backgroundColor: 'transparent',
+                  },
+                },
+                '&:hover': {
+                  backgroundColor: 'transparent',
+                  color: '#13a085',
+                },
+              }}
+            />
+          );
         }}
+        className='w-[300px] mt-[30px] flex justify-center'
       />
-    </PaginationWrapper>
+    </div>
   );
 };
 
