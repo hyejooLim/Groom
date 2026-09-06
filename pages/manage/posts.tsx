@@ -51,8 +51,8 @@ const ManagePosts = () => {
         <div className='flex items-center'>
           {Object.keys(router.query).length === 0 ? (
             <>
-              <span className='text-xl'>글 관리</span>
-              <span className='ml-2'>{userPosts?.length}</span>
+              <span className='text-2xl'>글 관리</span>
+              <span className='ml-2 text-grey'>{userPosts?.length}</span>
             </>
           ) : (
             <div className='flex items-center'>

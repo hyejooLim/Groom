@@ -38,7 +38,7 @@ const ManageNeighbors = () => {
           {Object.keys(router.query).length === 0 ? (
             <>
               <span className='text-2xl'>이웃 관리</span>
-              <span className='ml-2 text-gray-400'>{neighbors?.length}</span>
+              <span className='ml-2 text-grey'>{neighbors?.length}</span>
             </>
           ) : (
             <div className='flex items-center'>
