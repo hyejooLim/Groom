@@ -1,15 +1,11 @@
 import React, { ChangeEvent, useEffect, useState, useCallback, FC } from 'react';
-import DatePicker from 'react-datepicker';
-import ko from 'date-fns/locale/ko';
-import dayjs from 'dayjs';
-import classNames from 'classnames';
-
-import { ReserveDate } from '../../types';
-import * as S from '../../styles/ts/components/common/ReactDatePicker';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { TextField } from '@mui/material';
+import dayjs, { Dayjs } from 'dayjs';
 
 interface ReactDatePickerProps {
-  reserveDate: ReserveDate;
-  setReserveDate: React.Dispatch<React.SetStateAction<ReserveDate>>;
+  reserveDate: Dayjs;
+  setReserveDate: React.Dispatch<React.SetStateAction<Dayjs>>;
 }
 
 const ReactDatePicker: FC<ReactDatePickerProps> = ({ reserveDate, setReserveDate }) => {
@@ -33,81 +29,79 @@ const ReactDatePicker: FC<ReactDatePickerProps> = ({ reserveDate, setReserveDate
     }
   }, []);
 
-  const onClickInput = () => {
-    setIsOpenCalendar((prev) => !prev);
-  };
-
-  const onChangeInput = (date: Date) => {
+  const onChangeDate = (newValue: Dayjs | null) => {
     setIsOpenCalendar(false);
+    if (!newValue) return;
 
-    setReserveDate({ ...reserveDate, date: dayjs(date).format('YYYY-MM-DD') });
+    setReserveDate((prev) => {
+      const current = prev || dayjs();
+      return current.year(newValue.year()).month(newValue.month()).date(newValue.date());
+    });
   };
 
   const onChangeHour = (e: ChangeEvent<HTMLInputElement>) => {
-    const numberValue = Number(e.target.value);
+    let numberValue = Number(e.target.value);
 
-    if (numberValue === 0) {
-      setReserveDate({ ...reserveDate, hour: '00' });
-    }
+    if (isNaN(numberValue)) return;
 
-    if (numberValue < 0) {
-      setReserveDate({ ...reserveDate, hour: String(Math.abs(numberValue)) });
-    }
+    if (numberValue < 0) numberValue = 0;
+    if (numberValue > 23) numberValue = 23;
 
-    if (0 < numberValue && numberValue < 24) {
-      String(numberValue).length === 1
-        ? setReserveDate({ ...reserveDate, hour: '0' + String(numberValue) })
-        : setReserveDate({ ...reserveDate, hour: String(numberValue) });
-    }
-
-    if (23 < numberValue) {
-      setReserveDate({ ...reserveDate, hour: '23' });
-    }
+    setReserveDate((prev) => {
+      const current = prev || dayjs();
+      return current.hour(numberValue);
+    });
   };
 
   const onChangeMinute = (e: ChangeEvent<HTMLInputElement>) => {
-    const numberValue = Number(e.target.value);
+    let numberValue = Number(e.target.value);
 
-    if (numberValue === 0) {
-      setReserveDate({ ...reserveDate, minute: '00' });
-    }
+    if (isNaN(numberValue)) return;
 
-    if (numberValue < 0) {
-      setReserveDate({ ...reserveDate, minute: String(Math.abs(numberValue)) });
-    }
+    if (numberValue < 0) numberValue = 0;
+    if (numberValue > 59) numberValue = 59;
 
-    if (0 < numberValue && numberValue < 60) {
-      String(numberValue).length === 1
-        ? setReserveDate({ ...reserveDate, minute: '0' + String(numberValue) })
-        : setReserveDate({ ...reserveDate, minute: String(numberValue) });
-    }
-
-    if (59 < numberValue) {
-      setReserveDate({ ...reserveDate, minute: '59' });
-    }
+    setReserveDate((prev) => {
+      const current = prev || dayjs();
+      return current.minute(numberValue);
+    });
   };
 
   return (
-    <S.DatePickerWrapper>
+    <div className='flex items-center'>
       <DatePicker
-        className={classNames('date_input', { on: isOpenCalendar })}
-        locale={ko}
-        selected={new Date(reserveDate.date)}
-        dateFormat='yyyy-MM-dd'
-        minDate={new Date()}
-        open={isOpenCalendar}
-        onInputClick={onClickInput}
-        onChange={onChangeInput}
-        readOnly
-      ></DatePicker>
-      <S.DateBox>
-        <input type='number' value={reserveDate.hour} onChange={onChangeHour} />
-      </S.DateBox>
-      <span className='sign'>:</span>
-      <S.DateBox>
-        <input type='number' value={reserveDate.minute} onChange={onChangeMinute} />
-      </S.DateBox>
-    </S.DatePickerWrapper>
+        value={dayjs(reserveDate)}
+        onChange={onChangeDate}
+        slotProps={{
+          textField: {
+            size: 'small',
+          },
+        }}
+        sx={{
+          '& .MuiPickersInputBase-root': {
+            marginRight: '10px',
+            width: '140px',
+          },
+        }}
+      />
+      <TextField
+        type='number'
+        value={reserveDate ? reserveDate.format('HH') : ''}
+        onChange={onChangeHour}
+        variant='outlined'
+        size='small'
+        className='w-16'
+      />
+      <span className='mx-2'>:</span>
+      <TextField
+        type='number'
+        value={reserveDate ? reserveDate.format('mm') : ''}
+        onChange={onChangeMinute}
+        variant='outlined'
+        size='small'
+        className='w-16'
+      />
+    </div>
   );
 };
 

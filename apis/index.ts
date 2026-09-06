@@ -1,18 +1,18 @@
-import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
-import { developmentURL, productionURL } from "../constants/URL";
+import axios, { AxiosError, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
+import { developmentURL, productionURL } from '../constants/URL';
 
 export const createApi = axios.create({
-  baseURL: "/api",
+  baseURL: '/api',
   withCredentials: true,
 });
 
 createApi.interceptors.request.use(
-  (config: AxiosRequestConfig) => {
+  (config: InternalAxiosRequestConfig) => {
     return config;
   },
   (err: AxiosError) => {
     return Promise.reject(err);
-  }
+  },
 );
 
 createApi.interceptors.response.use(
@@ -22,7 +22,7 @@ createApi.interceptors.response.use(
   },
   (err: AxiosError) => {
     return Promise.reject(err);
-  }
+  },
 );
 
 const clientApi = {

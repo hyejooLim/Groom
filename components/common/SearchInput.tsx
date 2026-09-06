@@ -1,8 +1,8 @@
-import React, { FC, useState, ChangeEvent, useEffect } from 'react';
+import React, { FC, useState, ChangeEvent, useEffect, SubmitEvent } from 'react';
 import { useRouter } from 'next/router';
 import { GrSearch } from 'react-icons/gr';
-
-import * as S from '../../styles/ts/components/common/SearchInput';
+import { Box, TextField } from '@mui/material';
+import Button from './Button';
 
 interface SearchInputProps {
   placeholder: string;
@@ -26,20 +26,36 @@ const SearchInput: FC<SearchInputProps> = ({ placeholder, onSearch }) => {
     setKeyword(e.target.value);
   };
 
-  const onSubmitForm = () => {
+  const onSubmitForm = (e: SubmitEvent<HTMLFormElement>) => {
+    e.preventDefault();
     onSearch(keyword);
   };
 
   return (
-    <S.SearchInputWrapper>
-      <S.StyledForm onFinish={onSubmitForm}>
-        <S.StyledInput type='text' value={keyword} onChange={onChangeKeyword} placeholder={placeholder} />
-        <S.SubmitButton htmlType='submit' disabled={!keyword}>
-          <span>검색</span>
-          <GrSearch className='icon' />
-        </S.SubmitButton>
-      </S.StyledForm>
-    </S.SearchInputWrapper>
+    <Box component='form' onSubmit={onSubmitForm} className='flex items-center justify-between mt-4'>
+      <TextField
+        type='text'
+        value={keyword}
+        onChange={onChangeKeyword}
+        placeholder={placeholder}
+        className='flex-grow'
+        sx={{
+          '& .MuiInputBase-root': {
+            height: '50px',
+            fontSize: '17px',
+            borderRadius: '2px',
+          },
+        }}
+      />
+      <Button
+        type='submit'
+        disabled={!keyword}
+        className='ml-4 flex items-center gap-x-2 bg-dark-grey px-5 py-4 transition-colors duration-200 hover:bg-dark-grey/80 cursor-pointer rounded-md text-white disabled:bg-grey disabled:cursor-not-allowed'
+      >
+        <span>검색</span>
+        <GrSearch className='icon' />
+      </Button>
+    </Box>
   );
 };
 

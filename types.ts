@@ -1,13 +1,6 @@
 export type ContentModeType = 'ADD' | 'EDIT' | 'VIEW';
 export type WriteModeType = 'DEFAULT' | 'MARKDOWN';
 
-// 게시글 발행 예약 날짜
-export type ReserveDate = {
-  date: string;
-  hour: string;
-  minute: string;
-};
-
 export type VisitorsCount = {
   id: number;
   todayCount: number;

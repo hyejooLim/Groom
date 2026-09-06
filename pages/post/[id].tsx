@@ -34,7 +34,7 @@ const Post = () => {
 
       const popoverHeightPx = getComputedStyle(popover).height;
       const popoverHeight = Number(popoverHeightPx.slice(0, -2)) + 10;
-      const shareButtonClientY = shareButton.getBoundingClientRect().y;
+      const shareButtonClientY = shareButton?.getBoundingClientRect().y;
 
       popover.style.top = shareButtonClientY - popoverHeight + "px";
     }

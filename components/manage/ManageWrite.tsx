@@ -1,28 +1,13 @@
-import Link from "next/link";
-import styled from "styled-components";
-
-const ManageWriteWrapper = styled.div`
-  margin: 6px 0;
-  font-size: 15px;
-  border-radius: 2px;
-  background: #555;
-  padding: 14px 20px;
-
-  &:hover {
-    background: #777;
-  }
-
-  & span {
-    color: #fff;
-  }
-`;
+import React from 'react';
+import Link from 'next/link';
+import { Box } from '@mui/material';
 
 const ManageWrite = () => {
   return (
-    <Link href="/write">
-      <ManageWriteWrapper>
-        <span>글 쓰러가기</span>
-      </ManageWriteWrapper>
+    <Link href='/write' className='block no-underline'>
+      <Box className='my-2 bg-dark-grey px-5 py-4 transition-colors duration-200 hover:bg-dark-grey/80 cursor-pointer rounded-md'>
+        <span className='text-white text-lg'>글 쓰러가기</span>
+      </Box>
     </Link>
   );
 };

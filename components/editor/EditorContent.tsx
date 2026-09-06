@@ -1,20 +1,13 @@
-import React, {
-  FC,
-  ChangeEvent,
-  KeyboardEvent,
-  useRef,
-  useCallback,
-} from "react";
-import Dropzone from "react-dropzone";
-import { Input, Select } from "antd";
-import { CloseOutlined } from "@ant-design/icons";
-import classNames from "classnames";
+import React, { FC, ChangeEvent, KeyboardEvent, useRef, useCallback } from 'react';
+import Dropzone from 'react-dropzone';
+import { TextField, Select, MenuItem, FormControl } from '@mui/material';
+import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
+import classNames from 'classnames';
 
-import TinymceEditor from "./TinymceEditor";
-import useInput from "../../hooks/common/input";
-import { CategoryItem, TagItem } from "../../types";
-import { useGetCategories } from "../../hooks/query/categories";
-import * as S from "../../styles/ts/components/editor/EditorContent";
+import TinymceEditor from './TinymceEditor';
+import useInput from '../../hooks/common/input';
+import { CategoryItem, TagItem } from '../../types';
+import { useGetCategories } from '../../hooks/query/categories';
 
 interface EditorContentProps {
   title: string;
@@ -27,7 +20,7 @@ interface EditorContentProps {
   onAddTag: (value: string) => void;
   onRemoveTag: (index: number) => any;
   category: CategoryItem;
-  onChangeCategory: (value: string, option: CategoryItem) => void;
+  onChangeCategory: (e: ChangeEvent<HTMLInputElement>) => void;
   onGetImageUrl: (files: any) => void;
   loadTempPost: boolean;
   setLoadTempPost: React.Dispatch<React.SetStateAction<boolean>>;
@@ -55,7 +48,7 @@ const EditorContent: FC<EditorContentProps> = ({
 }) => {
   const { data: categories } = useGetCategories();
 
-  const [tag, onChangeTag, setTag] = useInput("");
+  const [tag, onChangeTag, setTag] = useInput('');
   const dropzoneRef = useRef(null);
 
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
@@ -63,9 +56,9 @@ const EditorContent: FC<EditorContentProps> = ({
       return;
     }
 
-    if (e.key === "Enter") {
+    if (e.key === 'Enter') {
       onAddTag(tag);
-      setTag("");
+      setTag('');
     }
   };
 
@@ -74,46 +67,73 @@ const EditorContent: FC<EditorContentProps> = ({
   }, [dropzoneRef]);
 
   return (
-    <S.Container className="container">
-      <div className="post_header">
-        <S.SelectCategory>
-          <Select
-            defaultValue={"카테고리"}
-            value={category?.name || "카테고리"}
-            style={{ width: "170px" }}
-            onChange={onChangeCategory}
-          >
-            {categories?.map((category) => (
-              <Select.Option
-                key={category.id}
-                className="select_option"
-                id={category.id}
-                value={category.name}
-              >
-                {category.name}
-              </Select.Option>
-            ))}
-          </Select>
-        </S.SelectCategory>
-        <S.PostTitle>
-          <Input
-            ref={titleRef}
-            className={classNames("title", { empty: isTitleEmpty })}
+    <div className='absolute bottom-[66px] left-0 right-0 top-[75px] overflow-y-scroll bg-white'>
+      <div className='px-10'>
+        <div className='mx-auto mt-[46px] h-[30px] w-[860px]'>
+          <FormControl fullWidth size='small'>
+            <Select
+              value={category?.name || '카테고리'}
+              onChange={onChangeCategory}
+              className='w-[170px]'
+              sx={{
+                height: '38px',
+                fontSize: '14px',
+              }}
+              renderValue={(selected) => {
+                if (!selected) {
+                  return <span className='text-gray-400'>카테고리</span>;
+                }
+                return selected;
+              }}
+            >
+              <MenuItem value='카테고리' disabled>
+                카테고리
+              </MenuItem>
+              {categories?.map((cat) => (
+                <MenuItem key={cat.id} id={cat.id} value={cat.name} className='select_option'>
+                  {cat.name}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </div>
+        <div className='mx-auto my-4 w-[860px]'>
+          <TextField
+            inputRef={titleRef}
+            variant='standard'
+            fullWidth
             value={title}
             onChange={onChangeTitle}
-            placeholder="제목을 입력하세요"
+            placeholder='제목을 입력하세요'
             autoFocus
+            InputProps={{
+              disableUnderline: true,
+            }}
+            className={classNames('title', { empty: isTitleEmpty })}
+            sx={{
+              '& .MuiInputBase-root': {
+                padding: 0,
+                fontSize: '30px',
+                borderBottom: '1px solid rgba(0, 0, 0, 0.05)',
+                paddingBottom: '20px',
+              },
+              '& .Mui-focused': {
+                outline: 'none',
+              },
+              ...(isTitleEmpty && {
+                '& input::placeholder': {
+                  color: '#f75037',
+                  opacity: 1,
+                },
+              }),
+            }}
           />
-        </S.PostTitle>
+        </div>
       </div>
-      <Dropzone
-        ref={dropzoneRef}
-        accept={{ "image/*": [".gif", ".jpg", ".jpeg", ".png"] }}
-        onDrop={onGetImageUrl}
-      >
+      <Dropzone ref={dropzoneRef} accept={{ 'image/*': ['.gif', '.jpg', '.jpeg', '.png'] }} onDrop={onGetImageUrl}>
         {({ getRootProps, getInputProps, isDragActive }) => (
           <div
-            className="editor_inner"
+            className='editor_inner focus-visible:outline-none'
             {...getRootProps({
               onClick: (e) => e.stopPropagation(),
             })}
@@ -134,33 +154,37 @@ const EditorContent: FC<EditorContentProps> = ({
           </div>
         )}
       </Dropzone>
-      <S.TagArea>
-        {tags?.map((tag, idx) => (
-          <div key={idx} style={{ display: "inline-block" }}>
-            <span className="tag">
-              #{tag.name}
-              <CloseOutlined
-                className="close_icon"
-                onClick={() => onRemoveTag(idx)}
-                {...({} as React.ComponentProps<typeof CloseOutlined>)}
-              />
+      <div className='mx-auto min-h-[115px] w-[860px] pb-20'>
+        {tags?.map((item, idx) => (
+          <div key={idx} className='inline-block'>
+            <span className='relative my-4 mr-2 mt-4 inline-block whitespace-nowrap text-sm align-top'>
+              #{item.name}
+              <CloseOutlinedIcon className='ml-1 text-grey cursor-pointer' onClick={() => onRemoveTag(idx)} />
             </span>
           </div>
         ))}
-        <span className="tag_input">
+        <span className='my-4 mr-6 mt-4 inline-block text-sm text-[#909090] align-top'>
           <span>#</span>
-          <div style={{ display: "inline-block" }}>
-            <Input
-              style={{ padding: 0, border: 0, boxSizing: "content-box" }}
-              placeholder="태그입력"
+          <div className='inline-block'>
+            <TextField
+              variant='standard'
+              placeholder='태그입력'
               value={tag}
               onChange={onChangeTag}
               onKeyDown={handleKeyDown}
+              InputProps={{
+                disableUnderline: true,
+              }}
+              sx={{
+                '& .MuiInputBase-input': {
+                  padding: 0,
+                },
+              }}
             />
           </div>
         </span>
-      </S.TagArea>
-    </S.Container>
+      </div>
+    </div>
   );
 };
 
