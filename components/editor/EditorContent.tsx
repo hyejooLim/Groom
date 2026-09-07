@@ -90,7 +90,7 @@ const EditorContent: FC<EditorContentProps> = ({
                 카테고리
               </MenuItem>
               {categories?.map((cat) => (
-                <MenuItem key={cat.id} id={cat.id} value={cat.name} className='select_option'>
+                <MenuItem key={cat.id} value={cat.name}>
                   {cat.name}
                 </MenuItem>
               ))}
