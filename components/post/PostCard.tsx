@@ -2,7 +2,6 @@ import React, { FC, useCallback, useEffect, useState } from 'react';
 import Link from 'next/link';
 import Router from 'next/router';
 import { useSession } from 'next-auth/react';
-import { HeartOutlined, HeartTwoTone } from '@ant-design/icons';
 import { Markup } from 'interweave';
 import { polyfill } from 'interweave-ssr';
 import { useRecoilValue } from 'recoil';
@@ -11,6 +10,8 @@ import { RiUserFollowLine, RiUserUnfollowLine } from 'react-icons/ri';
 import { GrFormPrevious, GrFormNext } from 'react-icons/gr';
 import { FiShare } from 'react-icons/fi';
 import Button from '@mui/material/Button';
+import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
+import FavoriteOutlinedIcon from '@mui/icons-material/FavoriteOutlined';
 import dayjs from 'dayjs';
 
 import Title from '../common/Title';
@@ -197,9 +198,9 @@ const PostCard: FC<PostCardProps> = ({ post, onDeletePost }) => {
           <button className='border border-solid border-light-grey px-4 py-2 rounded-2xl' onClick={onToggleLikePost}>
             <span>
               {status === 'authenticated' && post?.likers.find((liker) => liker.id === user?.id) ? (
-                <HeartTwoTone key='heart' twoToneColor='red' {...({} as React.ComponentProps<typeof HeartTwoTone>)} />
+                <FavoriteOutlinedIcon color='error' />
               ) : (
-                <HeartOutlined key='heart' {...({} as React.ComponentProps<typeof HeartOutlined>)} />
+                <FavoriteBorderOutlinedIcon />
               )}
             </span>
             <span className='ml-2'>공감</span>
