@@ -40,7 +40,9 @@ const PostList: FC<PostListProps> = ({ posts, pathname, currentPage, isLoading }
     <>
       <div className='py-5 px-4 bg-white border border-light-grey min-h-[470px]'>
         {isLoading ? (
-          <BeatLoader className='loader' color='#ddd' size={16} />
+          <div className='w-full min-h-[400px] flex items-center justify-center'>
+            <BeatLoader color='#ddd' size={16} />
+          </div>
         ) : (
           <ul>
             {posts?.slice(firstIndex, lastIndex).map((post) => (
