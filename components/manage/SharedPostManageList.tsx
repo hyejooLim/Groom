@@ -14,7 +14,6 @@ import { SharedPost } from '../../types';
 import PaginationContainer from '../common/PaginationContainer';
 import { useVisitSharedPost, useDeleteSharedPost } from '../../hooks/query/sharedPost';
 import { firstIndexState, lastIndexState, currentPageState, MANAGE_PAGE_SIZE } from '../../recoil/manage';
-import { NewIcon } from '../../styles/ts/common';
 
 interface SharedPostManageListProps {
   sharedPosts: SharedPost[];
@@ -97,7 +96,11 @@ const SharedPostManageList: FC<SharedPostManageListProps> = ({
                         <span>{sharedPost.post?.title}</span>
                       </Link>
                       <AttachFileOutlinedIcon fontSize='small' />
-                      {!sharedPost.isVisited && <NewIcon>N</NewIcon>}
+                      {!sharedPost.isVisited && (
+                        <span className='!ml-2 w-4 h-4 bg-accent text-white text-[10px] flex items-center justify-center rounded-sm font-bold'>
+                          N
+                        </span>
+                      )}
                     </div>
                     <Box>
                       <a className='text-error' onClick={() => onClickCategory(sharedPost.post?.categoryId)}>

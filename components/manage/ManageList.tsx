@@ -54,7 +54,7 @@ const ManageList = () => {
             <Link href='/manage/sharedPosts' className={`${menuLinkClass('/manage/sharedPosts')} flex items-center`}>
               공유 글 관리
               {sharedPosts?.some((post) => !post.isVisited) && (
-                <span className='!ml-2 w-4 h-4 bg-[#ff5544] text-white text-[10px] flex items-center justify-center rounded-sm font-bold'>
+                <span className='!ml-2 w-4 h-4 bg-accent text-white text-[10px] flex items-center justify-center rounded-sm font-bold'>
                   N
                 </span>
               )}
