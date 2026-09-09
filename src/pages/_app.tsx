@@ -12,11 +12,11 @@ import 'react-toastify/dist/ReactToastify.css';
 import 'react-datepicker/dist/react-datepicker.css';
 import '@/styles/css/global.css';
 import '@/styles/css/Skeleton.css';
-import { fetcher } from '@/utils/fetcher';
+import { theme } from '@/styles/theme';
 
+import { fetcher } from '@/utils/fetcher';
 import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
-import { theme } from '../styles/theme';
 
 const ReactQueryDevtoolsProduction = React.lazy(() =>
   import('@tanstack/react-query-devtools/build/modern/production.js').then((d) => ({
