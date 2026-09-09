@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useSetRecoilState } from 'recoil';
 
@@ -10,7 +11,6 @@ import searchCategoryOnUserPosts from '@/apis/search/searchCategoryOnUserPosts';
 import searchCategoryOnUserSubscribedPosts from '@/apis/search/searchCategoryOnUserSubscribedPosts';
 import searchCategoryOnUserSharedPosts from '@/apis/search/searchCategoryOnUserSharedPosts';
 import { managePostsState, manageSubscribedPostsState, manageSharedPostsState } from '@/recoil/manage';
-import { useEffect } from 'react';
 
 const useSearchPosts = (keyword: string) => {
   const query = useQuery({
