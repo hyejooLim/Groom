@@ -1,12 +1,12 @@
-import React, { FC, useEffect, useRef } from 'react';
-import { useRecoilState } from 'recoil';
-import { Editor } from '@tinymce/tinymce-react';
+import React, { FC, useEffect } from 'react';
+import { Editor as EditorType } from 'tinymce';
 
-import { tinymceEditorState } from '@/recoil/tinymce';
+import { Editor } from '@tinymce/tinymce-react';
 import * as S from '@/styles/ts/components/editor/TinymceEditor';
 
 interface TinymceEditorProps {
-  titleRef: React.MutableRefObject<any>;
+  editorRef: React.RefObject<EditorType | null>;
+  titleRef: React.RefObject<any>;
   htmlContent: string;
   onChangeContent: (HTMLvalue: string, textValue: string) => void;
   onOpenFile: () => void;
@@ -18,6 +18,7 @@ interface TinymceEditorProps {
 }
 
 const TinymceEditor: FC<TinymceEditorProps> = ({
+  editorRef,
   titleRef,
   htmlContent,
   onChangeContent,
@@ -28,9 +29,6 @@ const TinymceEditor: FC<TinymceEditorProps> = ({
   loadContent,
   setLoadContent,
 }) => {
-  const [tinymceEditor, setTinymceEditor] = useRecoilState(tinymceEditorState);
-  const editorRef = useRef(null);
-
   const tinymcePlugins = ['link', 'lists', 'autoresize'];
   const tinymceToolbar =
     'image-upload blocks fontfamily |' +
@@ -39,16 +37,19 @@ const TinymceEditor: FC<TinymceEditorProps> = ({
     'bullist numlist blockquote link';
 
   useEffect(() => {
+    const editor = editorRef.current;
+    if (!editor) return;
+
     if (loadTempPost) {
-      tinymceEditor.setContent(htmlContent);
+      editor.setContent(htmlContent);
       setLoadTempPost(false);
     }
 
     if (loadContent) {
-      tinymceEditor.setContent(htmlContent);
+      editor.setContent(htmlContent);
       setLoadContent(false);
     }
-  }, [htmlContent, loadTempPost || loadContent]);
+  }, [htmlContent, loadTempPost, loadContent, editorRef]);
 
   const handleDrop = (e: any) => {
     if (e.dataTransfer && e.dataTransfer.files) {
@@ -78,7 +79,7 @@ const TinymceEditor: FC<TinymceEditorProps> = ({
           paste_data_images: false, // 자동 drag&drop 제거
           file_picker_types: 'image',
           setup(editor) {
-            setTinymceEditor(editor);
+            editorRef.current = editor;
 
             editor.ui.registry.addButton('image-upload', {
               icon: 'image',
