@@ -5,8 +5,8 @@ import dayjs from 'dayjs';
 import BeatLoader from 'react-spinners/BeatLoader';
 
 import { PostItem } from '@/@types/types';
-import { PAGE_SIZE } from '@/recoil/main';
 import PaginationContainer from '../common/PaginationContainer';
+import { PAGE_SIZE } from '@/stores/useSearchStore';
 
 interface PostListProps {
   posts: PostItem[];

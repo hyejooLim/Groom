@@ -1,7 +1,7 @@
 import React, { FC, ChangeEvent, useRef, useState, useEffect, useCallback } from 'react';
 import Router, { useRouter } from 'next/router';
-import { useRecoilValue } from 'recoil';
 import { Button } from '@mui/material';
+import { Editor as EditorType } from 'tinymce';
 
 import EditorToolbar from './EditorToobar';
 import EditorContent from './EditorContent';
@@ -10,7 +10,6 @@ import ToastMessage from '../common/ToastMessage';
 import SettingModal from './SettingModal';
 import AutoSaveModal from './AutoSaveModal';
 import ExitModal from './ExitModal';
-import { tinymceEditorState } from '@/recoil/tinymce';
 import { useCreatePost, useUpdatePost } from '@/hooks/query/post';
 import useGetTempPosts from '@/hooks/query/tempPosts';
 import { useCreateTempPost, useUpdateTempPost } from '@/hooks/query/tempPost';
@@ -78,8 +77,6 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
   const [isClickedPage, setIsClickedPage] = useState(false);
   const [isOpenTempPostsModal, setIsOpenTempPostsModal] = useState(false);
   const [isOpenSettingModal, setIsOpenSettingModal] = useState(false);
-
-  const tinymceEditor = useRecoilValue(tinymceEditorState);
 
   const [autoSaveData, setAutoSaveData] = useState<any>(null);
   const [isAutoSaveModalOpen, setIsAutoSaveModalOpen] = useState(false);
@@ -170,15 +167,24 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
     }
   }, [updateTempPost.isSuccess]);
 
+  const editorRef = useRef<EditorType | null>(null);
+
   useEffect(() => {
-    document.querySelector('.groom_wrapper').addEventListener('click', clickPage);
-    tinymceEditor?.on('click', clickPage);
+    const wrapper = document.querySelector('.groom_wrapper');
+    wrapper.addEventListener('click', clickPage);
+
+    const editor = editorRef.current;
+    if (editor) {
+      editor.on('click', clickPage);
+    }
 
     return () => {
-      document.querySelector('.groom_wrapper')?.removeEventListener('click', clickPage);
-      tinymceEditor?.off('click', clickPage);
+      wrapper?.removeEventListener('click', clickPage);
+      if (editor) {
+        editor.off('click', clickPage);
+      }
     };
-  }, [tinymceEditor]);
+  }, [editorRef.current]);
 
   useEffect(() => {
     window.addEventListener('beforeunload', preventUnload);
@@ -314,9 +320,12 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
   };
 
   const handleUploadImage = async (imageUrl: string, filename: string, key: string) => {
-    const dom = tinymceEditor.dom;
+    const editor = editorRef.current;
+    if (!editor) return;
 
-    tinymceEditor.execCommand(
+    const dom = editor.dom;
+
+    editor.execCommand(
       'mceInsertContent',
       false,
       `<img src="${imageUrl}" data-key="${key}" data-filename="${filename}" />`,
@@ -328,7 +337,7 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
     });
 
     dom.bind(images, 'load', (e) => {
-      tinymceEditor.nodeChanged();
+      editor.nodeChanged();
       dom.unbind(images, 'load');
     });
   };
@@ -448,6 +457,7 @@ const Editor: FC<EditorProps> = ({ post, mode }) => {
     <div className='groom_wrapper relative w-full h-full min-w-[944px]'>
       <EditorToolbar />
       <EditorContent
+        editorRef={editorRef}
         title={postData.title}
         titleRef={titleRef}
         isTitleEmpty={isTitleEmpty}

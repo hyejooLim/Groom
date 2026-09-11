@@ -4,7 +4,6 @@ import Router from 'next/router';
 import { useSession } from 'next-auth/react';
 import { Markup } from 'interweave';
 import { polyfill } from 'interweave-ssr';
-import { useRecoilValue } from 'recoil';
 import { BsCloudFill } from 'react-icons/bs';
 import { RiUserFollowLine, RiUserUnfollowLine } from 'react-icons/ri';
 import { GrFormPrevious, GrFormNext } from 'react-icons/gr';
@@ -22,8 +21,8 @@ import { useGetUser } from '@/hooks/query/user';
 import { useGetPosts } from '@/hooks/query/posts';
 import { useLikePost, useUnLikePost, useSubscribePost, useUnSubscribePost } from '@/hooks/query/post';
 import { useAddNeighbor, useCancelNeighbor } from '@/hooks/query/neighbor';
-import { mainPostsState } from '@/recoil/posts';
 import { PostItem } from '@/@types/types';
+import { usePostStore } from '@/stores/usePostStore';
 
 polyfill();
 
@@ -44,7 +43,7 @@ const PostCard: FC<PostCardProps> = ({ post, onDeletePost }) => {
   const cancelNeighbor = useCancelNeighbor();
 
   useGetPosts();
-  const mainPosts = useRecoilValue(mainPostsState);
+  const mainPosts = usePostStore((state) => state.mainPosts);
   const [isShowPopover, setIsShowPopover] = useState(false);
 
   const findPostIndex = (element: PostItem) => element.id === post?.id;

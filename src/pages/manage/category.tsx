@@ -1,13 +1,12 @@
 import React, { useCallback, useState, useEffect } from 'react';
 import Head from 'next/head';
 import { FiCheck } from 'react-icons/fi';
-import { useRecoilState } from 'recoil';
 
 import ManageLayout from '@/components/layouts/ManageLayout';
 import CategoryManageList from '@/components/manage/CategoryManageList';
 import { useGetCategories, useUpdateCategories } from '@/hooks/query/categories';
-import { categoryJsonState } from '@/recoil/manage';
 import Button from '@/components/common/Button';
+import { useManageStore } from '@/stores/useManageStore';
 
 const ManageCategory = () => {
   const { data: categories } = useGetCategories();
@@ -15,7 +14,9 @@ const ManageCategory = () => {
 
   const [isSave, setIsSave] = useState(false);
   const [isDisabled, setIsDisabled] = useState(true);
-  const [categoryJson, setCategoryJson] = useRecoilState(categoryJsonState);
+
+  const categoryJson = useManageStore((state) => state.categoryJson);
+  const setCategoryJson = useManageStore((state) => state.setCategoryJson);
 
   useEffect(() => {
     if (categoryJson.append.length === 0 && categoryJson.update.length === 0 && categoryJson.delete.length === 0) {

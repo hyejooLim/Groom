@@ -2,16 +2,15 @@ import React, { useEffect } from 'react';
 import Head from 'next/head';
 import Router, { useRouter } from 'next/router';
 import Link from 'next/link';
-import { useRecoilState } from 'recoil';
 import { IconButton } from '@mui/material';
 import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
 
 import ManageLayout from '@/components/layouts/ManageLayout';
 import PostManageList from '@/components/manage/PostManageList';
 import WrapSearchInput from '@/components/manage/WrapSearchInput';
-import { manageSubscribedPostsState } from '@/recoil/manage';
 import { useGetUserSubscribedPosts } from '@/hooks/query/posts';
 import { useSearchCategoryOnUserSubscribedPosts, useSearchUserSubscribedPosts } from '@/hooks/query/search';
+import { useManageStore } from '@/stores/useManageStore';
 
 const ManageSubscribedPosts = () => {
   const router = useRouter();
@@ -23,7 +22,8 @@ const ManageSubscribedPosts = () => {
     Number(categoryId),
   );
 
-  const [manageSubscribedPosts, setManageSubscribedPosts] = useRecoilState(manageSubscribedPostsState);
+  const manageSubscribedPosts = useManageStore((state) => state.manageSubscribedPosts);
+  const setManageSubscribedPosts = useManageStore((state) => state.setManageSubscribedPosts);
 
   useEffect(() => {
     if (Object.keys(router.query).length === 0) {

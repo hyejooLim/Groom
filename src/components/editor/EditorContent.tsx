@@ -3,6 +3,7 @@ import Dropzone from 'react-dropzone';
 import { TextField, Select, MenuItem, FormControl } from '@mui/material';
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
 import classNames from 'classnames';
+import { Editor } from 'tinymce';
 
 import TinymceEditor from './TinymceEditor';
 import useInput from '@/hooks/common/input';
@@ -10,8 +11,9 @@ import { CategoryItem, TagItem } from '@/@types/types';
 import { useGetCategories } from '@/hooks/query/categories';
 
 interface EditorContentProps {
+  editorRef: React.RefObject<Editor | null>;
   title: string;
-  titleRef: React.MutableRefObject<any>;
+  titleRef: React.RefObject<any>;
   isTitleEmpty: boolean;
   onChangeTitle: (e: ChangeEvent<HTMLInputElement>) => void;
   htmlContent: string;
@@ -29,6 +31,7 @@ interface EditorContentProps {
 }
 
 const EditorContent: FC<EditorContentProps> = ({
+  editorRef,
   title,
   titleRef,
   isTitleEmpty,
@@ -140,6 +143,7 @@ const EditorContent: FC<EditorContentProps> = ({
             tabIndex={1}
           >
             <TinymceEditor
+              editorRef={editorRef}
               titleRef={titleRef}
               htmlContent={htmlContent}
               onChangeContent={onChangeContent}

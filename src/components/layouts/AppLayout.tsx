@@ -2,7 +2,6 @@ import React, { useCallback, useEffect } from 'react';
 import Router, { useRouter } from 'next/router';
 import Image from 'next/image';
 import { useSession } from 'next-auth/react';
-import { useSetRecoilState } from 'recoil';
 import Box from '@mui/material/Box';
 
 import LoginForm from '../main/LoginForm';
@@ -10,18 +9,18 @@ import UserProfile from '../main/UserProfile';
 import Category from '../main/Category';
 import Search from '../main/Search';
 import Counter from '../common/Counter';
-import { keywordState } from '@/recoil/main';
 import logo from '../../../public/Groom_Logo_No_Background.png';
+import { useSearchStore } from '@/stores/useSearchStore';
 
 const AppLayout = ({ children }) => {
   const router = useRouter();
   const { status } = useSession();
 
-  const setKeyword = useSetRecoilState(keywordState);
+  const resetKeyword = useSearchStore((state) => state.resetKeyword);
 
   useEffect(() => {
     if (!router.asPath.includes('/search')) {
-      setKeyword('');
+      resetKeyword();
     }
   }, [router.asPath]);
 

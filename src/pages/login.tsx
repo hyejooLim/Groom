@@ -4,7 +4,6 @@ import Head from 'next/head';
 import Link from 'next/link';
 import Image from 'next/image';
 import Router, { useRouter } from 'next/router';
-import { useSetRecoilState } from 'recoil';
 import { toast, ToastContainer } from 'react-toastify';
 import { Oval } from 'react-loader-spinner';
 import TextField from '@mui/material/TextField';
@@ -15,7 +14,6 @@ import InputAdornment from '@mui/material/InputAdornment';
 import IconButton from '@mui/material/IconButton';
 import { MdVisibility, MdVisibilityOff } from 'react-icons/md';
 
-import { isLogInState } from '@/recoil/auth';
 import useInput from '../hooks/common/input';
 import logo from '../../public/Groom_Logo_No_Background.png';
 
@@ -28,8 +26,6 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
 
   const [isLoading, setIsLoading] = useState(false);
-
-  const setIsLogIn = useSetRecoilState(isLogInState);
 
   const onSubmitForm = useCallback(
     async (e: SubmitEvent<HTMLFormElement>) => {
@@ -47,8 +43,6 @@ const Login = () => {
         setIsLoading(false);
         return;
       }
-
-      setIsLogIn(result.ok);
 
       toast.success('로그인 되었습니다.', {
         autoClose: 2000,

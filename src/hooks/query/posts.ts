@@ -1,5 +1,4 @@
 import { useEffect } from 'react';
-import { useSetRecoilState } from 'recoil';
 import { useQuery } from '@tanstack/react-query';
 
 import getPosts from '@/apis/posts/getPosts';
@@ -8,10 +7,10 @@ import getPostsIncludeCategory from '@/apis/posts/getPostsIncludeCategory';
 import getUserPosts from '@/apis/posts/getUserPosts';
 import getUserSubscribedPosts from '@/apis/posts/getUserSubscribedPosts';
 import getUserSharedPosts from '@/apis/posts/getUserSharedPosts';
-import { mainPostsState } from '@/recoil/posts';
+import { usePostStore } from '@/stores/usePostStore';
 
 const useGetPosts = () => {
-  const setMainPosts = useSetRecoilState(mainPostsState);
+  const setMainPosts = usePostStore((state) => state.setMainPosts);
 
   const query = useQuery({
     queryKey: ['posts'],

@@ -1,6 +1,5 @@
 import React, { FC, useCallback } from 'react';
 import { BeatLoader } from 'react-spinners';
-import { useRecoilState } from 'recoil';
 import { BsPersonFill } from 'react-icons/bs';
 import { Avatar, Button } from '@mui/material';
 import CloudIcon from '@mui/icons-material/Cloud';
@@ -8,7 +7,7 @@ import CloudIcon from '@mui/icons-material/Cloud';
 import { UserType } from '@/@types/types';
 import PaginationContainer from '../common/PaginationContainer';
 import { useCancelNeighbor } from '@/hooks/query/neighbor';
-import { currentPageState, firstIndexState, lastIndexState, MANAGE_PAGE_SIZE } from '@/recoil/manage';
+import { MANAGE_PAGE_SIZE, useManageStore } from '@/stores/useManageStore';
 
 interface NeighborManageListProps {
   neighbors: UserType[];
@@ -17,9 +16,14 @@ interface NeighborManageListProps {
 }
 
 const NeighborManageList: FC<NeighborManageListProps> = ({ neighbors, isLoading, isFetching }) => {
-  const [firstIndex, setFirstIndex] = useRecoilState(firstIndexState);
-  const [lastIndex, setLastIndex] = useRecoilState(lastIndexState);
-  const [currentPage, setCurrentPage] = useRecoilState(currentPageState);
+  const firstIndex = useManageStore((state) => state.firstIndex);
+  const setFirstIndex = useManageStore((state) => state.setFirstIndex);
+
+  const lastIndex = useManageStore((state) => state.lastIndex);
+  const setLastIndex = useManageStore((state) => state.setLastIndex);
+
+  const currentPage = useManageStore((state) => state.currentPage);
+  const setCurrentPage = useManageStore((state) => state.setCurrentPage);
 
   const cancelNeighbor = useCancelNeighbor();
 

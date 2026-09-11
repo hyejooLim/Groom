@@ -1,5 +1,4 @@
 import React, { FC, useState, useCallback, useEffect, ChangeEvent, DragEvent } from 'react';
-import { useRecoilState } from 'recoil';
 import { Box, TextField } from '@mui/material';
 import MenuOutlinedIcon from '@mui/icons-material/MenuOutlined';
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
@@ -12,9 +11,9 @@ import {
   changePriorityWhenDropExcludeNewItem,
   changePriorityWhenDelete,
   changePriorityWhenDeleteExcludeNewItem,
-} from '../../utils/newList';
-import { categoryJsonState } from '../../recoil/manage';
+} from '@/utils/newList';
 import Button from '../common/Button';
+import { useManageStore } from '@/stores/useManageStore';
 
 interface CategoryManageListProps {
   categories: CategoryItem[];
@@ -32,7 +31,8 @@ const CategoryManageList: FC<CategoryManageListProps> = ({ categories }) => {
   const [draggedItemIdx, setDraggedItemIdx] = useState(0);
   const [targetItemIdx, setTargetItemIdx] = useState(0);
 
-  const [categoryJson, setCategoryJson] = useRecoilState(categoryJsonState);
+  const categoryJson = useManageStore((state) => state.categoryJson);
+  const setCategoryJson = useManageStore((state) => state.setCategoryJson);
 
   useEffect(() => {
     if (categories) {
