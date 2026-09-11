@@ -2,16 +2,15 @@ import React, { useEffect } from 'react';
 import Head from 'next/head';
 import Router, { useRouter } from 'next/router';
 import Link from 'next/link';
-import { useRecoilState } from 'recoil';
 import { Button } from '@mui/material';
 import HighlightOffOutlinedIcon from '@mui/icons-material/HighlightOffOutlined';
 
 import ManageLayout from '@/components/layouts/ManageLayout';
 import PostManageList from '@/components/manage/PostManageList';
 import WrapSearchInput from '@/components/manage/WrapSearchInput';
-import { managePostsState } from '@/recoil/manage';
 import { useGetUserPosts } from '@/hooks/query/posts';
 import { useSearchUserPosts, useSearchCategoryOnUserPosts } from '@/hooks/query/search';
+import { useManageStore } from '@/stores/useManageStore';
 
 const ManagePosts = () => {
   const router = useRouter();
@@ -21,7 +20,8 @@ const ManagePosts = () => {
   const { isFetching: isFetchingSearch } = useSearchUserPosts(String(searchKeyword), String(searchType));
   const { data: category, isFetching: isFetchingSearchCategory } = useSearchCategoryOnUserPosts(Number(categoryId));
 
-  const [managePosts, setManagePosts] = useRecoilState(managePostsState);
+  const managePosts = useManageStore((state) => state.managePosts);
+  const setManagePosts = useManageStore((state) => state.setManagePosts);
 
   useEffect(() => {
     if (Object.keys(router.query).length === 0) {

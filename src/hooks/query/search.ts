@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { useSetRecoilState } from 'recoil';
 
 import searchPosts from '@/apis/search/searchPosts';
 import searchUserPosts from '@/apis/search/searchUserPosts';
@@ -10,7 +9,7 @@ import searchUserSharedPosts from '@/apis/search/searchUserSharedPosts';
 import searchCategoryOnUserPosts from '@/apis/search/searchCategoryOnUserPosts';
 import searchCategoryOnUserSubscribedPosts from '@/apis/search/searchCategoryOnUserSubscribedPosts';
 import searchCategoryOnUserSharedPosts from '@/apis/search/searchCategoryOnUserSharedPosts';
-import { managePostsState, manageSubscribedPostsState, manageSharedPostsState } from '@/recoil/manage';
+import { useManageStore } from '@/stores/useManageStore';
 
 const useSearchPosts = (keyword: string) => {
   const query = useQuery({
@@ -23,7 +22,7 @@ const useSearchPosts = (keyword: string) => {
 };
 
 const useSearchUserPosts = (keyword: string, searchType: string) => {
-  const setManagePosts = useSetRecoilState(managePostsState);
+  const setManagePosts = useManageStore((state) => state.setManagePosts);
 
   const query = useQuery({
     queryKey: ['userPosts', keyword, searchType],
@@ -55,7 +54,7 @@ const useSearchNeighbors = (keyword: string) => {
 };
 
 const useSearchUserSubscribedPosts = (keyword: string, searchType: string) => {
-  const setManageSubscribedPosts = useSetRecoilState(manageSubscribedPostsState);
+  const setManageSubscribedPosts = useManageStore((state) => state.setManageSubscribedPosts);
 
   const query = useQuery({
     queryKey: ['userSubscribedPosts', keyword, searchType],
@@ -75,7 +74,8 @@ const useSearchUserSubscribedPosts = (keyword: string, searchType: string) => {
 };
 
 const useSearchUserSharedPosts = (keyword: string, searchType: string) => {
-  const setManageSharedPosts = useSetRecoilState(manageSharedPostsState);
+  const setManageSharedPosts = useManageStore((state) => state.setManageSharedPosts);
+
   const query = useQuery({
     queryKey: ['userSharedPosts', keyword, searchType],
     queryFn: () => searchUserSharedPosts(keyword, searchType),
@@ -94,7 +94,7 @@ const useSearchUserSharedPosts = (keyword: string, searchType: string) => {
 };
 
 const useSearchCategoryOnUserPosts = (categoryId: number) => {
-  const setManagePosts = useSetRecoilState(managePostsState);
+  const setManagePosts = useManageStore((state) => state.setManagePosts);
 
   const query = useQuery({
     queryKey: ['userPosts', 'category', categoryId],
@@ -114,7 +114,7 @@ const useSearchCategoryOnUserPosts = (categoryId: number) => {
 };
 
 const useSearchCategoryOnUserSubscribedPosts = (categoryId: number | undefined) => {
-  const setManageSubscribedPosts = useSetRecoilState(manageSubscribedPostsState);
+  const setManageSubscribedPosts = useManageStore((state) => state.setManageSubscribedPosts);
 
   const query = useQuery({
     queryKey: ['userSubscribedPosts', 'category', categoryId],
@@ -134,7 +134,7 @@ const useSearchCategoryOnUserSubscribedPosts = (categoryId: number | undefined) 
 };
 
 const useSearchCategoryOnUserSharedPosts = (categoryId: number | undefined) => {
-  const setManageSharedPosts = useSetRecoilState(manageSharedPostsState);
+  const setManageSharedPosts = useManageStore((state) => state.setManageSharedPosts);
 
   const query = useQuery({
     queryKey: ['userSharedPosts', 'category', categoryId],

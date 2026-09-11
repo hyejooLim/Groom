@@ -1,3 +1,4 @@
+// FIXME: This file will be removed
 import { atom } from 'recoil';
 import { persistAtomEffect } from './persist';
 import { CategoryJson, PostItem, SharedPost } from '@/@types/types';

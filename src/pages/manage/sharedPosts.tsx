@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import Head from 'next/head';
 import Router, { useRouter } from 'next/router';
 import Link from 'next/link';
-import { useRecoilState } from 'recoil';
 import { IconButton } from '@mui/material';
 import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
 
@@ -11,7 +10,7 @@ import SearchInput from '@/components/manage/WrapSearchInput';
 import SharedPostManageList from '@/components/manage/SharedPostManageList';
 import { useGetUserSharedPosts } from '@/hooks/query/posts';
 import { useSearchUserSharedPosts, useSearchCategoryOnUserSharedPosts } from '@/hooks/query/search';
-import { manageSharedPostsState } from '@/recoil/manage';
+import { useManageStore } from '@/stores/useManageStore';
 
 const ManageSharedPosts = () => {
   const router = useRouter();
@@ -23,7 +22,8 @@ const ManageSharedPosts = () => {
     Number(categoryId),
   );
 
-  const [manageSharedPosts, setManageSharedPosts] = useRecoilState(manageSharedPostsState);
+  const manageSharedPosts = useManageStore((state) => state.manageSharedPosts);
+  const setManageSharedPosts = useManageStore((state) => state.setManageSharedPosts);
 
   useEffect(() => {
     if (Object.keys(router.query).length === 0) {

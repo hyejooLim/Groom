@@ -1,7 +1,6 @@
 import React, { FC, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-import { useRecoilState } from 'recoil';
 import dayjs from 'dayjs';
 import { Box, Avatar, Button } from '@mui/material';
 import CloudIcon from '@mui/icons-material/Cloud';
@@ -13,7 +12,7 @@ import ArrowRightOutlinedIcon from '@mui/icons-material/ArrowRightOutlined';
 import { SharedPost } from '@/@types/types';
 import PaginationContainer from '../common/PaginationContainer';
 import { useVisitSharedPost, useDeleteSharedPost } from '@/hooks/query/sharedPost';
-import { firstIndexState, lastIndexState, currentPageState, MANAGE_PAGE_SIZE } from '@/recoil/manage';
+import { MANAGE_PAGE_SIZE, useManageStore } from '@/stores/useManageStore';
 
 interface SharedPostManageListProps {
   sharedPosts: SharedPost[];
@@ -32,9 +31,14 @@ const SharedPostManageList: FC<SharedPostManageListProps> = ({
   const visitSharedPost = useVisitSharedPost();
   const deleteSharedPost = useDeleteSharedPost();
 
-  const [firstIndex, setFirstIndex] = useRecoilState(firstIndexState);
-  const [lastIndex, setLastIndex] = useRecoilState(lastIndexState);
-  const [currentPage, setCurrentPage] = useRecoilState(currentPageState);
+  const firstIndex = useManageStore((state) => state.firstIndex);
+  const setFirstIndex = useManageStore((state) => state.setFirstIndex);
+
+  const lastIndex = useManageStore((state) => state.lastIndex);
+  const setLastIndex = useManageStore((state) => state.setLastIndex);
+
+  const currentPage = useManageStore((state) => state.currentPage);
+  const setCurrentPage = useManageStore((state) => state.setCurrentPage);
 
   const onInitPage = () => {
     setCurrentPage(1);

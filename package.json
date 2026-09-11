@@ -49,7 +49,8 @@
     "recoil-persist": "^4.2.0",
     "styled-components": "^5.3.5",
     "swr": "^2.1.5",
-    "tinymce": "^8.3.1"
+    "tinymce": "^8.3.1",
+    "zustand": "^5.0.15"
   },
   "devDependencies": {
     "@types/node": "^25.0.3",

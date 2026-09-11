@@ -1,19 +1,18 @@
 import React, { FC, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-import { useRecoilState } from 'recoil';
 import { FiSearch } from 'react-icons/fi';
 import { AiOutlineEyeInvisible } from 'react-icons/ai';
 import dayjs from 'dayjs';
 import { Box, Button, CircularProgress, Typography } from '@mui/material';
 import AttachFileOutlinedIcon from '@mui/icons-material/AttachFileOutlined';
 
-import { currentPageState, firstIndexState, lastIndexState, MANAGE_PAGE_SIZE } from '@/recoil/manage';
 import { useSsrAllowedState } from '@/recoil/persist';
 import PaginationContainer from '../common/PaginationContainer';
 import { useGetUser } from '@/hooks/query/user';
 import { useDeletePost, useUnSubscribePost, useToggleIsPublicPost } from '@/hooks/query/post';
 import { PostItem } from '@/@types/types';
+import { MANAGE_PAGE_SIZE, useManageStore } from '@/stores/useManageStore';
 
 interface PostManageListProps {
   posts: PostItem[];
@@ -30,9 +29,14 @@ const PostManageList: FC<PostManageListProps> = ({ posts, isLoading, isFetching,
   const toggleIsPublicPost = useToggleIsPublicPost();
   const unSubscribePost = useUnSubscribePost();
 
-  const [firstIndex, setFirstIndex] = useRecoilState(firstIndexState);
-  const [lastIndex, setLastIndex] = useRecoilState(lastIndexState);
-  const [currentPage, setCurrentPage] = useRecoilState(currentPageState);
+  const firstIndex = useManageStore((state) => state.firstIndex);
+  const setFirstIndex = useManageStore((state) => state.setFirstIndex);
+
+  const lastIndex = useManageStore((state) => state.lastIndex);
+  const setLastIndex = useManageStore((state) => state.setLastIndex);
+
+  const currentPage = useManageStore((state) => state.currentPage);
+  const setCurrentPage = useManageStore((state) => state.setCurrentPage);
 
   const setSsrAllowed = useSsrAllowedState();
   useEffect(setSsrAllowed, [setSsrAllowed]);
