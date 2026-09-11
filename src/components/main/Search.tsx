@@ -1,12 +1,11 @@
 import React, { ChangeEvent, KeyboardEvent } from 'react';
 import Router from 'next/router';
-import { useRecoilState } from 'recoil';
 import TextField from '@mui/material/TextField';
-
-import { keywordState } from '@/recoil/main';
+import { useSearchStore } from '@/stores/useSearchStore';
 
 const Search = () => {
-  const [keyword, setKeyword] = useRecoilState(keywordState);
+  const keyword = useSearchStore((state) => state.keyword);
+  const setKeyword = useSearchStore((state) => state.setKeyword);
 
   const onChangeKeyword = (e: ChangeEvent<HTMLInputElement>) => {
     setKeyword(e.target.value);

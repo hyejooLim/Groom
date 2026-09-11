@@ -1,18 +1,17 @@
 import React, { useEffect } from 'react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import { useSetRecoilState } from 'recoil';
 
 import AppLayout from '@/components/layouts/AppLayout';
 import Title from '@/components/common/Title';
 import PostList from '@/components/post/PostList';
-import { keywordState } from '@/recoil/main';
 import { useSearchPosts } from '@/hooks/query/search';
+import { useSearchStore } from '@/stores/useSearchStore';
 
 const Search = () => {
   const router = useRouter();
   const { keyword, page } = router.query;
-  const setKeyword = useSetRecoilState(keywordState);
+  const setKeyword = useSearchStore((state) => state.setKeyword);
 
   const { data: posts, isLoading } = useSearchPosts(keyword as string);
 
