@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Head from 'next/head';
 import { SessionProvider } from 'next-auth/react';
-import { RecoilRoot } from 'recoil';
 import { QueryClientProvider, QueryClient, HydrationBoundary } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { SWRConfig } from 'swr';
@@ -42,12 +41,10 @@ const App = ({ Component, pageProps: { session, ...pageProps } }) => {
             <QueryClientProvider client={queryClient}>
               <HydrationBoundary state={pageProps.dehydratedState}>
                 <SWRConfig value={{ fetcher }}>
-                  <RecoilRoot>
-                    <Head>
-                      <title>Groom</title>
-                    </Head>
-                    <Component {...pageProps} />
-                  </RecoilRoot>
+                  <Head>
+                    <title>Groom</title>
+                  </Head>
+                  <Component {...pageProps} />
                 </SWRConfig>
               </HydrationBoundary>
               <ReactQueryDevtools initialIsOpen={true} />
