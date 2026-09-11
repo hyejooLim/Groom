@@ -7,7 +7,6 @@ import dayjs from 'dayjs';
 import { Box, Button, CircularProgress, Typography } from '@mui/material';
 import AttachFileOutlinedIcon from '@mui/icons-material/AttachFileOutlined';
 
-import { useSsrAllowedState } from '@/recoil/persist';
 import PaginationContainer from '../common/PaginationContainer';
 import { useGetUser } from '@/hooks/query/user';
 import { useDeletePost, useUnSubscribePost, useToggleIsPublicPost } from '@/hooks/query/post';
@@ -37,9 +36,6 @@ const PostManageList: FC<PostManageListProps> = ({ posts, isLoading, isFetching,
 
   const currentPage = useManageStore((state) => state.currentPage);
   const setCurrentPage = useManageStore((state) => state.setCurrentPage);
-
-  const setSsrAllowed = useSsrAllowedState();
-  useEffect(setSsrAllowed, [setSsrAllowed]);
 
   const onInitPage = () => {
     setCurrentPage(1);
